@@ -19,15 +19,22 @@ class BoxDetailPage extends StatefulWidget {
 }
 
 class _BoxDetailPageState extends State<BoxDetailPage> {
-  late VocabularyBox _box;
+  final BoxController _boxController = BoxController();
+  late dynamic _boxKey;
   bool _isEditing = false;
   late TextEditingController _controller;
+
+  VocabularyBox get _box => _boxController.getBox(_boxKey)!;
 
   @override
   void initState() {
     super.initState();
-    _box = widget.box;
-    _controller = TextEditingController(text: _box.name);
+    _boxKey = widget.boxKey;
+    final box = _boxController.getBox(_boxKey);
+    if (box == null) {
+      throw Exception('Box with key $_boxKey not found');
+    }
+    _controller = TextEditingController(text: box.name);
   }
 
   @override
@@ -46,10 +53,9 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
       vocabularies: _box.vocabularies,
     );
 
-    BoxController().updateBox(widget.boxKey, updated);
+    _boxController.updateBox(widget.boxKey, updated);
 
     setState(() {
-      _box = updated;
       _isEditing = false;
     });
   }
