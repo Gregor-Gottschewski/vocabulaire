@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
@@ -21,10 +22,11 @@ class BoxDetailPage extends StatefulWidget {
 class _BoxDetailPageState extends State<BoxDetailPage> {
   final BoxController _boxController = BoxController();
   late dynamic _boxKey;
-  bool _isEditing = false;
+  bool _isEditingTitle = false;
+  bool _isPopping = false;
   late TextEditingController _controller;
 
-  VocabularyBox get _box => _boxController.getBox(_boxKey)!;
+  VocabularyBox? get _box => _boxController.getBox(_boxKey);
 
   @override
   void initState() {
@@ -44,25 +46,29 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
   }
 
   Future<void> _saveTitle() async {
+    final box = _box;
     final newName = _controller.text.trim();
-    if (newName.isEmpty) return;
+    if (newName.isEmpty || box == null) return;
 
     final updated = VocabularyBox(
       name: newName,
-      description: _box.description,
-      vocabularies: _box.vocabularies,
+      description: box.description,
+      vocabularies: box.vocabularies,
     );
 
     _boxController.updateBox(widget.boxKey, updated);
 
     setState(() {
-      _isEditing = false;
+      _isEditingTitle = false;
     });
   }
 
   Future<void> _exportBoxAsJson() async {
+    final box = _box;
+    if (box == null) return;
+
     try {
-      final jsonString = JsonEncoder().convert(_box.toMap());
+      final jsonString = JsonEncoder().convert(box.toMap());
 
       final tempDir = Platform.isMacOS
           ? await getApplicationSupportDirectory()
@@ -76,9 +82,9 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
 
       await SharePlus.instance.share(
         ShareParams(
-          title: 'Export ${_box.name}',
+          title: 'Export $box.name}',
           files: [XFile(file.path)],
-          fileNameOverrides: ['${_box.name}.json'],
+          fileNameOverrides: ['${box.name}.json'],
         ),
       );
 
@@ -100,48 +106,112 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     }
   }
 
+  /// Deletes the current box.
+  /// If the box contains vocabularies, a confirmation dialog is shown before deletion.
+  void _deleteBox() {
+    final box = _box;
+    if (box == null) return;
+
+    if (box.vocabularies.isEmpty) {
+      _boxController.deleteBox(widget.boxKey);
+      Navigator.of(context).pop();
+      return;
+    }
+
+    final pageContext = context;
+    showCupertinoDialog(
+      context: pageContext,
+      builder: (dialogContext) => CupertinoAlertDialog(
+        title: const Text('Box löschen'),
+        content: const Text('Möchtest du diese Box wirklich löschen?'),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text('Abbrechen'),
+            onPressed: () => Navigator.of(dialogContext).pop(),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            child: const Text('Löschen'),
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              Navigator.of(pageContext).pop();
+              _boxController.deleteBox(widget.boxKey);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: _isEditing
-            ? SizedBox(
-                height: 36,
-                child: CupertinoTextField(
-                  controller: _controller,
-                  autofocus: true,
-                  onSubmitted: (_) => _saveTitle(),
+    return ValueListenableBuilder<Box<VocabularyBox>>(
+      valueListenable: _boxController.listenable,
+      builder: (context, _, _) {
+        final box = _box;
+        if (box == null) {
+          if (!_isPopping) {
+            _isPopping = true;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              Navigator.of(context).maybePop();
+            });
+          }
+
+          return CupertinoPageScaffold(
+            navigationBar: const CupertinoNavigationBar(
+              middle: Text('Box nicht gefunden'),
+            ),
+            child: const SizedBox.shrink(),
+          );
+        }
+        return CupertinoPageScaffold(
+          navigationBar: CupertinoNavigationBar(
+            middle: _isEditingTitle
+                ? SizedBox(
+                    height: 36,
+                    child: CupertinoTextField(
+                      controller: _controller,
+                      autofocus: true,
+                      onSubmitted: (_) => _saveTitle(),
+                    ),
+                  )
+                : Text(box.name),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  child: Icon(
+                    _isEditingTitle
+                        ? CupertinoIcons.check_mark
+                        : CupertinoIcons.pencil,
+                  ),
+                  onPressed: () {
+                    if (_isEditingTitle) {
+                      _saveTitle();
+                    } else
+                      setState(() => _isEditingTitle = true);
+                  },
                 ),
-              )
-            : Text(_box.name),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              child: Icon(
-                _isEditing ? CupertinoIcons.check_mark : CupertinoIcons.pencil,
-              ),
-              onPressed: () {
-                if (_isEditing) {
-                  _saveTitle();
-                } else {
-                  setState(() => _isEditing = true);
-                }
-              },
+                const SizedBox(width: 5),
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: _exportBoxAsJson,
+                  child: Icon(CupertinoIcons.share),
+                ),
+                const SizedBox(width: 5),
+                CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: _deleteBox,
+                  child: const Icon(CupertinoIcons.trash),
+                ),
+              ],
             ),
-            const SizedBox(width: 5),
-            CupertinoButton(
-              padding: EdgeInsets.zero,
-              child: Icon(CupertinoIcons.share),
-              onPressed: () {
-                _exportBoxAsJson();
-              },
-            ),
-          ],
-        ),
-      ),
-      child: BoxDetailView(box: _box, boxKey: widget.boxKey),
+          ),
+          child: BoxDetailView(box: box, boxKey: widget.boxKey),
+        );
+      },
     );
   }
 }

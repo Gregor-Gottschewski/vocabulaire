@@ -54,7 +54,7 @@ class HomeView extends StatelessWidget {
 
             Expanded(
               child: ValueListenableBuilder(
-                valueListenable: BoxController().listenable,
+                valueListenable: boxController.listenable,
                 builder: (context, Box<VocabularyBox> box, _) {
                   final keys = box.keys.cast<dynamic>().toList();
 
@@ -72,7 +72,8 @@ class HomeView extends StatelessWidget {
                           Navigator.push(
                             context,
                             CupertinoPageRoute(
-                              builder: (context) => BoxDetailPage(box: b, boxKey: keys[index]),
+                              builder: (context) =>
+                                  BoxDetailPage(box: b, boxKey: keys[index]),
                             ),
                           );
                         },

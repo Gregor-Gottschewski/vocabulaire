@@ -31,13 +31,18 @@ class _VocabularyListViewState extends State<VocabularyListView> {
   final BoxController _controller = BoxController();
   final Set<String> _pendingRemoval = {};
 
-  void _navigateToCreate(dynamic boxKey) {
+  /// Opens the EditVocabularyView for adding a new vocabulary to the specified box.
+  /// Option only available when not in multipleBoxes mode.
+  ///  - [boxKey] The key of the box to which the new vocabulary will be added.
+  void _navigateToVocabularyEdit(dynamic boxKey) {
     Navigator.push(
       context,
       CupertinoPageRoute(builder: (_) => EditVocabularyView(boxKey: boxKey)),
     );
   }
 
+  /// Opens the EditVocabularyView for editing an existing vocabulary.
+  ///  - [boxKey] The key of the box containing the vocabulary to edit.
   void _navigateToEdit(dynamic boxKey, Vocabulary vocabulary) {
     Navigator.push(
       context,
@@ -54,10 +59,20 @@ class _VocabularyListViewState extends State<VocabularyListView> {
       navigationBar: CupertinoNavigationBar(
         middle: Text("Vokabeln"),
         trailing: !widget.multipleBoxes
-            ? CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () => _navigateToCreate(widget.boxes.first.key),
-                child: Icon(CupertinoIcons.add),
+            ? ValueListenableBuilder(
+                valueListenable: _controller.listenable,
+                builder: (context, hiveBox, _) {
+                  final firstKey = (hiveBox.keys.isEmpty)
+                      ? null
+                      : hiveBox.keys.first;
+                  return CupertinoButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: firstKey == null
+                        ? null
+                        : () => _navigateToVocabularyEdit(firstKey),
+                    child: Icon(CupertinoIcons.add),
+                  );
+                },
               )
             : null,
       ),
@@ -65,8 +80,8 @@ class _VocabularyListViewState extends State<VocabularyListView> {
         child: ValueListenableBuilder(
           valueListenable: _controller.listenable,
           builder: (context, hiveBox, _) {
-            final fresh = widget.boxes
-                .map((e) => MapEntry(e.key, hiveBox.get(e.key)))
+            final fresh = hiveBox.keys
+                .map((key) => MapEntry(key, hiveBox.get(key)))
                 .where((e) => e.value != null)
                 .expand(
                   (entry) => entry.value!.vocabularies.map(
