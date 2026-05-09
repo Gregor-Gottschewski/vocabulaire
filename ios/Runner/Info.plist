@@ -66,5 +66,7 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+    <string>Die App benötigt Zugriff auf das Mikrofon, um Vokabeln aufzunehmen und deine Aussprache zu üben.</string>
 </dict>
 </plist>
