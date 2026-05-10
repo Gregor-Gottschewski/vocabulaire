@@ -1,16 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/views/edit_vocabulary_view.dart';
 import '../controllers/box_controller.dart';
-import '../models/vocabulary_box.dart';
 import '../models/vocabulary.dart';
+import '../models/vocabulary_box.dart';
 
 class VocabularyListView extends StatefulWidget {
-  final List<MapEntry<dynamic, VocabularyBox>> boxes;
+  final List<dynamic> boxKeys;
   final bool multipleBoxes;
 
   const VocabularyListView({
     super.key,
-    required this.boxes,
+    required this.boxKeys,
     required this.multipleBoxes,
   });
 
@@ -28,8 +28,20 @@ class _BoxVocabulary {
 }
 
 class _VocabularyListViewState extends State<VocabularyListView> {
+  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _notifier;
   final BoxController _controller = BoxController();
-  final Set<String> _pendingRemoval = {};
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier = _controller.listenableForKeys(widget.boxKeys);
+  }
+
+  @override
+  void dispose() {
+    _notifier.dispose();
+    super.dispose();
+  }
 
   /// Opens the EditVocabularyView for adding a new vocabulary to the specified box.
   /// Option only available when not in multipleBoxes mode.
@@ -59,18 +71,16 @@ class _VocabularyListViewState extends State<VocabularyListView> {
       navigationBar: CupertinoNavigationBar(
         middle: Text("Vokabeln"),
         trailing: !widget.multipleBoxes
-            ? ValueListenableBuilder(
-                valueListenable: _controller.listenable,
-                builder: (context, hiveBox, _) {
-                  final firstKey = (hiveBox.keys.isEmpty)
-                      ? null
-                      : hiveBox.keys.first;
+            ? ValueListenableBuilder<List<MapEntry<dynamic, VocabularyBox>>>(
+                valueListenable: _notifier,
+                builder: (context, entries, _) {
+                  final firstKey = entries.isEmpty ? null : entries.first.key;
                   return CupertinoButton(
                     padding: EdgeInsets.zero,
                     onPressed: firstKey == null
                         ? null
                         : () => _navigateToVocabularyEdit(firstKey),
-                    child: Icon(CupertinoIcons.add),
+                    child: const Icon(CupertinoIcons.add),
                   );
                 },
               )
@@ -78,31 +88,24 @@ class _VocabularyListViewState extends State<VocabularyListView> {
       ),
       child: SafeArea(
         child: ValueListenableBuilder(
-          valueListenable: _controller.listenable,
-          builder: (context, hiveBox, _) {
-            final fresh = hiveBox.keys
-                .map((key) => MapEntry(key, hiveBox.get(key)))
-                .where((e) => e.value != null)
-                .expand(
-                  (entry) => entry.value!.vocabularies.map(
-                    (v) => _BoxVocabulary(entry.key, entry.value!.name, v),
-                  ),
-                )
-                .where(
-                  (item) => !_pendingRemoval.contains(
-                    '${item.vocabulary.id}_${item.boxKey}',
-                  ),
-                )
-                .toList();
+          valueListenable: _notifier,
+          builder: (context, entries, _) {
+            final items = entries.expand((entry) {
+              final boxKey = entry.key;
+              final boxName = entry.value.name;
+              return entry.value.vocabularies.map(
+                (v) => _BoxVocabulary(boxKey, boxName, v),
+              );
+            }).toList();
 
-            if (fresh.isEmpty) {
+            if (items.isEmpty) {
               return const Center(child: Text('No vocabularies yet.'));
             }
 
             return ListView.builder(
-              itemCount: fresh.length,
+              itemCount: items.length,
               itemBuilder: (context, index) {
-                final item = fresh[index];
+                final item = items[index];
                 final v = item.vocabulary;
                 final boxKey = item.boxKey;
                 final boxName = item.boxName;

@@ -34,6 +34,29 @@ class BoxController {
     _box.put(key, updatedBox);
   }
 
+  /// Returns a ValueNotifier that listens for changes to the specified keys in the box.
+  /// The returned notifier automatically removes its Hive listener when disposed.
+  ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> listenableForKeys(
+    List<dynamic> keys,
+  ) {
+    return _BoxKeysValueNotifier(
+      () => _entriesForKeys(keys),
+      _box.listenable(keys: keys),
+    );
+  }
+
+  /// Helper method to retrieve the entries for the specified keys.
+  List<MapEntry<dynamic, VocabularyBox>> _entriesForKeys(List<dynamic> keys) {
+    return keys
+        .map((k) => _box.get(k))
+        .whereType<VocabularyBox>()
+        .toList()
+        .asMap()
+        .entries
+        .map((e) => MapEntry(keys[e.key], e.value))
+        .toList();
+  }
+
   void addVocabularyToBox(dynamic key, Vocabulary vocabulary) {
     final box = _box.get(key);
     if (box == null) throw Exception('Box with key $key not found');
@@ -75,5 +98,27 @@ class BoxController {
       vocabularies: full,
     );
     _box.put(key, updated);
+  }
+}
+
+/// A ValueNotifier that removes its Hive box listener automatically on dispose,
+/// preventing "used after being disposed" errors when the owning widget is removed.
+class _BoxKeysValueNotifier
+    extends ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> {
+  final ValueListenable<Box<VocabularyBox>> _boxListenable;
+  late final VoidCallback _boxListener;
+
+  _BoxKeysValueNotifier(
+    List<MapEntry<dynamic, VocabularyBox>> Function() getter,
+    this._boxListenable,
+  ) : super(getter()) {
+    _boxListener = () => value = getter();
+    _boxListenable.addListener(_boxListener);
+  }
+
+  @override
+  void dispose() {
+    _boxListenable.removeListener(_boxListener);
+    super.dispose();
   }
 }

@@ -16,7 +16,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final List<Widget> _views = [
     const HomeView(),
-    VocabularyListView(multipleBoxes: true, boxes: BoxController().entries),
+    VocabularyListView(
+      multipleBoxes: true,
+      boxKeys: BoxController().entries.map((e) => e.key).toList(),
+    ),
     const SettingsView(),
   ];
 

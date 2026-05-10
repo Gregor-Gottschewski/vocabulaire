@@ -124,7 +124,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                               CupertinoPageRoute(
                                 builder: (_) => VocabularyListView(
                                   multipleBoxes: false,
-                                  boxes: [MapEntry(widget.boxKey, widget.box)],
+                                  boxKeys: [widget.boxKey],
                                 ),
                               ),
                             );
