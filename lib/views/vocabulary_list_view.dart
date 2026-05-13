@@ -135,6 +135,9 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                                 children: [
                                   Text(
                                     v.word,
+                                    maxLines: 1,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -144,6 +147,9 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                                   const SizedBox(height: 4),
                                   Text(
                                     v.meaning,
+                                    maxLines: 2,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 14,
                                       color: CupertinoColors.systemGrey,
@@ -153,6 +159,9 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                                   if (widget.multipleBoxes)
                                     Text(
                                       boxName,
+                                      maxLines: 1,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontSize: 12,
                                         color: CupertinoColors.systemGrey2,

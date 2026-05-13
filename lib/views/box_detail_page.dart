@@ -176,7 +176,12 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
                       onSubmitted: (_) => _saveTitle(),
                     ),
                   )
-                : Text(box.name),
+                : Text(
+                    box.name,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
