@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary.dart';
 
 class BoxController {
@@ -78,6 +79,11 @@ class BoxController {
         ..removeWhere((v) => v.id == id),
     );
     _box.put(key, updated);
+
+    final audio = AppPaths.audioFile(id);
+    if (audio.existsSync()) {
+      audio.delete();
+    }
   }
 
   void updateVocabularyInBox(dynamic key, Vocabulary updatedVocabulary) {
@@ -89,7 +95,9 @@ class BoxController {
     if (idx >= 0) {
       full[idx] = updatedVocabulary;
     } else {
-      throw Exception('Vocabulary with id ${updatedVocabulary.id} not found in box with key $key');
+      throw Exception(
+        'Vocabulary with id ${updatedVocabulary.id} not found in box with key $key',
+      );
     }
 
     final updated = VocabularyBox(
