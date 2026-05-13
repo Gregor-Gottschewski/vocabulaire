@@ -328,7 +328,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             horizontal: 12,
                             vertical: 12,
                           ),
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.newline,
+                          maxLines: 4,
                         ),
 
                         const SizedBox(height: 12),
@@ -353,7 +354,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             horizontal: 12,
                             vertical: 12,
                           ),
-                          textInputAction: TextInputAction.next,
+                          textInputAction: TextInputAction.newline,
+                          maxLines: 4,
                         ),
 
                         const SizedBox(height: 12),
