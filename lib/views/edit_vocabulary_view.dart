@@ -37,10 +37,12 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   );
   bool _isSaving = false;
   bool _recording = false;
+  bool _isPlaying = false;
   Duration _recordDuration = Duration.zero;
   Timer? _recordTimer;
   late bool _hasRecording;
   late Vocabulary _vocab;
+  StreamSubscription<void>? _playerCompleteSub;
 
   /// Initializes the text controllers with the existing vocabulary data when the view is created.
   @override
@@ -60,7 +62,25 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _descriptionController.text = _vocab.example;
 
     _hasRecording = _checkExistingRecording();
-    if (_hasRecording) {}
+    if (_hasRecording) {
+      _initAudioPlayer();
+    }
+
+    _playerCompleteSub = _audioPlayer.onPlayerComplete.listen((_) {
+      if (mounted) {
+        setState(() => _isPlaying = false);
+      }
+    });
+  }
+
+  Future<void> _initAudioPlayer() async {
+    await _audioPlayer.setSourceDeviceFile(AppPaths.audioFilePath(_vocab.id));
+    final duration = await _audioPlayer.getDuration();
+    if (mounted) {
+      setState(() {
+        _recordDuration = duration ?? Duration.zero;
+      });
+    }
   }
 
   /// Checks if an audio exists for the current vocabulary entry.
@@ -70,12 +90,19 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         : AppPaths.audioFile(_vocab.id).existsSync();
   }
 
+  Future<Duration> getRecordingDuration() async {
+    if (!_hasRecording) return Duration.zero;
+    return await _audioPlayer.getDuration() ?? Duration.zero;
+  }
+
   @override
   void dispose() {
     _frontController.dispose();
     _backController.dispose();
     _descriptionController.dispose();
     _audioRecorder.dispose();
+    _audioPlayer.dispose();
+    _playerCompleteSub?.cancel();
     super.dispose();
   }
 
@@ -227,9 +254,18 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   void _playAudio() async {
     if (!_hasRecording) return;
+
+    if (_isPlaying) {
+      await _audioPlayer.stop();
+      if (mounted) setState(() => _isPlaying = false);
+      return;
+    }
+
     await _audioPlayer.play(
       DeviceFileSource(AppPaths.audioFilePath(_vocab.id)),
     );
+
+    if (mounted) setState(() => _isPlaying = true);
   }
 
   void _deleteAudio() async {
@@ -237,6 +273,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final file = AppPaths.audioFile(_vocab.id);
     if (file.existsSync()) {
       await file.delete();
+      _recordDuration = Duration.zero;
       setState(() => _hasRecording = false);
     }
   }
@@ -377,7 +414,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                   child: Icon(
                                     CupertinoIcons.mic_fill,
                                     color: CupertinoColors.white,
-                                    size: 22,
+                                    size: 20,
                                   ),
                                 ),
                               ),
@@ -399,19 +436,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             CupertinoButton(
                               padding: EdgeInsets.zero,
                               borderRadius: BorderRadius.circular(30),
-                              color: _hasRecording
-                                  ? CupertinoColors.systemGrey2
-                                  : CupertinoColors.quaternarySystemFill,
                               onPressed: _hasRecording ? _playAudio : null,
                               child: SizedBox(
                                 width: 44,
                                 height: 44,
                                 child: Center(
                                   child: Icon(
-                                    CupertinoIcons.play_fill,
-                                    color: _hasRecording
-                                        ? CupertinoColors.black
-                                        : CupertinoColors.systemGrey,
+                                    _isPlaying ? CupertinoIcons.stop_fill : CupertinoIcons.play_fill,
+                                    color: _hasRecording ? CupertinoColors.systemBlue : CupertinoColors.systemGrey,
                                     size: 20,
                                   ),
                                 ),
@@ -423,9 +455,6 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             CupertinoButton(
                               padding: EdgeInsets.zero,
                               borderRadius: BorderRadius.circular(30),
-                              color: _hasRecording
-                                  ? CupertinoColors.destructiveRed
-                                  : CupertinoColors.quaternarySystemFill,
                               onPressed: _hasRecording ? _deleteAudio : null,
                               child: SizedBox(
                                 width: 44,
@@ -433,9 +462,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                 child: Center(
                                   child: Icon(
                                     CupertinoIcons.delete,
-                                    color: _hasRecording
-                                        ? CupertinoColors.white
-                                        : CupertinoColors.systemGrey,
+                                    color: _hasRecording ? CupertinoColors.systemRed : CupertinoColors.systemGrey,
                                     size: 20,
                                   ),
                                 ),
@@ -463,7 +490,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                     Expanded(
                       child: CupertinoButton.filled(
                         onPressed: _isSaving ? null : _savePressed,
-                        color: CupertinoColors.inactiveGray,
+                        color: CupertinoColors.systemGreen,
                         child: _isSaving
                             ? const CupertinoActivityIndicator()
                             : Row(
