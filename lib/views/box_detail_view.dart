@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/views/review_view.dart';
 
 import '../models/vocabulary_box.dart';
@@ -19,6 +20,19 @@ class BoxDetailView extends StatefulWidget {
 class _BoxDetailWidget extends State<BoxDetailView> {
   bool _onlyTimely = true;
   LearningMethod _selectedOption = LearningMethod.all;
+  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _boxNotifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _boxNotifier = BoxController().listenableForKeys([widget.boxKey]);
+  }
+
+  @override
+  void dispose() {
+    _boxNotifier.dispose();
+    super.dispose();
+  }
 
   /// Builds a row with a label and a CupertinoSwitch for toggling options.
   Widget _buildToggleRow(
@@ -124,7 +138,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                               CupertinoPageRoute(
                                 builder: (_) => VocabularyListView(
                                   multipleBoxes: false,
-                                  boxKeys: [widget.boxKey],
+                                  boxListenable: _boxNotifier,
                                 ),
                               ),
                             );

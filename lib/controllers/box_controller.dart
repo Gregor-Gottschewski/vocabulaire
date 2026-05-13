@@ -46,6 +46,14 @@ class BoxController {
     );
   }
 
+  /// Returns a ValueNotifier that listens for changes to all entries in the box.
+  ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> listenableForAll() {
+    return _BoxKeysValueNotifier(
+      () => entries,
+      _box.listenable(),
+    );
+  }
+
   /// Helper method to retrieve the entries for the specified keys.
   List<MapEntry<dynamic, VocabularyBox>> _entriesForKeys(List<dynamic> keys) {
     return keys

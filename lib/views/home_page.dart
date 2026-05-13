@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/views/vocabulary_list_view.dart';
 import '../controllers/box_controller.dart';
+import '../models/vocabulary_box.dart';
 import 'home_view.dart';
 import 'settings_view.dart';
 
@@ -13,15 +14,27 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  final BoxController _boxController = BoxController();
+  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>>
+  _allBoxesNotifier;
+  late final List<Widget> _views;
 
-  final List<Widget> _views = [
-    const HomeView(),
-    VocabularyListView(
-      multipleBoxes: true,
-      boxKeys: BoxController().entries.map((e) => e.key).toList(),
-    ),
-    const SettingsView(),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _allBoxesNotifier = _boxController.listenableForAll();
+    _views = [
+      const HomeView(),
+      VocabularyListView(multipleBoxes: true, boxListenable: _allBoxesNotifier),
+      const SettingsView(),
+    ];
+  }
+
+  @override
+  void dispose() {
+    _allBoxesNotifier.dispose();
+    super.dispose();
+  }
 
   void _onItemTapped(int index) {
     setState(() {

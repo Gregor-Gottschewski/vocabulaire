@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:vocabulaire/views/edit_vocabulary_view.dart';
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
 
 class VocabularyListView extends StatefulWidget {
-  final List<dynamic> boxKeys;
+  final ValueListenable<List<MapEntry<dynamic, VocabularyBox>>> boxListenable;
   final bool multipleBoxes;
 
   const VocabularyListView({
     super.key,
-    required this.boxKeys,
+    required this.boxListenable,
     required this.multipleBoxes,
   });
 
@@ -28,20 +29,7 @@ class _BoxVocabulary {
 }
 
 class _VocabularyListViewState extends State<VocabularyListView> {
-  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _notifier;
   final BoxController _controller = BoxController();
-
-  @override
-  void initState() {
-    super.initState();
-    _notifier = _controller.listenableForKeys(widget.boxKeys);
-  }
-
-  @override
-  void dispose() {
-    _notifier.dispose();
-    super.dispose();
-  }
 
   /// Opens the EditVocabularyView for adding a new vocabulary to the specified box.
   /// Option only available when not in multipleBoxes mode.
@@ -71,8 +59,8 @@ class _VocabularyListViewState extends State<VocabularyListView> {
       navigationBar: CupertinoNavigationBar(
         middle: Text("Vokabeln"),
         trailing: !widget.multipleBoxes
-            ? ValueListenableBuilder<List<MapEntry<dynamic, VocabularyBox>>>(
-                valueListenable: _notifier,
+            ? ValueListenableBuilder(
+                valueListenable: widget.boxListenable,
                 builder: (context, entries, _) {
                   final firstKey = entries.isEmpty ? null : entries.first.key;
                   return CupertinoButton(
@@ -88,7 +76,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
       ),
       child: SafeArea(
         child: ValueListenableBuilder(
-          valueListenable: _notifier,
+          valueListenable: widget.boxListenable,
           builder: (context, entries, _) {
             final items = entries.expand((entry) {
               final boxKey = entry.key;
