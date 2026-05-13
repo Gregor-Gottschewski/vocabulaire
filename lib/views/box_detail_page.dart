@@ -190,8 +190,9 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
                   onPressed: () {
                     if (_isEditingTitle) {
                       _saveTitle();
-                    } else
+                    } else {
                       setState(() => _isEditingTitle = true);
+                    }
                   },
                 ),
                 const SizedBox(width: 5),
