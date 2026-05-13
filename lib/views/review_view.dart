@@ -1,8 +1,10 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
 import 'package:vocabulaire/models/review_session.dart';
+import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/views/review_finished.dart';
 
 class ReviewView extends StatefulWidget {
@@ -23,6 +25,7 @@ class ReviewView extends StatefulWidget {
 
 class _ReviewViewState extends State<ReviewView> {
   late final ReviewController reviewController;
+  final player = AudioPlayer();
   bool _flipped = false;
 
   @override
@@ -77,6 +80,7 @@ class _ReviewViewState extends State<ReviewView> {
     final example = current.example.isNotEmpty
         ? '\n\nBeispiel: ${current.example}'
         : '';
+    final hasRecording = AppPaths.audioFile(current.id).existsSync();
 
     return GestureDetector(
       onTap: () => setState(() => _flipped = !_flipped),
@@ -135,6 +139,20 @@ class _ReviewViewState extends State<ReviewView> {
                               textAlign: TextAlign.center,
                             ),
                           ),
+                        if (hasRecording) ...[
+                          const SizedBox(height: 16),
+                          CupertinoButton.filled(
+                            onPressed: _playAudio,
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(CupertinoIcons.play_arrow_solid, size: 20),
+                                SizedBox(width: 8),
+                                Text('Abspielen'),
+                              ],
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                 ],
@@ -144,6 +162,12 @@ class _ReviewViewState extends State<ReviewView> {
         ),
       ),
     );
+  }
+
+  void _playAudio() async {
+    final current = reviewController.current;
+    if (current == null) return;
+    await player.play(DeviceFileSource(AppPaths.audioFilePath(current.id)));
   }
 
   Widget _ratingButtons() {
