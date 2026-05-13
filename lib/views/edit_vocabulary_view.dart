@@ -241,15 +241,19 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
   }
 
+  Future<void> _onPop() async {
+    if (_recording) {
+      await _audioRecorder.stop();
+      _stopRecordTimer();
+    }
+    await _audioPlayer.stop();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvokedWithResult: (result, dynamic) async {
-        if (_recording) {
-          await _audioRecorder.stop();
-          _stopRecordTimer();
-        }
-        await _audioPlayer.stop();
+        await _onPop();
       },
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
@@ -258,244 +262,248 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           ),
         ),
         child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                // Front (word)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Front',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.systemGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                CupertinoTextField(
-                  controller: _frontController,
-                  placeholder: 'Wort / Vorderseite',
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  textInputAction: TextInputAction.next,
-                ),
-
-                const SizedBox(height: 12),
-
-                // Back (meaning)
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Back',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.systemGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                CupertinoTextField(
-                  controller: _backController,
-                  placeholder: 'Bedeutung / Rückseite',
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  textInputAction: TextInputAction.next,
-                ),
-
-                const SizedBox(height: 12),
-
-                // Description / Example
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Beschreibung / Beispiel',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.systemGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                CupertinoTextField(
-                  controller: _descriptionController,
-                  placeholder: 'Optionales Beispiel oder Beschreibung',
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 12,
-                  ),
-                  maxLines: 4,
-                  textInputAction: TextInputAction.newline,
-                ),
-
-                const SizedBox(height: 12),
-
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Audioaufnahme',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.systemGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.circular(30),
-                      color: _recording
-                          ? CupertinoColors.systemRed
-                          : CupertinoColors.activeBlue,
-                      onPressed: _recordAudio,
-                      child: SizedBox(
-                        width: 48,
-                        height: 48,
-                        child: Center(
-                          child: Icon(
-                            CupertinoIcons.mic_fill,
-                            color: CupertinoColors.white,
-                            size: 22,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const Spacer(),
-
-                    Text(
-                      _formatDuration(_recordDuration),
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: CupertinoColors.systemGrey,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-
-                    const SizedBox(width: 12),
-
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.circular(30),
-                      color: _hasRecording
-                          ? CupertinoColors.systemGrey2
-                          : CupertinoColors.quaternarySystemFill,
-                      onPressed: _hasRecording ? _playAudio : null,
-                      child: SizedBox(
-                        width: 44,
-                        height: 44,
-                        child: Center(
-                          child: Icon(
-                            CupertinoIcons.play_fill,
-                            color: _hasRecording
-                                ? CupertinoColors.black
-                                : CupertinoColors.systemGrey,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(width: 8),
-
-                    CupertinoButton(
-                      padding: EdgeInsets.zero,
-                      borderRadius: BorderRadius.circular(30),
-                      color: _hasRecording
-                          ? CupertinoColors.destructiveRed
-                          : CupertinoColors.quaternarySystemFill,
-                      onPressed: _hasRecording ? _deleteAudio : null,
-                      child: SizedBox(
-                        width: 44,
-                        height: 44,
-                        child: Center(
-                          child: Icon(
-                            CupertinoIcons.delete,
-                            color: _hasRecording
-                                ? CupertinoColors.white
-                                : CupertinoColors.systemGrey,
-                            size: 20,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 8.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: CupertinoButton.filled(
-                              onPressed: _isSaving ? null : _savePressed,
-                              color: CupertinoColors.inactiveGray,
-                              child: _isSaving
-                                  ? const CupertinoActivityIndicator()
-                                  : Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: const [
-                                        Icon(
-                                          CupertinoIcons.check_mark,
-                                          size: 20.0,
-                                        ),
-                                        SizedBox(width: 8.0),
-                                        Flexible(child: Text('Speichern')),
-                                      ],
-                                    ),
+          child: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Front (word)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Front',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: CupertinoColors.systemGrey,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
-                          if (widget.newVocabulary) ...[
+                        ),
+                        const SizedBox(height: 8),
+                        CupertinoTextField(
+                          controller: _frontController,
+                          placeholder: 'Wort / Vorderseite',
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          textInputAction: TextInputAction.next,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Back (meaning)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Back',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: CupertinoColors.systemGrey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        CupertinoTextField(
+                          controller: _backController,
+                          placeholder: 'Bedeutung / Rückseite',
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          textInputAction: TextInputAction.next,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        // Description / Example
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Beschreibung / Beispiel',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: CupertinoColors.systemGrey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        CupertinoTextField(
+                          controller: _descriptionController,
+                          placeholder: 'Optionales Beispiel oder Beschreibung',
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 12,
+                          ),
+                          maxLines: 4,
+                          textInputAction: TextInputAction.newline,
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'Audioaufnahme',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: CupertinoColors.systemGrey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              borderRadius: BorderRadius.circular(30),
+                              color: _recording
+                                  ? CupertinoColors.systemRed
+                                  : CupertinoColors.activeBlue,
+                              onPressed: _recordAudio,
+                              child: SizedBox(
+                                width: 48,
+                                height: 48,
+                                child: Center(
+                                  child: Icon(
+                                    CupertinoIcons.mic_fill,
+                                    color: CupertinoColors.white,
+                                    size: 22,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            const Spacer(),
+
+                            Text(
+                              _formatDuration(_recordDuration),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: CupertinoColors.systemGrey,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
                             const SizedBox(width: 12),
-                            Expanded(
-                              child: CupertinoButton.filled(
-                                onPressed: _isSaving
-                                    ? null
-                                    : _saveAndNextPressed,
-                                color: CupertinoColors.systemGreen,
-                                child: _isSaving
-                                    ? const CupertinoActivityIndicator()
-                                    : Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: const [
-                                          Icon(
-                                            CupertinoIcons.arrow_right_to_line,
-                                            size: 20.0,
-                                          ),
-                                          SizedBox(width: 8.0),
-                                          Flexible(child: Text('Nächste')),
-                                        ],
-                                      ),
+
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              borderRadius: BorderRadius.circular(30),
+                              color: _hasRecording
+                                  ? CupertinoColors.systemGrey2
+                                  : CupertinoColors.quaternarySystemFill,
+                              onPressed: _hasRecording ? _playAudio : null,
+                              child: SizedBox(
+                                width: 44,
+                                height: 44,
+                                child: Center(
+                                  child: Icon(
+                                    CupertinoIcons.play_fill,
+                                    color: _hasRecording
+                                        ? CupertinoColors.black
+                                        : CupertinoColors.systemGrey,
+                                    size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(width: 8),
+
+                            CupertinoButton(
+                              padding: EdgeInsets.zero,
+                              borderRadius: BorderRadius.circular(30),
+                              color: _hasRecording
+                                  ? CupertinoColors.destructiveRed
+                                  : CupertinoColors.quaternarySystemFill,
+                              onPressed: _hasRecording ? _deleteAudio : null,
+                              child: SizedBox(
+                                width: 44,
+                                height: 44,
+                                child: Center(
+                                  child: Icon(
+                                    CupertinoIcons.delete,
+                                    color: _hasRecording
+                                        ? CupertinoColors.white
+                                        : CupertinoColors.systemGrey,
+                                    size: 20,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
-                        ],
-                      ),
+                        ),
+
+                        // Add some spacing so the scroll content doesn't hide behind buttons
+                        const SizedBox(height: 88),
+                      ],
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 8.0,
+                  left: 16.0,
+                  right: 16.0,
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: CupertinoButton.filled(
+                        onPressed: _isSaving ? null : _savePressed,
+                        color: CupertinoColors.inactiveGray,
+                        child: _isSaving
+                            ? const CupertinoActivityIndicator()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: const [
+                                  Icon(CupertinoIcons.check_mark, size: 20.0),
+                                  SizedBox(width: 8.0),
+                                  Flexible(child: Text('Speichern')),
+                                ],
+                              ),
+                      ),
+                    ),
+                    if (widget.newVocabulary) ...[
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: CupertinoButton.filled(
+                          onPressed: _isSaving ? null : _saveAndNextPressed,
+                          color: CupertinoColors.systemGreen,
+                          child: _isSaving
+                              ? const CupertinoActivityIndicator()
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Icon(
+                                      CupertinoIcons.arrow_right_to_line,
+                                      size: 20.0,
+                                    ),
+                                    SizedBox(width: 8.0),
+                                    Flexible(child: Text('Nächste')),
+                                  ],
+                                ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),
