@@ -38,36 +38,34 @@ class HomeViewWidget extends State<HomeView> {
         ),
       ),
       child: SafeArea(
-        child: Expanded(
-          child: ValueListenableBuilder(
-            valueListenable: _boxController.listenable,
-            builder: (context, Box<VocabularyBox> box, _) {
-              final keys = box.keys.cast<dynamic>().toList();
+        child: ValueListenableBuilder(
+          valueListenable: _boxController.listenable,
+          builder: (context, Box<VocabularyBox> box, _) {
+            final keys = box.keys.cast<dynamic>().toList();
 
-              if (keys.isEmpty) {
-                return const Center(child: Text('Keine Boxen vorhanden.'));
-              }
+            if (keys.isEmpty) {
+              return const Center(child: Text('Keine Boxen vorhanden.'));
+            }
 
-              return ListView.builder(
-                itemCount: keys.length,
-                itemBuilder: (context, index) {
-                  final b = box.get(keys[index]) as VocabularyBox;
-                  return BoxTile(
-                    box: b,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                          builder: (context) =>
-                              BoxDetailPage(box: b, boxKey: keys[index]),
-                        ),
-                      );
-                    },
-                  );
-                },
-              );
-            },
-          ),
+            return ListView.builder(
+              itemCount: keys.length,
+              itemBuilder: (context, index) {
+                final b = box.get(keys[index]) as VocabularyBox;
+                return BoxTile(
+                  box: b,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      CupertinoPageRoute(
+                        builder: (context) =>
+                            BoxDetailPage(box: b, boxKey: keys[index]),
+                      ),
+                    );
+                  },
+                );
+              },
+            );
+          },
         ),
       ),
     );
