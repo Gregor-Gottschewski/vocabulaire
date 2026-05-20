@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fsrs/fsrs.dart' hide State;
+import 'package:fsrs/fsrs.dart' as fsrs;
+import 'package:intl/intl.dart';
 import 'package:record/record.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 
@@ -54,7 +55,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           word: '',
           meaning: '',
           example: '',
-          cardData: Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap(),
+          cardData: fsrs.Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap(),
         );
 
     _frontController.text = _vocab.word;
@@ -187,7 +188,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   Future<void> _saveAndNextPressed() async {
     final saved = await _save();
     if (!saved) return;
-    final newCard = Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap();
+    final newCard = fsrs.Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap();
     _vocab = Vocabulary(word: '', meaning: '', example: '', cardData: newCard);
     _frontController.clear();
     _backController.clear();
@@ -444,8 +445,12 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                 height: 44,
                                 child: Center(
                                   child: Icon(
-                                    _isPlaying ? CupertinoIcons.stop_fill : CupertinoIcons.play_fill,
-                                    color: _hasRecording ? CupertinoColors.systemBlue : CupertinoColors.systemGrey,
+                                    _isPlaying
+                                        ? CupertinoIcons.stop_fill
+                                        : CupertinoIcons.play_fill,
+                                    color: _hasRecording
+                                        ? CupertinoColors.systemBlue
+                                        : CupertinoColors.systemGrey,
                                     size: 20,
                                   ),
                                 ),
@@ -464,7 +469,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                 child: Center(
                                   child: Icon(
                                     CupertinoIcons.delete,
-                                    color: _hasRecording ? CupertinoColors.systemRed : CupertinoColors.systemGrey,
+                                    color: _hasRecording
+                                        ? CupertinoColors.systemRed
+                                        : CupertinoColors.systemGrey,
                                     size: 20,
                                   ),
                                 ),
@@ -473,7 +480,27 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           ],
                         ),
 
-                        // Add some spacing so the scroll content doesn't hide behind buttons
+                        if (!widget.newVocabulary) ...[
+                          const SizedBox(height: 12),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'Statistiken',
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: CupertinoColors.systemGrey,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text("Nächste Abfrage: ${_vocab.card.due.isAfter(DateTime.now()) ? DateFormat.yMd(Localizations.localeOf(context).toString()).add_Hm().format(_vocab.card.due.toLocal()) : 'überfällig'}"),
+                          if (_vocab.card.difficulty != null)
+                            Text("Komplexität: ${_vocab.card.difficulty!.toStringAsFixed(2)} von 10"),
+                          if (_vocab.card.stability != null)
+                            Text("Stabilität: ${(_vocab.card.stability! / 10).toStringAsFixed(2)} von 10"),
+                        ],
+
                         const SizedBox(height: 88),
                       ],
                     ),
