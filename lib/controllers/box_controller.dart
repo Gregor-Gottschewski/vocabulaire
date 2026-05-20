@@ -21,7 +21,7 @@ class BoxController {
   /// Adds a new box to the collection.
   /// Throws an exception if a box with the same name already exists.
   void addBox(VocabularyBox box) {
-    if (getBox(box.name) != null) {
+    if (boxes.any((b) => b.name == box.name)) {
       throw Exception('Box with name ${box.name} already exists');
     }
     _box.add(box);
@@ -48,10 +48,7 @@ class BoxController {
 
   /// Returns a ValueNotifier that listens for changes to all entries in the box.
   ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> listenableForAll() {
-    return _BoxKeysValueNotifier(
-      () => entries,
-      _box.listenable(),
-    );
+    return _BoxKeysValueNotifier(() => entries, _box.listenable());
   }
 
   /// Helper method to retrieve the entries for the specified keys.
