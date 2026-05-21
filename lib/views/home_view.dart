@@ -5,6 +5,7 @@ import 'package:vocabulaire/views/box_tile.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary_box.dart';
+import 'add_box_sheet.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -16,16 +17,6 @@ class HomeView extends StatefulWidget {
 class HomeViewWidget extends State<HomeView> {
   final BoxController _boxController = BoxController();
 
-  void _addNewBox() {
-    var box = VocabularyBox(
-      name: 'Neue Box ${DateTime.now().millisecondsSinceEpoch}',
-      description: 'Beschreibung der neuen Box',
-      vocabularies: [],
-    );
-
-    _boxController.addBox(box);
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -33,7 +24,12 @@ class HomeViewWidget extends State<HomeView> {
         middle: Text('Boxen'),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: _addNewBox,
+          onPressed: () {
+            showCupertinoModalPopup(
+              context: context,
+              builder: (context) => AddBoxSheet(boxController: _boxController),
+            );
+          },
           child: const Icon(CupertinoIcons.add),
         ),
       ),
