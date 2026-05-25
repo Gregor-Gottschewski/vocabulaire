@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:fsrs/fsrs.dart' as fsrs;
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
 import 'package:vocabulaire/services/app_paths.dart';
@@ -51,12 +50,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     super.initState();
     _vocab =
         widget.vocabulary ??
-        Vocabulary(
-          word: '',
-          meaning: '',
-          example: '',
-          cardData: fsrs.Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap(),
-        );
+        _controller.createVocabulary();
 
     _frontController.text = _vocab.word;
     _backController.text = _vocab.meaning;
@@ -188,8 +182,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   Future<void> _saveAndNextPressed() async {
     final saved = await _save();
     if (!saved) return;
-    final newCard = fsrs.Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap();
-    _vocab = Vocabulary(word: '', meaning: '', example: '', cardData: newCard);
+    _vocab = _controller.createVocabulary();
     _frontController.clear();
     _backController.clear();
     _descriptionController.clear();

@@ -1,6 +1,5 @@
 import 'package:fsrs/fsrs.dart';
 import 'package:hive/hive.dart';
-import 'package:uuid/uuid.dart';
 
 part 'vocabulary.g.dart';
 
@@ -30,8 +29,8 @@ class Vocabulary {
     required this.meaning,
     required this.example,
     required this.cardData,
-    String? id,
-  }) : id = id ?? const Uuid().v4();
+    required this.id,
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -50,6 +49,22 @@ class Vocabulary {
       example: map['example'] as String,
       cardData: Map<String, dynamic>.from(map['cardData'] as Map),
       id: map['id'] as String,
+    );
+  }
+
+  Vocabulary copyWith({
+    String? word,
+    String? meaning,
+    String? example,
+    Map<String, dynamic>? cardData,
+    String? id,
+  }) {
+    return Vocabulary(
+      word: word ?? this.word,
+      meaning: meaning ?? this.meaning,
+      example: example ?? this.example,
+      cardData: cardData ?? this.cardData,
+      id: id ?? this.id,
     );
   }
 }

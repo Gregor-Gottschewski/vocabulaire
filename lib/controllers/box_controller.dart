@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:fsrs/fsrs.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary.dart';
@@ -18,8 +20,19 @@ class BoxController {
 
   VocabularyBox? getBox(dynamic key) => _box.get(key);
 
+  /// Assumption: Vocabulary boxes does not contain boxes without IDs!
+  /// This is controlled by [addVocabularyToBox].
+  Set<String?> get vocabularyIDs =>
+      getAllVocabularies().map((v) => v.id).toSet();
+
+  /// Returns all vocabularies across all boxes.
+  List<Vocabulary> getAllVocabularies() {
+    return boxes.expand((box) => box.vocabularies).toList();
+  }
+
   /// Adds a new box to the collection.
   /// Throws an exception if a box with the same name already exists.
+  /// This method does not check for duplicate IDs in the vocabularies.
   void addBox(VocabularyBox box) {
     if (boxes.any((b) => b.name == box.name)) {
       throw Exception('Box with name ${box.name} already exists');
@@ -66,10 +79,14 @@ class BoxController {
   void addVocabularyToBox(dynamic key, Vocabulary vocabulary) {
     final box = _box.get(key);
     if (box == null) throw Exception('Box with key $key not found');
+    final safeVocabulary = vocabulary.copyWith(
+      id: generateUniqueId(vocabularyIDs),
+    );
     final updated = VocabularyBox(
       name: box.name,
       description: box.description,
-      vocabularies: List<Vocabulary>.from(box.vocabularies)..add(vocabulary),
+      vocabularies: List<Vocabulary>.from(box.vocabularies)
+        ..add(safeVocabulary),
     );
     _box.put(key, updated);
   }
@@ -111,6 +128,32 @@ class BoxController {
       vocabularies: full,
     );
     _box.put(key, updated);
+  }
+
+  /// Creates vocabulary with unique id.
+  /// See [generateUniqueId] for information about ID generation.
+  Vocabulary createVocabulary() {
+    return Vocabulary(
+      word: "",
+      meaning: "",
+      example: "",
+      cardData: Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap(),
+      id: generateUniqueId(vocabularyIDs),
+    );
+  }
+
+  /// This generates a unique V4 UUID.
+  /// Runtime of this method is not constant due to the while-loop.
+  /// However, it is extremely unlikely that this loops runs.
+  /// So we life with this risk.
+  ///
+  /// [existingIds] the blocked IDs that should not be used.
+  String generateUniqueId(Set<String?> existingIds) {
+    String id;
+    do {
+      id = Uuid().v4();
+    } while (existingIds.contains(id));
+    return id;
   }
 }
 

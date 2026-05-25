@@ -21,7 +21,7 @@ class VocabularyAdapter extends TypeAdapter<Vocabulary> {
       meaning: fields[1] as String,
       example: fields[2] as String,
       cardData: (fields[3] as Map).cast<String, dynamic>(),
-      id: fields[4] as String?,
+      id: fields[4] as String,
     );
   }
 
