@@ -68,5 +68,40 @@
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
     <string>Die App benötigt Zugriff auf das Mikrofon, um Vokabeln aufzunehmen und deine Aussprache zu üben.</string>
+    <key>UTImportedTypeDeclarations</key>
+    <array>
+        <dict>
+            <key>UTTypeIdentifier</key>
+            <string>com.vocabulaire.vocab</string>
+            <key>UTTypeDescription</key>
+            <string>Vocabulaire Box</string>
+            <key>UTTypeConformsTo</key>
+            <array>
+                <string>public.zip-archive</string>
+            </array>
+            <key>UTTypeTagSpecification</key>
+            <dict>
+                <key>public.filename-extension</key>
+                <array>
+                    <string>vocab</string>
+                </array>
+            </dict>
+        </dict>
+    </array>
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>Vocabulaire Box</string>
+            <key>CFBundleTypeRole</key>
+            <string>Viewer</string>
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.vocabulaire.vocab</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
