@@ -18,7 +18,7 @@ class _SettingsViewState extends State<SettingsView> {
   final BoxController _boxController = BoxController();
 
   bool _cardAnimations = true;
-  bool _loading = true;
+  bool _importing = false;
 
   @override
   void initState() {
@@ -30,7 +30,6 @@ class _SettingsViewState extends State<SettingsView> {
   Future<void> _initSettings() async {
     setState(() {
       _cardAnimations = _controller.getCardAnimations();
-      _loading = false;
     });
   }
 
@@ -43,11 +42,16 @@ class _SettingsViewState extends State<SettingsView> {
   /// Handle box import action.
   /// Opens a file picker, imports the selected box, and adds it to the app.
   void _onImportPressed() async {
+    if (_importing) return;
+    setState(() {
+      _importing = true;
+    });
+
     try {
       final result = await FilePicker.pickFiles(
         dialogTitle: "Box Importieren",
         type: FileType.custom,
-        allowedExtensions: ['json'],
+        allowedExtensions: ['vocab'],
         withData: false,
       );
 
@@ -92,15 +96,15 @@ class _SettingsViewState extends State<SettingsView> {
           ],
         ),
       );
+    } finally {
+      setState(() {
+        _importing = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_loading) {
-      return const Center(child: CupertinoActivityIndicator());
-    }
-
     return CupertinoPageScaffold(
       navigationBar: const CupertinoNavigationBar(
         middle: Text('Einstellungen'),
@@ -125,7 +129,7 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             const SizedBox(height: 16),
             CupertinoButton.tinted(
-              onPressed: _onImportPressed,
+              onPressed: _importing ? null : _onImportPressed,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: const [

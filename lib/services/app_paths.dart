@@ -5,11 +5,13 @@ import 'package:path_provider/path_provider.dart';
 class AppPaths {
   static late final Directory _applicationDocumentsBaseDir;
   static late final Directory _applicationSupportBaseDir;
+  static late final Directory _applicationTempBaseDir;
   static late final String audioDirPath;
 
   static Future<void> init() async {
     _applicationDocumentsBaseDir = await getApplicationDocumentsDirectory();
     _applicationSupportBaseDir = await getApplicationSupportDirectory();
+    _applicationTempBaseDir = await getTemporaryDirectory();
     audioDirPath = p.join(_applicationDocumentsBaseDir.path, 'audio');
     final dir = Directory(audioDirPath);
     if (!await dir.exists()) {
@@ -22,4 +24,6 @@ class AppPaths {
   }
 
   static File audioFile(String cardId) => File(audioFilePath(cardId));
+
+  static Directory applicationExtractDirectory() => Directory(p.join(_applicationTempBaseDir.path, 'extracted'));
 }
