@@ -1,11 +1,11 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
+import 'package:vocabulaire/controllers/export_controller.dart';
+import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary_box.dart';
 import 'box_detail_view.dart';
 
@@ -63,32 +63,28 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     });
   }
 
-  Future<void> _exportBoxAsJson() async {
+  Future<void> _exportBox() async {
     final box = _box;
     if (box == null) return;
 
     try {
-      final jsonString = JsonEncoder().convert(box.toMap());
+      final exportDir = AppPaths.applicationExportBaseDirectory;
+      if (exportDir.existsSync()) exportDir.delete(recursive: true);
+    } on FileSystemException catch (e) {
+      debugPrint(e.message);
+      throw Exception("Cannot empty export cache");
+    }
 
-      final tempDir = Platform.isMacOS
-          ? await getApplicationSupportDirectory()
-          : await getTemporaryDirectory();
-
-      final file = File(
-        '${tempDir.path}/export-${DateTime.now().millisecondsSinceEpoch}.json',
-      );
-
-      await file.writeAsString(jsonString, encoding: utf8);
+    try {
+      final zipFile = await ExportController.exportBox(box);
 
       await SharePlus.instance.share(
         ShareParams(
-          title: 'Export $box.name}',
-          files: [XFile(file.path)],
-          fileNameOverrides: ['${box.name}.json'],
+          title: 'Export ${box.nameSanitized()}',
+          files: [XFile(zipFile.path)],
+          fileNameOverrides: ['${box.nameSanitized()}.vocab'],
         ),
       );
-
-      //await file.delete();
     } catch (e) {
       await showCupertinoDialog(
         context: context,
@@ -203,7 +199,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
                 const SizedBox(width: 5),
                 CupertinoButton(
                   padding: EdgeInsets.zero,
-                  onPressed: _exportBoxAsJson,
+                  onPressed: _exportBox,
                   child: Icon(CupertinoIcons.share),
                 ),
                 const SizedBox(width: 5),

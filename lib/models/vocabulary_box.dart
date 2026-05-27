@@ -14,6 +14,13 @@ class VocabularyBox {
   @HiveField(2)
   final List<Vocabulary> vocabularies;
 
+  /// Sanitization to prevent path traversal.
+  /// Returns sanitized import or 'export' if sanitized import is empty.
+  String nameSanitized() {
+    String sanitized = name.replaceAll(RegExp(r'[/\\:*?"<>|]'), '_');
+    return sanitized.isEmpty ? "export" : sanitized;
+  }
+
   VocabularyBox({
     required this.name,
     required this.description,

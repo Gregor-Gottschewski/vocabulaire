@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:uuid/uuid.dart';
 
 class AppPaths {
   static late final Directory _applicationDocumentsBaseDir;
@@ -17,6 +18,10 @@ class AppPaths {
     if (!await dir.exists()) {
       await dir.create(recursive: true);
     }
+    final exportDir = applicationExportBaseDirectory;
+    if (!await exportDir.exists()) {
+      await exportDir.create(recursive: true);
+    }
   }
 
   static String audioFilePath(String cardId) {
@@ -25,5 +30,12 @@ class AppPaths {
 
   static File audioFile(String cardId) => File(audioFilePath(cardId));
 
-  static Directory applicationExtractDirectory() => Directory(p.join(_applicationTempBaseDir.path, 'extracted'));
+  static Directory applicationExtractDirectory() =>
+      Directory(p.join(_applicationTempBaseDir.path, 'extracted'));
+
+  static Directory get applicationExportBaseDirectory =>
+      Directory(p.join(_applicationSupportBaseDir.path, "export"));
+
+  static Future<Directory> createBoxExportDirectory() async =>
+      Directory(p.join(applicationExportBaseDirectory.path, Uuid().v4())).create(recursive: true);
 }
