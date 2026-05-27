@@ -103,11 +103,18 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                   ),
                   const SizedBox(height: 8),
                   CupertinoSegmentedControl<LearningMethod>(
+                    unselectedColor: CupertinoDynamicColor.resolve(
+                      CupertinoColors.systemBackground,
+                      context,
+                    ),
                     groupValue: _selectedOption,
                     children: {
                       for (final method in LearningMethod.values)
                         method: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 5.0,
+                          ),
                           child: Text(method.displayName),
                         ),
                     },
@@ -168,12 +175,11 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                           onPressed: () {
                             Navigator.of(context).push(
                               CupertinoPageRoute(
-                                builder: (_) =>
-                                    ReviewView(
-                                      boxKey: widget.boxKey,
-                                      onlyTimely: _onlyTimely,
-                                      learningMethod: _selectedOption,
-                                    ),
+                                builder: (_) => ReviewView(
+                                  boxKey: widget.boxKey,
+                                  onlyTimely: _onlyTimely,
+                                  learningMethod: _selectedOption,
+                                ),
                               ),
                             );
                           },

@@ -94,9 +94,17 @@ class _ReviewViewState extends State<ReviewView> {
           height: 260,
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: CupertinoColors.systemBackground,
+            color: CupertinoDynamicColor.resolve(
+              CupertinoColors.systemBackground,
+              context,
+            ),
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: CupertinoColors.systemGrey4),
+            border: Border.all(
+              color: CupertinoDynamicColor.resolve(
+                CupertinoColors.systemGrey4,
+                context,
+              ),
+            ),
             boxShadow: const [
               BoxShadow(
                 color: Colors.black12,

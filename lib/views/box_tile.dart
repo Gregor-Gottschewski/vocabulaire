@@ -17,7 +17,10 @@ class BoxTile extends StatelessWidget {
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(
-            color: CupertinoColors.systemGrey6,
+            color: CupertinoDynamicColor.resolve(
+              CupertinoColors.tertiarySystemBackground,
+              context,
+            ),
             borderRadius: BorderRadius.circular(12.0),
             boxShadow: [
               BoxShadow(
@@ -34,18 +37,24 @@ class BoxTile extends StatelessWidget {
             children: [
               Text(
                 box.name,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,
-                  color: CupertinoColors.black,
+                  color: CupertinoDynamicColor.resolve(
+                    CupertinoColors.label,
+                    context,
+                  ),
                 ),
               ),
               const SizedBox(height: 8.0),
               Text(
                 box.description,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14.0,
-                  color: CupertinoColors.systemGrey,
+                  color: CupertinoDynamicColor.resolve(
+                    CupertinoColors.systemGrey,
+                    context,
+                  ),
                 ),
                 maxLines: 2,
                 overflow: TextOverflow.visible,

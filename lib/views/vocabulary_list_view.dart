@@ -138,10 +138,13 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                                     maxLines: 1,
                                     softWrap: false,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
-                                      color: CupertinoColors.label,
+                                      color: CupertinoDynamicColor.resolve(
+                                        CupertinoColors.label,
+                                        context,
+                                      ),
                                     ),
                                   ),
                                   const SizedBox(height: 4),
