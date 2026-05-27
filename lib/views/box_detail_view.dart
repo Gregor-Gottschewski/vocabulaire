@@ -60,20 +60,22 @@ class _BoxDetailWidget extends State<BoxDetailView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              "Beschreibung",
-              style: TextStyle(
-                fontSize: 12,
-                color: CupertinoColors.systemGrey,
-                fontWeight: FontWeight.w500,
+            if (widget.box.description.isNotEmpty) ...[
+              Text(
+                "Beschreibung",
+                style: TextStyle(
+                  fontSize: 12,
+                  color: CupertinoColors.systemGrey,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 8),
+              const SizedBox(height: 8),
 
-            Text(widget.box.description, style: const TextStyle(fontSize: 16)),
+              Text(widget.box.description, style: const TextStyle(fontSize: 16)),
 
-            const SizedBox(height: 16),
+              const SizedBox(height: 16),
+            ],
 
             Text(
               "Optionen",
