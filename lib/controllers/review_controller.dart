@@ -108,12 +108,8 @@ class ReviewController extends ChangeNotifier {
     final vocabulary = _cards[_index];
     final reviewResult = _scheduler.reviewCard(vocabulary.card, rating).card;
 
-    final updatedVocab = Vocabulary(
-      word: vocabulary.word,
-      meaning: vocabulary.meaning,
-      example: vocabulary.example,
+    final updatedVocab = vocabulary.copyWith(
       cardData: reviewResult.toMap(),
-      id: vocabulary.id,
     );
 
     _cards[_index] = updatedVocab;
