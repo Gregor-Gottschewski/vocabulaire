@@ -56,6 +56,7 @@ dev_dependencies:
   flutter_lints: ^6.0.0
   build_runner: ^2.4.13
   hive_generator: ^2.0.1
+  icons_launcher: ^3.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -98,3 +99,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+icons_launcher:
+  image_path: "assets/icon/icon.png"
+  platforms:
+    ios:
+      enable: true
+      image_path: "assets/icon/icon.png"
+      dark_path: "assets/icon/ios_dark_mode.png"
+      tinted_path: "assets/icon/ios_dark_mode.png"
+    macos:
+      enable: true
+      image_path: "assets/icon/icon.png"
