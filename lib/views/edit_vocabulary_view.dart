@@ -48,9 +48,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   @override
   void initState() {
     super.initState();
-    _vocab =
-        widget.vocabulary ??
-        _controller.createVocabulary();
+    _vocab = widget.vocabulary ?? _controller.createVocabulary();
 
     _frontController.text = _vocab.word;
     _backController.text = _vocab.meaning;
@@ -101,6 +99,17 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     super.dispose();
   }
 
+  /// Saves the current flash card. Saving process includes:
+  ///   1. Cancel process if missing required fields not set
+  ///   2. If no new vocabulary: overwrite existing values -> process finished
+  ///   3. If new vocabulary
+  ///     3.1. If flash card (front site) already exists: show error message
+  ///           (user can save anyways)
+  ///     3.2. If flash card is new: save new vocabulary
+  ///
+  /// Returns true if process can be marked as successful (logically).
+  /// Note: The process is marked as successful if vocabulary front site
+  /// already exists and is therefore dismissed.
   Future<bool> _save() async {
     final front = _frontController.text.trim();
     final back = _backController.text.trim();
@@ -155,6 +164,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           ),
         );
 
+        // this line looks confusing, however it handles shouldAdd == false
+        // that can happen if user closes pop-up without pressing a defined option
         if (shouldAdd != true) {
           if (mounted) setState(() => _isSaving = false);
           return false;
@@ -173,9 +184,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   }
 
   Future<void> _savePressed() async {
-    await _save();
-    if (mounted) {
-      Navigator.of(context).pop();
+    if (await _save()) {
+      if (mounted) {
+        Navigator.of(context).pop();
+      }
     }
   }
 
@@ -487,11 +499,17 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text("Nächste Abfrage: ${_vocab.card.due.isAfter(DateTime.now()) ? DateFormat.yMd(Localizations.localeOf(context).toString()).add_Hm().format(_vocab.card.due.toLocal()) : 'überfällig'}"),
+                          Text(
+                            "Nächste Abfrage: ${_vocab.card.due.isAfter(DateTime.now()) ? DateFormat.yMd(Localizations.localeOf(context).toString()).add_Hm().format(_vocab.card.due.toLocal()) : 'überfällig'}",
+                          ),
                           if (_vocab.card.difficulty != null)
-                            Text("Komplexität: ${_vocab.card.difficulty!.toStringAsFixed(2)} von 10"),
+                            Text(
+                              "Komplexität: ${_vocab.card.difficulty!.toStringAsFixed(2)} von 10",
+                            ),
                           if (_vocab.card.stability != null)
-                            Text("Stabilität: ${(_vocab.card.stability! / 10).toStringAsFixed(2)} von 10"),
+                            Text(
+                              "Stabilität: ${(_vocab.card.stability! / 10).toStringAsFixed(2)} von 10",
+                            ),
                         ],
 
                         const SizedBox(height: 88),
