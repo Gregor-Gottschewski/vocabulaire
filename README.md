@@ -1,3 +1,24 @@
+# Rainbow UI Vision
+
+We are working on a new UI that is more gameified, more colorful and easier to use.
+This will take some time.
+
+This branch shows possible solutions, different styles and mixes everything a bit up.
+It is more a showcase of possible ways than production ready solutions.
+
+The code might be messy and will not reach production status anytime!
+
+> We will start *Rainbow UI Pilot* as soon as this project is completed and we really know what we want :)
+
+> [!CAUTION]
+> This branch will be deleted as soon as production ready UI is ready.
+
+
+---
+
+> [!NOTE]
+> Please refer to the `main`-branch README for more information about this project.
+
 # Vocabulaire
 
 > Learning flashcards fast and efficient.
