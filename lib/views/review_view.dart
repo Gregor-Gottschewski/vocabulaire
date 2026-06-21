@@ -5,7 +5,6 @@ import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
 import 'package:vocabulaire/models/review_session.dart';
 import 'package:vocabulaire/services/app_paths.dart';
-import 'package:vocabulaire/views/review_finished.dart';
 
 class ReviewView extends StatefulWidget {
   final dynamic boxKey;
@@ -50,14 +49,7 @@ class _ReviewViewState extends State<ReviewView> {
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
-        Navigator.of(context).pushReplacement(
-          CupertinoPageRoute(
-            builder: (_) => ReviewFinishedView(
-              box: reviewController.box!,
-              boxKey: widget.boxKey,
-            ),
-          ),
-        );
+        Navigator.of(context).pop();
       });
       return;
     }
