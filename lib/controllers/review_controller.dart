@@ -18,6 +18,8 @@ class ReviewController extends ChangeNotifier {
   List<Vocabulary> _cards = [];
   int _index = 0;
 
+  late final ValueListenable _boxListenable;
+
   /// Initializes the review controller with the specified box key and filters.
   /// - [boxKey]: The key of the vocabulary box to review.
   /// - [onlyTimely]: If true, only include cards that are due for review (due date <= now).
@@ -44,6 +46,15 @@ class ReviewController extends ChangeNotifier {
   void load() {
     _cards = buildCardList();
     _index = 0;
+    _boxListenable = _boxController.listenableForKeys([boxKey]);
+    _boxListenable.addListener(_onBoxChanged);
+    notifyListeners();
+  }
+
+  /// Remove vocabularies from current review session that are deleted.
+  void _onBoxChanged() {
+    _cards.removeWhere((v) => !_boxController.vocabularyIDs.contains(v.id));
+    if (_index >= _cards.length) _index = _cards.length;
     notifyListeners();
   }
 
@@ -106,11 +117,15 @@ class ReviewController extends ChangeNotifier {
     if (_index >= _cards.length) return false;
 
     final vocabulary = _cards[_index];
+
+    if (!_boxController.vocabularyIDs.contains(vocabulary.id)) {
+      skip();
+      return true;
+    }
+
     final reviewResult = _scheduler.reviewCard(vocabulary.card, rating).card;
 
-    final updatedVocab = vocabulary.copyWith(
-      cardData: reviewResult.toMap(),
-    );
+    final updatedVocab = vocabulary.copyWith(cardData: reviewResult.toMap());
 
     _cards[_index] = updatedVocab;
 
@@ -118,7 +133,7 @@ class ReviewController extends ChangeNotifier {
       _boxController.updateVocabularyInBox(boxKey, updatedVocab);
     }
 
-    _index += 1;
+    _index++;
     notifyListeners();
     return true;
   }
