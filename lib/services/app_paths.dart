@@ -30,7 +30,7 @@ class AppPaths {
 
   static File audioFile(String cardId) => File(audioFilePath(cardId));
 
-  static Directory applicationExtractDirectory() =>
+  static Directory get applicationExtractDirectory =>
       Directory(p.join(_applicationTempBaseDir.path, 'extracted'));
 
   static Directory get applicationExportBaseDirectory =>

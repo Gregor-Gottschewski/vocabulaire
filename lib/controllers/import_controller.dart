@@ -75,8 +75,8 @@ class ImportController {
   /// Returns [Directory] with extracted vocabulary box.
   static Future<Directory> _extractZip(final String path) async {
     final extractDir = Directory(
-      join(AppPaths.applicationExtractDirectory().path, Uuid().v4()),
-    );
+      join(AppPaths.applicationExtractDirectory.path, Uuid().v4()),
+    )..create(recursive: true);
 
     await ZipFile.extractToDirectory(
       zipFile: File(path),

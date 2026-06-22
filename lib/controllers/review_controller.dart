@@ -42,6 +42,12 @@ class ReviewController extends ChangeNotifier {
 
   bool get isFinished => _index >= _cards.length;
 
+  @override
+  void dispose() {
+    _boxListenable.removeListener(_onBoxChanged);
+    super.dispose();
+  }
+
   /// Loads the vocabulary box and applies the specified filters to prepare the review session.
   void load() {
     _cards = buildCardList();
@@ -99,7 +105,7 @@ class ReviewController extends ChangeNotifier {
       case LearningMethod.onlyNew:
         return list.where((v) {
           final card = Card.fromMap(v.cardData);
-          return card.step != null;
+          return card.lastReview == null;
         }).toList();
       case LearningMethod.onlyUnstable:
         return list.where((v) {

@@ -39,6 +39,14 @@ class _ReviewViewState extends State<ReviewView> {
     reviewController.load();
   }
 
+  @override
+  void dispose() {
+    reviewController.removeListener(_onControllerUpdate);
+    reviewController.dispose();
+    player.dispose();
+    super.dispose();
+  }
+
   void _onControllerUpdate() {
     if (reviewController.box == null) {
       Navigator.of(context).pop();
@@ -54,6 +62,7 @@ class _ReviewViewState extends State<ReviewView> {
       return;
     }
 
+    if (!mounted) return;
     setState(() {});
   }
 
