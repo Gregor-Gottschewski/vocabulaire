@@ -508,7 +508,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             ),
                           if (_vocab.card.stability != null)
                             Text(
-                              "Stabilität: ${(_vocab.card.stability! / 10).toStringAsFixed(2)} von 10",
+                              "Stabilität: ${(_vocab.card.stability!).toStringAsFixed(2)}",
                             ),
                         ],
 
