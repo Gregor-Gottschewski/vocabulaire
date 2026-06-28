@@ -1,0 +1,122 @@
+{
+  "@@locale": "fr",
+
+  "tabBoxen": "Boîtes",
+  "tabVokabeln": "Vocabulaire",
+  "tabEinstellungen": "Paramètres",
+
+  "homeEmpty": "Aucune boîte disponible.",
+
+  "settingsTitle": "Paramètres",
+  "settingsImportBox": "Importer une boîte",
+  "settingsImportSuccess": "Importation réussie",
+  "settingsImportSuccessMessage": "La boîte \"{name}\" a été importée.",
+  "@settingsImportSuccessMessage": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "settingsImportError": "Échec de l'importation : {error}",
+  "@settingsImportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "settingsCardAnimations": "Animations de cartes",
+
+  "addBoxTitle": "Créer une nouvelle boîte",
+  "addBoxNameLabel": "Nom de la boîte",
+  "addBoxDescriptionLabel": "Description (optionnel)",
+  "addBoxButton": "Ajouter",
+  "addBoxNameEmpty": "Le nom ne peut pas être vide.",
+
+  "editVocabNew": "Nouveau vocabulaire",
+  "editVocabEdit": "Modifier le vocabulaire",
+  "editVocabFront": "Recto",
+  "editVocabFrontHint": "Mot / Recto",
+  "editVocabBack": "Verso",
+  "editVocabBackHint": "Signification / Verso",
+  "editVocabDescriptionLabel": "Description / Exemple",
+  "editVocabDescriptionHint": "Exemple ou description optionnel",
+  "editVocabAudio": "Enregistrement audio",
+  "editVocabNoPermission": "Pas d'autorisation",
+  "editVocabMicPermission": "L'application a besoin d'accéder au microphone pour permettre les enregistrements audio. Veuillez accorder l'autorisation dans les paramètres.",
+  "editVocabMissingInput": "Saisie manquante",
+  "editVocabMissingInputMessage": "Veuillez remplir le recto et le verso.",
+  "editVocabExists": "Le vocabulaire existe déjà",
+  "editVocabExistsMessage": "Ce vocabulaire existe déjà dans cette boîte. Voulez-vous quand même l'ajouter ?",
+  "editVocabAddAnyway": "Ajouter quand même",
+  "editVocabSave": "Enregistrer",
+  "editVocabNext": "Suivant",
+  "editVocabStats": "Statistiques",
+  "editVocabDue": "Prochaine révision : {dueDate}",
+  "@editVocabDue": {
+    "placeholders": {
+      "dueDate": { "type": "String" }
+    }
+  },
+  "editVocabOverdue": "en retard",
+  "editVocabDifficulty": "Complexité : {difficulty} sur 10",
+  "@editVocabDifficulty": {
+    "placeholders": {
+      "difficulty": { "type": "String" }
+    }
+  },
+  "editVocabStability": "Stabilité : {stability}",
+  "@editVocabStability": {
+    "placeholders": {
+      "stability": { "type": "String" }
+    }
+  },
+
+  "reviewTitle": "Étudier",
+  "reviewBack": "Retour",
+  "reviewCard": "Carte {index} / {total}",
+  "@reviewCard": {
+    "placeholders": {
+      "index": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "reviewPlay": "Lire",
+  "reviewAgain": "Encore",
+  "reviewHard": "Difficile",
+  "reviewGood": "Bien",
+  "reviewEasy": "Facile",
+  "reviewSkip": "Passer",
+  "reviewExample": "Exemple : {example}",
+  "@reviewExample": {
+    "placeholders": {
+      "example": { "type": "String" }
+    }
+  },
+
+  "boxDetailDescription": "Description",
+  "boxDetailOptions": "Options",
+  "boxDetailDueVocabs": "Vocabulaires à réviser",
+  "boxDetailMethod": "Méthode d'apprentissage",
+  "boxDetailEditVocabs": "Modifier les vocabulaires",
+  "boxDetailStart": "Démarrer",
+  "boxDetailDeleteTitle": "Supprimer la boîte",
+  "boxDetailDeleteMessage": "Voulez-vous vraiment supprimer cette boîte ?",
+  "boxDetailDelete": "Supprimer",
+  "boxDetailExportError": "Échec de l'exportation : {error}",
+  "@boxDetailExportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "boxDetailNotFound": "Boîte introuvable",
+
+  "vocabListTitle": "Vocabulaire",
+  "vocabListEmpty": "Aucun vocabulaire disponible.",
+
+  "learningMethodAll": "Tous",
+  "learningMethodHard": "Difficiles uniquement",
+  "learningMethodNew": "Nouveaux uniquement",
+  "learningMethodUnstable": "Instables uniquement",
+
+  "commonOk": "OK",
+  "commonCancel": "Annuler",
+  "commonError": "Erreur"
+}

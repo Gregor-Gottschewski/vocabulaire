@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: const [
         Locale('de'),
         Locale('en'),
+        Locale('fr'),
       ],
       home: const MyHomePage(),
     );
