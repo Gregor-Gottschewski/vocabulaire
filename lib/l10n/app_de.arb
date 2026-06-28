@@ -1,0 +1,122 @@
+{
+  "@@locale": "de",
+
+  "tabBoxen": "Boxen",
+  "tabVokabeln": "Vokabeln",
+  "tabEinstellungen": "Einstellungen",
+
+  "homeEmpty": "Keine Boxen vorhanden.",
+
+  "settingsTitle": "Einstellungen",
+  "settingsImportBox": "Box importieren",
+  "settingsImportSuccess": "Import erfolgreich",
+  "settingsImportSuccessMessage": "Box \"{name}\" wurde importiert.",
+  "@settingsImportSuccessMessage": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "settingsImportError": "Import fehlgeschlagen: {error}",
+  "@settingsImportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "settingsCardAnimations": "Kartenanimationen",
+
+  "addBoxTitle": "Neue Box erstellen",
+  "addBoxNameLabel": "Name der Box",
+  "addBoxDescriptionLabel": "Beschreibung (optional)",
+  "addBoxButton": "Hinzufügen",
+  "addBoxNameEmpty": "Der Name darf nicht leer sein.",
+
+  "editVocabNew": "Neue Vokabel",
+  "editVocabEdit": "Vokabel bearbeiten",
+  "editVocabFront": "Front",
+  "editVocabFrontHint": "Wort / Vorderseite",
+  "editVocabBack": "Back",
+  "editVocabBackHint": "Bedeutung / Rückseite",
+  "editVocabDescriptionLabel": "Beschreibung / Beispiel",
+  "editVocabDescriptionHint": "Optionales Beispiel oder Beschreibung",
+  "editVocabAudio": "Audioaufnahme",
+  "editVocabNoPermission": "Keine Berechtigung",
+  "editVocabMicPermission": "Die App benötigt Zugriff auf das Mikrofon, um Audioaufnahmen zu ermöglichen. Bitte erteilen Sie die Berechtigung in den Einstellungen.",
+  "editVocabMissingInput": "Fehlende Eingabe",
+  "editVocabMissingInputMessage": "Bitte Vorder- und Rückseite ausfüllen.",
+  "editVocabExists": "Vokabel existiert bereits",
+  "editVocabExistsMessage": "Diese Vokabel existiert bereits in diesem Box. Soll die Vokabel trotzdem hinzugefügt werden?",
+  "editVocabAddAnyway": "Trotzdem hinzufügen",
+  "editVocabSave": "Speichern",
+  "editVocabNext": "Nächste",
+  "editVocabStats": "Statistiken",
+  "editVocabDue": "Nächste Abfrage: {dueDate}",
+  "@editVocabDue": {
+    "placeholders": {
+      "dueDate": { "type": "String" }
+    }
+  },
+  "editVocabOverdue": "überfällig",
+  "editVocabDifficulty": "Komplexität: {difficulty} von 10",
+  "@editVocabDifficulty": {
+    "placeholders": {
+      "difficulty": { "type": "String" }
+    }
+  },
+  "editVocabStability": "Stabilität: {stability}",
+  "@editVocabStability": {
+    "placeholders": {
+      "stability": { "type": "String" }
+    }
+  },
+
+  "reviewTitle": "Lernen",
+  "reviewBack": "Zurück",
+  "reviewCard": "Karte {index} / {total}",
+  "@reviewCard": {
+    "placeholders": {
+      "index": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "reviewPlay": "Abspielen",
+  "reviewAgain": "Nochmal",
+  "reviewHard": "Schwer",
+  "reviewGood": "Gut",
+  "reviewEasy": "Einfach",
+  "reviewSkip": "Überspringen",
+  "reviewExample": "Beispiel: {example}",
+  "@reviewExample": {
+    "placeholders": {
+      "example": { "type": "String" }
+    }
+  },
+
+  "boxDetailDescription": "Beschreibung",
+  "boxDetailOptions": "Optionen",
+  "boxDetailDueVocabs": "Zeitlich anstehende Vokabeln",
+  "boxDetailMethod": "Lernmethode",
+  "boxDetailEditVocabs": "Vokabeln bearbeiten",
+  "boxDetailStart": "Start",
+  "boxDetailDeleteTitle": "Box löschen",
+  "boxDetailDeleteMessage": "Möchtest du diese Box wirklich löschen?",
+  "boxDetailDelete": "Löschen",
+  "boxDetailExportError": "Export fehlgeschlagen: {error}",
+  "@boxDetailExportError": {
+    "placeholders": {
+      "error": { "type": "String" }
+    }
+  },
+  "boxDetailNotFound": "Box nicht gefunden",
+
+  "vocabListTitle": "Vokabeln",
+  "vocabListEmpty": "Keine Vokabeln vorhanden.",
+
+  "learningMethodAll": "Alle",
+  "learningMethodHard": "Nur schwierige",
+  "learningMethodNew": "Nur neue",
+  "learningMethodUnstable": "Nur Instabile",
+
+  "commonOk": "OK",
+  "commonCancel": "Abbrechen",
+  "commonError": "Fehler"
+}

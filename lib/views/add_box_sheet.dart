@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 
@@ -17,10 +18,8 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descController = TextEditingController();
   final FocusNode _nameFocus = FocusNode();
+  late AppLocalizations _l10n;
   bool _isAdding = false;
-
-  /// Update the state when the name changes to enable/disable the 'add' button.
-  void _onNameChanged() => setState(() {});
 
   @override
   void initState() {
@@ -40,6 +39,15 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
+  }
+
+  /// Update the state when the name changes to enable/disable the 'add' button.
+  void _onNameChanged() => setState(() {});
+
   Future<void> _onAdd() async {
     final name = _nameController.text.trim();
     final description = _descController.text.trim();
@@ -47,17 +55,16 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
     if (name.isEmpty) {
       await showCupertinoDialog(
         context: context,
-        builder: (_) =>
-            CupertinoAlertDialog(
-              title: const Text('Fehler'),
-              content: const Text('Der Name darf nicht leer sein.'),
-              actions: [
-                CupertinoDialogAction(
-                  child: const Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
+        builder: (_) => CupertinoAlertDialog(
+          title: Text(_l10n.commonError),
+          content: Text(_l10n.addBoxNameEmpty),
+          actions: [
+            CupertinoDialogAction(
+              child: Text(_l10n.commonOk),
+              onPressed: () => Navigator.of(context).pop(),
             ),
+          ],
+        ),
       );
       return;
     }
@@ -72,17 +79,16 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
     } catch (e) {
       await showCupertinoDialog(
         context: context,
-        builder: (_) =>
-            CupertinoAlertDialog(
-              title: const Text('Fehler'),
-              content: Text(e.toString()),
-              actions: [
-                CupertinoDialogAction(
-                  child: const Text('OK'),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
+        builder: (_) => CupertinoAlertDialog(
+          title: Text(_l10n.commonError),
+          content: Text(e.toString()),
+          actions: [
+            CupertinoDialogAction(
+              child: Text(_l10n.commonOk),
+              onPressed: () => Navigator.of(context).pop(),
             ),
+          ],
+        ),
       );
     } finally {
       if (mounted) setState(() => _isAdding = false);
@@ -91,10 +97,7 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final bottomInset = MediaQuery
-        .of(context)
-        .viewInsets
-        .bottom;
+    final bottomInset = MediaQuery.of(context).viewInsets.bottom;
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Container(
@@ -110,9 +113,9 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Neue Box erstellen',
-                    style: TextStyle(
+                  Text(
+                    _l10n.addBoxTitle,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
@@ -123,7 +126,7 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
               CupertinoTextField(
                 controller: _nameController,
                 focusNode: _nameFocus,
-                placeholder: 'Name der Box',
+                placeholder: _l10n.addBoxNameLabel,
                 clearButtonMode: OverlayVisibilityMode.editing,
                 textInputAction: TextInputAction.next,
                 onSubmitted: (_) => FocusScope.of(context).nextFocus(),
@@ -131,7 +134,7 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
               const SizedBox(height: 8),
               CupertinoTextField(
                 controller: _descController,
-                placeholder: 'Beschreibung (optional)',
+                placeholder: _l10n.addBoxDescriptionLabel,
                 minLines: 1,
                 maxLines: 3,
               ),
@@ -145,9 +148,11 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
                       onPressed: _isAdding
                           ? null
                           : () => Navigator.of(context).pop(),
-                      child: const Text(
-                        'Abbrechen',
-                        style: TextStyle(color: CupertinoColors.systemRed),
+                      child: Text(
+                        _l10n.commonCancel,
+                        style: const TextStyle(
+                          color: CupertinoColors.systemRed,
+                        ),
                       ),
                     ),
                   ),
@@ -156,14 +161,12 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
                     child: CupertinoButton.filled(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       onPressed:
-                      _isAdding || _nameController.text
-                          .trim()
-                          .isEmpty
+                          _isAdding || _nameController.text.trim().isEmpty
                           ? null
                           : _onAdd,
                       child: _isAdding
                           ? const CupertinoActivityIndicator()
-                          : const Text('Hinzufügen'),
+                          : Text(_l10n.addBoxButton),
                     ),
                   ),
                 ],

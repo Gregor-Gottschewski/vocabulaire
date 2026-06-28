@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/vocabulary_list_view.dart';
 import '../controllers/box_controller.dart';
 import '../models/vocabulary_box.dart';
@@ -13,11 +14,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _selectedIndex = 0;
-  final BoxController _boxController = BoxController();
-  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>>
-  _allBoxesNotifier;
+  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _allBoxesNotifier;
   late final List<Widget> _views;
+  final BoxController _boxController = BoxController();
+  late AppLocalizations _l10n;
+  int _selectedIndex = 0;
 
   @override
   void initState() {
@@ -36,6 +37,12 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -46,18 +53,18 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
-        items: const <BottomNavigationBarItem>[
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.cube_box),
-            label: 'Boxen',
+            icon: const Icon(CupertinoIcons.cube_box),
+            label: _l10n.tabBoxen,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.book),
-            label: 'Vokabeln',
+            icon: const Icon(CupertinoIcons.book),
+            label: _l10n.tabVokabeln,
           ),
           BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.settings),
-            label: 'Einstellungen',
+            icon: const Icon(CupertinoIcons.settings),
+            label: _l10n.tabEinstellungen,
           ),
         ],
         currentIndex: _selectedIndex,

@@ -1,5 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/import_controller.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 
@@ -16,7 +17,7 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   final SettingsController _controller = SettingsController();
   final BoxController _boxController = BoxController();
-
+  late AppLocalizations _l10n;
   bool _cardAnimations = true;
   bool _importing = false;
 
@@ -24,6 +25,12 @@ class _SettingsViewState extends State<SettingsView> {
   void initState() {
     super.initState();
     _initSettings();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
   }
 
   /// Initialize settings to set UI to correct state.
@@ -49,7 +56,7 @@ class _SettingsViewState extends State<SettingsView> {
 
     try {
       final result = await FilePicker.pickFiles(
-        dialogTitle: "Box Importieren",
+        dialogTitle: _l10n.settingsImportBox,
         type: FileType.custom,
         allowedExtensions: ['vocab'],
         withData: false,
@@ -71,11 +78,11 @@ class _SettingsViewState extends State<SettingsView> {
       await showCupertinoDialog(
         context: context,
         builder: (ctx) => CupertinoAlertDialog(
-          title: const Text('Import erfolgreich'),
-          content: Text('Box "${importedBox.name}" wurde importiert.'),
+          title: Text(_l10n.settingsImportSuccess),
+          content: Text(_l10n.settingsImportSuccessMessage(importedBox.name)),
           actions: [
             CupertinoDialogAction(
-              child: const Text('OK'),
+              child: Text(_l10n.commonOk),
               onPressed: () => Navigator.of(ctx).pop(),
             ),
           ],
@@ -86,11 +93,11 @@ class _SettingsViewState extends State<SettingsView> {
       await showCupertinoDialog(
         context: context,
         builder: (ctx) => CupertinoAlertDialog(
-          title: const Text('Fehler'),
-          content: Text('Import fehlgeschlagen: $e'),
+          title: Text(_l10n.commonError),
+          content: Text(_l10n.settingsImportError(e.toString())),
           actions: [
             CupertinoDialogAction(
-              child: const Text('OK'),
+              child: Text(_l10n.commonOk),
               onPressed: () => Navigator.of(ctx).pop(),
             ),
           ],
@@ -106,8 +113,8 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: const CupertinoNavigationBar(
-        middle: Text('Einstellungen'),
+      navigationBar: CupertinoNavigationBar(
+        middle: Text(_l10n.settingsTitle),
       ),
       child: SafeArea(
         child: ListView(
@@ -115,10 +122,10 @@ class _SettingsViewState extends State<SettingsView> {
           children: [
             Row(
               children: [
-                const Expanded(
+                Expanded(
                   child: Text(
-                    'Kartenanimationen',
-                    style: TextStyle(fontSize: 16),
+                    _l10n.settingsCardAnimations,
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
                 CupertinoSwitch(
@@ -132,10 +139,10 @@ class _SettingsViewState extends State<SettingsView> {
               onPressed: _importing ? null : _onImportPressed,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
-                  Icon(CupertinoIcons.arrow_down_to_line),
-                  SizedBox(width: 8),
-                  Text('Box importieren'),
+                children: [
+                  const Icon(CupertinoIcons.arrow_down_to_line),
+                  const SizedBox(width: 8),
+                  Text(_l10n.settingsImportBox),
                 ],
               ),
             ),

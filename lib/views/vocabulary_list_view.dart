@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/edit_vocabulary_view.dart';
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
@@ -30,6 +31,13 @@ class _BoxVocabulary {
 
 class _VocabularyListViewState extends State<VocabularyListView> {
   final BoxController _controller = BoxController();
+  late AppLocalizations _l10n;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
+  }
 
   /// Opens the EditVocabularyView for adding a new vocabulary to the specified box.
   /// Option only available when not in multipleBoxes mode.
@@ -57,7 +65,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text("Vokabeln"),
+        middle: Text(_l10n.vocabListTitle),
         trailing: !widget.multipleBoxes
             ? ValueListenableBuilder(
                 valueListenable: widget.boxListenable,
@@ -87,7 +95,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
             }).toList();
 
             if (items.isEmpty) {
-              return const Center(child: Text('No vocabularies yet.'));
+              return Center(child: Text(_l10n.vocabListEmpty));
             }
 
             return ListView.builder(

@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/views/review_view.dart';
 
@@ -18,9 +19,10 @@ class BoxDetailView extends StatefulWidget {
 }
 
 class _BoxDetailWidget extends State<BoxDetailView> {
+  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _boxNotifier;
+  late AppLocalizations _l10n;
   bool _onlyTimely = true;
   LearningMethod _selectedOption = LearningMethod.all;
-  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _boxNotifier;
 
   @override
   void initState() {
@@ -32,6 +34,12 @@ class _BoxDetailWidget extends State<BoxDetailView> {
   void dispose() {
     _boxNotifier.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
   }
 
   /// Builds a row with a label and a CupertinoSwitch for toggling options.
@@ -62,7 +70,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
           children: [
             if (widget.box.description.isNotEmpty) ...[
               Text(
-                "Beschreibung",
+                _l10n.boxDetailDescription,
                 style: TextStyle(
                   fontSize: 12,
                   color: CupertinoColors.systemGrey,
@@ -78,7 +86,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
             ],
 
             Text(
-              "Optionen",
+              _l10n.boxDetailOptions,
               style: TextStyle(
                 fontSize: 12,
                 color: CupertinoColors.systemGrey,
@@ -86,7 +94,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
               ),
             ),
 
-            _buildToggleRow("Zeitlich anstehende Vokabeln", _onlyTimely, (v) {
+            _buildToggleRow(_l10n.boxDetailDueVocabs, _onlyTimely, (v) {
               setState(() => _onlyTimely = v);
             }),
 
@@ -96,7 +104,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Lernmethode",
+                    _l10n.boxDetailMethod,
                     style: TextStyle(
                       fontSize: 12,
                       color: CupertinoColors.systemGrey,
@@ -117,7 +125,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                             horizontal: 8.0,
                             vertical: 5.0,
                           ),
-                          child: Text(method.displayName),
+                          child: Text(method.label(_l10n)),
                         ),
                     },
                     onValueChanged: (LearningMethod value) {
@@ -155,12 +163,12 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(CupertinoIcons.book, size: 20.0),
-                              SizedBox(width: 8.0),
+                            children: [
+                              const Icon(CupertinoIcons.book, size: 20.0),
+                              const SizedBox(width: 8.0),
                               Flexible(
                                 child: Text(
-                                  'Vokabeln bearbeiten',
+                                  _l10n.boxDetailEditVocabs,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),
@@ -188,12 +196,12 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,
-                            children: const [
-                              Icon(CupertinoIcons.play, size: 20.0),
-                              SizedBox(width: 8.0),
+                            children: [
+                              const Icon(CupertinoIcons.play, size: 20.0),
+                              const SizedBox(width: 8.0),
                               Flexible(
                                 child: Text(
-                                  'Start',
+                                  _l10n.boxDetailStart,
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
                                 ),

@@ -1,3 +1,5 @@
+import 'package:vocabulaire/l10n/app_localizations.dart';
+
 /// Learning method for a review session.
 /// - `all`: All cards in the box.
 /// - `onlyDifficult`: Only cards that are difficult, difficulty is calculated in FSRS.
@@ -12,16 +14,16 @@ enum LearningMethod {
 
 /// Extension to get display name for each learning method.
 extension LearningMethodExtension on LearningMethod {
-  String get displayName {
+  String label(AppLocalizations l10n) {
     switch (this) {
       case LearningMethod.all:
-        return 'Alle';
+        return l10n.learningMethodAll;
       case LearningMethod.onlyDifficult:
-        return 'Nur schwierige';
+        return l10n.learningMethodHard;
       case LearningMethod.onlyNew:
-        return 'Nur neue';
+        return l10n.learningMethodNew;
       case LearningMethod.onlyUnstable:
-        return 'Nur Instabile';
+        return l10n.learningMethodUnstable;
     }
   }
 }
