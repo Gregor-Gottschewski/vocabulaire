@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
@@ -22,9 +23,16 @@ class BoxDetailPage extends StatefulWidget {
 class _BoxDetailPageState extends State<BoxDetailPage> {
   final BoxController _boxController = BoxController();
   late dynamic _boxKey;
+  late TextEditingController _controller;
+  late AppLocalizations _l10n;
   bool _isEditingTitle = false;
   bool _isPopping = false;
-  late TextEditingController _controller;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
+  }
 
   VocabularyBox? get _box => _boxController.getBox(_boxKey);
 
@@ -89,11 +97,11 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
       await showCupertinoDialog(
         context: context,
         builder: (context) => CupertinoAlertDialog(
-          title: const Text('Fehler'),
-          content: Text('Export fehlgeschlagen: $e'),
+          title: Text(_l10n.commonError),
+          content: Text(_l10n.boxDetailExportError(e.toString())),
           actions: [
             CupertinoDialogAction(
-              child: const Text('OK'),
+              child: Text(_l10n.commonOk),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -118,16 +126,16 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     showCupertinoDialog(
       context: pageContext,
       builder: (dialogContext) => CupertinoAlertDialog(
-        title: const Text('Box löschen'),
-        content: const Text('Möchtest du diese Box wirklich löschen?'),
+        title: Text(_l10n.boxDetailDeleteTitle),
+        content: Text(_l10n.boxDetailDeleteMessage),
         actions: [
           CupertinoDialogAction(
-            child: const Text('Abbrechen'),
+            child: Text(_l10n.commonCancel),
             onPressed: () => Navigator.of(dialogContext).pop(),
           ),
           CupertinoDialogAction(
             isDestructiveAction: true,
-            child: const Text('Löschen'),
+            child: Text(_l10n.boxDetailDelete),
             onPressed: () {
               Navigator.of(dialogContext).pop();
               Navigator.of(pageContext).pop();
@@ -155,8 +163,8 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           }
 
           return CupertinoPageScaffold(
-            navigationBar: const CupertinoNavigationBar(
-              middle: Text('Box nicht gefunden'),
+            navigationBar: CupertinoNavigationBar(
+              middle: Text(_l10n.boxDetailNotFound),
             ),
             child: const SizedBox.shrink(),
           );

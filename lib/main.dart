@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/models/app_settings.dart';
@@ -29,6 +31,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoApp(
       title: 'Vocabulaire',
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('de'),
+        Locale('en'),
+      ],
       home: const MyHomePage(),
     );
   }

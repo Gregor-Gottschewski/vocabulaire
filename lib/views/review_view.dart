@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
 import 'package:vocabulaire/models/review_session.dart';
@@ -25,6 +26,7 @@ class ReviewView extends StatefulWidget {
 class _ReviewViewState extends State<ReviewView> {
   late final ReviewController reviewController;
   final player = AudioPlayer();
+  late AppLocalizations _l10n;
   bool _flipped = false;
 
   @override
@@ -45,6 +47,12 @@ class _ReviewViewState extends State<ReviewView> {
     reviewController.dispose();
     player.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
   }
 
   void _onControllerUpdate() {
@@ -78,9 +86,7 @@ class _ReviewViewState extends State<ReviewView> {
 
     final front = current.word;
     final back = current.meaning;
-    final example = current.example.isNotEmpty
-        ? '\n\nBeispiel: ${current.example}'
-        : '';
+    final exampleText = current.example;
     final hasRecording = AppPaths.audioFile(current.id).existsSync();
 
     return GestureDetector(
@@ -136,11 +142,11 @@ class _ReviewViewState extends State<ReviewView> {
                           style: const TextStyle(fontSize: 22),
                           textAlign: TextAlign.center,
                         ),
-                        if (example.isNotEmpty)
+                        if (exampleText.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
-                              example,
+                              _l10n.reviewExample(exampleText),
                               style: const TextStyle(
                                 fontSize: 14,
                                 color: CupertinoColors.systemGrey,
@@ -152,12 +158,15 @@ class _ReviewViewState extends State<ReviewView> {
                           const SizedBox(height: 16),
                           CupertinoButton.filled(
                             onPressed: _playAudio,
-                            child: const Row(
+                            child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(CupertinoIcons.play_arrow_solid, size: 20),
-                                SizedBox(width: 8),
-                                Text('Abspielen'),
+                                const Icon(
+                                  CupertinoIcons.play_arrow_solid,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(_l10n.reviewPlay),
                               ],
                             ),
                           ),
@@ -197,10 +206,10 @@ class _ReviewViewState extends State<ReviewView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(CupertinoIcons.xmark, size: 20),
-                    SizedBox(width: 8),
-                    Text('Nochmal'),
+                  children: [
+                    const Icon(CupertinoIcons.xmark, size: 20),
+                    const SizedBox(width: 8),
+                    Text(_l10n.reviewAgain),
                   ],
                 ),
               ),
@@ -218,10 +227,10 @@ class _ReviewViewState extends State<ReviewView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(CupertinoIcons.exclamationmark, size: 20),
-                    SizedBox(width: 8),
-                    Text('Schwer'),
+                  children: [
+                    const Icon(CupertinoIcons.exclamationmark, size: 20),
+                    const SizedBox(width: 8),
+                    Text(_l10n.reviewHard),
                   ],
                 ),
               ),
@@ -243,10 +252,10 @@ class _ReviewViewState extends State<ReviewView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(CupertinoIcons.smiley, size: 20),
-                    SizedBox(width: 8),
-                    Text('Gut'),
+                  children: [
+                    const Icon(CupertinoIcons.smiley, size: 20),
+                    const SizedBox(width: 8),
+                    Text(_l10n.reviewGood),
                   ],
                 ),
               ),
@@ -264,10 +273,10 @@ class _ReviewViewState extends State<ReviewView> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(CupertinoIcons.check_mark_circled, size: 20),
-                    SizedBox(width: 8),
-                    Text('Einfach'),
+                  children: [
+                    const Icon(CupertinoIcons.check_mark_circled, size: 20),
+                    const SizedBox(width: 8),
+                    Text(_l10n.reviewEasy),
                   ],
                 ),
               ),
@@ -282,10 +291,10 @@ class _ReviewViewState extends State<ReviewView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: const [
-                Icon(CupertinoIcons.forward, size: 20),
-                SizedBox(width: 8),
-                Text('Überspringen'),
+              children: [
+                const Icon(CupertinoIcons.forward, size: 20),
+                const SizedBox(width: 8),
+                Text(_l10n.reviewSkip),
               ],
             ),
             onPressed: () {
@@ -305,8 +314,8 @@ class _ReviewViewState extends State<ReviewView> {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: const Text('Lernen'),
-        previousPageTitle: 'Zurück',
+        middle: Text(_l10n.reviewTitle),
+        previousPageTitle: _l10n.reviewBack,
       ),
       child: SafeArea(
         child: Padding(
@@ -314,7 +323,7 @@ class _ReviewViewState extends State<ReviewView> {
           child: Column(
             children: [
               Text(
-                'Karte $indexDisplay / $total',
+                _l10n.reviewCard(indexDisplay, total),
                 style: const TextStyle(color: CupertinoColors.systemGrey),
               ),
               const SizedBox(height: 12),

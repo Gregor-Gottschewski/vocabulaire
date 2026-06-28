@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
 import 'package:vocabulaire/services/app_paths.dart';
@@ -35,13 +36,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     sampleRate: 16000,
     numChannels: 1,
   );
+  late bool _hasRecording;
+  late Vocabulary _vocab;
+  late AppLocalizations _l10n;
   bool _isSaving = false;
   bool _recording = false;
   bool _isPlaying = false;
   Duration _recordDuration = Duration.zero;
   Timer? _recordTimer;
-  late bool _hasRecording;
-  late Vocabulary _vocab;
   StreamSubscription<void>? _playerCompleteSub;
 
   /// Initializes the text controllers with the existing vocabulary data when the view is created.
@@ -66,6 +68,23 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     });
   }
 
+  @override
+  void dispose() {
+    _frontController.dispose();
+    _backController.dispose();
+    _descriptionController.dispose();
+    _audioRecorder.dispose();
+    _audioPlayer.dispose();
+    _playerCompleteSub?.cancel();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
+  }
+
   Future<void> _initAudioPlayer() async {
     await _audioPlayer.setSourceDeviceFile(AppPaths.audioFilePath(_vocab.id));
     final duration = await _audioPlayer.getDuration();
@@ -88,17 +107,6 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     return await _audioPlayer.getDuration() ?? Duration.zero;
   }
 
-  @override
-  void dispose() {
-    _frontController.dispose();
-    _backController.dispose();
-    _descriptionController.dispose();
-    _audioRecorder.dispose();
-    _audioPlayer.dispose();
-    _playerCompleteSub?.cancel();
-    super.dispose();
-  }
-
   /// Saves the current flash card. Saving process includes:
   ///   1. Cancel process if missing required fields not set
   ///   2. If no new vocabulary: overwrite existing values -> process finished
@@ -119,13 +127,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       showCupertinoDialog(
         context: context,
         builder: (ctx) => CupertinoAlertDialog(
-          title: const Text('Fehlende Eingabe'),
-          content: const Text('Bitte Vorder- und Rückseite ausfüllen.'),
+          title: Text(_l10n.editVocabMissingInput),
+          content: Text(_l10n.editVocabMissingInputMessage),
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('OK'),
+              child: Text(_l10n.commonOk),
             ),
           ],
         ),
@@ -145,20 +153,18 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         final shouldAdd = await showCupertinoDialog<bool>(
           context: context,
           builder: (ctx) => CupertinoAlertDialog(
-            title: const Text('Vokabel existiert bereits'),
-            content: const Text(
-              'Diese Vokabel existiert bereits in diesem Box. Soll die Vokabel trotzdem hinzugefügt werden?',
-            ),
+            title: Text(_l10n.editVocabExists),
+            content: Text(_l10n.editVocabExistsMessage),
             actions: [
               CupertinoDialogAction(
                 isDefaultAction: true,
                 onPressed: () => Navigator.of(ctx).pop(false),
-                child: const Text('Abbrechen'),
+                child: Text(_l10n.commonCancel),
               ),
               CupertinoDialogAction(
                 isDestructiveAction: true,
                 onPressed: () => Navigator.of(ctx).pop(true),
-                child: const Text('Trotzdem hinzufügen'),
+                child: Text(_l10n.editVocabAddAnyway),
               ),
             ],
           ),
@@ -218,15 +224,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       await showCupertinoDialog(
         context: context,
         builder: (ctx) => CupertinoAlertDialog(
-          title: const Text('Keine Berechtigung'),
-          content: const Text(
-            'Die App benötigt Zugriff auf das Mikrofon, um Audioaufnahmen zu ermöglichen. Bitte erteilen Sie die Berechtigung in den Einstellungen.',
-          ),
+          title: Text(_l10n.editVocabNoPermission),
+          content: Text(_l10n.editVocabMicPermission),
           actions: [
             CupertinoDialogAction(
               isDefaultAction: true,
               onPressed: () => Navigator.of(ctx).pop(),
-              child: const Text('OK'),
+              child: Text(_l10n.commonOk),
             ),
           ],
         ),
@@ -301,7 +305,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text(
-            widget.newVocabulary ? 'Neue Vokabel' : 'Vokabel bearbeiten',
+            widget.newVocabulary ? _l10n.editVocabNew : _l10n.editVocabEdit,
           ),
         ),
         child: SafeArea(
@@ -318,7 +322,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Front',
+                            _l10n.editVocabFront,
                             style: TextStyle(
                               fontSize: 12,
                               color: CupertinoColors.systemGrey,
@@ -329,7 +333,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         const SizedBox(height: 8),
                         CupertinoTextField(
                           controller: _frontController,
-                          placeholder: 'Wort / Vorderseite',
+                          placeholder: _l10n.editVocabFrontHint,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 12,
@@ -344,7 +348,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Back',
+                            _l10n.editVocabBack,
                             style: TextStyle(
                               fontSize: 12,
                               color: CupertinoColors.systemGrey,
@@ -355,7 +359,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         const SizedBox(height: 8),
                         CupertinoTextField(
                           controller: _backController,
-                          placeholder: 'Bedeutung / Rückseite',
+                          placeholder: _l10n.editVocabBackHint,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 12,
@@ -370,7 +374,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Beschreibung / Beispiel',
+                            _l10n.editVocabDescriptionLabel,
                             style: TextStyle(
                               fontSize: 12,
                               color: CupertinoColors.systemGrey,
@@ -381,7 +385,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         const SizedBox(height: 8),
                         CupertinoTextField(
                           controller: _descriptionController,
-                          placeholder: 'Optionales Beispiel oder Beschreibung',
+                          placeholder: _l10n.editVocabDescriptionHint,
                           padding: const EdgeInsets.symmetric(
                             horizontal: 12,
                             vertical: 12,
@@ -395,7 +399,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Audioaufnahme',
+                            _l10n.editVocabAudio,
                             style: TextStyle(
                               fontSize: 12,
                               color: CupertinoColors.systemGrey,
@@ -490,7 +494,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              'Statistiken',
+                              _l10n.editVocabStats,
                               style: TextStyle(
                                 fontSize: 12,
                                 color: CupertinoColors.systemGrey,
@@ -499,16 +503,30 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             ),
                           ),
                           const SizedBox(height: 8),
-                          Text(
-                            "Nächste Abfrage: ${_vocab.card.due.isAfter(DateTime.now()) ? DateFormat.yMd(Localizations.localeOf(context).toString()).add_Hm().format(_vocab.card.due.toLocal()) : 'überfällig'}",
+                          Builder(
+                            builder: (context) {
+                              final dueDate =
+                                  _vocab.card.due.isAfter(DateTime.now())
+                                  ? DateFormat.yMd(
+                                      Localizations.localeOf(
+                                        context,
+                                      ).toString(),
+                                    ).add_Hm().format(_vocab.card.due.toLocal())
+                                  : _l10n.editVocabOverdue;
+                              return Text(_l10n.editVocabDue(dueDate));
+                            },
                           ),
                           if (_vocab.card.difficulty != null)
                             Text(
-                              "Komplexität: ${_vocab.card.difficulty!.toStringAsFixed(2)} von 10",
+                              _l10n.editVocabDifficulty(
+                                _vocab.card.difficulty!.toStringAsFixed(2),
+                              ),
                             ),
                           if (_vocab.card.stability != null)
                             Text(
-                              "Stabilität: ${(_vocab.card.stability!).toStringAsFixed(2)}",
+                              _l10n.editVocabStability(
+                                _vocab.card.stability!.toStringAsFixed(2),
+                              ),
                             ),
                         ],
 
@@ -536,10 +554,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             : Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
-                                children: const [
-                                  Icon(CupertinoIcons.check_mark, size: 20.0),
-                                  SizedBox(width: 8.0),
-                                  Flexible(child: Text('Speichern')),
+                                children: [
+                                  const Icon(
+                                    CupertinoIcons.check_mark,
+                                    size: 20.0,
+                                  ),
+                                  const SizedBox(width: 8.0),
+                                  Flexible(child: Text(_l10n.editVocabSave)),
                                 ],
                               ),
                       ),
@@ -555,13 +576,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                               : Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
-                                  children: const [
-                                    Icon(
+                                  children: [
+                                    const Icon(
                                       CupertinoIcons.arrow_right_to_line,
                                       size: 20.0,
                                     ),
-                                    SizedBox(width: 8.0),
-                                    Flexible(child: Text('Nächste')),
+                                    const SizedBox(width: 8.0),
+                                    Flexible(child: Text(_l10n.editVocabNext)),
                                   ],
                                 ),
                         ),

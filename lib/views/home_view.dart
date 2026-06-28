@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/views/box_detail_page.dart';
 import 'package:vocabulaire/views/box_tile.dart';
@@ -16,12 +17,19 @@ class HomeView extends StatefulWidget {
 
 class HomeViewWidget extends State<HomeView> {
   final BoxController _boxController = BoxController();
+  late AppLocalizations _l10n;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _l10n = AppLocalizations.of(context)!;
+  }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('Boxen'),
+        middle: Text(_l10n.tabBoxen),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -40,7 +48,9 @@ class HomeViewWidget extends State<HomeView> {
             final keys = box.keys.cast<dynamic>().toList();
 
             if (keys.isEmpty) {
-              return const Center(child: Text('Keine Boxen vorhanden.'));
+              return Center(
+                child: Text(_l10n.homeEmpty),
+              );
             }
 
             return ListView.builder(
