@@ -10,13 +10,13 @@ extension AppExceptionDialog on BuildContext {
 
     return showCupertinoDialog(
       context: this,
-      builder: (_) => CupertinoAlertDialog(
+      builder: (dialogContext) => CupertinoAlertDialog(
         title: Text(i18n.commonError),
         content: Text(e.userMessage),
         actions: [
           CupertinoDialogAction(
             child: Text(i18n.commonOk),
-            onPressed: () => Navigator.of(this).pop(),
+            onPressed: () => Navigator.of(dialogContext).pop(),
           ),
         ],
       ),
