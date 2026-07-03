@@ -77,7 +77,9 @@ class ImportController {
   static Future<Directory> _extractZip(final String path) async {
     final extractDir = Directory(
       join(AppPaths.applicationExtractDirectory.path, Uuid().v4()),
-    )..create(recursive: true);
+    );
+
+    await extractDir.create(recursive: true);
 
     await ZipFile.extractToDirectory(
       zipFile: File(path),

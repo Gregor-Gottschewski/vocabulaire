@@ -77,14 +77,10 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     final box = _box;
     if (box == null) return;
 
-    try {
-      final exportDir = AppPaths.applicationExportBaseDirectory;
-      if (exportDir.existsSync()) exportDir.delete(recursive: true);
-    } on FileSystemException catch (e) {
-      throw AppException(AppError.exportCacheFailed, details: e);
-    }
+    final exportDir = AppPaths.applicationExportBaseDirectory;
 
     try {
+      if (exportDir.existsSync()) await exportDir.delete(recursive: true);
       final zipFile = await ExportController.exportBox(box);
 
       await SharePlus.instance.share(
@@ -93,6 +89,11 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           files: [XFile(zipFile.path)],
           fileNameOverrides: ['${box.nameSanitized()}.vocab'],
         ),
+      );
+    } on FileSystemException catch (e) {
+      if (!mounted) return;
+      await context.showAppError(
+        AppException(AppError.exportCacheFailed, details: e),
       );
     } on AppException catch (e) {
       if (!mounted) return;

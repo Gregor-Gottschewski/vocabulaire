@@ -57,13 +57,13 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
     if (name.isEmpty) {
       await showCupertinoDialog(
         context: context,
-        builder: (_) => CupertinoAlertDialog(
+        builder: (dialogContext) => CupertinoAlertDialog(
           title: Text(_l10n.commonError),
           content: Text(_l10n.addBoxNameEmpty),
           actions: [
             CupertinoDialogAction(
               child: Text(_l10n.commonOk),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => Navigator.of(dialogContext).pop(),
             ),
           ],
         ),
