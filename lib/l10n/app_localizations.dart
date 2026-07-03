@@ -148,12 +148,6 @@ abstract class AppLocalizations {
   /// **'Box \"{name}\" wurde importiert.'**
   String settingsImportSuccessMessage(String name);
 
-  /// No description provided for @settingsImportError.
-  ///
-  /// In de, this message translates to:
-  /// **'Import fehlgeschlagen: {error}'**
-  String settingsImportError(String error);
-
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
@@ -442,12 +436,6 @@ abstract class AppLocalizations {
   /// **'Löschen'**
   String get boxDetailDelete;
 
-  /// No description provided for @boxDetailExportError.
-  ///
-  /// In de, this message translates to:
-  /// **'Export fehlgeschlagen: {error}'**
-  String boxDetailExportError(String error);
-
   /// No description provided for @boxDetailNotFound.
   ///
   /// In de, this message translates to:
@@ -507,6 +495,54 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Fehler'**
   String get commonError;
+
+  /// No description provided for @errorExportDirectoryFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Exportverzeichnis konnte nicht erstellt werden'**
+  String get errorExportDirectoryFailed;
+
+  /// No description provided for @errorExportWriteFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabeldaten konnten nicht gespeichert werden'**
+  String get errorExportWriteFailed;
+
+  /// No description provided for @errorExportAudioFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Audiodateien konnten nicht kopiert werden'**
+  String get errorExportAudioFailed;
+
+  /// No description provided for @errorExportArchiveFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Archiv konnte nicht erstellt werden'**
+  String get errorExportArchiveFailed;
+
+  /// No description provided for @errorExportCacheFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Export-Cache konnte nicht geleert werden'**
+  String get errorExportCacheFailed;
+
+  /// No description provided for @errorImportMissingStoreFile.
+  ///
+  /// In de, this message translates to:
+  /// **'Ungültiges Dateiformat: store.json fehlt im Archiv'**
+  String get errorImportMissingStoreFile;
+
+  /// No description provided for @errorImportInvalidFormat.
+  ///
+  /// In de, this message translates to:
+  /// **'Ungültiges Dateiformat: JSON-Objekt erwartet'**
+  String get errorImportInvalidFormat;
+
+  /// No description provided for @errorDuplicateBoxName.
+  ///
+  /// In de, this message translates to:
+  /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
+  String errorDuplicateBoxName(String name);
 }
 
 class _AppLocalizationsDelegate

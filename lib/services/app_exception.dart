@@ -1,10 +1,23 @@
-/// [AppException] represents a generic application exception.
+/// Predefined application errors
+enum AppError {
+  exportDirectoryFailed,
+  exportWriteFailed,
+  exportAudioFailed,
+  exportArchiveFailed,
+  exportCacheFailed,
+  importMissingStoreFile,
+  importInvalidFormat,
+  duplicateBoxName,
+}
+
+/// [AppException] represents a user-facing application error.
+/// Use [AppError] to identify the error type; the UI layer translates it to a localized message.
 class AppException implements Exception {
-  final String userMessage;
+  final AppError error;
   final Object? details;
 
-  AppException(this.userMessage, {this.details});
+  AppException(this.error, {this.details});
 
   @override
-  String toString() => 'AppException(message: $userMessage)';
+  String toString() => 'AppException(error: $error)';
 }

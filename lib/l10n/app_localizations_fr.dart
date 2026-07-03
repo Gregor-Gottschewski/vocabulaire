@@ -35,11 +35,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String settingsImportError(String error) {
-    return 'Échec de l\'importation : $error';
-  }
-
-  @override
   String get settingsCardAnimations => 'Animations de cartes';
 
   @override
@@ -198,11 +193,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailDelete => 'Supprimer';
 
   @override
-  String boxDetailExportError(String error) {
-    return 'Échec de l\'exportation : $error';
-  }
-
-  @override
   String get boxDetailNotFound => 'Boîte introuvable';
 
   @override
@@ -231,4 +221,36 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get commonError => 'Erreur';
+
+  @override
+  String get errorExportDirectoryFailed =>
+      'Le répertoire d\'exportation n\'a pas pu être créé';
+
+  @override
+  String get errorExportWriteFailed =>
+      'Les données de vocabulaire n\'ont pas pu être enregistrées';
+
+  @override
+  String get errorExportAudioFailed =>
+      'Les fichiers audio n\'ont pas pu être copiés';
+
+  @override
+  String get errorExportArchiveFailed => 'L\'archive n\'a pas pu être créée';
+
+  @override
+  String get errorExportCacheFailed =>
+      'Le cache d\'exportation n\'a pas pu être vidé';
+
+  @override
+  String get errorImportMissingStoreFile =>
+      'Format de fichier invalide : store.json introuvable dans l\'archive';
+
+  @override
+  String get errorImportInvalidFormat =>
+      'Format de fichier invalide : objet JSON attendu';
+
+  @override
+  String errorDuplicateBoxName(String name) {
+    return 'Une boîte nommée \"$name\" existe déjà';
+  }
 }
