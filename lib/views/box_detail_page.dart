@@ -6,6 +6,8 @@ import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
+import 'package:vocabulaire/services/app_exception.dart';
+import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary_box.dart';
 import 'box_detail_view.dart';
@@ -79,8 +81,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
       final exportDir = AppPaths.applicationExportBaseDirectory;
       if (exportDir.existsSync()) exportDir.delete(recursive: true);
     } on FileSystemException catch (e) {
-      debugPrint(e.message);
-      throw Exception("Cannot empty export cache");
+      throw AppException(AppError.exportCacheFailed, details: e);
     }
 
     try {
@@ -93,20 +94,9 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           fileNameOverrides: ['${box.nameSanitized()}.vocab'],
         ),
       );
-    } catch (e) {
-      await showCupertinoDialog(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: Text(_l10n.commonError),
-          content: Text(_l10n.boxDetailExportError(e.toString())),
-          actions: [
-            CupertinoDialogAction(
-              child: Text(_l10n.commonOk),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-      );
+    } on AppException catch (e) {
+      if (!mounted) return;
+      await context.showAppError(e);
     }
   }
 

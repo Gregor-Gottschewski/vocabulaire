@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path/path.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 
 class ExportController {
@@ -15,7 +16,7 @@ class ExportController {
     try {
       tempExportDir = await AppPaths.createBoxExportDirectory();
     } on FileSystemException catch (e) {
-      throw Exception('Temporäres Exportverzeichnis konnte nicht erstellt werden: ${e.message}');
+      throw AppException(AppError.exportDirectoryFailed, details: e);
     }
 
     try {
@@ -26,7 +27,7 @@ class ExportController {
       try {
         await file.writeAsString(jsonString, encoding: utf8);
       } on FileSystemException catch (e) {
-        throw Exception('Vokabeldaten konnten nicht gespeichert werden: ${e.message}');
+        throw AppException(AppError.exportWriteFailed, details: e);
       }
 
       final audioDirectory = Directory(join(tempExportDir.path, "audio"));
@@ -41,7 +42,7 @@ class ExportController {
           audioFiles.map((f) => f.copy(join(audioDirectory.path, basename(f.path)))),
         );
       } on FileSystemException catch (e) {
-        throw Exception('Audiodateien konnten nicht kopiert werden: ${e.message}');
+        throw AppException(AppError.exportAudioFailed, details: e);
       }
 
       final zipFile = File(
@@ -54,7 +55,7 @@ class ExportController {
           zipFile: zipFile,
         );
       } on PlatformException catch (e) {
-        throw Exception('Archiv konnte nicht erstellt werden: ${e.message}');
+        throw AppException(AppError.exportArchiveFailed, details: e);
       }
 
       return zipFile;

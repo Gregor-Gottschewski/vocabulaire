@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/services/app_exception.dart';
+import 'package:vocabulaire/services/app_exception_ui.dart';
 
 /// The [AddBoxSheet] is a modal sheet that allows the user to create a new vocabulary box.
 /// It contains text fields for the box name and description, and buttons to cancel or add the box.
@@ -76,20 +78,8 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
         VocabularyBox(name: name, description: description, vocabularies: []),
       );
       Navigator.of(context).pop();
-    } catch (e) {
-      await showCupertinoDialog(
-        context: context,
-        builder: (_) => CupertinoAlertDialog(
-          title: Text(_l10n.commonError),
-          content: Text(e.toString()),
-          actions: [
-            CupertinoDialogAction(
-              child: Text(_l10n.commonOk),
-              onPressed: () => Navigator.of(context).pop(),
-            ),
-          ],
-        ),
-      );
+    } on AppException catch (e) {
+      await context.showAppError(e);
     } finally {
       if (mounted) setState(() => _isAdding = false);
     }
