@@ -16,12 +16,6 @@
       "name": { "type": "String" }
     }
   },
-  "settingsImportError": "Échec de l'importation : {error}",
-  "@settingsImportError": {
-    "placeholders": {
-      "error": { "type": "String" }
-    }
-  },
   "settingsCardAnimations": "Animations de cartes",
 
   "addBoxTitle": "Créer une nouvelle boîte",
@@ -100,12 +94,6 @@
   "boxDetailDeleteTitle": "Supprimer la boîte",
   "boxDetailDeleteMessage": "Voulez-vous vraiment supprimer cette boîte ?",
   "boxDetailDelete": "Supprimer",
-  "boxDetailExportError": "Échec de l'exportation : {error}",
-  "@boxDetailExportError": {
-    "placeholders": {
-      "error": { "type": "String" }
-    }
-  },
   "boxDetailNotFound": "Boîte introuvable",
 
   "vocabListTitle": "Vocabulaire",
@@ -118,5 +106,19 @@
 
   "commonOk": "OK",
   "commonCancel": "Annuler",
-  "commonError": "Erreur"
+  "commonError": "Erreur",
+
+  "errorExportDirectoryFailed": "Le répertoire d'exportation n'a pas pu être créé",
+  "errorExportWriteFailed": "Les données de vocabulaire n'ont pas pu être enregistrées",
+  "errorExportAudioFailed": "Les fichiers audio n'ont pas pu être copiés",
+  "errorExportArchiveFailed": "L'archive n'a pas pu être créée",
+  "errorExportCacheFailed": "Le cache d'exportation n'a pas pu être vidé",
+  "errorImportMissingStoreFile": "Format de fichier invalide : store.json introuvable dans l'archive",
+  "errorImportInvalidFormat": "Format de fichier invalide : objet JSON attendu",
+  "errorDuplicateBoxName": "Une boîte nommée \"{name}\" existe déjà",
+  "@errorDuplicateBoxName": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
 }

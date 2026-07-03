@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/import_controller.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/services/app_exception.dart';
+import 'package:vocabulaire/services/app_exception_ui.dart';
 
 import '../controllers/box_controller.dart';
 import '../controllers/settings_controller.dart';
@@ -88,21 +90,9 @@ class _SettingsViewState extends State<SettingsView> {
           ],
         ),
       );
-    } catch (e) {
+    } on AppException catch (e) {
       if (!mounted) return;
-      await showCupertinoDialog(
-        context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-          title: Text(_l10n.commonError),
-          content: Text(_l10n.settingsImportError(e.toString())),
-          actions: [
-            CupertinoDialogAction(
-              child: Text(_l10n.commonOk),
-              onPressed: () => Navigator.of(ctx).pop(),
-            ),
-          ],
-        ),
-      );
+      await context.showAppError(e);
     } finally {
       setState(() {
         _importing = false;
