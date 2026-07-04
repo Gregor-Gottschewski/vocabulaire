@@ -12,6 +12,6 @@ class SettingsController {
 
   bool getCardAnimations() {
     final settings = _settingsBox.get('app_settings');
-    return settings?.cardAnimations ?? true;
+    return settings?.cardAnimations ?? false;
   }
 }
