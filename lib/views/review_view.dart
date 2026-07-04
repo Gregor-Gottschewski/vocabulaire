@@ -1,6 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
@@ -24,28 +25,29 @@ class ReviewView extends StatefulWidget {
 }
 
 class _ReviewViewState extends State<ReviewView> {
-  late final ReviewController reviewController;
-  final player = AudioPlayer();
+  late final ReviewController _reviewController;
+  final _settingsController = SettingsController();
+  final _player = AudioPlayer();
   late AppLocalizations _l10n;
   bool _flipped = false;
 
   @override
   void initState() {
     super.initState();
-    reviewController = ReviewController(
+    _reviewController = ReviewController(
       boxKey: widget.boxKey,
       onlyTimely: widget.onlyTimely,
       learningMethod: widget.learningMethod,
     );
-    reviewController.addListener(_onControllerUpdate);
-    reviewController.load();
+    _reviewController.addListener(_onControllerUpdate);
+    _reviewController.load();
   }
 
   @override
   void dispose() {
-    reviewController.removeListener(_onControllerUpdate);
-    reviewController.dispose();
-    player.dispose();
+    _reviewController.removeListener(_onControllerUpdate);
+    _reviewController.dispose();
+    _player.dispose();
     super.dispose();
   }
 
@@ -56,12 +58,12 @@ class _ReviewViewState extends State<ReviewView> {
   }
 
   void _onControllerUpdate() {
-    if (reviewController.box == null) {
+    if (_reviewController.box == null) {
       Navigator.of(context).pop();
       return;
     }
 
-    if (reviewController.isFinished) {
+    if (_reviewController.isFinished) {
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -75,7 +77,7 @@ class _ReviewViewState extends State<ReviewView> {
   }
 
   Widget _buildCardView() {
-    final current = reviewController.current;
+    final current = _reviewController.current;
     if (current == null) {
       return const SizedBox(
         width: double.infinity,
@@ -88,13 +90,18 @@ class _ReviewViewState extends State<ReviewView> {
     final back = current.meaning;
     final exampleText = current.example;
     final hasRecording = AppPaths.audioFile(current.id).existsSync();
+    final bool animation = _settingsController.getCardAnimations();
 
     return GestureDetector(
       onTap: () => setState(() => _flipped = !_flipped),
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 300),
-        transitionBuilder: (child, animation) =>
-            RotationTransition(turns: animation, child: child),
+        duration: animation
+            ? const Duration(milliseconds: 300)
+            : Duration.zero,
+        transitionBuilder: animation
+            ? (child, animation) =>
+                  RotationTransition(turns: animation, child: child)
+            : (child, _) => child,
         child: Container(
           key: ValueKey(_flipped),
           width: double.infinity,
@@ -183,9 +190,9 @@ class _ReviewViewState extends State<ReviewView> {
   }
 
   void _playAudio() async {
-    final current = reviewController.current;
+    final current = _reviewController.current;
     if (current == null) return;
-    await player.play(DeviceFileSource(AppPaths.audioFilePath(current.id)));
+    await _player.play(DeviceFileSource(AppPaths.audioFilePath(current.id)));
   }
 
   Widget _ratingButtons() {
@@ -199,7 +206,7 @@ class _ReviewViewState extends State<ReviewView> {
               child: CupertinoButton.filled(
                 color: CupertinoColors.destructiveRed,
                 onPressed: () => {
-                  reviewController.applyRating(Rating.again),
+                  _reviewController.applyRating(Rating.again),
                   _flipped = false,
                 },
                 padding: EdgeInsets.symmetric(vertical: 14),
@@ -220,7 +227,7 @@ class _ReviewViewState extends State<ReviewView> {
               child: CupertinoButton.filled(
                 color: CupertinoColors.systemYellow,
                 onPressed: () => {
-                  reviewController.applyRating(Rating.hard),
+                  _reviewController.applyRating(Rating.hard),
                   _flipped = false,
                 },
                 padding: EdgeInsets.symmetric(vertical: 14),
@@ -245,7 +252,7 @@ class _ReviewViewState extends State<ReviewView> {
               child: CupertinoButton.filled(
                 color: Color.fromARGB(255, 0, 100, 0),
                 onPressed: () => {
-                  reviewController.applyRating(Rating.good),
+                  _reviewController.applyRating(Rating.good),
                   _flipped = false,
                 },
                 padding: EdgeInsets.symmetric(vertical: 14),
@@ -266,7 +273,7 @@ class _ReviewViewState extends State<ReviewView> {
               child: CupertinoButton.filled(
                 color: CupertinoColors.systemGreen,
                 onPressed: () => {
-                  reviewController.applyRating(Rating.easy),
+                  _reviewController.applyRating(Rating.easy),
                   _flipped = false,
                 },
                 padding: EdgeInsets.symmetric(vertical: 14),
@@ -298,7 +305,7 @@ class _ReviewViewState extends State<ReviewView> {
               ],
             ),
             onPressed: () {
-              reviewController.skip();
+              _reviewController.skip();
               _flipped = false;
             },
           ),
@@ -309,8 +316,8 @@ class _ReviewViewState extends State<ReviewView> {
 
   @override
   Widget build(BuildContext context) {
-    final total = reviewController.length;
-    final indexDisplay = total == 0 ? 0 : (reviewController.index + 1);
+    final total = _reviewController.length;
+    final indexDisplay = total == 0 ? 0 : (_reviewController.index + 1);
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
