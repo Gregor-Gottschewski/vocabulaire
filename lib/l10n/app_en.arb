@@ -11,7 +11,6 @@
   "settingsImportBox": "Import box",
   "settingsImportSuccess": "Import successful",
   "settingsImportSuccessMessage": "Box \"{name}\" has been imported.",
-  "settingsImportError": "Import failed: {error}",
   "settingsCardAnimations": "Card animations",
 
   "addBoxTitle": "Create new box",
@@ -64,7 +63,6 @@
   "boxDetailDeleteTitle": "Delete box",
   "boxDetailDeleteMessage": "Are you sure you want to delete this box?",
   "boxDetailDelete": "Delete",
-  "boxDetailExportError": "Export failed: {error}",
   "boxDetailNotFound": "Box not found",
 
   "vocabListTitle": "Vocabulary",
@@ -77,5 +75,14 @@
 
   "commonOk": "OK",
   "commonCancel": "Cancel",
-  "commonError": "Error"
+  "commonError": "Error",
+
+  "errorExportDirectoryFailed": "Export directory could not be created",
+  "errorExportWriteFailed": "Vocabulary data could not be saved",
+  "errorExportAudioFailed": "Audio files could not be copied",
+  "errorExportArchiveFailed": "Archive could not be created",
+  "errorExportCacheFailed": "Export cache could not be cleared",
+  "errorImportMissingStoreFile": "Invalid file format: store.json not found in archive",
+  "errorImportInvalidFormat": "Invalid file format: expected a JSON object",
+  "errorDuplicateBoxName": "A box named \"{name}\" already exists"
 }

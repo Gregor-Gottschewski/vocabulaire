@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 
 class ImportController {
@@ -57,12 +58,12 @@ class ImportController {
     final store = File(join(extractedVocabularyBox, 'store.json'));
 
     if (!await store.exists()) {
-      throw Exception('Invalid file format: store.json not found in archive');
+      throw AppException(AppError.importMissingStoreFile);
     }
 
     final decoded = jsonDecode(await store.readAsString(encoding: utf8));
     if (decoded is! Map<String, dynamic>) {
-      throw Exception('Invalid file format: expected a JSON object');
+      throw AppException(AppError.importInvalidFormat);
     }
 
     return VocabularyBox.fromMap(Map<String, dynamic>.from(decoded));
@@ -76,7 +77,9 @@ class ImportController {
   static Future<Directory> _extractZip(final String path) async {
     final extractDir = Directory(
       join(AppPaths.applicationExtractDirectory.path, Uuid().v4()),
-    )..create(recursive: true);
+    );
+
+    await extractDir.create(recursive: true);
 
     await ZipFile.extractToDirectory(
       zipFile: File(path),

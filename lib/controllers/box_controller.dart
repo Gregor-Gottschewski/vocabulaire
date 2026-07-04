@@ -3,6 +3,7 @@ import 'package:fsrs/fsrs.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary.dart';
 
@@ -35,7 +36,7 @@ class BoxController {
   /// This method does not check for duplicate IDs in the vocabularies.
   void addBox(VocabularyBox box) {
     if (boxes.any((b) => b.name == box.name)) {
-      throw Exception('Box with name ${box.name} already exists');
+      throw AppException(AppError.duplicateBoxName, details: box.name);
     }
     _box.add(box);
   }
