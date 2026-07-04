@@ -78,7 +78,7 @@ class BoxController {
 
   void addVocabularyToBox(dynamic key, Vocabulary vocabulary) {
     final box = _box.get(key);
-    if (box == null) throw Exception('Box with key $key not found');
+    if (box == null) throw StateError('Box with key $key not found');
     final safeVocabulary = vocabulary.copyWith(
       id: generateUniqueId(vocabularyIDs),
     );
@@ -93,7 +93,7 @@ class BoxController {
 
   void removeVocabularyFromBox(dynamic key, String id) {
     final box = _box.get(key);
-    if (box == null) throw Exception('Box with key $key not found');
+    if (box == null) throw StateError('Box with key $key not found');
     final updated = VocabularyBox(
       name: box.name,
       description: box.description,
@@ -110,17 +110,19 @@ class BoxController {
 
   void updateVocabularyInBox(dynamic key, Vocabulary updatedVocabulary) {
     final box = _box.get(key);
-    if (box == null) throw Exception('Box with key $key not found');
+    if (box == null) throw StateError('Box with key $key not found');
 
     final full = List<Vocabulary>.from(box.vocabularies);
     final idx = full.indexWhere((v) => v.id == updatedVocabulary.id);
-    if (idx >= 0) {
-      full[idx] = updatedVocabulary;
-    } else {
-      throw Exception(
+
+    // if vocabulary not in box idx is set to -1
+    if (idx < 0) {
+      throw StateError(
         'Vocabulary with id ${updatedVocabulary.id} not found in box with key $key',
       );
     }
+
+    full[idx] = updatedVocabulary;
 
     final updated = VocabularyBox(
       name: box.name,
