@@ -62,6 +62,12 @@ class _BoxDetailWidget extends State<BoxDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final hasMatchingCards = ReviewSession.filterVocabularies(
+      widget.box.vocabularies,
+      onlyTimely: _onlyTimely,
+      method: _selectedOption,
+    ).isNotEmpty;
+
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -182,17 +188,19 @@ class _BoxDetailWidget extends State<BoxDetailView> {
                         width: double.infinity,
                         child: CupertinoButton.filled(
                           color: CupertinoColors.activeGreen,
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              CupertinoPageRoute(
-                                builder: (_) => ReviewView(
-                                  boxKey: widget.boxKey,
-                                  onlyTimely: _onlyTimely,
-                                  learningMethod: _selectedOption,
-                                ),
-                              ),
-                            );
-                          },
+                          onPressed: hasMatchingCards
+                              ? () {
+                                  Navigator.of(context).push(
+                                    CupertinoPageRoute(
+                                      builder: (_) => ReviewView(
+                                        boxKey: widget.boxKey,
+                                        onlyTimely: _onlyTimely,
+                                        learningMethod: _selectedOption,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              : null,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             mainAxisSize: MainAxisSize.min,

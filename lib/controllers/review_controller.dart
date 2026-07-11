@@ -73,48 +73,11 @@ class ReviewController extends ChangeNotifier {
     }
     _box = b;
 
-    var list = List<Vocabulary>.from(b.vocabularies);
-
-    if (onlyTimely) {
-      list = list.where((v) {
-        return Card.fromMap(v.cardData).due.compareTo(DateTime.now()) < 0;
-      }).toList();
-    }
-
-    return _applyLearningMethodFilter(list, learningMethod)..shuffle();
-  }
-
-  /// Applies the specified learning method filter to the list of vocabularies.
-  /// Following heuristics based on FSRS card properties:
-  /// - `onlyDifficult`: Cards with difficulty >= 7.0.
-  /// - `onlyNew`: Cards that have never been reviewed (step == null).
-  /// - `onlyUnstable`: Cards with stability <= 33.0.
-  ///
-  /// - [list]: The list of vocabularies to filter.
-  /// - [method]: The learning method to apply, see [LearningMethod] enum.
-  List<Vocabulary> _applyLearningMethodFilter(
-    List<Vocabulary> list,
-    LearningMethod method,
-  ) {
-    switch (method) {
-      case LearningMethod.onlyDifficult:
-        return list.where((v) {
-          final card = Card.fromMap(v.cardData);
-          return card.difficulty! >= 7.0;
-        }).toList();
-      case LearningMethod.onlyNew:
-        return list.where((v) {
-          final card = Card.fromMap(v.cardData);
-          return card.lastReview == null;
-        }).toList();
-      case LearningMethod.onlyUnstable:
-        return list.where((v) {
-          final card = Card.fromMap(v.cardData);
-          return card.stability! <= 33.0;
-        }).toList();
-      case LearningMethod.all:
-        return list;
-    }
+    return ReviewSession.filterVocabularies(
+      b.vocabularies,
+      onlyTimely: onlyTimely,
+      method: learningMethod,
+    )..shuffle();
   }
 
   /// Applies the user's rating to the current card, updates the review data, and moves to the next card.
