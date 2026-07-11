@@ -74,11 +74,13 @@ class _AddBoxSheetState extends State<AddBoxSheet> {
     setState(() => _isAdding = true);
 
     try {
-      widget.boxController.addBox(
+      final key = await widget.boxController.addBox(
         VocabularyBox(name: name, description: description, vocabularies: []),
       );
-      Navigator.of(context).pop();
+      if (!mounted) return;
+      Navigator.of(context).pop(key);
     } on AppException catch (e) {
+      if (!mounted) return;
       await context.showAppError(e);
     } finally {
       if (mounted) setState(() => _isAdding = false);

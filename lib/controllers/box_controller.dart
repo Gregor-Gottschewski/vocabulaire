@@ -34,11 +34,11 @@ class BoxController {
   /// Adds a new box to the collection.
   /// Throws an exception if a box with the same name already exists.
   /// This method does not check for duplicate IDs in the vocabularies.
-  void addBox(VocabularyBox box) {
+  Future<dynamic> addBox(VocabularyBox box) async {
     if (boxes.any((b) => b.name == box.name)) {
       throw AppException(AppError.duplicateBoxName, details: box.name);
     }
-    _box.add(box);
+    return await _box.add(box);
   }
 
   void deleteBox(dynamic key) {

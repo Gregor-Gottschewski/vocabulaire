@@ -32,10 +32,19 @@ class HomeViewWidget extends State<HomeView> {
         middle: Text(_l10n.tabBoxen),
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
-          onPressed: () {
-            showCupertinoModalPopup(
+          onPressed: () async {
+            final key = await showCupertinoModalPopup<dynamic>(
               context: context,
               builder: (context) => AddBoxSheet(boxController: _boxController),
+            );
+            if (key == null || !context.mounted) return;
+            final newBox = _boxController.getBox(key);
+            if (newBox == null) return;
+            Navigator.push(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => BoxDetailPage(box: newBox, boxKey: key),
+              ),
             );
           },
           child: const Icon(CupertinoIcons.add),

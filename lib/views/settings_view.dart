@@ -75,7 +75,9 @@ class _SettingsViewState extends State<SettingsView> {
 
       if (!mounted) return;
 
-      _boxController.addBox(importedBox);
+      await _boxController.addBox(importedBox);
+
+      if (!mounted) return;
 
       await showCupertinoDialog(
         context: context,
