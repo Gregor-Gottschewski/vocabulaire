@@ -30,6 +30,7 @@ class _ReviewViewState extends State<ReviewView> {
   final _player = AudioPlayer();
   late AppLocalizations _l10n;
   bool _flipped = false;
+  bool _wasFinished = false;
 
   @override
   void initState() {
@@ -57,13 +58,16 @@ class _ReviewViewState extends State<ReviewView> {
     _l10n = AppLocalizations.of(context)!;
   }
 
+  /// Reloads the state on change of list.
+  /// Navigates the user back if session finished.
+  /// Because this function can be called multiple times after session finish, only the first call results in back navigation.
   void _onControllerUpdate() {
-    if (_reviewController.box == null) {
-      Navigator.of(context).pop();
-      return;
-    }
+    final isFinished =
+        _reviewController.box == null || _reviewController.isFinished;
 
-    if (_reviewController.isFinished) {
+    if (isFinished) {
+      if (_wasFinished) return;
+      _wasFinished = true;
       if (!mounted) return;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -95,9 +99,7 @@ class _ReviewViewState extends State<ReviewView> {
     return GestureDetector(
       onTap: () => setState(() => _flipped = !_flipped),
       child: AnimatedSwitcher(
-        duration: animation
-            ? const Duration(milliseconds: 300)
-            : Duration.zero,
+        duration: animation ? const Duration(milliseconds: 300) : Duration.zero,
         transitionBuilder: animation
             ? (child, animation) =>
                   RotationTransition(turns: animation, child: child)
