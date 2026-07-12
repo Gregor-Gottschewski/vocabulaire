@@ -5,7 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
+import 'package:vocabulaire/services/app_exception.dart';
+import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/tts_service.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
@@ -42,6 +45,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   bool _isSaving = false;
   bool _recording = false;
   bool _isPlaying = false;
+  bool _isGeneratingTts = false;
   Duration _recordDuration = Duration.zero;
   Timer? _recordTimer;
   StreamSubscription<void>? _playerCompleteSub;
@@ -66,10 +70,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         setState(() => _isPlaying = false);
       }
     });
+
+    _backController.addListener(_onBackTextChanged);
   }
 
   @override
   void dispose() {
+    _backController.removeListener(_onBackTextChanged);
     _frontController.dispose();
     _backController.dispose();
     _descriptionController.dispose();
@@ -77,6 +84,18 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _audioPlayer.dispose();
     _playerCompleteSub?.cancel();
     super.dispose();
+  }
+
+  /// Rebuilds on every keystroke to update char counter
+  void _onBackTextChanged() {
+    if (mounted) setState(() {});
+  }
+
+  /// Returns `true` if the back text is eligible for TTS generation, `false` otherwise.
+  /// Text must have x chars with 0 < x < [TtsService.maxChars].
+  bool get _canGenerateTts {
+    final length = _backController.text.trim().length;
+    return length > 0 && length <= TtsService.maxChars;
   }
 
   @override
@@ -288,6 +307,59 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
   }
 
+  /// Generates an AI pronunciation of the back text.
+  Future<void> _generateTtsAudio() async {
+    if (!_canGenerateTts) return;
+    final text = _backController.text.trim();
+
+    if (_hasRecording) {
+      final confirmed = await showCupertinoDialog<bool>(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: Text(_l10n.editVocabOverwriteAudioTitle),
+          content: Text(_l10n.editVocabOverwriteAudioMessage),
+          actions: [
+            CupertinoDialogAction(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(_l10n.commonCancel),
+            ),
+            CupertinoDialogAction(
+              isDestructiveAction: true,
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(_l10n.editVocabOverwriteAudioConfirm),
+            ),
+          ],
+        ),
+      );
+      if (confirmed != true) return;
+    }
+
+    if (_isPlaying) {
+      await _audioPlayer.stop();
+      if (mounted) setState(() => _isPlaying = false);
+    }
+
+    setState(() => _isGeneratingTts = true);
+    try {
+      await TtsService.instance.synthesizeAndSave(
+        text: text,
+        cardId: _vocab.id,
+      );
+      await _initAudioPlayer();
+      if (mounted) {
+        setState(() {
+          _hasRecording = true;
+          _isGeneratingTts = false;
+        });
+      }
+    } on AppException catch (e) {
+      if (mounted) {
+        setState(() => _isGeneratingTts = false);
+        await context.showAppError(e);
+      }
+    }
+  }
+
   Future<void> _onPop() async {
     if (_recording) {
       await _audioRecorder.stop();
@@ -367,6 +439,23 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           textInputAction: TextInputAction.newline,
                           maxLines: 4,
                         ),
+                        const SizedBox(height: 4),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            if (!_canGenerateTts &&
+                                _backController.text.trim().isNotEmpty)
+                              Expanded(
+                                child: Text(
+                                  _l10n.editVocabTtsTooLongHint(_backController.text.trim().length),
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: CupertinoColors.systemOrange,
+                                  ),
+                                ),
+                              )
+                          ],
+                        ),
 
                         const SizedBox(height: 12),
 
@@ -418,7 +507,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                               color: _recording
                                   ? CupertinoColors.systemRed
                                   : CupertinoColors.activeBlue,
-                              onPressed: _recordAudio,
+                              onPressed: _isGeneratingTts ? null : _recordAudio,
                               child: SizedBox(
                                 width: 48,
                                 height: 48,
@@ -427,6 +516,60 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                     CupertinoIcons.mic_fill,
                                     color: CupertinoColors.white,
                                     size: 20,
+                                  ),
+                                ),
+                              ),
+                            ),
+
+                            const SizedBox(width: 8),
+
+                            Semantics(
+                              label: _l10n.editVocabGenerateAudio,
+                              child: Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  gradient:
+                                      (_canGenerateTts &&
+                                          !_recording &&
+                                          !_isGeneratingTts)
+                                      ? const LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                          colors: [
+                                            CupertinoColors.systemPurple,
+                                            CupertinoColors.systemPink,
+                                            CupertinoColors.systemOrange,
+                                          ],
+                                        )
+                                      : null,
+                                  color:
+                                      (_canGenerateTts &&
+                                          !_recording &&
+                                          !_isGeneratingTts)
+                                      ? null
+                                      : CupertinoColors.systemGrey4,
+                                ),
+                                child: CupertinoButton(
+                                  padding: EdgeInsets.zero,
+                                  borderRadius: BorderRadius.circular(30),
+                                  onPressed:
+                                      (_canGenerateTts &&
+                                          !_recording &&
+                                          !_isGeneratingTts)
+                                      ? _generateTtsAudio
+                                      : null,
+                                  child: Center(
+                                    child: _isGeneratingTts
+                                        ? const CupertinoActivityIndicator(
+                                            color: CupertinoColors.white,
+                                          )
+                                        : const Icon(
+                                            CupertinoIcons.wand_stars,
+                                            color: CupertinoColors.white,
+                                            size: 20,
+                                          ),
                                   ),
                                 ),
                               ),
@@ -448,7 +591,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             CupertinoButton(
                               padding: EdgeInsets.zero,
                               borderRadius: BorderRadius.circular(30),
-                              onPressed: _hasRecording ? _playAudio : null,
+                              onPressed: (_hasRecording && !_isGeneratingTts)
+                                  ? _playAudio
+                                  : null,
                               child: SizedBox(
                                 width: 44,
                                 height: 44,
@@ -471,7 +616,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             CupertinoButton(
                               padding: EdgeInsets.zero,
                               borderRadius: BorderRadius.circular(30),
-                              onPressed: _hasRecording ? _deleteAudio : null,
+                              onPressed: (_hasRecording && !_isGeneratingTts)
+                                  ? _deleteAudio
+                                  : null,
                               child: SizedBox(
                                 width: 44,
                                 height: 44,

@@ -14,6 +14,7 @@ class TtsService {
 
   /// Character input limit is enforced by server.
   /// Local check prevents unnecessary server request.
+  /// Current limit: `65`.
   static const maxChars = 65;
 
   final FirebaseFunctions _functions = FirebaseFunctions.instanceFor(
