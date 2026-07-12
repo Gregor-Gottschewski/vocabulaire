@@ -268,8 +268,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editVocabOverwriteAudioConfirm => 'Remplacer';
 
   @override
-  String get editVocabTtsTooLongHint =>
-      'La prononciation n\'est disponible que jusqu\'à 65 caractères';
+  String editVocabTtsTooLongHint(Object len) {
+    return 'La prononciation n\'est disponible que jusqu\'à 65 caractères. Ta saisie comporte $len caractères.';
+  }
 
   @override
   String get errorTtsEmptyText =>

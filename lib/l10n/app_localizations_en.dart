@@ -265,8 +265,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editVocabOverwriteAudioConfirm => 'Overwrite';
 
   @override
-  String get editVocabTtsTooLongHint =>
-      'Pronunciation is only available up to 65 characters';
+  String editVocabTtsTooLongHint(Object len) {
+    return 'Pronunciation is only available up to 65 characters. Your input has $len characters.';
+  }
 
   @override
   String get errorTtsEmptyText =>

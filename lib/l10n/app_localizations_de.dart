@@ -269,8 +269,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editVocabOverwriteAudioConfirm => 'Überschreiben';
 
   @override
-  String get editVocabTtsTooLongHint =>
-      'Sprachausgabe ist erst bis 65 Zeichen verfügbar';
+  String editVocabTtsTooLongHint(Object len) {
+    return 'Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat $len Zeichen.';
+  }
 
   @override
   String get errorTtsEmptyText =>

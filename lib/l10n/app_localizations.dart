@@ -571,8 +571,8 @@ abstract class AppLocalizations {
   /// No description provided for @editVocabTtsTooLongHint.
   ///
   /// In de, this message translates to:
-  /// **'Sprachausgabe ist erst bis 65 Zeichen verfügbar'**
-  String get editVocabTtsTooLongHint;
+  /// **'Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat {len} Zeichen.'**
+  String editVocabTtsTooLongHint(Object len);
 
   /// No description provided for @errorTtsEmptyText.
   ///
