@@ -256,16 +256,33 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get editVocabGenerateAudio => 'Aussprache generieren';
+
+  @override
+  String get editVocabOverwriteAudioTitle => 'Aufnahme überschreiben?';
+
+  @override
+  String get editVocabOverwriteAudioMessage =>
+      'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?';
+
+  @override
+  String get editVocabOverwriteAudioConfirm => 'Überschreiben';
+
+  @override
+  String get editVocabTtsTooLongHint =>
+      'Sprachausgabe ist erst bis 65 Zeichen verfügbar';
+
+  @override
   String get errorTtsEmptyText =>
       'Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.';
 
   @override
   String get errorTtsTextTooLong =>
-      'Der Text ist zu lang für die Sprachausgabe (maximal 65 Zeichen).';
+      'Der Text für die Sprachausgabe darf maximal 65 Zeichen lang sein.';
 
   @override
   String get errorTtsRateLimitExceeded =>
-      'Tageslimit für Sprachausgabe-Generierungen erreicht. Bitte morgen erneut versuchen.';
+      'Tageslimit für Sprachausgabe-Generierungen erreicht.';
 
   @override
   String get errorTtsNotAuthenticated =>

@@ -544,6 +544,36 @@ abstract class AppLocalizations {
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
 
+  /// No description provided for @editVocabGenerateAudio.
+  ///
+  /// In de, this message translates to:
+  /// **'Aussprache generieren'**
+  String get editVocabGenerateAudio;
+
+  /// No description provided for @editVocabOverwriteAudioTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Aufnahme überschreiben?'**
+  String get editVocabOverwriteAudioTitle;
+
+  /// No description provided for @editVocabOverwriteAudioMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?'**
+  String get editVocabOverwriteAudioMessage;
+
+  /// No description provided for @editVocabOverwriteAudioConfirm.
+  ///
+  /// In de, this message translates to:
+  /// **'Überschreiben'**
+  String get editVocabOverwriteAudioConfirm;
+
+  /// No description provided for @editVocabTtsTooLongHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprachausgabe ist erst bis 65 Zeichen verfügbar'**
+  String get editVocabTtsTooLongHint;
+
   /// No description provided for @errorTtsEmptyText.
   ///
   /// In de, this message translates to:
@@ -553,13 +583,13 @@ abstract class AppLocalizations {
   /// No description provided for @errorTtsTextTooLong.
   ///
   /// In de, this message translates to:
-  /// **'Der Text ist zu lang für die Sprachausgabe (maximal 65 Zeichen).'**
+  /// **'Der Text für die Sprachausgabe darf maximal 65 Zeichen lang sein.'**
   String get errorTtsTextTooLong;
 
   /// No description provided for @errorTtsRateLimitExceeded.
   ///
   /// In de, this message translates to:
-  /// **'Tageslimit für Sprachausgabe-Generierungen erreicht. Bitte morgen erneut versuchen.'**
+  /// **'Tageslimit für Sprachausgabe-Generierungen erreicht.'**
   String get errorTtsRateLimitExceeded;
 
   /// No description provided for @errorTtsNotAuthenticated.

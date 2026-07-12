@@ -122,6 +122,12 @@
     }
   },
 
+  "editVocabGenerateAudio": "Générer la prononciation",
+  "editVocabOverwriteAudioTitle": "Remplacer l'enregistrement ?",
+  "editVocabOverwriteAudioMessage": "Cette carte possède déjà un enregistrement audio. Le remplacer par la prononciation générée ?",
+  "editVocabOverwriteAudioConfirm": "Remplacer",
+  "editVocabTtsTooLongHint": "La prononciation n'est disponible que jusqu'à 65 caractères",
+
   "errorTtsEmptyText": "Le verso ne doit pas être vide pour générer une prononciation.",
   "errorTtsTextTooLong": "Le texte ne doit pas dépasser 65 caractères.",
   "errorTtsRateLimitExceeded": "Limite quotidienne de générations vocales atteinte.",

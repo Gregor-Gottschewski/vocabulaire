@@ -255,16 +255,33 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get editVocabGenerateAudio => 'Générer la prononciation';
+
+  @override
+  String get editVocabOverwriteAudioTitle => 'Remplacer l\'enregistrement ?';
+
+  @override
+  String get editVocabOverwriteAudioMessage =>
+      'Cette carte possède déjà un enregistrement audio. Le remplacer par la prononciation générée ?';
+
+  @override
+  String get editVocabOverwriteAudioConfirm => 'Remplacer';
+
+  @override
+  String get editVocabTtsTooLongHint =>
+      'La prononciation n\'est disponible que jusqu\'à 65 caractères';
+
+  @override
   String get errorTtsEmptyText =>
       'Le verso ne doit pas être vide pour générer une prononciation.';
 
   @override
   String get errorTtsTextTooLong =>
-      'Le texte est trop long pour la synthèse vocale (65 caractères maximum).';
+      'Le texte ne doit pas dépasser 65 caractères.';
 
   @override
   String get errorTtsRateLimitExceeded =>
-      'Limite quotidienne de générations vocales atteinte. Veuillez réessayer demain.';
+      'Limite quotidienne de générations vocales atteinte.';
 
   @override
   String get errorTtsNotAuthenticated =>
