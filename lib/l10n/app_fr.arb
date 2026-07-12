@@ -120,5 +120,11 @@
     "placeholders": {
       "name": { "type": "String" }
     }
-  }
+  },
+
+  "errorTtsEmptyText": "Le verso ne doit pas être vide pour générer une prononciation.",
+  "errorTtsTextTooLong": "Le texte ne doit pas dépasser 65 caractères.",
+  "errorTtsRateLimitExceeded": "Limite quotidienne de générations vocales atteinte.",
+  "errorTtsNotAuthenticated": "Échec de la connexion. Veuillez réessayer.",
+  "errorTtsUnknownError": "La prononciation n'a pas pu être générée. Veuillez vérifier votre connexion internet."
 }

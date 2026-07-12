@@ -543,6 +543,36 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
+
+  /// No description provided for @errorTtsEmptyText.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.'**
+  String get errorTtsEmptyText;
+
+  /// No description provided for @errorTtsTextTooLong.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Text ist zu lang für die Sprachausgabe (maximal 65 Zeichen).'**
+  String get errorTtsTextTooLong;
+
+  /// No description provided for @errorTtsRateLimitExceeded.
+  ///
+  /// In de, this message translates to:
+  /// **'Tageslimit für Sprachausgabe-Generierungen erreicht. Bitte morgen erneut versuchen.'**
+  String get errorTtsRateLimitExceeded;
+
+  /// No description provided for @errorTtsNotAuthenticated.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmeldung fehlgeschlagen. Bitte erneut versuchen.'**
+  String get errorTtsNotAuthenticated;
+
+  /// No description provided for @errorTtsUnknownError.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.'**
+  String get errorTtsUnknownError;
 }
 
 class _AppLocalizationsDelegate

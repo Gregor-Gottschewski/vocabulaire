@@ -253,4 +253,24 @@ class AppLocalizationsFr extends AppLocalizations {
   String errorDuplicateBoxName(String name) {
     return 'Une boîte nommée \"$name\" existe déjà';
   }
+
+  @override
+  String get errorTtsEmptyText =>
+      'Le verso ne doit pas être vide pour générer une prononciation.';
+
+  @override
+  String get errorTtsTextTooLong =>
+      'Le texte est trop long pour la synthèse vocale (65 caractères maximum).';
+
+  @override
+  String get errorTtsRateLimitExceeded =>
+      'Limite quotidienne de générations vocales atteinte. Veuillez réessayer demain.';
+
+  @override
+  String get errorTtsNotAuthenticated =>
+      'Échec de la connexion. Veuillez réessayer.';
+
+  @override
+  String get errorTtsUnknownError =>
+      'La prononciation n\'a pas pu être générée. Veuillez vérifier votre connexion internet.';
 }

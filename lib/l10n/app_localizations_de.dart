@@ -254,4 +254,24 @@ class AppLocalizationsDe extends AppLocalizations {
   String errorDuplicateBoxName(String name) {
     return 'Eine Box mit dem Namen \"$name\" existiert bereits';
   }
+
+  @override
+  String get errorTtsEmptyText =>
+      'Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.';
+
+  @override
+  String get errorTtsTextTooLong =>
+      'Der Text ist zu lang für die Sprachausgabe (maximal 65 Zeichen).';
+
+  @override
+  String get errorTtsRateLimitExceeded =>
+      'Tageslimit für Sprachausgabe-Generierungen erreicht. Bitte morgen erneut versuchen.';
+
+  @override
+  String get errorTtsNotAuthenticated =>
+      'Anmeldung fehlgeschlagen. Bitte erneut versuchen.';
+
+  @override
+  String get errorTtsUnknownError =>
+      'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.';
 }

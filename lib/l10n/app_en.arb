@@ -84,5 +84,11 @@
   "errorExportCacheFailed": "Export cache could not be cleared",
   "errorImportMissingStoreFile": "Invalid file format: store.json not found in archive",
   "errorImportInvalidFormat": "Invalid file format: expected a JSON object",
-  "errorDuplicateBoxName": "A box named \"{name}\" already exists"
+  "errorDuplicateBoxName": "A box named \"{name}\" already exists",
+
+  "errorTtsEmptyText": "The back side must not be empty to generate a pronunciation.",
+  "errorTtsTextTooLong": "The text must not be longer than 65 characters.",
+  "errorTtsRateLimitExceeded": "Daily limit for speech generations reached.",
+  "errorTtsNotAuthenticated": "Sign-in failed. Please try again.",
+  "errorTtsUnknownError": "The pronunciation could not be generated. Please check your internet connection."
 }
