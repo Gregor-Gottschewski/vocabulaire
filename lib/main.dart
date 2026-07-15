@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,7 +25,12 @@ void main() async {
   // once a paid Apple Developer Program membership is available. The debug
   // provider requires no paid account but must not ship in App Store builds.
   await FirebaseAppCheck.instance.activate(
-    providerApple: const AppleDebugProvider(),
+    providerApple: kReleaseMode
+        ? (throw UnsupportedError(
+            'AppleDebugProvider must not ship in release builds. Configure '
+            'AppleAppAttestProvider/AppleDeviceCheckProvider before release.',
+          ))
+        : const AppleDebugProvider(),
   );
   unawaited(AuthService.instance.ensureSignedIn());
 
