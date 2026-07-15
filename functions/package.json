@@ -10,7 +10,7 @@
     "logs": "firebase functions:log"
   },
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "main": "lib/index.js",
   "dependencies": {
@@ -22,8 +22,11 @@
   },
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.27",
-    "@types/node": "^20.0.0",
-    "typescript": "^7.0.2"
+    "@types/node": "^22.0.0",
+    "typescript": "^5.7.0"
   },
-  "private": true
+  "private": true,
+  "optionalDependencies": {
+    "@ffmpeg-installer/darwin-x64": "^4.1.0"
+  }
 }
