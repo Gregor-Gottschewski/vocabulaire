@@ -77,17 +77,19 @@ class BoxController {
         .toList();
   }
 
+  /// Adds the given [Vocabulary] to the box indicated by the given [key].
   void addVocabularyToBox(dynamic key, Vocabulary vocabulary) {
+    if (vocabularyIDs.contains(vocabulary.id)) {
+      throw StateError('Vocabulary with id ${vocabulary.id} already exists');
+    }
+
     final box = _box.get(key);
     if (box == null) throw StateError('Box with key $key not found');
-    final safeVocabulary = vocabulary.copyWith(
-      id: generateUniqueId(vocabularyIDs),
-    );
     final updated = VocabularyBox(
       name: box.name,
       description: box.description,
       vocabularies: List<Vocabulary>.from(box.vocabularies)
-        ..add(safeVocabulary),
+        ..add(vocabulary),
     );
     _box.put(key, updated);
   }
