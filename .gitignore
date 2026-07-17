@@ -3,6 +3,7 @@
 *.log
 *.pyc
 *.swp
+*.backup
 .DS_Store
 .atom/
 .build/
@@ -11,6 +12,15 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
+
+# Secrets / environment
+.env
+.env.*
+firebase-debug.log
+.firebase/
+
+# Dependencies
+node_modules/
 
 # IntelliJ related
 *.iml
