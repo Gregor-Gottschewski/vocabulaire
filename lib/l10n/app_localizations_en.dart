@@ -223,6 +223,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonError => 'Error';
 
   @override
+  String get commonNext => 'Next';
+
+  @override
   String get errorExportDirectoryFailed =>
       'Export directory could not be created';
 

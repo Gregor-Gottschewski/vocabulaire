@@ -223,6 +223,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get commonError => 'Erreur';
 
   @override
+  String get commonNext => 'Suivant';
+
+  @override
   String get errorExportDirectoryFailed =>
       'Le répertoire d\'exportation n\'a pas pu être créé';
 

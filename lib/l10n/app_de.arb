@@ -107,6 +107,7 @@
   "commonOk": "OK",
   "commonCancel": "Abbrechen",
   "commonError": "Fehler",
+  "commonNext": "Weiter",
 
   "errorExportDirectoryFailed": "Exportverzeichnis konnte nicht erstellt werden",
   "errorExportWriteFailed": "Vokabeldaten konnten nicht gespeichert werden",

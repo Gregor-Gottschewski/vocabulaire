@@ -107,6 +107,7 @@
   "commonOk": "OK",
   "commonCancel": "Annuler",
   "commonError": "Erreur",
+  "commonNext": "Suivant",
 
   "errorExportDirectoryFailed": "Le répertoire d'exportation n'a pas pu être créé",
   "errorExportWriteFailed": "Les données de vocabulaire n'ont pas pu être enregistrées",

@@ -496,6 +496,12 @@ abstract class AppLocalizations {
   /// **'Fehler'**
   String get commonError;
 
+  /// No description provided for @commonNext.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiter'**
+  String get commonNext;
+
   /// No description provided for @errorExportDirectoryFailed.
   ///
   /// In de, this message translates to:

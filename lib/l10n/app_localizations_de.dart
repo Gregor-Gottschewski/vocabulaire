@@ -224,6 +224,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get commonError => 'Fehler';
 
   @override
+  String get commonNext => 'Weiter';
+
+  @override
   String get errorExportDirectoryFailed =>
       'Exportverzeichnis konnte nicht erstellt werden';
 

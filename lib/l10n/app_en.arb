@@ -76,6 +76,7 @@
   "commonOk": "OK",
   "commonCancel": "Cancel",
   "commonError": "Error",
+  "commonNext": "Next",
 
   "errorExportDirectoryFailed": "Export directory could not be created",
   "errorExportWriteFailed": "Vocabulary data could not be saved",
