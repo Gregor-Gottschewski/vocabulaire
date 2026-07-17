@@ -84,5 +84,27 @@
   "errorExportCacheFailed": "Export cache could not be cleared",
   "errorImportMissingStoreFile": "Invalid file format: store.json not found in archive",
   "errorImportInvalidFormat": "Invalid file format: expected a JSON object",
-  "errorDuplicateBoxName": "A box named \"{name}\" already exists"
+  "errorDuplicateBoxName": "A box named \"{name}\" already exists",
+
+  "languageGerman": "German",
+  "languageEnglish": "English",
+  "languageFrench": "French",
+  "languageSpanish": "Spanish",
+  "languageItalian": "Italian",
+  "languagePortuguese": "Portuguese",
+  "languageDutch": "Dutch",
+  "languageRussian": "Russian",
+  "languagePolish": "Polish",
+  "languageTurkish": "Turkish",
+  "languageChinese": "Chinese",
+  "languageJapanese": "Japanese",
+  "languageDanish": "Danish",
+  "languageCzech": "Czech",
+  "languageHungarian": "Hungarian",
+  "languageKorean": "Korean",
+
+  "boxTypeVocabularyTitle": "Vocabulary box",
+  "boxTypeVocabularySubtitle": "For learning the vocabulary of a language.",
+  "boxTypeFlashcardTitle": "Flashcard box",
+  "boxTypeFlashcardSubtitle": "For any kind of question-and-answer cards."
 }

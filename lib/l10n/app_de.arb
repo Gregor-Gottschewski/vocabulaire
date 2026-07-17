@@ -120,5 +120,27 @@
     "placeholders": {
       "name": { "type": "String" }
     }
-  }
+  },
+
+  "languageGerman": "Deutsch",
+  "languageEnglish": "Englisch",
+  "languageFrench": "Französisch",
+  "languageSpanish": "Spanisch",
+  "languageItalian": "Italienisch",
+  "languagePortuguese": "Portugiesisch",
+  "languageDutch": "Niederländisch",
+  "languageRussian": "Russisch",
+  "languagePolish": "Polnisch",
+  "languageTurkish": "Türkisch",
+  "languageChinese": "Chinesisch",
+  "languageJapanese": "Japanisch",
+  "languageDanish": "Dänisch",
+  "languageCzech": "Tschechisch",
+  "languageHungarian": "Ungarisch",
+  "languageKorean": "Koreanisch",
+
+  "boxTypeVocabularyTitle": "Vokabelbox",
+  "boxTypeVocabularySubtitle": "Für das Vokabellernen einer Sprache.",
+  "boxTypeFlashcardTitle": "Karteikartenbox",
+  "boxTypeFlashcardSubtitle": "Für beliebige Frage-Antwort-Karten."
 }

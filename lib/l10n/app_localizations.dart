@@ -543,6 +543,126 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
+
+  /// No description provided for @languageGerman.
+  ///
+  /// In de, this message translates to:
+  /// **'Deutsch'**
+  String get languageGerman;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In de, this message translates to:
+  /// **'Englisch'**
+  String get languageEnglish;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In de, this message translates to:
+  /// **'Französisch'**
+  String get languageFrench;
+
+  /// No description provided for @languageSpanish.
+  ///
+  /// In de, this message translates to:
+  /// **'Spanisch'**
+  String get languageSpanish;
+
+  /// No description provided for @languageItalian.
+  ///
+  /// In de, this message translates to:
+  /// **'Italienisch'**
+  String get languageItalian;
+
+  /// No description provided for @languagePortuguese.
+  ///
+  /// In de, this message translates to:
+  /// **'Portugiesisch'**
+  String get languagePortuguese;
+
+  /// No description provided for @languageDutch.
+  ///
+  /// In de, this message translates to:
+  /// **'Niederländisch'**
+  String get languageDutch;
+
+  /// No description provided for @languageRussian.
+  ///
+  /// In de, this message translates to:
+  /// **'Russisch'**
+  String get languageRussian;
+
+  /// No description provided for @languagePolish.
+  ///
+  /// In de, this message translates to:
+  /// **'Polnisch'**
+  String get languagePolish;
+
+  /// No description provided for @languageTurkish.
+  ///
+  /// In de, this message translates to:
+  /// **'Türkisch'**
+  String get languageTurkish;
+
+  /// No description provided for @languageChinese.
+  ///
+  /// In de, this message translates to:
+  /// **'Chinesisch'**
+  String get languageChinese;
+
+  /// No description provided for @languageJapanese.
+  ///
+  /// In de, this message translates to:
+  /// **'Japanisch'**
+  String get languageJapanese;
+
+  /// No description provided for @languageDanish.
+  ///
+  /// In de, this message translates to:
+  /// **'Dänisch'**
+  String get languageDanish;
+
+  /// No description provided for @languageCzech.
+  ///
+  /// In de, this message translates to:
+  /// **'Tschechisch'**
+  String get languageCzech;
+
+  /// No description provided for @languageHungarian.
+  ///
+  /// In de, this message translates to:
+  /// **'Ungarisch'**
+  String get languageHungarian;
+
+  /// No description provided for @languageKorean.
+  ///
+  /// In de, this message translates to:
+  /// **'Koreanisch'**
+  String get languageKorean;
+
+  /// No description provided for @boxTypeVocabularyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabelbox'**
+  String get boxTypeVocabularyTitle;
+
+  /// No description provided for @boxTypeVocabularySubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Für das Vokabellernen einer Sprache.'**
+  String get boxTypeVocabularySubtitle;
+
+  /// No description provided for @boxTypeFlashcardTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Karteikartenbox'**
+  String get boxTypeFlashcardTitle;
+
+  /// No description provided for @boxTypeFlashcardSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Für beliebige Frage-Antwort-Karten.'**
+  String get boxTypeFlashcardSubtitle;
 }
 
 class _AppLocalizationsDelegate

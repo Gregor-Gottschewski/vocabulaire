@@ -250,4 +250,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorDuplicateBoxName(String name) {
     return 'A box named \"$name\" already exists';
   }
+
+  @override
+  String get languageGerman => 'German';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageFrench => 'French';
+
+  @override
+  String get languageSpanish => 'Spanish';
+
+  @override
+  String get languageItalian => 'Italian';
+
+  @override
+  String get languagePortuguese => 'Portuguese';
+
+  @override
+  String get languageDutch => 'Dutch';
+
+  @override
+  String get languageRussian => 'Russian';
+
+  @override
+  String get languagePolish => 'Polish';
+
+  @override
+  String get languageTurkish => 'Turkish';
+
+  @override
+  String get languageChinese => 'Chinese';
+
+  @override
+  String get languageJapanese => 'Japanese';
+
+  @override
+  String get languageDanish => 'Danish';
+
+  @override
+  String get languageCzech => 'Czech';
+
+  @override
+  String get languageHungarian => 'Hungarian';
+
+  @override
+  String get languageKorean => 'Korean';
+
+  @override
+  String get boxTypeVocabularyTitle => 'Vocabulary box';
+
+  @override
+  String get boxTypeVocabularySubtitle =>
+      'For learning the vocabulary of a language.';
+
+  @override
+  String get boxTypeFlashcardTitle => 'Flashcard box';
+
+  @override
+  String get boxTypeFlashcardSubtitle =>
+      'For any kind of question-and-answer cards.';
 }

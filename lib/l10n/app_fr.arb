@@ -120,5 +120,27 @@
     "placeholders": {
       "name": { "type": "String" }
     }
-  }
+  },
+
+  "languageGerman": "Allemand",
+  "languageEnglish": "Anglais",
+  "languageFrench": "Français",
+  "languageSpanish": "Espagnol",
+  "languageItalian": "Italien",
+  "languagePortuguese": "Portugais",
+  "languageDutch": "Néerlandais",
+  "languageRussian": "Russe",
+  "languagePolish": "Polonais",
+  "languageTurkish": "Turc",
+  "languageChinese": "Chinois",
+  "languageJapanese": "Japonais",
+  "languageDanish": "Danois",
+  "languageCzech": "Tchèque",
+  "languageHungarian": "Hongrois",
+  "languageKorean": "Coréen",
+
+  "boxTypeVocabularyTitle": "Boîte de vocabulaire",
+  "boxTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue.",
+  "boxTypeFlashcardTitle": "Boîte de cartes",
+  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse."
 }
