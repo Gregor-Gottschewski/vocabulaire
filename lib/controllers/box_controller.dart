@@ -83,9 +83,7 @@ class BoxController {
     final safeVocabulary = vocabulary.copyWith(
       id: generateUniqueId(vocabularyIDs),
     );
-    final updated = VocabularyBox(
-      name: box.name,
-      description: box.description,
+    final updated = box.copyWith(
       vocabularies: List<Vocabulary>.from(box.vocabularies)
         ..add(safeVocabulary),
     );
@@ -95,9 +93,7 @@ class BoxController {
   void removeVocabularyFromBox(dynamic key, String id) {
     final box = _box.get(key);
     if (box == null) throw StateError('Box with key $key not found');
-    final updated = VocabularyBox(
-      name: box.name,
-      description: box.description,
+    final updated = box.copyWith(
       vocabularies: List<Vocabulary>.from(box.vocabularies)
         ..removeWhere((v) => v.id == id),
     );
@@ -125,11 +121,7 @@ class BoxController {
 
     full[idx] = updatedVocabulary;
 
-    final updated = VocabularyBox(
-      name: box.name,
-      description: box.description,
-      vocabularies: full,
-    );
+    final updated = box.copyWith(vocabularies: full);
     _box.put(key, updated);
   }
 
