@@ -35,9 +35,8 @@ class ColorSwatchPicker extends StatelessWidget {
         ),
         const SizedBox(height: 12.0),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            for (final option in options)
+            for (final option in options) ...[
               GestureDetector(
                 onTap: () => onChanged(option),
                 child: _ColorSwatch(
@@ -45,6 +44,8 @@ class ColorSwatchPicker extends StatelessWidget {
                   selected: option == selected,
                 ),
               ),
+              const SizedBox(width: 16.0),
+            ],
           ],
         ),
       ],
