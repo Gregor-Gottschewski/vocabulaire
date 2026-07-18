@@ -135,13 +135,13 @@
   "languageKorean": "Coréen",
 
   "boxTypeVocabularyTitle": "Boîte de vocabulaire",
-  "boxTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue.",
+  "boxTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue, avec des fonctionnalités supplémentaires.",
   "boxTypeFlashcardTitle": "Boîte de cartes",
-  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse.",
+  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.",
 
   "createBoxNavTitle": "Nouvelle boîte",
   "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
-  "createBoxTypeSubtitle": "Choisis un type.",
+  "createBoxTypeSubtitle": "Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.",
   "createBoxIconEditTitle": "Changer l'icône",
   "createBoxIconEditPlaceholder": "Saisir un emoji",
   "createBoxTitleLabel": "Titre",

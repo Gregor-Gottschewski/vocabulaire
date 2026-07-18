@@ -295,14 +295,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get boxTypeVocabularySubtitle =>
-      'Pour apprendre le vocabulaire d\'une langue.';
+      'Pour apprendre le vocabulaire d\'une langue, avec des fonctionnalités supplémentaires.';
 
   @override
   String get boxTypeFlashcardTitle => 'Boîte de cartes';
 
   @override
   String get boxTypeFlashcardSubtitle =>
-      'Pour toutes sortes de cartes question-réponse.';
+      'Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.';
 
   @override
   String get createBoxNavTitle => 'Nouvelle boîte';
@@ -311,7 +311,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get createBoxTypeTitle => 'Quel type de boîte veux-tu créer ?';
 
   @override
-  String get createBoxTypeSubtitle => 'Choisis un type.';
+  String get createBoxTypeSubtitle =>
+      'Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.';
 
   @override
   String get createBoxIconEditTitle => 'Changer l\'icône';

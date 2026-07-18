@@ -99,13 +99,13 @@
   "languageKorean": "Korean",
 
   "boxTypeVocabularyTitle": "Vocabulary box",
-  "boxTypeVocabularySubtitle": "For learning the vocabulary of a language.",
+  "boxTypeVocabularySubtitle": "For learning the vocabulary of a language, with additional features.",
   "boxTypeFlashcardTitle": "Flashcard box",
-  "boxTypeFlashcardSubtitle": "For any kind of question-and-answer cards.",
+  "boxTypeFlashcardSubtitle": "For any kind of question-and-answer cards. All the basic features included.",
 
   "createBoxNavTitle": "New box",
   "createBoxTypeTitle": "What kind of box do you want to create?",
-  "createBoxTypeSubtitle": "Choose a type.",
+  "createBoxTypeSubtitle": "Choose a type for the new box. The type can't be changed later.",
   "createBoxIconEditTitle": "Change icon",
   "createBoxIconEditPlaceholder": "Enter emoji",
   "createBoxTitleLabel": "Title",

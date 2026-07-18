@@ -135,13 +135,13 @@
   "languageKorean": "Koreanisch",
 
   "boxTypeVocabularyTitle": "Vokabelbox",
-  "boxTypeVocabularySubtitle": "Für das Vokabellernen einer Sprache.",
+  "boxTypeVocabularySubtitle": "Für das Vokabellernen einer Sprache mit zusätzlichen Funktionalitäten.",
   "boxTypeFlashcardTitle": "Karteikartenbox",
-  "boxTypeFlashcardSubtitle": "Für beliebige Frage-Antwort-Karten.",
+  "boxTypeFlashcardSubtitle": "Für beliebige Frage-Antwort-Karten. Alle Grundfunktionalitäten an Bord.",
 
   "createBoxNavTitle": "Neue Box",
   "createBoxTypeTitle": "Was für eine Box soll erstellt werden?",
-  "createBoxTypeSubtitle": "Wähle einen Typ.",
+  "createBoxTypeSubtitle": "Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.",
   "createBoxIconEditTitle": "Icon ändern",
   "createBoxIconEditPlaceholder": "Emoji eingeben",
   "createBoxTitleLabel": "Titel",

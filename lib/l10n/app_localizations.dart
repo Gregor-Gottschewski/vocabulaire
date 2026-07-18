@@ -625,7 +625,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxTypeVocabularySubtitle.
   ///
   /// In de, this message translates to:
-  /// **'Für das Vokabellernen einer Sprache.'**
+  /// **'Für das Vokabellernen einer Sprache mit zusätzlichen Funktionalitäten.'**
   String get boxTypeVocabularySubtitle;
 
   /// No description provided for @boxTypeFlashcardTitle.
@@ -637,7 +637,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxTypeFlashcardSubtitle.
   ///
   /// In de, this message translates to:
-  /// **'Für beliebige Frage-Antwort-Karten.'**
+  /// **'Für beliebige Frage-Antwort-Karten. Alle Grundfunktionalitäten an Bord.'**
   String get boxTypeFlashcardSubtitle;
 
   /// No description provided for @createBoxNavTitle.
@@ -655,7 +655,7 @@ abstract class AppLocalizations {
   /// No description provided for @createBoxTypeSubtitle.
   ///
   /// In de, this message translates to:
-  /// **'Wähle einen Typ.'**
+  /// **'Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.'**
   String get createBoxTypeSubtitle;
 
   /// No description provided for @createBoxIconEditTitle.
