@@ -38,21 +38,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsCardAnimations => 'Card animations';
 
   @override
-  String get addBoxTitle => 'Create new box';
-
-  @override
-  String get addBoxNameLabel => 'Box name';
-
-  @override
-  String get addBoxDescriptionLabel => 'Description (optional)';
-
-  @override
-  String get addBoxButton => 'Add';
-
-  @override
-  String get addBoxNameEmpty => 'Name must not be empty.';
-
-  @override
   String get editVocabNew => 'New vocabulary';
 
   @override
@@ -223,6 +208,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get commonError => 'Error';
 
   @override
+  String get commonNext => 'Next';
+
+  @override
   String get errorExportDirectoryFailed =>
       'Export directory could not be created';
 
@@ -287,4 +275,133 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorTtsUnknownError =>
       'The pronunciation could not be generated. Please check your internet connection.';
+
+  @override
+  String get languageGerman => 'German';
+
+  @override
+  String get languageEnglish => 'English';
+
+  @override
+  String get languageFrench => 'French';
+
+  @override
+  String get languageSpanish => 'Spanish';
+
+  @override
+  String get languageItalian => 'Italian';
+
+  @override
+  String get languagePortuguese => 'Portuguese';
+
+  @override
+  String get languageDutch => 'Dutch';
+
+  @override
+  String get languageRussian => 'Russian';
+
+  @override
+  String get languagePolish => 'Polish';
+
+  @override
+  String get languageTurkish => 'Turkish';
+
+  @override
+  String get languageChinese => 'Chinese';
+
+  @override
+  String get languageJapanese => 'Japanese';
+
+  @override
+  String get languageDanish => 'Danish';
+
+  @override
+  String get languageCzech => 'Czech';
+
+  @override
+  String get languageHungarian => 'Hungarian';
+
+  @override
+  String get languageKorean => 'Korean';
+
+  @override
+  String get boxTypeVocabularyTitle => 'Vocabulary box';
+
+  @override
+  String get boxTypeVocabularySubtitle =>
+      'For learning the vocabulary of a language, with additional features.';
+
+  @override
+  String get boxTypeFlashcardTitle => 'Flashcard box';
+
+  @override
+  String get boxTypeFlashcardSubtitle =>
+      'For any kind of question-and-answer cards. All the basic features included.';
+
+  @override
+  String get createBoxNavTitle => 'New box';
+
+  @override
+  String get createBoxTypeTitle => 'What kind of box do you want to create?';
+
+  @override
+  String get createBoxTypeSubtitle =>
+      'Choose a type for the new box. The type can\'t be changed later.';
+
+  @override
+  String get createBoxTypeImportSubtitle =>
+      'Import a box with all its vocabulary and audio files.';
+
+  @override
+  String get createBoxIconEditTitle => 'Change icon';
+
+  @override
+  String get createBoxIconEditPlaceholder => 'Enter emoji';
+
+  @override
+  String get createBoxTitleLabel => 'Title';
+
+  @override
+  String get createBoxTitleHint => 'Box name';
+
+  @override
+  String get createBoxDescriptionLabel => 'Description (optional)';
+
+  @override
+  String get createBoxDescriptionHint => 'Short description';
+
+  @override
+  String get createBoxNameEmpty => 'Name must not be empty.';
+
+  @override
+  String get createBoxSourceLanguageLabel =>
+      'Source language - what you already know';
+
+  @override
+  String get createBoxTargetLanguageLabel =>
+      'Target language - what you\'re learning';
+
+  @override
+  String get createBoxSourceLanguagePickerTitle => 'Choose source language';
+
+  @override
+  String get createBoxTargetLanguagePickerTitle => 'Choose target language';
+
+  @override
+  String get createBoxColorTitle => 'Color';
+
+  @override
+  String get createBoxFinish => 'Done';
+
+  @override
+  String get languageSearchPlaceholder => 'Search';
+
+  @override
+  String get languageCustomOption => 'Custom...';
+
+  @override
+  String get languageCustomTitle => 'Custom language';
+
+  @override
+  String get languageCustomPlaceholder => 'Enter language';
 }
