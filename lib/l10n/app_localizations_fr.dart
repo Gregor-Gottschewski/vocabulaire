@@ -38,21 +38,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsCardAnimations => 'Animations de cartes';
 
   @override
-  String get addBoxTitle => 'Créer une nouvelle boîte';
-
-  @override
-  String get addBoxNameLabel => 'Nom de la boîte';
-
-  @override
-  String get addBoxDescriptionLabel => 'Description (optionnel)';
-
-  @override
-  String get addBoxButton => 'Ajouter';
-
-  @override
-  String get addBoxNameEmpty => 'Le nom ne peut pas être vide.';
-
-  @override
   String get editVocabNew => 'Nouveau vocabulaire';
 
   @override
@@ -318,4 +303,66 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get boxTypeFlashcardSubtitle =>
       'Pour toutes sortes de cartes question-réponse.';
+
+  @override
+  String get createBoxNavTitle => 'Nouvelle boîte';
+
+  @override
+  String get createBoxTypeTitle => 'Quel type de boîte veux-tu créer ?';
+
+  @override
+  String get createBoxTypeSubtitle => 'Choisis un type.';
+
+  @override
+  String get createBoxIconEditTitle => 'Changer l\'icône';
+
+  @override
+  String get createBoxIconEditPlaceholder => 'Saisir un emoji';
+
+  @override
+  String get createBoxTitleLabel => 'Titre';
+
+  @override
+  String get createBoxTitleHint => 'Nom de la boîte';
+
+  @override
+  String get createBoxDescriptionLabel => 'Description (optionnel)';
+
+  @override
+  String get createBoxDescriptionHint => 'Courte description';
+
+  @override
+  String get createBoxNameEmpty => 'Le nom ne peut pas être vide.';
+
+  @override
+  String get createBoxSourceLanguageLabel =>
+      'Langue source - celle que tu connais déjà';
+
+  @override
+  String get createBoxTargetLanguageLabel =>
+      'Langue cible - celle que tu apprends';
+
+  @override
+  String get createBoxSourceLanguagePickerTitle => 'Choisir la langue source';
+
+  @override
+  String get createBoxTargetLanguagePickerTitle => 'Choisir la langue cible';
+
+  @override
+  String get createBoxColorTitle => 'Couleur';
+
+  @override
+  String get createBoxFinish => 'Terminé';
+
+  @override
+  String get languageSearchPlaceholder => 'Rechercher';
+
+  @override
+  String get languageCustomOption => 'Personnalisé...';
+
+  @override
+  String get languageCustomTitle => 'Langue personnalisée';
+
+  @override
+  String get languageCustomPlaceholder => 'Saisir une langue';
 }

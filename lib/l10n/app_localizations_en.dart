@@ -38,21 +38,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsCardAnimations => 'Card animations';
 
   @override
-  String get addBoxTitle => 'Create new box';
-
-  @override
-  String get addBoxNameLabel => 'Box name';
-
-  @override
-  String get addBoxDescriptionLabel => 'Description (optional)';
-
-  @override
-  String get addBoxButton => 'Add';
-
-  @override
-  String get addBoxNameEmpty => 'Name must not be empty.';
-
-  @override
   String get editVocabNew => 'New vocabulary';
 
   @override
@@ -315,4 +300,66 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get boxTypeFlashcardSubtitle =>
       'For any kind of question-and-answer cards.';
+
+  @override
+  String get createBoxNavTitle => 'New box';
+
+  @override
+  String get createBoxTypeTitle => 'What kind of box do you want to create?';
+
+  @override
+  String get createBoxTypeSubtitle => 'Choose a type.';
+
+  @override
+  String get createBoxIconEditTitle => 'Change icon';
+
+  @override
+  String get createBoxIconEditPlaceholder => 'Enter emoji';
+
+  @override
+  String get createBoxTitleLabel => 'Title';
+
+  @override
+  String get createBoxTitleHint => 'Box name';
+
+  @override
+  String get createBoxDescriptionLabel => 'Description (optional)';
+
+  @override
+  String get createBoxDescriptionHint => 'Short description';
+
+  @override
+  String get createBoxNameEmpty => 'Name must not be empty.';
+
+  @override
+  String get createBoxSourceLanguageLabel =>
+      'Source language - what you already know';
+
+  @override
+  String get createBoxTargetLanguageLabel =>
+      'Target language - what you\'re learning';
+
+  @override
+  String get createBoxSourceLanguagePickerTitle => 'Choose source language';
+
+  @override
+  String get createBoxTargetLanguagePickerTitle => 'Choose target language';
+
+  @override
+  String get createBoxColorTitle => 'Color';
+
+  @override
+  String get createBoxFinish => 'Done';
+
+  @override
+  String get languageSearchPlaceholder => 'Search';
+
+  @override
+  String get languageCustomOption => 'Custom...';
+
+  @override
+  String get languageCustomTitle => 'Custom language';
+
+  @override
+  String get languageCustomPlaceholder => 'Enter language';
 }

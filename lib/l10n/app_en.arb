@@ -13,12 +13,6 @@
   "settingsImportSuccessMessage": "Box \"{name}\" has been imported.",
   "settingsCardAnimations": "Card animations",
 
-  "addBoxTitle": "Create new box",
-  "addBoxNameLabel": "Box name",
-  "addBoxDescriptionLabel": "Description (optional)",
-  "addBoxButton": "Add",
-  "addBoxNameEmpty": "Name must not be empty.",
-
   "editVocabNew": "New vocabulary",
   "editVocabEdit": "Edit vocabulary",
   "editVocabFront": "Front",
@@ -107,5 +101,27 @@
   "boxTypeVocabularyTitle": "Vocabulary box",
   "boxTypeVocabularySubtitle": "For learning the vocabulary of a language.",
   "boxTypeFlashcardTitle": "Flashcard box",
-  "boxTypeFlashcardSubtitle": "For any kind of question-and-answer cards."
+  "boxTypeFlashcardSubtitle": "For any kind of question-and-answer cards.",
+
+  "createBoxNavTitle": "New box",
+  "createBoxTypeTitle": "What kind of box do you want to create?",
+  "createBoxTypeSubtitle": "Choose a type.",
+  "createBoxIconEditTitle": "Change icon",
+  "createBoxIconEditPlaceholder": "Enter emoji",
+  "createBoxTitleLabel": "Title",
+  "createBoxTitleHint": "Box name",
+  "createBoxDescriptionLabel": "Description (optional)",
+  "createBoxDescriptionHint": "Short description",
+  "createBoxNameEmpty": "Name must not be empty.",
+  "createBoxSourceLanguageLabel": "Source language - what you already know",
+  "createBoxTargetLanguageLabel": "Target language - what you're learning",
+  "createBoxSourceLanguagePickerTitle": "Choose source language",
+  "createBoxTargetLanguagePickerTitle": "Choose target language",
+  "createBoxColorTitle": "Color",
+  "createBoxFinish": "Done",
+
+  "languageSearchPlaceholder": "Search",
+  "languageCustomOption": "Custom...",
+  "languageCustomTitle": "Custom language",
+  "languageCustomPlaceholder": "Enter language"
 }

@@ -18,12 +18,6 @@
   },
   "settingsCardAnimations": "Animations de cartes",
 
-  "addBoxTitle": "Créer une nouvelle boîte",
-  "addBoxNameLabel": "Nom de la boîte",
-  "addBoxDescriptionLabel": "Description (optionnel)",
-  "addBoxButton": "Ajouter",
-  "addBoxNameEmpty": "Le nom ne peut pas être vide.",
-
   "editVocabNew": "Nouveau vocabulaire",
   "editVocabEdit": "Modifier le vocabulaire",
   "editVocabFront": "Recto",
@@ -143,5 +137,27 @@
   "boxTypeVocabularyTitle": "Boîte de vocabulaire",
   "boxTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue.",
   "boxTypeFlashcardTitle": "Boîte de cartes",
-  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse."
+  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse.",
+
+  "createBoxNavTitle": "Nouvelle boîte",
+  "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
+  "createBoxTypeSubtitle": "Choisis un type.",
+  "createBoxIconEditTitle": "Changer l'icône",
+  "createBoxIconEditPlaceholder": "Saisir un emoji",
+  "createBoxTitleLabel": "Titre",
+  "createBoxTitleHint": "Nom de la boîte",
+  "createBoxDescriptionLabel": "Description (optionnel)",
+  "createBoxDescriptionHint": "Courte description",
+  "createBoxNameEmpty": "Le nom ne peut pas être vide.",
+  "createBoxSourceLanguageLabel": "Langue source - celle que tu connais déjà",
+  "createBoxTargetLanguageLabel": "Langue cible - celle que tu apprends",
+  "createBoxSourceLanguagePickerTitle": "Choisir la langue source",
+  "createBoxTargetLanguagePickerTitle": "Choisir la langue cible",
+  "createBoxColorTitle": "Couleur",
+  "createBoxFinish": "Terminé",
+
+  "languageSearchPlaceholder": "Rechercher",
+  "languageCustomOption": "Personnalisé...",
+  "languageCustomTitle": "Langue personnalisée",
+  "languageCustomPlaceholder": "Saisir une langue"
 }
