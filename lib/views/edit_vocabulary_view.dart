@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
+import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
@@ -523,57 +524,58 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
                             const SizedBox(width: 8),
 
-                            Semantics(
-                              label: _l10n.editVocabGenerateAudio,
-                              child: Container(
-                                width: 48,
-                                height: 48,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  gradient:
-                                      (_canGenerateTts &&
-                                          !_recording &&
-                                          !_isGeneratingTts)
-                                      ? const LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                          colors: [
-                                            CupertinoColors.systemPurple,
-                                            CupertinoColors.systemPink,
-                                            CupertinoColors.systemOrange,
-                                          ],
-                                        )
-                                      : null,
-                                  color:
-                                      (_canGenerateTts &&
-                                          !_recording &&
-                                          !_isGeneratingTts)
-                                      ? null
-                                      : CupertinoColors.systemGrey4,
-                                ),
-                                child: CupertinoButton(
-                                  padding: EdgeInsets.zero,
-                                  borderRadius: BorderRadius.circular(30),
-                                  onPressed:
-                                      (_canGenerateTts &&
-                                          !_recording &&
-                                          !_isGeneratingTts)
-                                      ? _generateTtsAudio
-                                      : null,
-                                  child: Center(
-                                    child: _isGeneratingTts
-                                        ? const CupertinoActivityIndicator(
-                                            color: CupertinoColors.white,
+                            if (_controller.getBox(widget.boxKey)!.boxType == BoxType.vocabulary)
+                              Semantics(
+                                label: _l10n.editVocabGenerateAudio,
+                                child: Container(
+                                  width: 48,
+                                  height: 48,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient:
+                                        (_canGenerateTts &&
+                                            !_recording &&
+                                            !_isGeneratingTts)
+                                        ? const LinearGradient(
+                                            begin: Alignment.topLeft,
+                                            end: Alignment.bottomRight,
+                                            colors: [
+                                              CupertinoColors.systemPurple,
+                                              CupertinoColors.systemPink,
+                                              CupertinoColors.systemOrange,
+                                            ],
                                           )
-                                        : const Icon(
-                                            CupertinoIcons.wand_stars,
-                                            color: CupertinoColors.white,
-                                            size: 20,
-                                          ),
+                                        : null,
+                                    color:
+                                        (_canGenerateTts &&
+                                            !_recording &&
+                                            !_isGeneratingTts)
+                                        ? null
+                                        : CupertinoColors.systemGrey4,
+                                  ),
+                                  child: CupertinoButton(
+                                    padding: EdgeInsets.zero,
+                                    borderRadius: BorderRadius.circular(30),
+                                    onPressed:
+                                        (_canGenerateTts &&
+                                            !_recording &&
+                                            !_isGeneratingTts)
+                                        ? _generateTtsAudio
+                                        : null,
+                                    child: Center(
+                                      child: _isGeneratingTts
+                                          ? const CupertinoActivityIndicator(
+                                              color: CupertinoColors.white,
+                                            )
+                                          : const Icon(
+                                              CupertinoIcons.wand_stars,
+                                              color: CupertinoColors.white,
+                                              size: 20,
+                                            ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
 
                             const Spacer(),
 
