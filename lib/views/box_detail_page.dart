@@ -60,11 +60,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     final newName = _controller.text.trim();
     if (newName.isEmpty || box == null) return;
 
-    final updated = VocabularyBox(
-      name: newName,
-      description: box.description,
-      vocabularies: box.vocabularies,
-    );
+    final updated = box.copyWith(name: newName);
 
     _boxController.updateBox(widget.boxKey, updated);
 

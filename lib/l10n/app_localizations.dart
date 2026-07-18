@@ -154,36 +154,6 @@ abstract class AppLocalizations {
   /// **'Kartenanimationen'**
   String get settingsCardAnimations;
 
-  /// No description provided for @addBoxTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Neue Box erstellen'**
-  String get addBoxTitle;
-
-  /// No description provided for @addBoxNameLabel.
-  ///
-  /// In de, this message translates to:
-  /// **'Name der Box'**
-  String get addBoxNameLabel;
-
-  /// No description provided for @addBoxDescriptionLabel.
-  ///
-  /// In de, this message translates to:
-  /// **'Beschreibung (optional)'**
-  String get addBoxDescriptionLabel;
-
-  /// No description provided for @addBoxButton.
-  ///
-  /// In de, this message translates to:
-  /// **'Hinzufügen'**
-  String get addBoxButton;
-
-  /// No description provided for @addBoxNameEmpty.
-  ///
-  /// In de, this message translates to:
-  /// **'Der Name darf nicht leer sein.'**
-  String get addBoxNameEmpty;
-
   /// No description provided for @editVocabNew.
   ///
   /// In de, this message translates to:
@@ -496,6 +466,12 @@ abstract class AppLocalizations {
   /// **'Fehler'**
   String get commonError;
 
+  /// No description provided for @commonNext.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiter'**
+  String get commonNext;
+
   /// No description provided for @errorExportDirectoryFailed.
   ///
   /// In de, this message translates to:
@@ -543,6 +519,252 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
+
+  /// No description provided for @languageGerman.
+  ///
+  /// In de, this message translates to:
+  /// **'Deutsch'**
+  String get languageGerman;
+
+  /// No description provided for @languageEnglish.
+  ///
+  /// In de, this message translates to:
+  /// **'Englisch'**
+  String get languageEnglish;
+
+  /// No description provided for @languageFrench.
+  ///
+  /// In de, this message translates to:
+  /// **'Französisch'**
+  String get languageFrench;
+
+  /// No description provided for @languageSpanish.
+  ///
+  /// In de, this message translates to:
+  /// **'Spanisch'**
+  String get languageSpanish;
+
+  /// No description provided for @languageItalian.
+  ///
+  /// In de, this message translates to:
+  /// **'Italienisch'**
+  String get languageItalian;
+
+  /// No description provided for @languagePortuguese.
+  ///
+  /// In de, this message translates to:
+  /// **'Portugiesisch'**
+  String get languagePortuguese;
+
+  /// No description provided for @languageDutch.
+  ///
+  /// In de, this message translates to:
+  /// **'Niederländisch'**
+  String get languageDutch;
+
+  /// No description provided for @languageRussian.
+  ///
+  /// In de, this message translates to:
+  /// **'Russisch'**
+  String get languageRussian;
+
+  /// No description provided for @languagePolish.
+  ///
+  /// In de, this message translates to:
+  /// **'Polnisch'**
+  String get languagePolish;
+
+  /// No description provided for @languageTurkish.
+  ///
+  /// In de, this message translates to:
+  /// **'Türkisch'**
+  String get languageTurkish;
+
+  /// No description provided for @languageChinese.
+  ///
+  /// In de, this message translates to:
+  /// **'Chinesisch'**
+  String get languageChinese;
+
+  /// No description provided for @languageJapanese.
+  ///
+  /// In de, this message translates to:
+  /// **'Japanisch'**
+  String get languageJapanese;
+
+  /// No description provided for @languageDanish.
+  ///
+  /// In de, this message translates to:
+  /// **'Dänisch'**
+  String get languageDanish;
+
+  /// No description provided for @languageCzech.
+  ///
+  /// In de, this message translates to:
+  /// **'Tschechisch'**
+  String get languageCzech;
+
+  /// No description provided for @languageHungarian.
+  ///
+  /// In de, this message translates to:
+  /// **'Ungarisch'**
+  String get languageHungarian;
+
+  /// No description provided for @languageKorean.
+  ///
+  /// In de, this message translates to:
+  /// **'Koreanisch'**
+  String get languageKorean;
+
+  /// No description provided for @boxTypeVocabularyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabelbox'**
+  String get boxTypeVocabularyTitle;
+
+  /// No description provided for @boxTypeVocabularySubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Für das Vokabellernen einer Sprache mit zusätzlichen Funktionalitäten.'**
+  String get boxTypeVocabularySubtitle;
+
+  /// No description provided for @boxTypeFlashcardTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Karteikartenbox'**
+  String get boxTypeFlashcardTitle;
+
+  /// No description provided for @boxTypeFlashcardSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Für beliebige Frage-Antwort-Karten. Alle Grundfunktionalitäten an Bord.'**
+  String get boxTypeFlashcardSubtitle;
+
+  /// No description provided for @createBoxNavTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue Box'**
+  String get createBoxNavTitle;
+
+  /// No description provided for @createBoxTypeTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Was für eine Box soll erstellt werden?'**
+  String get createBoxTypeTitle;
+
+  /// No description provided for @createBoxTypeSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.'**
+  String get createBoxTypeSubtitle;
+
+  /// No description provided for @createBoxTypeImportSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).'**
+  String get createBoxTypeImportSubtitle;
+
+  /// No description provided for @createBoxIconEditTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Icon ändern'**
+  String get createBoxIconEditTitle;
+
+  /// No description provided for @createBoxIconEditPlaceholder.
+  ///
+  /// In de, this message translates to:
+  /// **'Emoji eingeben'**
+  String get createBoxIconEditPlaceholder;
+
+  /// No description provided for @createBoxTitleLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Titel'**
+  String get createBoxTitleLabel;
+
+  /// No description provided for @createBoxTitleHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Name der Box'**
+  String get createBoxTitleHint;
+
+  /// No description provided for @createBoxDescriptionLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Beschreibung (optional)'**
+  String get createBoxDescriptionLabel;
+
+  /// No description provided for @createBoxDescriptionHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Kurze Beschreibung'**
+  String get createBoxDescriptionHint;
+
+  /// No description provided for @createBoxNameEmpty.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Name darf nicht leer sein.'**
+  String get createBoxNameEmpty;
+
+  /// No description provided for @createBoxSourceLanguageLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Ausgangssprache - das kennst du bereits'**
+  String get createBoxSourceLanguageLabel;
+
+  /// No description provided for @createBoxTargetLanguageLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Zielsprache - das lernst du'**
+  String get createBoxTargetLanguageLabel;
+
+  /// No description provided for @createBoxSourceLanguagePickerTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Ausgangssprache wählen'**
+  String get createBoxSourceLanguagePickerTitle;
+
+  /// No description provided for @createBoxTargetLanguagePickerTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Zielsprache wählen'**
+  String get createBoxTargetLanguagePickerTitle;
+
+  /// No description provided for @createBoxColorTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Farbe'**
+  String get createBoxColorTitle;
+
+  /// No description provided for @createBoxFinish.
+  ///
+  /// In de, this message translates to:
+  /// **'Fertig'**
+  String get createBoxFinish;
+
+  /// No description provided for @languageSearchPlaceholder.
+  ///
+  /// In de, this message translates to:
+  /// **'Suchen'**
+  String get languageSearchPlaceholder;
+
+  /// No description provided for @languageCustomOption.
+  ///
+  /// In de, this message translates to:
+  /// **'Eigene...'**
+  String get languageCustomOption;
+
+  /// No description provided for @languageCustomTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Eigene Sprache'**
+  String get languageCustomTitle;
+
+  /// No description provided for @languageCustomPlaceholder.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprache eingeben'**
+  String get languageCustomPlaceholder;
 }
 
 class _AppLocalizationsDelegate

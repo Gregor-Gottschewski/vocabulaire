@@ -18,12 +18,6 @@
   },
   "settingsCardAnimations": "Animations de cartes",
 
-  "addBoxTitle": "Créer une nouvelle boîte",
-  "addBoxNameLabel": "Nom de la boîte",
-  "addBoxDescriptionLabel": "Description (optionnel)",
-  "addBoxButton": "Ajouter",
-  "addBoxNameEmpty": "Le nom ne peut pas être vide.",
-
   "editVocabNew": "Nouveau vocabulaire",
   "editVocabEdit": "Modifier le vocabulaire",
   "editVocabFront": "Recto",
@@ -107,6 +101,7 @@
   "commonOk": "OK",
   "commonCancel": "Annuler",
   "commonError": "Erreur",
+  "commonNext": "Suivant",
 
   "errorExportDirectoryFailed": "Le répertoire d'exportation n'a pas pu être créé",
   "errorExportWriteFailed": "Les données de vocabulaire n'ont pas pu être enregistrées",
@@ -120,5 +115,50 @@
     "placeholders": {
       "name": { "type": "String" }
     }
-  }
+  },
+
+  "languageGerman": "Allemand",
+  "languageEnglish": "Anglais",
+  "languageFrench": "Français",
+  "languageSpanish": "Espagnol",
+  "languageItalian": "Italien",
+  "languagePortuguese": "Portugais",
+  "languageDutch": "Néerlandais",
+  "languageRussian": "Russe",
+  "languagePolish": "Polonais",
+  "languageTurkish": "Turc",
+  "languageChinese": "Chinois",
+  "languageJapanese": "Japonais",
+  "languageDanish": "Danois",
+  "languageCzech": "Tchèque",
+  "languageHungarian": "Hongrois",
+  "languageKorean": "Coréen",
+
+  "boxTypeVocabularyTitle": "Boîte de vocabulaire",
+  "boxTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue, avec des fonctionnalités supplémentaires.",
+  "boxTypeFlashcardTitle": "Boîte de cartes",
+  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.",
+
+  "createBoxNavTitle": "Nouvelle boîte",
+  "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
+  "createBoxTypeSubtitle": "Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.",
+  "createBoxTypeImportSubtitle": "Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.",
+  "createBoxIconEditTitle": "Changer l'icône",
+  "createBoxIconEditPlaceholder": "Saisir un emoji",
+  "createBoxTitleLabel": "Titre",
+  "createBoxTitleHint": "Nom de la boîte",
+  "createBoxDescriptionLabel": "Description (optionnel)",
+  "createBoxDescriptionHint": "Courte description",
+  "createBoxNameEmpty": "Le nom ne peut pas être vide.",
+  "createBoxSourceLanguageLabel": "Langue source - celle que tu connais déjà",
+  "createBoxTargetLanguageLabel": "Langue cible - celle que tu apprends",
+  "createBoxSourceLanguagePickerTitle": "Choisir la langue source",
+  "createBoxTargetLanguagePickerTitle": "Choisir la langue cible",
+  "createBoxColorTitle": "Couleur",
+  "createBoxFinish": "Terminé",
+
+  "languageSearchPlaceholder": "Rechercher",
+  "languageCustomOption": "Personnalisé...",
+  "languageCustomTitle": "Langue personnalisée",
+  "languageCustomPlaceholder": "Saisir une langue"
 }

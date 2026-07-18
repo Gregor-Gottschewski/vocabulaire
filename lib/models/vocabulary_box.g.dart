@@ -20,19 +20,34 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       name: fields[0] as String,
       description: fields[1] as String,
       vocabularies: (fields[2] as List).cast<Vocabulary>(),
+      type: fields[3] as String,
+      icon: fields[4] as String,
+      color: fields[5] as String,
+      sourceLanguage: fields[6] as String?,
+      targetLanguage: fields[7] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, VocabularyBox obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.description)
       ..writeByte(2)
-      ..write(obj.vocabularies);
+      ..write(obj.vocabularies)
+      ..writeByte(3)
+      ..write(obj.type)
+      ..writeByte(4)
+      ..write(obj.icon)
+      ..writeByte(5)
+      ..write(obj.color)
+      ..writeByte(6)
+      ..write(obj.sourceLanguage)
+      ..writeByte(7)
+      ..write(obj.targetLanguage);
   }
 
   @override
