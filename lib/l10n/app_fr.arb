@@ -142,6 +142,7 @@
   "createBoxNavTitle": "Nouvelle boîte",
   "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
   "createBoxTypeSubtitle": "Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.",
+  "createBoxTypeImportSubtitle": "Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.",
   "createBoxIconEditTitle": "Changer l'icône",
   "createBoxIconEditPlaceholder": "Saisir un emoji",
   "createBoxTitleLabel": "Titre",

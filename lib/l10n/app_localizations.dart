@@ -658,6 +658,12 @@ abstract class AppLocalizations {
   /// **'Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.'**
   String get createBoxTypeSubtitle;
 
+  /// No description provided for @createBoxTypeImportSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).'**
+  String get createBoxTypeImportSubtitle;
+
   /// No description provided for @createBoxIconEditTitle.
   ///
   /// In de, this message translates to:

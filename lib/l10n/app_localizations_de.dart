@@ -316,6 +316,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.';
 
   @override
+  String get createBoxTypeImportSubtitle =>
+      'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).';
+
+  @override
   String get createBoxIconEditTitle => 'Icon ändern';
 
   @override

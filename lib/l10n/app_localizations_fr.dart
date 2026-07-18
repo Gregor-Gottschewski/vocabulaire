@@ -315,6 +315,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.';
 
   @override
+  String get createBoxTypeImportSubtitle =>
+      'Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.';
+
+  @override
   String get createBoxIconEditTitle => 'Changer l\'icône';
 
   @override

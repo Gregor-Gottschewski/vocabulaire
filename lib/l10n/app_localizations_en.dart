@@ -312,6 +312,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Choose a type for the new box. The type can\'t be changed later.';
 
   @override
+  String get createBoxTypeImportSubtitle =>
+      'Import a box with all its vocabulary and audio files.';
+
+  @override
   String get createBoxIconEditTitle => 'Change icon';
 
   @override

@@ -106,6 +106,7 @@
   "createBoxNavTitle": "New box",
   "createBoxTypeTitle": "What kind of box do you want to create?",
   "createBoxTypeSubtitle": "Choose a type for the new box. The type can't be changed later.",
+  "createBoxTypeImportSubtitle": "Import a box with all its vocabulary and audio files.",
   "createBoxIconEditTitle": "Change icon",
   "createBoxIconEditPlaceholder": "Enter emoji",
   "createBoxTitleLabel": "Title",
