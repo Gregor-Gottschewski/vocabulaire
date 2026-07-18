@@ -33,6 +33,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  characters: ^1.4.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   fsrs: ^2.0.1

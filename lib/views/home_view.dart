@@ -6,7 +6,7 @@ import 'package:vocabulaire/views/box_tile.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary_box.dart';
-import 'add_box_sheet.dart';
+import 'create_box_flow.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -33,17 +33,19 @@ class HomeViewWidget extends State<HomeView> {
         trailing: CupertinoButton(
           padding: EdgeInsets.zero,
           onPressed: () async {
-            final key = await showCupertinoModalPopup<dynamic>(
-              context: context,
-              builder: (context) => AddBoxSheet(boxController: _boxController),
-            );
-            if (key == null || !context.mounted) return;
-            final newBox = _boxController.getBox(key);
-            if (newBox == null) return;
+            final result = await Navigator.of(context, rootNavigator: true)
+                .push<({VocabularyBox box, dynamic key})>(
+                  CupertinoPageRoute(
+                    fullscreenDialog: true,
+                    builder: (context) => const CreateBoxFlow(),
+                  ),
+                );
+            if (result == null || !context.mounted) return;
             Navigator.push(
               context,
               CupertinoPageRoute(
-                builder: (context) => BoxDetailPage(box: newBox, boxKey: key),
+                builder: (context) =>
+                    BoxDetailPage(box: result.box, boxKey: result.key),
               ),
             );
           },
@@ -57,9 +59,7 @@ class HomeViewWidget extends State<HomeView> {
             final keys = box.keys.cast<dynamic>().toList();
 
             if (keys.isEmpty) {
-              return Center(
-                child: Text(_l10n.homeEmpty),
-              );
+              return Center(child: Text(_l10n.homeEmpty));
             }
 
             return ListView.builder(
