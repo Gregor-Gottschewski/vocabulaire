@@ -243,6 +243,44 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get editVocabGenerateAudio => 'Générer la prononciation';
+
+  @override
+  String get editVocabOverwriteAudioTitle => 'Remplacer l\'enregistrement ?';
+
+  @override
+  String get editVocabOverwriteAudioMessage =>
+      'Cette carte possède déjà un enregistrement audio. Le remplacer par la prononciation générée ?';
+
+  @override
+  String get editVocabOverwriteAudioConfirm => 'Remplacer';
+
+  @override
+  String editVocabTtsTooLongHint(Object len) {
+    return 'La prononciation n\'est disponible que jusqu\'à 65 caractères. Ta saisie comporte $len caractères.';
+  }
+
+  @override
+  String get errorTtsEmptyText =>
+      'Le verso ne doit pas être vide pour générer une prononciation.';
+
+  @override
+  String get errorTtsTextTooLong =>
+      'Le texte ne doit pas dépasser 65 caractères.';
+
+  @override
+  String get errorTtsRateLimitExceeded =>
+      'Limite quotidienne de générations vocales atteinte.';
+
+  @override
+  String get errorTtsNotAuthenticated =>
+      'Échec de la connexion. Veuillez réessayer.';
+
+  @override
+  String get errorTtsUnknownError =>
+      'La prononciation n\'a pas pu être générée. Veuillez vérifier votre connexion internet.';
+
+  @override
   String get languageGerman => 'Allemand';
 
   @override

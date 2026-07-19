@@ -19,6 +19,11 @@ extension AppExceptionDialog on BuildContext {
       AppError.importMissingStoreFile => i18n.errorImportMissingStoreFile,
       AppError.importInvalidFormat => i18n.errorImportInvalidFormat,
       AppError.duplicateBoxName => i18n.errorDuplicateBoxName(e.details as String),
+      AppError.ttsEmptyText => i18n.errorTtsEmptyText,
+      AppError.ttsTextTooLong => i18n.errorTtsTextTooLong,
+      AppError.ttsRateLimitExceeded => i18n.errorTtsRateLimitExceeded,
+      AppError.ttsNotAuthenticated => i18n.errorTtsNotAuthenticated,
+      AppError.ttsUnknownError => i18n.errorTtsUnknownError,
     };
 
     return showCupertinoDialog(

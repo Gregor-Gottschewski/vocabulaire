@@ -8,6 +8,11 @@ enum AppError {
   importMissingStoreFile,
   importInvalidFormat,
   duplicateBoxName,
+  ttsEmptyText,
+  ttsTextTooLong,
+  ttsRateLimitExceeded,
+  ttsNotAuthenticated,
+  ttsUnknownError,
 }
 
 /// [AppException] represents a user-facing application error.

@@ -240,6 +240,43 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get editVocabGenerateAudio => 'Generate pronunciation';
+
+  @override
+  String get editVocabOverwriteAudioTitle => 'Overwrite recording?';
+
+  @override
+  String get editVocabOverwriteAudioMessage =>
+      'This card already has an audio recording. Replace it with the newly generated pronunciation?';
+
+  @override
+  String get editVocabOverwriteAudioConfirm => 'Overwrite';
+
+  @override
+  String editVocabTtsTooLongHint(Object len) {
+    return 'Pronunciation is only available up to 65 characters. Your input has $len characters.';
+  }
+
+  @override
+  String get errorTtsEmptyText =>
+      'The back side must not be empty to generate a pronunciation.';
+
+  @override
+  String get errorTtsTextTooLong =>
+      'The text must not be longer than 65 characters.';
+
+  @override
+  String get errorTtsRateLimitExceeded =>
+      'Daily limit for speech generations reached.';
+
+  @override
+  String get errorTtsNotAuthenticated => 'Sign-in failed. Please try again.';
+
+  @override
+  String get errorTtsUnknownError =>
+      'The pronunciation could not be generated. Please check your internet connection.';
+
+  @override
   String get languageGerman => 'German';
 
   @override

@@ -520,6 +520,66 @@ abstract class AppLocalizations {
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
 
+  /// No description provided for @editVocabGenerateAudio.
+  ///
+  /// In de, this message translates to:
+  /// **'Aussprache generieren'**
+  String get editVocabGenerateAudio;
+
+  /// No description provided for @editVocabOverwriteAudioTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Aufnahme überschreiben?'**
+  String get editVocabOverwriteAudioTitle;
+
+  /// No description provided for @editVocabOverwriteAudioMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?'**
+  String get editVocabOverwriteAudioMessage;
+
+  /// No description provided for @editVocabOverwriteAudioConfirm.
+  ///
+  /// In de, this message translates to:
+  /// **'Überschreiben'**
+  String get editVocabOverwriteAudioConfirm;
+
+  /// No description provided for @editVocabTtsTooLongHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat {len} Zeichen.'**
+  String editVocabTtsTooLongHint(Object len);
+
+  /// No description provided for @errorTtsEmptyText.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.'**
+  String get errorTtsEmptyText;
+
+  /// No description provided for @errorTtsTextTooLong.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Text für die Sprachausgabe darf maximal 65 Zeichen lang sein.'**
+  String get errorTtsTextTooLong;
+
+  /// No description provided for @errorTtsRateLimitExceeded.
+  ///
+  /// In de, this message translates to:
+  /// **'Tageslimit für Sprachausgabe-Generierungen erreicht.'**
+  String get errorTtsRateLimitExceeded;
+
+  /// No description provided for @errorTtsNotAuthenticated.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmeldung fehlgeschlagen. Bitte erneut versuchen.'**
+  String get errorTtsNotAuthenticated;
+
+  /// No description provided for @errorTtsUnknownError.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.'**
+  String get errorTtsUnknownError;
+
   /// No description provided for @languageGerman.
   ///
   /// In de, this message translates to:

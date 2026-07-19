@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Rate-limit counters are written exclusively by the Cloud Function via
+    // the Admin SDK, which bypasses these rules. Clients must never be able
+    // to read or write their own counter directly ("never trust the client").
+    match /rateLimits/{uid} {
+      allow read, write: if false;
+    }
+
+    // Default-deny: no other client-facing collections exist for this app.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

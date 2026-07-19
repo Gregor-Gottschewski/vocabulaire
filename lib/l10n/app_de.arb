@@ -117,6 +117,18 @@
     }
   },
 
+  "editVocabGenerateAudio": "Aussprache generieren",
+  "editVocabOverwriteAudioTitle": "Aufnahme überschreiben?",
+  "editVocabOverwriteAudioMessage": "Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?",
+  "editVocabOverwriteAudioConfirm": "Überschreiben",
+  "editVocabTtsTooLongHint": "Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat {len} Zeichen.",
+
+  "errorTtsEmptyText": "Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.",
+  "errorTtsTextTooLong": "Der Text für die Sprachausgabe darf maximal 65 Zeichen lang sein.",
+  "errorTtsRateLimitExceeded": "Tageslimit für Sprachausgabe-Generierungen erreicht.",
+  "errorTtsNotAuthenticated": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
+  "errorTtsUnknownError": "Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.",
+
   "languageGerman": "Deutsch",
   "languageEnglish": "Englisch",
   "languageFrench": "Französisch",
