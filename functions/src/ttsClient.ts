@@ -14,14 +14,14 @@ export interface SynthesisResult {
     mimeType: string;
 }
 
-export async function synthesize(text: string): Promise<SynthesisResult> {
+export async function synthesize(text: string, languageCode: string): Promise<SynthesisResult> {
     const [response] = await client.synthesizeSpeech({
         input: {
             text: text,
             prompt: "Read aloud in a warm, welcoming tone for a language learner.",
         },
         voice: {
-            languageCode: "fr-FR",
+            languageCode: languageCode,
             modelName: "gemini-2.5-flash-tts",
             name: "Leda"
         },

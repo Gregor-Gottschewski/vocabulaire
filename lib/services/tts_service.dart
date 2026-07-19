@@ -23,6 +23,7 @@ class TtsService {
 
   Future<void> synthesizeAndSave({
     required String text,
+    required String languageId,
     required String cardId,
   }) async {
     final trimmed = text.trim();
@@ -40,6 +41,7 @@ class TtsService {
       // see functions/index.ts:synthesizeSpeech
       final result = await _functions.httpsCallable('synthesizeSpeech').call({
         'text': trimmed,
+        'languageCode': languageId,
       });
       data = result.data as Map<Object?, Object?>;
     } on FirebaseFunctionsException catch (e) {

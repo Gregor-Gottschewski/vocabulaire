@@ -316,6 +316,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   /// Generates an AI pronunciation of the back text.
   Future<void> _generateTtsAudio() async {
     if (!_canGenerateTts) return;
+    if (widget.box.targetAppLanguage == null) return;
     final text = _backController.text.trim();
 
     if (_hasRecording) {
@@ -350,6 +351,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       await TtsService.instance.synthesizeAndSave(
         text: text,
         cardId: _vocab.id,
+        languageId: widget.box.targetAppLanguage!.code,
       );
       await _initAudioPlayer();
       if (mounted) {
@@ -531,7 +533,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
                             const SizedBox(width: 8),
 
-                            if (widget.box.boxType == BoxType.vocabulary)
+                            if (widget.box.boxType == BoxType.vocabulary &&
+                                widget.box.targetAppLanguage != null)
                               Semantics(
                                 label: _l10n.editVocabGenerateAudio,
                                 child: Container(
