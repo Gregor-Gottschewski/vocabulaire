@@ -20,13 +20,13 @@ class VocabularyListView extends StatefulWidget {
   State<VocabularyListView> createState() => _VocabularyListViewState();
 }
 
-/// Helper class to combine box key, box name and vocabulary for easier list rendering
+/// Helper class to combine box key, box and vocabulary for easier list rendering
 class _BoxVocabulary {
   final dynamic boxKey;
-  final String boxName;
+  final VocabularyBox box;
   final Vocabulary vocabulary;
 
-  _BoxVocabulary(this.boxKey, this.boxName, this.vocabulary);
+  _BoxVocabulary(this.boxKey, this.box, this.vocabulary);
 }
 
 class _VocabularyListViewState extends State<VocabularyListView> {
@@ -42,21 +42,32 @@ class _VocabularyListViewState extends State<VocabularyListView> {
   /// Opens the EditVocabularyView for adding a new vocabulary to the specified box.
   /// Option only available when not in multipleBoxes mode.
   ///  - [boxKey] The key of the box to which the new vocabulary will be added.
-  void _navigateToVocabularyEdit(dynamic boxKey) {
+  ///  - [box] The box to which the new vocabulary will be added.
+  void _navigateToVocabularyEdit(dynamic boxKey, VocabularyBox box) {
     Navigator.push(
       context,
-      CupertinoPageRoute(builder: (_) => EditVocabularyView(boxKey: boxKey)),
+      CupertinoPageRoute(
+        builder: (_) => EditVocabularyView(boxKey: boxKey, box: box),
+      ),
     );
   }
 
   /// Opens the EditVocabularyView for editing an existing vocabulary.
   ///  - [boxKey] The key of the box containing the vocabulary to edit.
-  void _navigateToEdit(dynamic boxKey, Vocabulary vocabulary) {
+  ///  - [box] The box containing the vocabulary to edit.
+  void _navigateToEdit(
+    dynamic boxKey,
+    VocabularyBox box,
+    Vocabulary vocabulary,
+  ) {
     Navigator.push(
       context,
       CupertinoPageRoute(
-        builder: (_) =>
-            EditVocabularyView(boxKey: boxKey, vocabulary: vocabulary),
+        builder: (_) => EditVocabularyView(
+          boxKey: boxKey,
+          box: box,
+          vocabulary: vocabulary,
+        ),
       ),
     );
   }
@@ -70,12 +81,15 @@ class _VocabularyListViewState extends State<VocabularyListView> {
             ? ValueListenableBuilder(
                 valueListenable: widget.boxListenable,
                 builder: (context, entries, _) {
-                  final firstKey = entries.isEmpty ? null : entries.first.key;
+                  final firstEntry = entries.isEmpty ? null : entries.first;
                   return CupertinoButton(
                     padding: EdgeInsets.zero,
-                    onPressed: firstKey == null
+                    onPressed: firstEntry == null
                         ? null
-                        : () => _navigateToVocabularyEdit(firstKey),
+                        : () => _navigateToVocabularyEdit(
+                            firstEntry.key,
+                            firstEntry.value,
+                          ),
                     child: const Icon(CupertinoIcons.add),
                   );
                 },
@@ -88,9 +102,9 @@ class _VocabularyListViewState extends State<VocabularyListView> {
           builder: (context, entries, _) {
             final items = entries.expand((entry) {
               final boxKey = entry.key;
-              final boxName = entry.value.name;
-              return entry.value.vocabularies.map(
-                (v) => _BoxVocabulary(boxKey, boxName, v),
+              final box = entry.value;
+              return box.vocabularies.map(
+                (v) => _BoxVocabulary(boxKey, box, v),
               );
             }).toList();
 
@@ -104,7 +118,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                 final item = items[index];
                 final v = item.vocabulary;
                 final boxKey = item.boxKey;
-                final boxName = item.boxName;
+                final box = item.box;
 
                 return Column(
                   children: [
@@ -133,7 +147,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                           horizontal: 16.0,
                           vertical: 12.0,
                         ),
-                        onPressed: () => _navigateToEdit(boxKey, v),
+                        onPressed: () => _navigateToEdit(boxKey, box, v),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -169,7 +183,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                                   const SizedBox(height: 6),
                                   if (widget.multipleBoxes)
                                     Text(
-                                      boxName,
+                                      box.name,
                                       maxLines: 1,
                                       softWrap: false,
                                       overflow: TextOverflow.ellipsis,

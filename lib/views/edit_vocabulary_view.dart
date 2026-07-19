@@ -13,15 +13,21 @@ import 'package:vocabulaire/services/tts_service.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
+import '../models/vocabulary_box.dart';
 
 /// Editing view (create or edit) for a vocabulary entry, allowing users to input front, back, and description/example fields.
 class EditVocabularyView extends StatefulWidget {
   final dynamic boxKey;
+  final VocabularyBox box;
   final Vocabulary? vocabulary;
   final bool newVocabulary;
 
-  const EditVocabularyView({super.key, required this.boxKey, this.vocabulary})
-    : newVocabulary = (vocabulary == null);
+  const EditVocabularyView({
+    super.key,
+    required this.boxKey,
+    required this.box,
+    this.vocabulary,
+  }) : newVocabulary = (vocabulary == null);
 
   @override
   State<EditVocabularyView> createState() => _EditVocabularyViewState();
@@ -31,7 +37,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   final TextEditingController _frontController = TextEditingController();
   final TextEditingController _backController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final BoxController _controller = BoxController();
+  final BoxController _boxController = BoxController();
   final AudioRecorder _audioRecorder = AudioRecorder();
   final AudioPlayer _audioPlayer = AudioPlayer();
   final RecordConfig _audioConfig = RecordConfig(
@@ -55,7 +61,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   @override
   void initState() {
     super.initState();
-    _vocab = widget.vocabulary ?? _controller.createVocabulary();
+    _vocab = widget.vocabulary ?? _boxController.createVocabulary();
 
     _frontController.text = _vocab.word;
     _backController.text = _vocab.meaning;
@@ -168,8 +174,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _vocab.example = description;
 
     if (widget.newVocabulary) {
-      final box = _controller.getBox(widget.boxKey)!;
-      if (box.vocabularies.any((e) => e.word == front)) {
+      if (widget.box.vocabularies.any((e) => e.word == front)) {
         final shouldAdd = await showCupertinoDialog<bool>(
           context: context,
           builder: (ctx) => CupertinoAlertDialog(
@@ -197,9 +202,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           return false;
         }
       }
-      _controller.addVocabularyToBox(widget.boxKey, _vocab);
+      _boxController.addVocabularyToBox(widget.boxKey, _vocab);
     } else {
-      _controller.updateVocabularyInBox(widget.boxKey, _vocab);
+      _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
     }
 
     if (mounted) {
@@ -220,7 +225,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   Future<void> _saveAndNextPressed() async {
     final saved = await _save();
     if (!saved) return;
-    _vocab = _controller.createVocabulary();
+    _vocab = _boxController.createVocabulary();
     _frontController.clear();
     _backController.clear();
     _descriptionController.clear();
@@ -448,13 +453,15 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                 _backController.text.trim().isNotEmpty)
                               Expanded(
                                 child: Text(
-                                  _l10n.editVocabTtsTooLongHint(_backController.text.trim().length),
+                                  _l10n.editVocabTtsTooLongHint(
+                                    _backController.text.trim().length,
+                                  ),
                                   style: TextStyle(
                                     fontSize: 11,
                                     color: CupertinoColors.systemOrange,
                                   ),
                                 ),
-                              )
+                              ),
                           ],
                         ),
 
@@ -524,7 +531,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
                             const SizedBox(width: 8),
 
-                            if (_controller.getBox(widget.boxKey)!.boxType == BoxType.vocabulary)
+                            if (widget.box.boxType == BoxType.vocabulary)
                               Semantics(
                                 label: _l10n.editVocabGenerateAudio,
                                 child: Container(
