@@ -85,13 +85,9 @@ class BoxController {
 
     final box = _box.get(key);
     if (box == null) throw StateError('Box with key $key not found');
-    final updated = VocabularyBox(
-      name: box.name,
-      description: box.description,
-      vocabularies: List<Vocabulary>.from(box.vocabularies)
-        ..add(vocabulary),
-    );
-    _box.put(key, updated);
+    final vocabularies = List<Vocabulary>.from(box.vocabularies)
+      ..add(vocabulary);
+    _box.put(key, box.copyWith(vocabularies: vocabularies));
   }
 
   void removeVocabularyFromBox(dynamic key, String id) {
