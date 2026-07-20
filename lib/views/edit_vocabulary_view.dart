@@ -226,6 +226,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final saved = await _save();
     if (!saved) return;
     _vocab = _boxController.createVocabulary();
+    _hasRecording = false;
+    _recordDuration = Duration.zero;
     _frontController.clear();
     _backController.clear();
     _descriptionController.clear();
