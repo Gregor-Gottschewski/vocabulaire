@@ -550,6 +550,24 @@ abstract class AppLocalizations {
   /// **'Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat {len} Zeichen.'**
   String editVocabTtsTooLongHint(Object len);
 
+  /// No description provided for @editVocabUnsavedChangesTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Sollen deine Änderungen gespeichert werden?'**
+  String get editVocabUnsavedChangesTitle;
+
+  /// No description provided for @editVocabUnsavedChangesSaveAndLeave.
+  ///
+  /// In de, this message translates to:
+  /// **'Speichern und verlassen'**
+  String get editVocabUnsavedChangesSaveAndLeave;
+
+  /// No description provided for @editVocabUnsavedChangesDiscard.
+  ///
+  /// In de, this message translates to:
+  /// **'Eingaben verwerfen'**
+  String get editVocabUnsavedChangesDiscard;
+
   /// No description provided for @errorTtsEmptyText.
   ///
   /// In de, this message translates to:

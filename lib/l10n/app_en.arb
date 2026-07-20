@@ -85,6 +85,9 @@
   "editVocabOverwriteAudioMessage": "This card already has an audio recording. Replace it with the newly generated pronunciation?",
   "editVocabOverwriteAudioConfirm": "Overwrite",
   "editVocabTtsTooLongHint": "Pronunciation is only available up to 65 characters. Your input has {len} characters.",
+  "editVocabUnsavedChangesTitle": "Do you want to save your changes?",
+  "editVocabUnsavedChangesSaveAndLeave": "Save and leave",
+  "editVocabUnsavedChangesDiscard": "Discard changes",
 
   "errorTtsEmptyText": "The back side must not be empty to generate a pronunciation.",
   "errorTtsTextTooLong": "The text must not be longer than 65 characters.",

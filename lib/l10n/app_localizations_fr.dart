@@ -261,6 +261,16 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get editVocabUnsavedChangesTitle =>
+      'Voulez-vous enregistrer vos modifications ?';
+
+  @override
+  String get editVocabUnsavedChangesSaveAndLeave => 'Enregistrer et quitter';
+
+  @override
+  String get editVocabUnsavedChangesDiscard => 'Ignorer les modifications';
+
+  @override
   String get errorTtsEmptyText =>
       'Le verso ne doit pas être vide pour générer une prononciation.';
 

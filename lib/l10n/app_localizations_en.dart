@@ -258,6 +258,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get editVocabUnsavedChangesTitle =>
+      'Do you want to save your changes?';
+
+  @override
+  String get editVocabUnsavedChangesSaveAndLeave => 'Save and leave';
+
+  @override
+  String get editVocabUnsavedChangesDiscard => 'Discard changes';
+
+  @override
   String get errorTtsEmptyText =>
       'The back side must not be empty to generate a pronunciation.';
 

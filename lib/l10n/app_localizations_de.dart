@@ -262,6 +262,16 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get editVocabUnsavedChangesTitle =>
+      'Sollen deine Änderungen gespeichert werden?';
+
+  @override
+  String get editVocabUnsavedChangesSaveAndLeave => 'Speichern und verlassen';
+
+  @override
+  String get editVocabUnsavedChangesDiscard => 'Eingaben verwerfen';
+
+  @override
   String get errorTtsEmptyText =>
       'Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.';
 

@@ -15,6 +15,8 @@ import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
 
+enum _UnsavedChangesAction { saveAndLeave, discard }
+
 /// Editing view (create or edit) for a vocabulary entry, allowing users to input front, back, and description/example fields.
 class EditVocabularyView extends StatefulWidget {
   final dynamic boxKey;
@@ -53,6 +55,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   bool _recording = false;
   bool _isPlaying = false;
   bool _isGeneratingTts = false;
+  bool _isDirty = false;
   Duration _recordDuration = Duration.zero;
   Timer? _recordTimer;
   StreamSubscription<void>? _playerCompleteSub;
@@ -78,12 +81,16 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       }
     });
 
-    _backController.addListener(_onBackTextChanged);
+    _frontController.addListener(_onInputChanged);
+    _backController.addListener(_onInputChanged);
+    _descriptionController.addListener(_onInputChanged);
   }
 
   @override
   void dispose() {
-    _backController.removeListener(_onBackTextChanged);
+    _frontController.removeListener(_onInputChanged);
+    _backController.removeListener(_onInputChanged);
+    _descriptionController.removeListener(_onInputChanged);
     _frontController.dispose();
     _backController.dispose();
     _descriptionController.dispose();
@@ -93,9 +100,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     super.dispose();
   }
 
-  /// Rebuilds on every keystroke to update char counter
-  void _onBackTextChanged() {
-    if (mounted) setState(() {});
+  /// Rebuilds on every keystroke and marks the form as dirty.
+  /// Also updates the character counter
+  void _onInputChanged() {
+    if (mounted) setState(() => _isDirty = true);
   }
 
   /// Returns `true` if the back text is eligible for TTS generation, `false` otherwise.
@@ -208,7 +216,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
 
     if (mounted) {
-      setState(() => _isSaving = false);
+      setState(() {
+        _isSaving = false;
+        _isDirty = false;
+      });
     }
 
     return true;
@@ -231,6 +242,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _frontController.clear();
     _backController.clear();
     _descriptionController.clear();
+    if (mounted) setState(() => _isDirty = false);
   }
 
   /// Delete vocabulary from box and close edit view.
@@ -244,6 +256,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       if (_recording) {
         await _audioRecorder.stop();
         _hasRecording = true;
+        _isDirty = true;
         _stopRecordTimer();
       } else {
         await _audioRecorder.start(
@@ -317,7 +330,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (file.existsSync()) {
       await file.delete();
       _recordDuration = Duration.zero;
-      setState(() => _hasRecording = false);
+      setState(() {
+        _hasRecording = false;
+        _isDirty = true;
+      });
     }
   }
 
@@ -366,6 +382,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         setState(() {
           _hasRecording = true;
           _isGeneratingTts = false;
+          _isDirty = true;
         });
       }
     } on AppException catch (e) {
@@ -384,11 +401,63 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     await _audioPlayer.stop();
   }
 
+  /// Deletes the audio file belonging to the current vocabulary from disk.
+  Future<void> _deleteAudioFileFromDisk() async {
+    final file = AppPaths.audioFile(_vocab.id);
+    if (file.existsSync()) {
+      await file.delete();
+    }
+  }
+
+  /// Shown when the user tries to leave the screen while [_isDirty] is true.
+  Future<void> _handleUnsavedChanges() async {
+    final action = await showCupertinoDialog<_UnsavedChangesAction>(
+      context: context,
+      builder: (ctx) => CupertinoAlertDialog(
+        title: Text(_l10n.editVocabUnsavedChangesTitle),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: Text(_l10n.commonCancel),
+          ),
+          CupertinoDialogAction(
+            onPressed: () =>
+                Navigator.of(ctx).pop(_UnsavedChangesAction.saveAndLeave),
+            child: Text(_l10n.editVocabUnsavedChangesSaveAndLeave),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () =>
+                Navigator.of(ctx).pop(_UnsavedChangesAction.discard),
+            child: Text(_l10n.editVocabUnsavedChangesDiscard),
+          ),
+        ],
+      ),
+    );
+
+    switch (action) {
+      case _UnsavedChangesAction.saveAndLeave:
+        if (await _save() && mounted) {
+          Navigator.of(context).pop();
+        }
+      case _UnsavedChangesAction.discard:
+        await _deleteAudioFileFromDisk();
+        if (mounted) Navigator.of(context).pop();
+      case null:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      onPopInvokedWithResult: (result, dynamic) async {
-        await _onPop();
+      canPop: !_isDirty,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) {
+          await _onPop();
+          return;
+        }
+        await _handleUnsavedChanges();
       },
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(

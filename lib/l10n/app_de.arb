@@ -122,6 +122,9 @@
   "editVocabOverwriteAudioMessage": "Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?",
   "editVocabOverwriteAudioConfirm": "Überschreiben",
   "editVocabTtsTooLongHint": "Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat {len} Zeichen.",
+  "editVocabUnsavedChangesTitle": "Sollen deine Änderungen gespeichert werden?",
+  "editVocabUnsavedChangesSaveAndLeave": "Speichern und verlassen",
+  "editVocabUnsavedChangesDiscard": "Eingaben verwerfen",
 
   "errorTtsEmptyText": "Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.",
   "errorTtsTextTooLong": "Der Text für die Sprachausgabe darf maximal 65 Zeichen lang sein.",
