@@ -233,6 +233,12 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _descriptionController.clear();
   }
 
+  /// Delete vocabulary from box and close edit view.
+  void _deleteVocabulary() {
+    _boxController.removeVocabularyFromBox(widget.boxKey, _vocab.id);
+    Navigator.of(context).pop();
+  }
+
   void _recordAudio() async {
     if (await _audioRecorder.hasPermission()) {
       if (_recording) {
@@ -388,6 +394,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         navigationBar: CupertinoNavigationBar(
           middle: Text(
             widget.newVocabulary ? _l10n.editVocabNew : _l10n.editVocabEdit,
+          ),
+          trailing: CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: _deleteVocabulary,
+            child: const Icon(
+              CupertinoIcons.delete,
+              color: CupertinoColors.systemRed,
+            ),
           ),
         ),
         child: SafeArea(
