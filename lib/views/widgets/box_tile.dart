@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../models/vocabulary_box.dart';
+import '../../models/vocabulary_box.dart';
 
 class BoxTile extends StatelessWidget {
   final VocabularyBox box;

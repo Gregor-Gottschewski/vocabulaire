@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/views/box_detail_page.dart';
-import 'package:vocabulaire/views/box_tile.dart';
+import 'package:vocabulaire/views/widgets/box_tile.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary_box.dart';
