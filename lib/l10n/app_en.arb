@@ -12,6 +12,7 @@
   "settingsImportSuccess": "Import successful",
   "settingsImportSuccessMessage": "Box \"{name}\" has been imported.",
   "settingsCardAnimations": "Card animations",
+  "settingsLicenses": "Licenses",
 
   "editVocabNew": "New vocabulary",
   "editVocabEdit": "Edit vocabulary",

@@ -154,6 +154,12 @@ abstract class AppLocalizations {
   /// **'Kartenanimationen'**
   String get settingsCardAnimations;
 
+  /// No description provided for @settingsLicenses.
+  ///
+  /// In de, this message translates to:
+  /// **'Lizenzen'**
+  String get settingsLicenses;
+
   /// No description provided for @editVocabNew.
   ///
   /// In de, this message translates to:

@@ -5,13 +5,13 @@ import 'package:flutter/cupertino.dart';
 /// Wrap one or more rows in a [NavigationRowGroup] for the grouped,
 /// rounded-corner card look.
 class NavigationRow extends StatelessWidget {
-  final String secondaryLabel;
+  final String? secondaryLabel;
   final Widget primaryContent;
   final VoidCallback onTap;
 
   const NavigationRow({
     super.key,
-    required this.secondaryLabel,
+    this.secondaryLabel,
     required this.primaryContent,
     required this.onTap,
   });
@@ -28,17 +28,19 @@ class NavigationRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  secondaryLabel,
-                  style: TextStyle(
-                    fontSize: 12.0,
-                    color: CupertinoDynamicColor.resolve(
-                      CupertinoColors.systemGrey,
-                      context,
+                if (secondaryLabel != null) ...[
+                  Text(
+                    secondaryLabel!,
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: CupertinoDynamicColor.resolve(
+                        CupertinoColors.systemGrey,
+                        context,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 4.0),
+                  const SizedBox(height: 4.0),
+                ],
                 DefaultTextStyle(
                   style: TextStyle(
                     fontSize: 17.0,

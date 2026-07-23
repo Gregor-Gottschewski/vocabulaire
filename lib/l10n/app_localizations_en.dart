@@ -38,6 +38,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsCardAnimations => 'Card animations';
 
   @override
+  String get settingsLicenses => 'Licenses';
+
+  @override
   String get editVocabNew => 'New vocabulary';
 
   @override

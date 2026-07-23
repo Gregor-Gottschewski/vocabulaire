@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart' show showLicensePage;
 import 'package:vocabulaire/l10n/app_localizations.dart';
+import 'package:vocabulaire/views/widgets/navigation_row.dart';
 
 import '../controllers/settings_controller.dart';
 
@@ -61,6 +63,18 @@ class _SettingsViewState extends State<SettingsView> {
                 CupertinoSwitch(
                   value: _cardAnimations,
                   onChanged: (v) => _setCardAnimations(v),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16.0),
+            NavigationRowGroup(
+              children: [
+                NavigationRow(
+                  primaryContent: Text(_l10n.settingsLicenses),
+                  onTap: () => showLicensePage(
+                    context: context,
+                    applicationName: 'Vocabulaire',
+                  ),
                 ),
               ],
             ),
