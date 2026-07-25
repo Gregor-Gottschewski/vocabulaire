@@ -6,6 +6,7 @@ import 'package:vocabulaire/views/review_view.dart';
 import '../models/vocabulary_box.dart';
 import 'vocabulary_list_view.dart';
 import '../models/review_session.dart';
+import 'widgets/daily_limit_stepper.dart';
 
 /// View for displaying details of a vocabulary box, including description and options for review sessions.
 class BoxDetailView extends StatefulWidget {
@@ -23,11 +24,26 @@ class _BoxDetailWidget extends State<BoxDetailView> {
   late AppLocalizations _l10n;
   bool _onlyTimely = true;
   LearningMethod _selectedOption = LearningMethod.all;
+  bool _dailyLimitEnabled = false;
+  int _dailyLimit = 20;
 
   @override
   void initState() {
     super.initState();
     _boxNotifier = BoxController().listenableForKeys([widget.boxKey]);
+    _dailyLimitEnabled = widget.box.dailyLimitEnabled;
+    _dailyLimit = widget.box.dailyLimit;
+  }
+
+  /// Persists the daily-limit settings, reading the box fresh from
+  /// [BoxController] rather than relying on the possibly stale [widget.box].
+  void _persistDailyLimit({bool? enabled, int? limit}) {
+    final current = BoxController().getBox(widget.boxKey) ?? widget.box;
+    final updated = current.copyWith(
+      dailyLimitEnabled: enabled,
+      dailyLimit: limit,
+    );
+    BoxController().updateBox(widget.boxKey, updated);
   }
 
   @override
@@ -66,6 +82,8 @@ class _BoxDetailWidget extends State<BoxDetailView> {
       widget.box.vocabularies,
       onlyTimely: _onlyTimely,
       method: _selectedOption,
+      dailyLimitEnabled: widget.box.dailyLimitEnabled,
+      remainingNewCards: widget.box.remainingNewCardsToday,
     ).isNotEmpty;
 
     return SafeArea(
@@ -103,6 +121,41 @@ class _BoxDetailWidget extends State<BoxDetailView> {
             _buildToggleRow(_l10n.boxDetailDueVocabs, _onlyTimely, (v) {
               setState(() => _onlyTimely = v);
             }),
+
+            _buildToggleRow(_l10n.boxDetailDailyLimit, _dailyLimitEnabled, (
+                    v,
+                  ) {
+                    setState(() => _dailyLimitEnabled = v);
+                    _persistDailyLimit(enabled: v);
+                  }),
+                  Opacity(
+                    opacity: _dailyLimitEnabled ? 1.0 : 0.4,
+                    child: IgnorePointer(
+                      ignoring: !_dailyLimitEnabled,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 8),
+                          DailyLimitStepper(
+                            value: _dailyLimit,
+                            onChanged: (v) {
+                              setState(() => _dailyLimit = v);
+                              _persistDailyLimit(limit: v);
+                            },
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _l10n.boxDetailDailyLimitInfo,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: CupertinoColors.systemGrey,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
