@@ -27,7 +27,7 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       targetLanguage: fields[7] as String?,
       dailyLimitEnabled: fields[8] == null ? false : fields[8] as bool,
       dailyLimit: fields[9] == null ? 20 : fields[9] as int,
-      dailyNewCardsReviewedToday: fields[10] == null ? 0 : fields[10] as int,
+      newCardsReviewedToday: fields[10] == null ? 0 : fields[10] as int,
       lastNewVocabularyReview: fields[11] as DateTime?,
     );
   }
@@ -57,7 +57,7 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       ..writeByte(9)
       ..write(obj.dailyLimit)
       ..writeByte(10)
-      ..write(obj.dailyNewCardsReviewedToday)
+      ..write(obj.newCardsReviewedToday)
       ..writeByte(11)
       ..write(obj.lastNewVocabularyReview);
   }

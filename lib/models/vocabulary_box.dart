@@ -47,7 +47,7 @@ class VocabularyBox {
 
   /// Number of new cards already reviewed on the current logical day.
   @HiveField(10, defaultValue: 0)
-  final int dailyNewCardsReviewedToday;
+  final int newCardsReviewedToday;
 
   /// Last review of vocabulary box with new vocabulary
   @HiveField(11)
@@ -76,7 +76,7 @@ class VocabularyBox {
   /// or `null` if no daily limit is enabled.
   int? get remainingNewCardsToday {
     if (!dailyLimitEnabled) return null;
-    final reviewedToday = isDailyLimitStale ? 0 : dailyNewCardsReviewedToday;
+    final reviewedToday = isDailyLimitStale ? 0 : newCardsReviewedToday;
     final remaining = dailyLimit - reviewedToday;
     return remaining < 0 ? 0 : remaining;
   }
@@ -99,7 +99,7 @@ class VocabularyBox {
     this.targetLanguage,
     this.dailyLimitEnabled = false,
     this.dailyLimit = 20,
-    this.dailyNewCardsReviewedToday = 0,
+    this.newCardsReviewedToday = 0,
     this.lastNewVocabularyReview,
   });
 
@@ -114,7 +114,7 @@ class VocabularyBox {
     String? targetLanguage,
     bool? dailyLimitEnabled,
     int? dailyLimit,
-    int? dailyNewCardsReviewedToday,
+    int? newCardsReviewedToday,
     DateTime? dailyLimitResetDate,
   }) {
     return VocabularyBox(
@@ -128,8 +128,8 @@ class VocabularyBox {
       targetLanguage: targetLanguage ?? this.targetLanguage,
       dailyLimitEnabled: dailyLimitEnabled ?? this.dailyLimitEnabled,
       dailyLimit: dailyLimit ?? this.dailyLimit,
-      dailyNewCardsReviewedToday:
-          dailyNewCardsReviewedToday ?? this.dailyNewCardsReviewedToday,
+      newCardsReviewedToday:
+          newCardsReviewedToday ?? this.newCardsReviewedToday,
       lastNewVocabularyReview: dailyLimitResetDate ?? this.lastNewVocabularyReview,
     );
   }

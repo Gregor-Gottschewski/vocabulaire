@@ -67,16 +67,24 @@ class ReviewController extends ChangeNotifier {
   /// Builds the list of vocabularies to review based on the box and applied filters.
   /// Returned list is shuffled.
   List<Vocabulary> buildCardList() {
-    final b = _boxController.getBox(boxKey);
+    var b = _boxController.getBox(boxKey);
     if (b == null) {
       throw Exception("Box with key $boxKey not found");
     }
+
+    if (b.newCardsReviewedToday > 0 && b.isDailyLimitStale) {
+      b = b.copyWith(newCardsReviewedToday: 0);
+      _boxController.updateBox(boxKey, b);
+    }
+
     _box = b;
 
     return ReviewSession.filterVocabularies(
       b.vocabularies,
       onlyTimely: onlyTimely,
       method: learningMethod,
+      dailyLimitEnabled: b.dailyLimitEnabled,
+      remainingNewCards: b.remainingNewCardsToday,
     )..shuffle();
   }
 
@@ -92,19 +100,36 @@ class ReviewController extends ChangeNotifier {
       return true;
     }
 
+    final wasNew = vocabulary.card.lastReview == null;
     final reviewResult = _scheduler.reviewCard(vocabulary.card, rating).card;
-
     final updatedVocab = vocabulary.copyWith(cardData: reviewResult.toMap());
-
     _cards[_index] = updatedVocab;
-
     if (_box != null) {
       _boxController.updateVocabularyInBox(boxKey, updatedVocab);
+      if (wasNew) {
+        _incrementNewCardsReviewedToday();
+      }
     }
 
     _index++;
     notifyListeners();
     return true;
+  }
+
+  /// Increments the box's new-cards-reviewed-today counter and stamps
+  /// [VocabularyBox.lastNewVocabularyReview] on the 0 -> 1 transition.
+  void _incrementNewCardsReviewedToday() {
+    final box = _boxController.getBox(boxKey);
+    if (box == null) return;
+
+    final wasZero = box.newCardsReviewedToday == 0;
+    final updatedBox = box.copyWith(
+      newCardsReviewedToday: box.newCardsReviewedToday + 1,
+      dailyLimitResetDate: wasZero ? DateTime.now() : null,
+    );
+
+    _boxController.updateBox(boxKey, updatedBox);
+    _box = updatedBox;
   }
 
   void skip() {
