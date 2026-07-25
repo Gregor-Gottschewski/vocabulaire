@@ -37,6 +37,22 @@ class VocabularyBox {
   @HiveField(7)
   final String? targetLanguage;
 
+  /// Whether a daily limit on new cards is active for this box.
+  @HiveField(8, defaultValue: false)
+  final bool dailyLimitEnabled;
+
+  /// Maximum number of new cards to review per day, when [dailyLimitEnabled].
+  @HiveField(9, defaultValue: 20)
+  final int dailyLimit;
+
+  /// Number of new cards already reviewed on the current logical day.
+  @HiveField(10, defaultValue: 0)
+  final int dailyNewCardsReviewedToday;
+
+  /// Last review of vocabulary box with new vocabulary
+  @HiveField(11)
+  final DateTime? lastNewVocabularyReview;
+
   BoxType get boxType => BoxType.fromName(type);
 
   BoxColor get boxColor => BoxColor.fromName(color);
@@ -44,6 +60,26 @@ class VocabularyBox {
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
 
   AppLanguage? get targetAppLanguage => AppLanguage.fromCode(targetLanguage);
+
+  /// True if [lastNewVocabularyReview] is set and refers to a previous
+  /// calendar day
+  bool get isDailyLimitStale {
+    final resetDate = lastNewVocabularyReview;
+    if (resetDate == null) return false;
+    final now = DateTime.now();
+    return resetDate.year != now.year ||
+        resetDate.month != now.month ||
+        resetDate.day != now.day;
+  }
+
+  /// Remaining number of new cards that may still be reviewed today,
+  /// or `null` if no daily limit is enabled.
+  int? get remainingNewCardsToday {
+    if (!dailyLimitEnabled) return null;
+    final reviewedToday = isDailyLimitStale ? 0 : dailyNewCardsReviewedToday;
+    final remaining = dailyLimit - reviewedToday;
+    return remaining < 0 ? 0 : remaining;
+  }
 
   /// Sanitization to prevent path traversal.
   /// Returns sanitized import or 'export' if sanitized import is empty.
@@ -61,6 +97,10 @@ class VocabularyBox {
     this.color = 'purple',
     this.sourceLanguage,
     this.targetLanguage,
+    this.dailyLimitEnabled = false,
+    this.dailyLimit = 20,
+    this.dailyNewCardsReviewedToday = 0,
+    this.lastNewVocabularyReview,
   });
 
   VocabularyBox copyWith({
@@ -72,6 +112,10 @@ class VocabularyBox {
     String? color,
     String? sourceLanguage,
     String? targetLanguage,
+    bool? dailyLimitEnabled,
+    int? dailyLimit,
+    int? dailyNewCardsReviewedToday,
+    DateTime? dailyLimitResetDate,
   }) {
     return VocabularyBox(
       name: name ?? this.name,
@@ -82,6 +126,11 @@ class VocabularyBox {
       color: color ?? this.color,
       sourceLanguage: sourceLanguage ?? this.sourceLanguage,
       targetLanguage: targetLanguage ?? this.targetLanguage,
+      dailyLimitEnabled: dailyLimitEnabled ?? this.dailyLimitEnabled,
+      dailyLimit: dailyLimit ?? this.dailyLimit,
+      dailyNewCardsReviewedToday:
+          dailyNewCardsReviewedToday ?? this.dailyNewCardsReviewedToday,
+      lastNewVocabularyReview: dailyLimitResetDate ?? this.lastNewVocabularyReview,
     );
   }
 
