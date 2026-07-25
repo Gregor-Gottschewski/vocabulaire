@@ -165,6 +165,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailMethod => 'Learning method';
 
   @override
+  String get boxDetailDailyLimit => 'Daily Limit';
+
+  @override
+  String get boxDetailNewCardsPerDay => 'New cards / day';
+
+  @override
+  String get boxDetailDailyLimitInfo =>
+      'The daily limit restricts the number of new words reviewed per day.';
+
+  @override
   String get boxDetailEditVocabs => 'Edit vocabulary';
 
   @override

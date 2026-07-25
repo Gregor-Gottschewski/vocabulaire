@@ -382,6 +382,24 @@ abstract class AppLocalizations {
   /// **'Lernmethode'**
   String get boxDetailMethod;
 
+  /// No description provided for @boxDetailDailyLimit.
+  ///
+  /// In de, this message translates to:
+  /// **'Tägliches Limit'**
+  String get boxDetailDailyLimit;
+
+  /// No description provided for @boxDetailNewCardsPerDay.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue Karten / Tag'**
+  String get boxDetailNewCardsPerDay;
+
+  /// No description provided for @boxDetailDailyLimitInfo.
+  ///
+  /// In de, this message translates to:
+  /// **'Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.'**
+  String get boxDetailDailyLimitInfo;
+
   /// No description provided for @boxDetailEditVocabs.
   ///
   /// In de, this message translates to:

@@ -45,10 +45,14 @@ class ReviewSession {
   ///
   /// - [onlyTimely]: If true, only include cards that are due for review (due date <= now).
   /// - [method]: The learning method to filter cards, see [LearningMethod].
+  /// - [dailyLimitEnabled] / [remainingNewCards]: If a daily limit is active,
+  ///   caps the number of never-reviewed cards in the result to [remainingNewCards].
   static List<Vocabulary> filterVocabularies(
     List<Vocabulary> vocabularies, {
     required bool onlyTimely,
     required LearningMethod method,
+    bool dailyLimitEnabled = false,
+    int? remainingNewCards,
   }) {
     var list = List<Vocabulary>.from(vocabularies);
 
@@ -60,13 +64,34 @@ class ReviewSession {
 
     switch (method) {
       case LearningMethod.onlyDifficult:
-        return list.where((v) => v.card.difficulty! >= 7.0).toList();
+        list = list.where((v) => v.card.difficulty! >= 7.0).toList();
+        break;
       case LearningMethod.onlyNew:
-        return list.where((v) => v.card.lastReview == null).toList();
+        list = list.where((v) => v.card.lastReview == null).toList();
+        break;
       case LearningMethod.onlyUnstable:
-        return list.where((v) => v.card.stability! <= 5.0).toList();
+        list = list.where((v) => v.card.stability! <= 5.0).toList();
+        break;
       case LearningMethod.all:
-        return list;
+        break;
     }
+
+    if (dailyLimitEnabled && remainingNewCards != null) {
+      if (remainingNewCards <= 0) {
+        list = list.where((v) => v.card.lastReview != null).toList();
+      } else {
+        final newCards = list.where((v) => v.card.lastReview == null).toList();
+        if (newCards.length > remainingNewCards) {
+          final excess = newCards.length - remainingNewCards;
+          final excluded = newCards
+              .sublist(newCards.length - excess)
+              .map((v) => v.id)
+              .toSet();
+          list = list.where((v) => !excluded.contains(v.id)).toList();
+        }
+      }
+    }
+
+    return list;
   }
 }
