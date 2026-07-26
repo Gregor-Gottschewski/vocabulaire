@@ -103,7 +103,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editVocabSave => 'Save';
 
   @override
-  String get editVocabNext => 'Next';
+  String get editVocabNext => 'Save & Next';
 
   @override
   String get editVocabStats => 'Statistics';

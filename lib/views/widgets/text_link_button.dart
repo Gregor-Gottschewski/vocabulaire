@@ -8,12 +8,18 @@ import '../../theme/theme_context_ext.dart';
 class TextLinkButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
+  final Color? color;
 
-  const TextLinkButton({super.key, required this.label, this.onPressed});
+  const TextLinkButton({
+    super.key,
+    required this.label,
+    this.onPressed,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final color = context.colors.textLink;
+    final color = this.color ?? context.colors.textLink;
     return Material(
       type: MaterialType.transparency,
       child: Center(

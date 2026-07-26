@@ -46,7 +46,7 @@
   "editVocabExistsMessage": "Diese Vokabel existiert bereits in diesem Box. Soll die Vokabel trotzdem hinzugefügt werden?",
   "editVocabAddAnyway": "Trotzdem hinzufügen",
   "editVocabSave": "Speichern",
-  "editVocabNext": "Nächste",
+  "editVocabNext": "Speichern & Nächste",
   "editVocabStats": "Statistiken",
   "editVocabDue": "Nächste Abfrage: {dueDate}",
   "@editVocabDue": {

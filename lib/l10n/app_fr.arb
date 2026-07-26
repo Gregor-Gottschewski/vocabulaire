@@ -44,7 +44,7 @@
   "editVocabExistsMessage": "Ce vocabulaire existe déjà dans cette boîte. Voulez-vous quand même l'ajouter ?",
   "editVocabAddAnyway": "Ajouter quand même",
   "editVocabSave": "Enregistrer",
-  "editVocabNext": "Suivant",
+  "editVocabNext": "Enregistrer & Suivant",
   "editVocabStats": "Statistiques",
   "editVocabDue": "Prochaine révision : {dueDate}",
   "@editVocabDue": {

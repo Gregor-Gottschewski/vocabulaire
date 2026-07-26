@@ -104,7 +104,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editVocabSave => 'Speichern';
 
   @override
-  String get editVocabNext => 'Nächste';
+  String get editVocabNext => 'Speichern & Nächste';
 
   @override
   String get editVocabStats => 'Statistiken';

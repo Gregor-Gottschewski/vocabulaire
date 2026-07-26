@@ -39,7 +39,7 @@
   "editVocabExistsMessage": "This vocabulary already exists in this box. Add it anyway?",
   "editVocabAddAnyway": "Add anyway",
   "editVocabSave": "Save",
-  "editVocabNext": "Next",
+  "editVocabNext": "Save & Next",
   "editVocabStats": "Statistics",
   "editVocabDue": "Next review: {dueDate}",
   "editVocabOverdue": "overdue",
