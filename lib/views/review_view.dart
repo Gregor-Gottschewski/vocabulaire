@@ -1,12 +1,21 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
+import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/review_session.dart';
+import 'package:vocabulaire/models/vocabulary.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
+import '../theme/theme_context_ext.dart';
+import 'widgets/app_progress_indicator.dart';
+import 'widgets/app_scaffold.dart';
+import 'widgets/section_title.dart';
+import 'widgets/text_link_button.dart';
 
 class ReviewView extends StatefulWidget {
   final dynamic boxKey;
@@ -24,8 +33,10 @@ class ReviewView extends StatefulWidget {
   State<ReviewView> createState() => _ReviewViewState();
 }
 
-class _ReviewViewState extends State<ReviewView> {
+class _ReviewViewState extends State<ReviewView>
+    with SingleTickerProviderStateMixin {
   late final ReviewController _reviewController;
+  late final AnimationController _flipController;
   final _settingsController = SettingsController();
   final _player = AudioPlayer();
   late AppLocalizations _l10n;
@@ -42,12 +53,17 @@ class _ReviewViewState extends State<ReviewView> {
     );
     _reviewController.addListener(_onControllerUpdate);
     _reviewController.load();
+    _flipController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 280),
+    );
   }
 
   @override
   void dispose() {
     _reviewController.removeListener(_onControllerUpdate);
     _reviewController.dispose();
+    _flipController.dispose();
     _player.dispose();
     super.dispose();
   }
@@ -80,115 +96,20 @@ class _ReviewViewState extends State<ReviewView> {
     setState(() {});
   }
 
-  Widget _buildCardView() {
-    final current = _reviewController.current;
-    if (current == null) {
-      return const SizedBox(
-        width: double.infinity,
-        height: 260,
-        child: Center(child: CupertinoActivityIndicator()),
-      );
+  bool get _cardAnimationsEnabled => _settingsController.getCardAnimations();
+
+  void _reveal() {
+    setState(() => _flipped = true);
+    if (_cardAnimationsEnabled) {
+      _flipController.forward();
+    } else {
+      _flipController.value = 1;
     }
+  }
 
-    final front = current.word;
-    final back = current.meaning;
-    final exampleText = current.example;
-    final hasRecording = AppPaths.audioFile(current.id).existsSync();
-    final bool animation = _settingsController.getCardAnimations();
-
-    return GestureDetector(
-      onTap: () => setState(() => _flipped = !_flipped),
-      child: AnimatedSwitcher(
-        duration: animation ? const Duration(milliseconds: 300) : Duration.zero,
-        transitionBuilder: animation
-            ? (child, animation) =>
-                  RotationTransition(turns: animation, child: child)
-            : (child, _) => child,
-        child: Container(
-          key: ValueKey(_flipped),
-          width: double.infinity,
-          height: 260,
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: CupertinoDynamicColor.resolve(
-              CupertinoColors.systemBackground,
-              context,
-            ),
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: CupertinoDynamicColor.resolve(
-                CupertinoColors.systemGrey4,
-                context,
-              ),
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 8,
-                offset: Offset(0, 4),
-              ),
-            ],
-          ),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (!_flipped)
-                    Text(
-                      front,
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    )
-                  else
-                    Column(
-                      children: [
-                        Text(
-                          back,
-                          style: const TextStyle(fontSize: 22),
-                          textAlign: TextAlign.center,
-                        ),
-                        if (exampleText.isNotEmpty)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Text(
-                              _l10n.reviewExample(exampleText),
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: CupertinoColors.systemGrey,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        if (hasRecording) ...[
-                          const SizedBox(height: 16),
-                          CupertinoButton.filled(
-                            onPressed: _playAudio,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Icon(
-                                  CupertinoIcons.play_arrow_solid,
-                                  size: 20,
-                                ),
-                                const SizedBox(width: 8),
-                                Text(_l10n.reviewPlay),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ],
-                    ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+  void _resetFlip() {
+    _flipped = false;
+    _flipController.value = 0;
   }
 
   void _playAudio() async {
@@ -197,120 +118,197 @@ class _ReviewViewState extends State<ReviewView> {
     await _player.play(DeviceFileSource(AppPaths.audioFilePath(current.id)));
   }
 
-  Widget _ratingButtons() {
+  void _rate(Rating rating) {
+    _resetFlip();
+    _reviewController.applyRating(rating);
+  }
+
+  void _skip() {
+    _resetFlip();
+    _reviewController.skip();
+  }
+
+  Widget _buildHeader(int index, int indexDisplay, int total, bool showListen) {
+    final colors = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: _ProgressBar(value: total == 0 ? 0.0 : index / total),
+            ),
+            const SizedBox(width: AppSpacing.gapMedium),
+            Text(
+              _l10n.reviewCard(indexDisplay, total),
+              style: AppTypography.captionSans.copyWith(
+                color: colors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: AppSpacing.gapSmall),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (showListen)
+              GestureDetector(
+                onTap: _playAudio,
+                behavior: HitTestBehavior.opaque,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.play_arrow, size: 18, color: colors.highlight),
+                    const SizedBox(width: AppSpacing.gapSmall),
+                    Text(
+                      _l10n.reviewPlay,
+                      style: AppTypography.captionSans.copyWith(
+                        color: colors.highlight,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            else
+              const SizedBox.shrink(),
+            // TextLinkButton carries its own EdgeInsets.all(gapMedium) hit
+            // padding (intentional, larger tap target). Shift it right by
+            // that amount so its visible edge lines up with the progress
+            // bar/label above instead of shrinking the tap target
+            Transform.translate(
+              offset: const Offset(AppSpacing.gapMedium, 0),
+              child: TextLinkButton(label: _l10n.reviewSkip, onPressed: _skip),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCard(Vocabulary current, bool isVocabularyBox) {
+    final colors = context.colors;
+    final showBackLabel = isVocabularyBox
+        ? _l10n.reviewShowTranslation
+        : _l10n.reviewShowBack;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Row(
-          children: [
-            // Again
-            Expanded(
-              child: CupertinoButton.filled(
-                color: CupertinoColors.destructiveRed,
-                onPressed: () => {
-                  _reviewController.applyRating(Rating.again),
-                  _flipped = false,
-                },
-                padding: EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(CupertinoIcons.xmark, size: 20),
-                    const SizedBox(width: 8),
-                    Text(_l10n.reviewAgain),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            // Hard
-            Expanded(
-              child: CupertinoButton.filled(
-                color: CupertinoColors.systemYellow,
-                onPressed: () => {
-                  _reviewController.applyRating(Rating.hard),
-                  _flipped = false,
-                },
-                padding: EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(CupertinoIcons.exclamationmark, size: 20),
-                    const SizedBox(width: 8),
-                    Text(_l10n.reviewHard),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Row(
-          children: [
-            // Good
-            Expanded(
-              child: CupertinoButton.filled(
-                color: Color.fromARGB(255, 0, 100, 0),
-                onPressed: () => {
-                  _reviewController.applyRating(Rating.good),
-                  _flipped = false,
-                },
-                padding: EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(CupertinoIcons.smiley, size: 20),
-                    const SizedBox(width: 8),
-                    Text(_l10n.reviewGood),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(width: 8),
-            // Easy
-            Expanded(
-              child: CupertinoButton.filled(
-                color: CupertinoColors.systemGreen,
-                onPressed: () => {
-                  _reviewController.applyRating(Rating.easy),
-                  _flipped = false,
-                },
-                padding: EdgeInsets.symmetric(vertical: 14),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(CupertinoIcons.check_mark_circled, size: 20),
-                    const SizedBox(width: 8),
-                    Text(_l10n.reviewEasy),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        // Skip
         SizedBox(
           width: double.infinity,
-          child: CupertinoButton.tinted(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(CupertinoIcons.forward, size: 20),
-                const SizedBox(width: 8),
-                Text(_l10n.reviewSkip),
-              ],
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              current.word,
+              textAlign: TextAlign.center,
+              style: AppTypography.headlineSerif.copyWith(
+                color: colors.textPrimary,
+              ),
             ),
-            onPressed: () {
-              _reviewController.skip();
-              _flipped = false;
-            },
           ),
+        ),
+        if (!_flipped) ...[
+          const SizedBox(height: AppSpacing.sectionGap),
+          TextLinkButton(label: showBackLabel, onPressed: _reveal),
+        ],
+        SizeTransition(
+          sizeFactor: CurvedAnimation(
+            parent: _flipController,
+            curve: Curves.easeOut,
+          ),
+          alignment: Alignment.topCenter,
+          child: FadeTransition(
+            opacity: _flipController,
+            child: Padding(
+              padding: const EdgeInsets.only(top: AppSpacing.sectionGap),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 48,
+                    height: AppSpacing.hairline,
+                    color: colors.borderStrong,
+                  ),
+                  const SizedBox(height: AppSpacing.sectionGap),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        current.meaning,
+                        textAlign: TextAlign.center,
+                        style: AppTypography.headlineSerif.copyWith(
+                          fontSize: 22,
+                          color: colors.textPrimary,
+                        ),
+                      ),
+                    ),
+                  ),
+                  if (current.example.isNotEmpty) ...[
+                    const SizedBox(height: AppSpacing.gapMedium),
+                    Text(
+                      _l10n.reviewExample(current.example),
+                      textAlign: TextAlign.center,
+                      style: AppTypography.labelSans.copyWith(
+                        color: colors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRatingSection() {
+    final colors = context.colors;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionTitle(text: _l10n.reviewRatingQuestion),
+        const SizedBox(height: AppSpacing.gapLarge),
+        Row(
+          children: [
+            Expanded(
+              child: _RatingButton(
+                label: _l10n.reviewAgain,
+                color: colors.ratingAgain,
+                textColor: colors.background,
+                onPressed: () => _rate(Rating.again),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.gapSmall),
+            Expanded(
+              child: _RatingButton(
+                label: _l10n.reviewHard,
+                color: colors.ratingHard,
+                textColor: colors.background,
+                onPressed: () => _rate(Rating.hard),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.gapSmall),
+            Expanded(
+              child: _RatingButton(
+                label: _l10n.reviewGood,
+                color: colors.ratingGood,
+                textColor: colors.background,
+                onPressed: () => _rate(Rating.good),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.gapSmall),
+            Expanded(
+              child: _RatingButton(
+                label: _l10n.reviewEasy,
+                color: colors.ratingEasy,
+                textColor: colors.background,
+                onPressed: () => _rate(Rating.easy),
+              ),
+            ),
+          ],
         ),
       ],
     );
@@ -318,28 +316,97 @@ class _ReviewViewState extends State<ReviewView> {
 
   @override
   Widget build(BuildContext context) {
+    final current = _reviewController.current;
     final total = _reviewController.length;
     final indexDisplay = total == 0 ? 0 : (_reviewController.index + 1);
+    final isVocabularyBox =
+        _reviewController.box?.boxType == BoxType.vocabulary;
+    final hasRecording =
+        current != null && AppPaths.audioFile(current.id).existsSync();
 
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(_l10n.reviewTitle),
-        previousPageTitle: _l10n.reviewBack,
+    return AppScaffold(
+      backLabel: _l10n.reviewBack,
+      body: current == null
+          ? const Center(child: AppProgressIndicator())
+          : Column(
+              children: [
+                _buildHeader(
+                  _reviewController.index,
+                  indexDisplay,
+                  total,
+                  _flipped && hasRecording,
+                ),
+                Expanded(
+                  child: Center(
+                    child: SingleChildScrollView(
+                      child: _buildCard(current, isVocabularyBox),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sectionGap),
+                _buildRatingSection(),
+              ],
+            ),
+    );
+  }
+}
+
+class _ProgressBar extends StatelessWidget {
+  final double value;
+
+  const _ProgressBar({required this.value});
+
+  static const double _height = 3.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return Container(
+      height: _height,
+      color: colors.borderSubtle,
+      alignment: Alignment.centerLeft,
+      child: FractionallySizedBox(
+        alignment: Alignment.centerLeft,
+        widthFactor: value.clamp(0.0, 1.0),
+        child: Container(height: _height, color: colors.highlight),
       ),
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Text(
-                _l10n.reviewCard(indexDisplay, total),
-                style: const TextStyle(color: CupertinoColors.systemGrey),
-              ),
-              const SizedBox(height: 12),
-              Expanded(child: Center(child: _buildCardView())),
-              const SizedBox(height: 12),
-              _ratingButtons(),
-            ],
+    );
+  }
+}
+
+class _RatingButton extends StatelessWidget {
+  final String label;
+  final Color color;
+  final Color textColor;
+  final VoidCallback onPressed;
+
+  const _RatingButton({
+    required this.label,
+    required this.color,
+    required this.textColor,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: GestureDetector(
+        onTap: onPressed,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          color: color,
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.gapLarge),
+          alignment: Alignment.center,
+          child: Text(
+            label,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTypography.bodySans.copyWith(
+              fontWeight: FontWeight.w600,
+              color: textColor,
+            ),
           ),
         ),
       ),

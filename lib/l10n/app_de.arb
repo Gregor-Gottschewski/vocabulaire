@@ -68,16 +68,18 @@
     }
   },
 
-  "reviewTitle": "Lernen",
   "reviewBack": "Zurück",
-  "reviewCard": "Karte {index} / {total}",
+  "reviewCard": "{index} von {total}",
   "@reviewCard": {
     "placeholders": {
       "index": { "type": "int" },
       "total": { "type": "int" }
     }
   },
-  "reviewPlay": "Abspielen",
+  "reviewPlay": "Anhören",
+  "reviewShowTranslation": "Übersetzung anzeigen",
+  "reviewShowBack": "Rückseite anzeigen",
+  "reviewRatingQuestion": "Wie ist diese Vokabel?",
   "reviewAgain": "Nochmal",
   "reviewHard": "Schwer",
   "reviewGood": "Gut",

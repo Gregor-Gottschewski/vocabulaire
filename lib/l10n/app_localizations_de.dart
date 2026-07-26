@@ -128,18 +128,24 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get reviewTitle => 'Lernen';
-
-  @override
   String get reviewBack => 'Zurück';
 
   @override
   String reviewCard(int index, int total) {
-    return 'Karte $index / $total';
+    return '$index von $total';
   }
 
   @override
-  String get reviewPlay => 'Abspielen';
+  String get reviewPlay => 'Anhören';
+
+  @override
+  String get reviewShowTranslation => 'Übersetzung anzeigen';
+
+  @override
+  String get reviewShowBack => 'Rückseite anzeigen';
+
+  @override
+  String get reviewRatingQuestion => 'Wie ist diese Vokabel?';
 
   @override
   String get reviewAgain => 'Nochmal';

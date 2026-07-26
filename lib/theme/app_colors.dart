@@ -12,6 +12,7 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color borderStrong;
   final Color borderSubtle;
   final Color danger;
+  final Color highlight;
   final Color ratingAgain;
   final Color ratingHard;
   final Color ratingGood;
@@ -26,6 +27,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.borderStrong,
     required this.borderSubtle,
     required this.danger,
+    required this.highlight,
     required this.ratingAgain,
     required this.ratingHard,
     required this.ratingGood,
@@ -41,6 +43,7 @@ class AppColors extends ThemeExtension<AppColors> {
     borderStrong: Color(0xFFD8D4CD),
     borderSubtle: Color(0xFFE7E4E0),
     danger: Color(0xFFA7391E),
+    highlight: Color(0xFF3D5A80),
     ratingAgain: Color(0xFFA7391E),
     ratingHard: Color(0xFFBD821A),
     ratingGood: Color(0xFF707836),
@@ -56,6 +59,7 @@ class AppColors extends ThemeExtension<AppColors> {
     borderStrong: Color(0xFF36322D),
     borderSubtle: Color(0xFF262421),
     danger: Color(0xFFD05F43),
+    highlight: Color(0xFF8FB4E3),
     ratingAgain: Color(0xFFD05F43),
     ratingHard: Color(0xFFDEA143),
     ratingGood: Color(0xFF969F5D),
@@ -72,6 +76,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? borderStrong,
     Color? borderSubtle,
     Color? danger,
+    Color? highlight,
     Color? ratingAgain,
     Color? ratingHard,
     Color? ratingGood,
@@ -86,6 +91,7 @@ class AppColors extends ThemeExtension<AppColors> {
       borderStrong: borderStrong ?? this.borderStrong,
       borderSubtle: borderSubtle ?? this.borderSubtle,
       danger: danger ?? this.danger,
+      highlight: highlight ?? this.highlight,
       ratingAgain: ratingAgain ?? this.ratingAgain,
       ratingHard: ratingHard ?? this.ratingHard,
       ratingGood: ratingGood ?? this.ratingGood,
@@ -105,6 +111,7 @@ class AppColors extends ThemeExtension<AppColors> {
       borderStrong: Color.lerp(borderStrong, other.borderStrong, t)!,
       borderSubtle: Color.lerp(borderSubtle, other.borderSubtle, t)!,
       danger: Color.lerp(danger, other.danger, t)!,
+      highlight: Color.lerp(highlight, other.highlight, t)!,
       ratingAgain: Color.lerp(ratingAgain, other.ratingAgain, t)!,
       ratingHard: Color.lerp(ratingHard, other.ratingHard, t)!,
       ratingGood: Color.lerp(ratingGood, other.ratingGood, t)!,

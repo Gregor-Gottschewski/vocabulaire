@@ -66,16 +66,18 @@
     }
   },
 
-  "reviewTitle": "Étudier",
   "reviewBack": "Retour",
-  "reviewCard": "Carte {index} / {total}",
+  "reviewCard": "{index} sur {total}",
   "@reviewCard": {
     "placeholders": {
       "index": { "type": "int" },
       "total": { "type": "int" }
     }
   },
-  "reviewPlay": "Lire",
+  "reviewPlay": "Écouter",
+  "reviewShowTranslation": "Afficher la traduction",
+  "reviewShowBack": "Afficher le verso",
+  "reviewRatingQuestion": "Comment évalues-tu ce mot ?",
   "reviewAgain": "Encore",
   "reviewHard": "Difficile",
   "reviewGood": "Bien",

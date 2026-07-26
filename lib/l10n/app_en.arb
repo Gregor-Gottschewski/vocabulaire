@@ -46,10 +46,18 @@
   "editVocabDifficulty": "Difficulty: {difficulty} of 10",
   "editVocabStability": "Stability: {stability}",
 
-  "reviewTitle": "Study",
   "reviewBack": "Back",
-  "reviewCard": "Card {index} / {total}",
-  "reviewPlay": "Play",
+  "reviewCard": "{index} of {total}",
+  "@reviewCard": {
+    "placeholders": {
+      "index": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "reviewPlay": "Listen",
+  "reviewShowTranslation": "Show translation",
+  "reviewShowBack": "Show back",
+  "reviewRatingQuestion": "How well did you know this?",
   "reviewAgain": "Again",
   "reviewHard": "Hard",
   "reviewGood": "Good",

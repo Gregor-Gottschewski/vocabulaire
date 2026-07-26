@@ -127,18 +127,24 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get reviewTitle => 'Étudier';
-
-  @override
   String get reviewBack => 'Retour';
 
   @override
   String reviewCard(int index, int total) {
-    return 'Carte $index / $total';
+    return '$index sur $total';
   }
 
   @override
-  String get reviewPlay => 'Lire';
+  String get reviewPlay => 'Écouter';
+
+  @override
+  String get reviewShowTranslation => 'Afficher la traduction';
+
+  @override
+  String get reviewShowBack => 'Afficher le verso';
+
+  @override
+  String get reviewRatingQuestion => 'Comment évalues-tu ce mot ?';
 
   @override
   String get reviewAgain => 'Encore';

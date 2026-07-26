@@ -310,12 +310,6 @@ abstract class AppLocalizations {
   /// **'Stabilität: {stability}'**
   String editVocabStability(String stability);
 
-  /// No description provided for @reviewTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Lernen'**
-  String get reviewTitle;
-
   /// No description provided for @reviewBack.
   ///
   /// In de, this message translates to:
@@ -325,14 +319,32 @@ abstract class AppLocalizations {
   /// No description provided for @reviewCard.
   ///
   /// In de, this message translates to:
-  /// **'Karte {index} / {total}'**
+  /// **'{index} von {total}'**
   String reviewCard(int index, int total);
 
   /// No description provided for @reviewPlay.
   ///
   /// In de, this message translates to:
-  /// **'Abspielen'**
+  /// **'Anhören'**
   String get reviewPlay;
+
+  /// No description provided for @reviewShowTranslation.
+  ///
+  /// In de, this message translates to:
+  /// **'Übersetzung anzeigen'**
+  String get reviewShowTranslation;
+
+  /// No description provided for @reviewShowBack.
+  ///
+  /// In de, this message translates to:
+  /// **'Rückseite anzeigen'**
+  String get reviewShowBack;
+
+  /// No description provided for @reviewRatingQuestion.
+  ///
+  /// In de, this message translates to:
+  /// **'Wie ist diese Vokabel?'**
+  String get reviewRatingQuestion;
 
   /// No description provided for @reviewAgain.
   ///
