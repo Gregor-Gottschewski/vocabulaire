@@ -127,6 +127,7 @@
   "errorTtsUnknownError": "The pronunciation could not be generated. Please check your internet connection.",
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
 
+  "language": "Language",
   "languageGerman": "German",
   "languageEnglish": "English",
   "languageFrench": "French",
@@ -153,8 +154,6 @@
   "createBoxTypeTitle": "What kind of box do you want to create?",
   "createBoxTypeSubtitle": "Choose a type for the new box. The type can't be changed later.",
   "createBoxTypeImportSubtitle": "Import a box with all its vocabulary and audio files.",
-  "createBoxIconEditTitle": "Change icon",
-  "createBoxIconEditPlaceholder": "Enter emoji",
   "createBoxTitleLabel": "Title",
   "createBoxTitleHint": "Box name",
   "createBoxDescriptionLabel": "Description",
@@ -164,7 +163,6 @@
   "createBoxTargetLanguageLabel": "Target language - what you're learning",
   "createBoxSourceLanguagePickerTitle": "Choose source language",
   "createBoxTargetLanguagePickerTitle": "Choose target language",
-  "createBoxColorTitle": "Color",
   "createBoxFinish": "Done",
 
   "languageSearchPlaceholder": "Search",

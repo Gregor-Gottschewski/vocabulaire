@@ -340,6 +340,9 @@ class AppLocalizationsFr extends AppLocalizations {
       'La prononciation n\'a pas pu être générée. Veuillez vérifier votre connexion internet.';
 
   @override
+  String get language => 'Langue';
+
+  @override
   String get languageGerman => 'Allemand';
 
   @override
@@ -416,22 +419,16 @@ class AppLocalizationsFr extends AppLocalizations {
       'Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.';
 
   @override
-  String get createBoxIconEditTitle => 'Changer l\'icône';
-
-  @override
-  String get createBoxIconEditPlaceholder => 'Saisir un emoji';
-
-  @override
   String get createBoxTitleLabel => 'Titre';
 
   @override
   String get createBoxTitleHint => 'Nom de la boîte';
 
   @override
-  String get createBoxDescriptionLabel => 'Description (optionnel)';
+  String get createBoxDescriptionLabel => 'Description';
 
   @override
-  String get createBoxDescriptionHint => 'Courte description';
+  String get createBoxDescriptionHint => 'Optionnel courte description';
 
   @override
   String get createBoxNameEmpty => 'Le nom ne peut pas être vide.';
@@ -449,9 +446,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get createBoxTargetLanguagePickerTitle => 'Choisir la langue cible';
-
-  @override
-  String get createBoxColorTitle => 'Couleur';
 
   @override
   String get createBoxFinish => 'Terminé';

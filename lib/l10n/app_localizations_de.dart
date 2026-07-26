@@ -341,6 +341,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.';
 
   @override
+  String get language => 'Sprache';
+
+  @override
   String get languageGerman => 'Deutsch';
 
   @override
@@ -417,12 +420,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).';
 
   @override
-  String get createBoxIconEditTitle => 'Icon ändern';
-
-  @override
-  String get createBoxIconEditPlaceholder => 'Emoji eingeben';
-
-  @override
   String get createBoxTitleLabel => 'Titel';
 
   @override
@@ -449,9 +446,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get createBoxTargetLanguagePickerTitle => 'Zielsprache wählen';
-
-  @override
-  String get createBoxColorTitle => 'Farbe';
 
   @override
   String get createBoxFinish => 'Fertig';

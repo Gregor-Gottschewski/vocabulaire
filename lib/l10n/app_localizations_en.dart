@@ -336,6 +336,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'The pronunciation could not be generated. Please check your internet connection.';
 
   @override
+  String get language => 'Language';
+
+  @override
   String get languageGerman => 'German';
 
   @override
@@ -412,12 +415,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Import a box with all its vocabulary and audio files.';
 
   @override
-  String get createBoxIconEditTitle => 'Change icon';
-
-  @override
-  String get createBoxIconEditPlaceholder => 'Enter emoji';
-
-  @override
   String get createBoxTitleLabel => 'Title';
 
   @override
@@ -445,9 +442,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get createBoxTargetLanguagePickerTitle => 'Choose target language';
-
-  @override
-  String get createBoxColorTitle => 'Color';
 
   @override
   String get createBoxFinish => 'Done';

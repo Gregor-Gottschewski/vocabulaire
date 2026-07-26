@@ -13,4 +13,9 @@ class AppSpacing {
   static const double gapMedium = 8.0;
   static const double gapLarge = 14.0;
   static const double hairline = 1.0;
+
+  /// Width of [AppDialog] as a fraction of the screen width.
+  static const double dialogWidthFactor = 0.85;
+  /// Maximum width of [AppDialog].
+  static const double dialogMaxWidth = 400.0;
 }

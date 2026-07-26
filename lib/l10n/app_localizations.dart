@@ -682,6 +682,12 @@ abstract class AppLocalizations {
   /// **'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.'**
   String get errorTtsUnknownError;
 
+  /// No description provided for @language.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprache'**
+  String get language;
+
   /// No description provided for @languageGerman.
   ///
   /// In de, this message translates to:
@@ -826,18 +832,6 @@ abstract class AppLocalizations {
   /// **'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).'**
   String get createBoxTypeImportSubtitle;
 
-  /// No description provided for @createBoxIconEditTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Icon ändern'**
-  String get createBoxIconEditTitle;
-
-  /// No description provided for @createBoxIconEditPlaceholder.
-  ///
-  /// In de, this message translates to:
-  /// **'Emoji eingeben'**
-  String get createBoxIconEditPlaceholder;
-
   /// No description provided for @createBoxTitleLabel.
   ///
   /// In de, this message translates to:
@@ -891,12 +885,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Zielsprache wählen'**
   String get createBoxTargetLanguagePickerTitle;
-
-  /// No description provided for @createBoxColorTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Farbe'**
-  String get createBoxColorTitle;
 
   /// No description provided for @createBoxFinish.
   ///

@@ -163,6 +163,7 @@
   "errorTtsNotAuthenticated": "Échec de la connexion. Veuillez réessayer.",
   "errorTtsUnknownError": "La prononciation n'a pas pu être générée. Veuillez vérifier votre connexion internet.",
 
+  "language": "Langue",
   "languageGerman": "Allemand",
   "languageEnglish": "Anglais",
   "languageFrench": "Français",
@@ -189,8 +190,6 @@
   "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
   "createBoxTypeSubtitle": "Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.",
   "createBoxTypeImportSubtitle": "Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.",
-  "createBoxIconEditTitle": "Changer l'icône",
-  "createBoxIconEditPlaceholder": "Saisir un emoji",
   "createBoxTitleLabel": "Titre",
   "createBoxTitleHint": "Nom de la boîte",
   "createBoxDescriptionLabel": "Description",
@@ -200,7 +199,6 @@
   "createBoxTargetLanguageLabel": "Langue cible - celle que tu apprends",
   "createBoxSourceLanguagePickerTitle": "Choisir la langue source",
   "createBoxTargetLanguagePickerTitle": "Choisir la langue cible",
-  "createBoxColorTitle": "Couleur",
   "createBoxFinish": "Terminé",
 
   "languageSearchPlaceholder": "Rechercher",

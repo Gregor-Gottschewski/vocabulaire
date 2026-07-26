@@ -15,6 +15,14 @@ class AppTypography {
     height: 1.1,
   );
 
+  /// Section title with letter spacing of 1.25
+  static const sectionTitle = TextStyle(
+    fontFamily: _sans,
+    fontSize: 13.5,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 1.25,
+  );
+
   /// Right-aligned key-value row values, Newsreader 15/600.
   static const serifValue = TextStyle(
     fontFamily: _serif,

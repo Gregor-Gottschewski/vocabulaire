@@ -165,6 +165,7 @@
   "errorTtsNotAuthenticated": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
   "errorTtsUnknownError": "Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.",
 
+  "language": "Sprache",
   "languageGerman": "Deutsch",
   "languageEnglish": "Englisch",
   "languageFrench": "Französisch",
@@ -191,8 +192,6 @@
   "createBoxTypeTitle": "Was für eine Box soll erstellt werden?",
   "createBoxTypeSubtitle": "Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.",
   "createBoxTypeImportSubtitle": "Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).",
-  "createBoxIconEditTitle": "Icon ändern",
-  "createBoxIconEditPlaceholder": "Emoji eingeben",
   "createBoxTitleLabel": "Titel",
   "createBoxTitleHint": "Name der Box",
   "createBoxDescriptionLabel": "Beschreibung",
@@ -202,7 +201,6 @@
   "createBoxTargetLanguageLabel": "Zielsprache - das lernst du",
   "createBoxSourceLanguagePickerTitle": "Ausgangssprache wählen",
   "createBoxTargetLanguagePickerTitle": "Zielsprache wählen",
-  "createBoxColorTitle": "Farbe",
   "createBoxFinish": "Fertig",
 
   "languageSearchPlaceholder": "Suchen",
