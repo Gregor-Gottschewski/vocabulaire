@@ -213,6 +213,7 @@ class _VocabularyRow extends StatelessWidget {
           onTap: onTap,
           behavior: HitTestBehavior.opaque,
           child: Container(
+            width: double.infinity,
             decoration: BoxDecoration(
               color: colors.background,
               border: Border(
