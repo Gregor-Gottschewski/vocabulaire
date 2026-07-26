@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
+import 'package:vocabulaire/views/widgets/app_dialog.dart';
 
 import 'app_exception.dart';
 
 /// [AppExceptionDialog] adds application global error dialogs methods.
 extension AppExceptionDialog on BuildContext {
-
   /// Show a dialog with given error.
   Future<void> showAppError(AppException e) {
     final i18n = AppLocalizations.of(this)!;
@@ -18,7 +18,9 @@ extension AppExceptionDialog on BuildContext {
       AppError.exportCacheFailed => i18n.errorExportCacheFailed,
       AppError.importMissingStoreFile => i18n.errorImportMissingStoreFile,
       AppError.importInvalidFormat => i18n.errorImportInvalidFormat,
-      AppError.duplicateBoxName => i18n.errorDuplicateBoxName(e.details as String),
+      AppError.duplicateBoxName => i18n.errorDuplicateBoxName(
+        e.details as String,
+      ),
       AppError.ttsEmptyText => i18n.errorTtsEmptyText,
       AppError.ttsTextTooLong => i18n.errorTtsTextTooLong,
       AppError.ttsRateLimitExceeded => i18n.errorTtsRateLimitExceeded,
@@ -28,15 +30,10 @@ extension AppExceptionDialog on BuildContext {
 
     return showCupertinoDialog(
       context: this,
-      builder: (dialogContext) => CupertinoAlertDialog(
-        title: Text(i18n.commonError),
-        content: Text(message),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(i18n.commonOk),
-            onPressed: () => Navigator.of(dialogContext).pop(),
-          ),
-        ],
+      builder: (dialogContext) => AppDialog(
+        title: i18n.commonError,
+        message: message,
+        actions: [AppDialogAction(label: i18n.commonOk, onPressed: () {})],
       ),
     );
   }
