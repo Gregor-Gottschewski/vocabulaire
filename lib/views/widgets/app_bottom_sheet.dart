@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/theme_context_ext.dart';
+import 'selectable_option_card.dart';
 
 /// [showAppPicker] shows a bottom picker sheet.
 /// - [context] build context of the sheet.
@@ -51,9 +52,9 @@ Future<T?> showAppPicker<T>({
                     height: AppSpacing.hairline,
                     color: colors.borderSubtle,
                   ),
-                _PickerOptionRow(
-                  label: labelBuilder(options[i]),
-                  isSelected: options[i] == selected,
+                SelectableOptionCard(
+                  title: labelBuilder(options[i]),
+                  selected: options[i] == selected,
                   onTap: () => Navigator.of(sheetContext).pop(options[i]),
                 ),
               ],
@@ -63,56 +64,4 @@ Future<T?> showAppPicker<T>({
       );
     },
   );
-}
-
-/// [_PickerOptionRow] renders an option element.
-/// The selected element is marked with a circle dot at the left site of
-/// the label.
-class _PickerOptionRow extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _PickerOptionRow({
-    required this.label,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  static const double _dotSize = 6.0;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.rowVertical),
-        child: Row(
-          children: [
-            if (isSelected) ...[
-              Container(
-                width: _dotSize,
-                height: _dotSize,
-                decoration: BoxDecoration(
-                  color: colors.textPrimary,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.gapMedium),
-            ],
-            Expanded(
-              child: Text(
-                label,
-                style: AppTypography.serifValue.copyWith(
-                  color: colors.textPrimary,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 }
