@@ -1,48 +1,54 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
-/// A full-width, filled primary action button.
+import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
+import '../../theme/theme_context_ext.dart';
+import 'app_progress_indicator.dart';
+
+/// Full-width square primary action button
 class PrimaryActionButton extends StatelessWidget {
   final String label;
-  final IconData? icon;
-  final Color color;
   final VoidCallback? onPressed;
   final bool isLoading;
 
   const PrimaryActionButton({
     super.key,
     required this.label,
-    this.icon,
-    this.color = CupertinoColors.systemBlue,
     required this.onPressed,
     this.isLoading = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: CupertinoButton.filled(
-        color: color,
-        onPressed: isLoading ? null : onPressed,
-        child: isLoading
-            ? const CupertinoActivityIndicator(color: CupertinoColors.white)
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (icon != null) ...[
-                    Icon(icon, size: 20.0),
-                    const SizedBox(width: 8.0),
-                  ],
-                  Flexible(
-                    child: Text(
-                      label,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+    final colors = context.colors;
+    final disabled = onPressed == null || isLoading;
+    return Material(
+      type: MaterialType.transparency,
+      child: SizedBox(
+        width: double.infinity,
+        child: GestureDetector(
+          onTap: disabled ? null : onPressed,
+          behavior: HitTestBehavior.opaque,
+          child: Container(
+            padding: const EdgeInsets.symmetric(
+              vertical: AppSpacing.buttonVertical,
+            ),
+            color: disabled
+                ? colors.textPrimary.withValues(alpha: 0.35)
+                : colors.textPrimary,
+            alignment: Alignment.center,
+            child: isLoading
+                ? AppProgressIndicator(color: colors.background)
+                : Text(
+                    label,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: AppTypography.serifButton.copyWith(
+                      color: colors.background,
                     ),
                   ),
-                ],
-              ),
+          ),
+        ),
       ),
     );
   }
