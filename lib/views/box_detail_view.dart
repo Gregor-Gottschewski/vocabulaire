@@ -1,14 +1,25 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/views/review_view.dart';
 
-import '../models/vocabulary_box.dart';
-import 'vocabulary_list_view.dart';
 import '../models/review_session.dart';
+import '../models/vocabulary_box.dart';
+import '../theme/app_page_route.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
+import '../theme/theme_context_ext.dart';
+import 'vocabulary_list_view.dart';
+import 'widgets/app_bottom_sheet.dart';
+import 'widgets/app_text_field.dart';
 import 'widgets/daily_limit_stepper.dart';
+import 'widgets/key_value_row.dart';
+import 'widgets/pill_toggle.dart';
+import 'widgets/primary_action_button.dart';
+import 'widgets/text_link_button.dart';
 
-/// View for displaying details of a vocabulary box, including description and options for review sessions.
+/// The [BoxDetailView] contains a box description, review options, start
+/// session button and edit vocabulary list button.
 class BoxDetailView extends StatefulWidget {
   final VocabularyBox box;
   final dynamic boxKey;
@@ -22,10 +33,12 @@ class BoxDetailView extends StatefulWidget {
 class _BoxDetailWidget extends State<BoxDetailView> {
   late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _boxNotifier;
   late AppLocalizations _l10n;
+  late TextEditingController _titleController;
   bool _onlyTimely = true;
   LearningMethod _selectedOption = LearningMethod.all;
   bool _dailyLimitEnabled = false;
   int _dailyLimit = 20;
+  bool _isEditingTitle = false;
 
   @override
   void initState() {
@@ -33,6 +46,26 @@ class _BoxDetailWidget extends State<BoxDetailView> {
     _boxNotifier = BoxController().listenableForKeys([widget.boxKey]);
     _dailyLimitEnabled = widget.box.dailyLimitEnabled;
     _dailyLimit = widget.box.dailyLimit;
+    _titleController = TextEditingController(text: widget.box.name);
+  }
+
+  @override
+  void didUpdateWidget(covariant BoxDetailView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!_isEditingTitle && widget.box.name != _titleController.text) {
+      _titleController.text = widget.box.name;
+    }
+  }
+
+  void _saveTitle() {
+    final newName = _titleController.text.trim();
+    setState(() => _isEditingTitle = false);
+    if (newName.isEmpty || newName == widget.box.name) {
+      _titleController.text = widget.box.name;
+      return;
+    }
+    final current = BoxController().getBox(widget.boxKey) ?? widget.box;
+    BoxController().updateBox(widget.boxKey, current.copyWith(name: newName));
   }
 
   /// Persists the daily-limit settings, reading the box fresh from
@@ -49,6 +82,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
   @override
   void dispose() {
     _boxNotifier.dispose();
+    _titleController.dispose();
     super.dispose();
   }
 
@@ -58,227 +92,196 @@ class _BoxDetailWidget extends State<BoxDetailView> {
     _l10n = AppLocalizations.of(context)!;
   }
 
-  /// Builds a row with a label and a CupertinoSwitch for toggling options.
-  Widget _buildToggleRow(
-    String label,
-    bool value,
-    ValueChanged<bool> onChanged,
-  ) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Expanded(child: Text(label, style: TextStyle(fontSize: 16))),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0),
-          child: CupertinoSwitch(value: value, onChanged: onChanged),
-        ),
-      ],
+  Future<void> _pickMethod() async {
+    final result = await showAppPicker<LearningMethod>(
+      context: context,
+      title: _l10n.boxDetailMethod,
+      options: LearningMethod.values,
+      selected: _selectedOption,
+      labelBuilder: (m) => m.label(_l10n),
     );
+    if (result != null) setState(() => _selectedOption = result);
+  }
+
+  Future<void> _editDailyLimit() async {
+    var enabled = _dailyLimitEnabled;
+    var limit = _dailyLimit;
+
+    await showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: context.colors.background,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      builder: (sheetContext) {
+        return StatefulBuilder(
+          builder: (sheetContext, setSheetState) {
+            final colors = sheetContext.colors;
+            return SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.pageHorizontal,
+                  AppSpacing.sectionGap,
+                  AppSpacing.pageHorizontal,
+                  AppSpacing.sectionGap,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            _l10n.boxDetailDailyLimitEnable,
+                            style: AppTypography.bodySans.copyWith(
+                              color: colors.textPrimary,
+                            ),
+                          ),
+                        ),
+                        PillToggle(
+                          value: enabled,
+                          onChanged: (v) => setSheetState(() => enabled = v),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.sectionGap),
+                    Opacity(
+                      opacity: enabled ? 1 : 0.35,
+                      child: IgnorePointer(
+                        ignoring: !enabled,
+                        child: DailyLimitStepper(
+                          value: limit,
+                          onChanged: (v) => setSheetState(() => limit = v),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+
+    setState(() {
+      _dailyLimitEnabled = enabled;
+      _dailyLimit = limit;
+    });
+    _persistDailyLimit(enabled: enabled, limit: limit);
   }
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final box = widget.box;
+
     final hasMatchingCards = ReviewSession.filterVocabularies(
-      widget.box.vocabularies,
+      box.vocabularies,
       onlyTimely: _onlyTimely,
       method: _selectedOption,
-      dailyLimitEnabled: widget.box.dailyLimitEnabled,
-      remainingNewCards: widget.box.remainingNewCardsToday,
+      dailyLimitEnabled: box.dailyLimitEnabled,
+      remainingNewCards: box.remainingNewCardsToday,
     ).isNotEmpty;
 
-    return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final dueCount = ReviewSession.dueVocabularyCount(box);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _isEditingTitle
+            ? AppTextField(
+                controller: _titleController,
+                autofocus: true,
+                style: AppTypography.headlineSerif,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (_) => _saveTitle(),
+              )
+            : GestureDetector(
+                onTap: () => setState(() => _isEditingTitle = true),
+                behavior: HitTestBehavior.opaque,
+                child: Text(
+                  box.name,
+                  style: AppTypography.headlineSerif.copyWith(
+                    color: colors.textPrimary,
+                  ),
+                ),
+              ),
+        const SizedBox(height: 6),
+        Text(
+          _l10n.boxDetailSubline(box.vocabularies.length, dueCount),
+          style: AppTypography.captionSans.copyWith(
+            color: colors.textSecondary,
+          ),
+        ),
+        if (box.description.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.sectionGap),
+          Text(
+            _l10n.boxDetailDescription,
+            style: AppTypography.labelSans.copyWith(color: colors.textLabel),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            box.description,
+            style: AppTypography.bodySans.copyWith(color: colors.textPrimary),
+          ),
+        ],
+        const SizedBox(height: AppSpacing.sectionGap),
+        KeyValueRowGroup(
           children: [
-            if (widget.box.description.isNotEmpty) ...[
-              Text(
-                _l10n.boxDetailDescription,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: CupertinoColors.systemGrey,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-
-              const SizedBox(height: 8),
-
-              Text(widget.box.description, style: const TextStyle(fontSize: 16)),
-
-              const SizedBox(height: 16),
-            ],
-
-            Text(
-              _l10n.boxDetailOptions,
-              style: TextStyle(
-                fontSize: 12,
-                color: CupertinoColors.systemGrey,
-                fontWeight: FontWeight.w500,
-              ),
+            KeyValueRow.toggle(
+              label: _l10n.boxDetailDueVocabs,
+              value: _onlyTimely,
+              onChanged: (v) => setState(() => _onlyTimely = v),
             ),
-
-            _buildToggleRow(_l10n.boxDetailDueVocabs, _onlyTimely, (v) {
-              setState(() => _onlyTimely = v);
-            }),
-
-            _buildToggleRow(_l10n.boxDetailDailyLimit, _dailyLimitEnabled, (
-                    v,
-                  ) {
-                    setState(() => _dailyLimitEnabled = v);
-                    _persistDailyLimit(enabled: v);
-                  }),
-                  Opacity(
-                    opacity: _dailyLimitEnabled ? 1.0 : 0.4,
-                    child: IgnorePointer(
-                      ignoring: !_dailyLimitEnabled,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 8),
-                          DailyLimitStepper(
-                            value: _dailyLimit,
-                            onChanged: (v) {
-                              setState(() => _dailyLimit = v);
-                              _persistDailyLimit(limit: v);
-                            },
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _l10n.boxDetailDailyLimitInfo,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: CupertinoColors.systemGrey,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    _l10n.boxDetailMethod,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.systemGrey,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  CupertinoSegmentedControl<LearningMethod>(
-                    unselectedColor: CupertinoDynamicColor.resolve(
-                      CupertinoColors.systemBackground,
-                      context,
-                    ),
-                    groupValue: _selectedOption,
-                    children: {
-                      for (final method in LearningMethod.values)
-                        method: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 5.0,
-                          ),
-                          child: Text(method.label(_l10n)),
-                        ),
-                    },
-                    onValueChanged: (LearningMethod value) {
-                      setState(() => _selectedOption = value);
-                    },
-                  ),
-                ],
-              ),
+            KeyValueRow.value(
+              label: _l10n.boxDetailMethod,
+              value: _selectedOption.label(_l10n),
+              onTap: _pickMethod,
             ),
-
-            // Page end
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: double.infinity,
-                        child: CupertinoButton.filled(
-                          color: CupertinoColors.activeOrange,
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                builder: (_) => VocabularyListView(
-                                  multipleBoxes: false,
-                                  boxListenable: _boxNotifier,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(CupertinoIcons.book, size: 20.0),
-                              const SizedBox(width: 8.0),
-                              Flexible(
-                                child: Text(
-                                  _l10n.boxDetailEditVocabs,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: CupertinoButton.filled(
-                          color: CupertinoColors.activeGreen,
-                          onPressed: hasMatchingCards
-                              ? () {
-                                  Navigator.of(context).push(
-                                    CupertinoPageRoute(
-                                      builder: (_) => ReviewView(
-                                        boxKey: widget.boxKey,
-                                        onlyTimely: _onlyTimely,
-                                        learningMethod: _selectedOption,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              : null,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(CupertinoIcons.play, size: 20.0),
-                              const SizedBox(width: 8.0),
-                              Flexible(
-                                child: Text(
-                                  _l10n.boxDetailStart,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+            KeyValueRow.value(
+              label: _l10n.boxDetailDailyLimit,
+              value: _dailyLimitEnabled
+                  ? _l10n.boxDetailDailyLimitValue(_dailyLimit)
+                  : _l10n.boxDetailDailyLimitOff,
+              onTap: _editDailyLimit,
             ),
           ],
         ),
-      ),
+        const Spacer(),
+        Column(
+          children: [
+            PrimaryActionButton(
+              label: _l10n.boxDetailStart,
+              onPressed: hasMatchingCards
+                  ? () {
+                      Navigator.of(context).push(
+                        AppPageRoute(
+                          builder: (_) => ReviewView(
+                            boxKey: widget.boxKey,
+                            onlyTimely: _onlyTimely,
+                            learningMethod: _selectedOption,
+                          ),
+                        ),
+                      );
+                    }
+                  : null,
+            ),
+            TextLinkButton(
+              label: _l10n.boxDetailEditVocabs,
+              onPressed: () {
+                Navigator.of(context).push(
+                  AppPageRoute(
+                    builder: (_) => VocabularyListView(
+                      multipleBoxes: false,
+                      boxListenable: _boxNotifier,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

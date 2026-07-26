@@ -1,6 +1,7 @@
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import 'vocabulary.dart';
+import 'vocabulary_box.dart';
 
 /// Learning method for a review session.
 /// - `all`: All cards in the box.
@@ -93,5 +94,14 @@ class ReviewSession {
     }
 
     return list;
+  }
+
+  /// Number of [box]'s vocabularies that are due for review right now.
+  static int dueVocabularyCount(VocabularyBox box) {
+    return filterVocabularies(
+      box.vocabularies,
+      onlyTimely: true,
+      method: LearningMethod.all,
+    ).length;
   }
 }
