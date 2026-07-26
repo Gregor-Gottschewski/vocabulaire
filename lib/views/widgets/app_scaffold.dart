@@ -34,27 +34,30 @@ class AppScaffold extends StatelessWidget {
             AppSpacing.pageHorizontal,
             0,
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: backLabel == null
-                    ? const SizedBox.shrink()
-                    : GestureDetector(
-                        onTap: onBack ?? () => Navigator.of(context).maybePop(),
-                        behavior: HitTestBehavior.opaque,
-                        child: Text(
-                          '← $backLabel',
-                          style: AppTypography.captionSans.copyWith(
-                            color: colors.textSecondary,
+          child: SizedBox(
+            height: AppSpacing.headerRowHeight,
+            child: Row(
+              children: [
+                Expanded(
+                  child: backLabel == null
+                      ? const SizedBox.shrink()
+                      : GestureDetector(
+                          onTap: onBack ?? () => Navigator.of(context).maybePop(),
+                          behavior: HitTestBehavior.opaque,
+                          child: Text(
+                            '← $backLabel',
+                            style: AppTypography.captionSans.copyWith(
+                              color: colors.textSecondary,
+                            ),
                           ),
                         ),
-                      ),
-              ),
-              for (final action in actions) ...[
-                const SizedBox(width: AppSpacing.gapLarge),
-                action,
+                ),
+                for (final action in actions) ...[
+                  const SizedBox(width: AppSpacing.gapLarge),
+                  action,
+                ],
               ],
-            ],
+            ),
           ),
         ),
         Expanded(
