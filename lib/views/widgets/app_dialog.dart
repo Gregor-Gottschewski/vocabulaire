@@ -53,6 +53,10 @@ class AppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+    final dialogWidth =
+        (MediaQuery.sizeOf(context).width * AppSpacing.dialogWidthFactor)
+            .clamp(0, AppSpacing.dialogMaxWidth)
+            .toDouble();
     return Dialog(
       backgroundColor: colors.background,
       surfaceTintColor: const Color(0x00000000),
@@ -64,40 +68,43 @@ class AppDialog extends StatelessWidget {
           width: AppSpacing.hairline,
         ),
       ),
-      insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.sectionGap),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: AppTypography.headlineSerif.copyWith(
-                fontSize: 20,
-                color: colors.textPrimary,
-              ),
-            ),
-            if (message != null) ...[
-              const SizedBox(height: AppSpacing.gapMedium),
+      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: SizedBox(
+        width: dialogWidth,
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.sectionGap),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Text(
-                message!,
-                style: AppTypography.bodySans.copyWith(
-                  fontSize: 14,
-                  color: colors.textSecondary,
+                title,
+                style: AppTypography.headlineSerif.copyWith(
+                  fontSize: 20,
+                  color: colors.textPrimary,
                 ),
               ),
-            ],
-            const SizedBox(height: AppSpacing.sectionGap),
-            for (var i = 0; i < actions.length; i++) ...[
-              if (i != 0)
-                Container(
-                  height: AppSpacing.hairline,
-                  color: colors.borderSubtle,
+              if (message != null) ...[
+                const SizedBox(height: AppSpacing.gapMedium),
+                Text(
+                  message!,
+                  style: AppTypography.bodySans.copyWith(
+                    fontSize: 14,
+                    color: colors.textSecondary,
+                  ),
                 ),
-              _DialogActionRow(action: actions[i]),
+              ],
+              const SizedBox(height: AppSpacing.sectionGap),
+              for (var i = 0; i < actions.length; i++) ...[
+                if (i != 0)
+                  Container(
+                    height: AppSpacing.hairline,
+                    color: colors.borderSubtle,
+                  ),
+                _DialogActionRow(action: actions[i]),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
