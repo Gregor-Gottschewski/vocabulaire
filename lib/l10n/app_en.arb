@@ -6,6 +6,14 @@
   "tabEinstellungen": "Settings",
 
   "homeEmpty": "No boxes yet.",
+  "addBox": "Add Box",
+
+  "cardsCounter": "{num} cards",
+  "@cardsCounter": {
+    "placeholders": {
+      "num": { "type":  "int" }
+    }
+  },
 
   "settingsTitle": "Settings",
   "settingsImportBox": "Import box",
@@ -50,6 +58,7 @@
   "reviewExample": "Example: {example}",
 
   "boxDetailDescription": "Description",
+  "boxTileNoDescription": "No description available",
   "boxDetailOptions": "Options",
   "boxDetailDueVocabs": "Query due vocabulary",
   "boxDetailMethod": "Learning method",

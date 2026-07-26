@@ -6,6 +6,14 @@
   "tabEinstellungen": "Paramètres",
 
   "homeEmpty": "Aucune boîte disponible.",
+  "addBox": "Nouvelle boîte",
+
+  "cardsCounter": "{num} cartes",
+  "@cardsCounter": {
+    "placeholders": {
+      "num": { "type":  "int" }
+    }
+  },
 
   "settingsTitle": "Paramètres",
   "settingsImportBox": "Importer une boîte",
@@ -81,6 +89,7 @@
   },
 
   "boxDetailDescription": "Description",
+  "boxTileNoDescription": "Aucune description disponible",
   "boxDetailOptions": "Options",
   "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",

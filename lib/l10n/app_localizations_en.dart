@@ -21,6 +21,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get homeEmpty => 'No boxes yet.';
 
   @override
+  String get addBox => 'Add Box';
+
+  @override
+  String cardsCounter(int num) {
+    return '$num cards';
+  }
+
+  @override
   String get settingsTitle => 'Settings';
 
   @override
@@ -154,6 +162,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get boxDetailDescription => 'Description';
+
+  @override
+  String get boxTileNoDescription => 'No description available';
 
   @override
   String get boxDetailOptions => 'Options';

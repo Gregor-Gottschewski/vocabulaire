@@ -124,6 +124,18 @@ abstract class AppLocalizations {
   /// **'Keine Boxen vorhanden.'**
   String get homeEmpty;
 
+  /// No description provided for @addBox.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue Box'**
+  String get addBox;
+
+  /// No description provided for @cardsCounter.
+  ///
+  /// In de, this message translates to:
+  /// **'{num} Karten'**
+  String cardsCounter(int num);
+
   /// No description provided for @settingsTitle.
   ///
   /// In de, this message translates to:
@@ -363,6 +375,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Beschreibung'**
   String get boxDetailDescription;
+
+  /// No description provided for @boxTileNoDescription.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Beschreibung vorhanden'**
+  String get boxTileNoDescription;
 
   /// No description provided for @boxDetailOptions.
   ///

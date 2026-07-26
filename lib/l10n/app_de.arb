@@ -6,6 +6,16 @@
   "tabEinstellungen": "Einstellungen",
 
   "homeEmpty": "Keine Boxen vorhanden.",
+  "addBox": "Neue Box",
+
+  "cardsCounter": "{num} Karten",
+  "@cardsCounter": {
+    "placeholders": {
+      "num": {
+        "type": "int"
+      }
+    }
+  },
 
   "settingsTitle": "Einstellungen",
   "settingsImportBox": "Box importieren",
@@ -81,6 +91,7 @@
   },
 
   "boxDetailDescription": "Beschreibung",
+  "boxTileNoDescription": "Keine Beschreibung vorhanden",
   "boxDetailOptions": "Optionen",
   "boxDetailDueVocabs": "Fällige Vokabeln abfragen",
   "boxDetailMethod": "Lernmethode",
