@@ -379,7 +379,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailMethod.
   ///
   /// In de, this message translates to:
-  /// **'Typ'**
+  /// **'Lernmethode'**
   String get boxDetailMethod;
 
   /// No description provided for @boxDetailDailyLimit.
@@ -403,7 +403,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailEditVocabs.
   ///
   /// In de, this message translates to:
-  /// **'Vokabelliste anzeigen'**
+  /// **'Vokabeln bearbeiten'**
   String get boxDetailEditVocabs;
 
   /// No description provided for @boxDetailStart.

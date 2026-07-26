@@ -162,7 +162,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailDueVocabs => 'Interroger les vocabulaires à réviser';
 
   @override
-  String get boxDetailMethod => 'Type';
+  String get boxDetailMethod => 'Méthode d\'apprentissage';
 
   @override
   String get boxDetailDailyLimit => 'Limite quotidienne';

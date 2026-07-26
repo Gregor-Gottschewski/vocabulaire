@@ -162,7 +162,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailDueVocabs => 'Query due vocabulary';
 
   @override
-  String get boxDetailMethod => 'Type';
+  String get boxDetailMethod => 'Learning method';
 
   @override
   String get boxDetailDailyLimit => 'Daily limit';

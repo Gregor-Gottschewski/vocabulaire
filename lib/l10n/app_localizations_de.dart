@@ -163,7 +163,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxDetailDueVocabs => 'Fällige Vokabeln abfragen';
 
   @override
-  String get boxDetailMethod => 'Typ';
+  String get boxDetailMethod => 'Lernmethode';
 
   @override
   String get boxDetailDailyLimit => 'Tageslimit';
@@ -176,7 +176,7 @@ class AppLocalizationsDe extends AppLocalizations {
       'Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.';
 
   @override
-  String get boxDetailEditVocabs => 'Vokabelliste anzeigen';
+  String get boxDetailEditVocabs => 'Vokabeln bearbeiten';
 
   @override
   String get boxDetailStart => 'Abfrage starten';
