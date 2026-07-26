@@ -424,10 +424,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createBoxTitleHint => 'Box name';
 
   @override
-  String get createBoxDescriptionLabel => 'Description (optional)';
+  String get createBoxDescriptionLabel => 'Description';
 
   @override
-  String get createBoxDescriptionHint => 'Short description';
+  String get createBoxDescriptionHint => 'Short optional description';
 
   @override
   String get createBoxNameEmpty => 'Name must not be empty.';

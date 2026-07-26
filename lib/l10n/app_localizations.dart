@@ -853,13 +853,13 @@ abstract class AppLocalizations {
   /// No description provided for @createBoxDescriptionLabel.
   ///
   /// In de, this message translates to:
-  /// **'Beschreibung (optional)'**
+  /// **'Beschreibung'**
   String get createBoxDescriptionLabel;
 
   /// No description provided for @createBoxDescriptionHint.
   ///
   /// In de, this message translates to:
-  /// **'Kurze Beschreibung'**
+  /// **'Kurze optionale Beschreibung'**
   String get createBoxDescriptionHint;
 
   /// No description provided for @createBoxNameEmpty.
