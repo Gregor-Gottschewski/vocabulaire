@@ -165,7 +165,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailMethod => 'Méthode d\'apprentissage';
 
   @override
-  String get boxDetailDailyLimit => 'limite quotidienne de nouvelles cartes';
+  String get boxDetailDailyLimit => 'Limite quotidienne de nouvelles cartes';
 
   @override
   String get boxDetailNewCardsPerDay => 'Nouvelles cartes / jour';

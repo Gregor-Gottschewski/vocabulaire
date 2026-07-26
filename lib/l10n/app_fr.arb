@@ -84,7 +84,7 @@
   "boxDetailOptions": "Options",
   "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",
-  "boxDetailDailyLimit": "limite quotidienne de nouvelles cartes",
+  "boxDetailDailyLimit": "Limite quotidienne de nouvelles cartes",
   "boxDetailNewCardsPerDay": "Nouvelles cartes / jour",
   "boxDetailDailyLimitInfo": "La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.",
   "boxDetailEditVocabs": "Afficher la liste des vocabulaires",
