@@ -159,13 +159,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailOptions => 'Options';
 
   @override
-  String get boxDetailDueVocabs => 'Due vocabulary';
+  String get boxDetailDueVocabs => 'Query due vocabulary';
 
   @override
-  String get boxDetailMethod => 'Learning method';
+  String get boxDetailMethod => 'Type';
 
   @override
-  String get boxDetailDailyLimit => 'Daily Limit';
+  String get boxDetailDailyLimit => 'Daily limit';
 
   @override
   String get boxDetailNewCardsPerDay => 'New cards / day';
@@ -175,10 +175,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The daily limit restricts the number of new words reviewed per day.';
 
   @override
-  String get boxDetailEditVocabs => 'Edit vocabulary';
+  String get boxDetailEditVocabs => 'View vocabulary list';
 
   @override
-  String get boxDetailStart => 'Start';
+  String get boxDetailStart => 'Start session';
 
   @override
   String get boxDetailDeleteTitle => 'Delete box';
@@ -192,6 +192,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get boxDetailNotFound => 'Box not found';
+
+  @override
+  String boxDetailSubline(int total, int due) {
+    return '$total words — $due due today';
+  }
+
+  @override
+  String boxDetailDailyLimitValue(int count) {
+    return '$count cards';
+  }
+
+  @override
+  String get boxDetailEditAction => 'Edit';
+
+  @override
+  String get boxDetailShareAction => 'Share';
+
+  @override
+  String get boxDetailSaveAction => 'Save';
+
+  @override
+  String get boxDetailDailyLimitOff => 'Off';
+
+  @override
+  String get boxDetailDailyLimitEnable => 'Enable daily limit';
 
   @override
   String get vocabListTitle => 'Vocabulary';

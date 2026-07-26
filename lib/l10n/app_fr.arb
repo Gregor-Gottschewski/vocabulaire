@@ -82,17 +82,35 @@
 
   "boxDetailDescription": "Description",
   "boxDetailOptions": "Options",
-  "boxDetailDueVocabs": "Vocabulaires à réviser",
+  "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",
   "boxDetailDailyLimit": "Limite quotidienne",
   "boxDetailNewCardsPerDay": "Nouvelles cartes / jour",
   "boxDetailDailyLimitInfo": "La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.",
-  "boxDetailEditVocabs": "Modifier les vocabulaires",
-  "boxDetailStart": "Démarrer",
+  "boxDetailEditVocabs": "Afficher la liste des vocabulaires",
+  "boxDetailStart": "Démarrer la session",
   "boxDetailDeleteTitle": "Supprimer la boîte",
   "boxDetailDeleteMessage": "Voulez-vous vraiment supprimer cette boîte ?",
   "boxDetailDelete": "Supprimer",
   "boxDetailNotFound": "Boîte introuvable",
+  "boxDetailSubline": "{total} mots — {due} à réviser aujourd'hui",
+  "@boxDetailSubline": {
+    "placeholders": {
+      "total": { "type": "int" },
+      "due": { "type": "int" }
+    }
+  },
+  "boxDetailDailyLimitValue": "{count} cartes",
+  "@boxDetailDailyLimitValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "boxDetailEditAction": "Modifier",
+  "boxDetailShareAction": "Partager",
+  "boxDetailSaveAction": "Enregistrer",
+  "boxDetailDailyLimitOff": "Désactivé",
+  "boxDetailDailyLimitEnable": "Activer la limite quotidienne",
 
   "vocabListTitle": "Vocabulaire",
   "vocabListEmpty": "Aucun vocabulaire disponible.",

@@ -159,10 +159,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailOptions => 'Options';
 
   @override
-  String get boxDetailDueVocabs => 'Vocabulaires à réviser';
+  String get boxDetailDueVocabs => 'Interroger les vocabulaires à réviser';
 
   @override
-  String get boxDetailMethod => 'Méthode d\'apprentissage';
+  String get boxDetailMethod => 'Type';
 
   @override
   String get boxDetailDailyLimit => 'Limite quotidienne';
@@ -175,10 +175,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.';
 
   @override
-  String get boxDetailEditVocabs => 'Modifier les vocabulaires';
+  String get boxDetailEditVocabs => 'Afficher la liste des vocabulaires';
 
   @override
-  String get boxDetailStart => 'Démarrer';
+  String get boxDetailStart => 'Démarrer la session';
 
   @override
   String get boxDetailDeleteTitle => 'Supprimer la boîte';
@@ -192,6 +192,31 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get boxDetailNotFound => 'Boîte introuvable';
+
+  @override
+  String boxDetailSubline(int total, int due) {
+    return '$total mots — $due à réviser aujourd\'hui';
+  }
+
+  @override
+  String boxDetailDailyLimitValue(int count) {
+    return '$count cartes';
+  }
+
+  @override
+  String get boxDetailEditAction => 'Modifier';
+
+  @override
+  String get boxDetailShareAction => 'Partager';
+
+  @override
+  String get boxDetailSaveAction => 'Enregistrer';
+
+  @override
+  String get boxDetailDailyLimitOff => 'Désactivé';
+
+  @override
+  String get boxDetailDailyLimitEnable => 'Activer la limite quotidienne';
 
   @override
   String get vocabListTitle => 'Vocabulaire';

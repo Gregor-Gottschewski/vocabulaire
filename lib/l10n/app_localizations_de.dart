@@ -160,13 +160,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxDetailOptions => 'Optionen';
 
   @override
-  String get boxDetailDueVocabs => 'Zeitlich anstehende Vokabeln';
+  String get boxDetailDueVocabs => 'Fällige Vokabeln abfragen';
 
   @override
-  String get boxDetailMethod => 'Lernmethode';
+  String get boxDetailMethod => 'Typ';
 
   @override
-  String get boxDetailDailyLimit => 'Tägliches Limit';
+  String get boxDetailDailyLimit => 'Tageslimit';
 
   @override
   String get boxDetailNewCardsPerDay => 'Neue Karten / Tag';
@@ -176,10 +176,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.';
 
   @override
-  String get boxDetailEditVocabs => 'Vokabeln bearbeiten';
+  String get boxDetailEditVocabs => 'Vokabelliste anzeigen';
 
   @override
-  String get boxDetailStart => 'Start';
+  String get boxDetailStart => 'Abfrage starten';
 
   @override
   String get boxDetailDeleteTitle => 'Box löschen';
@@ -193,6 +193,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get boxDetailNotFound => 'Box nicht gefunden';
+
+  @override
+  String boxDetailSubline(int total, int due) {
+    return '$total Vokabeln — $due heute fällig';
+  }
+
+  @override
+  String boxDetailDailyLimitValue(int count) {
+    return '$count Karten';
+  }
+
+  @override
+  String get boxDetailEditAction => 'Bearbeiten';
+
+  @override
+  String get boxDetailShareAction => 'Teilen';
+
+  @override
+  String get boxDetailSaveAction => 'Speichern';
+
+  @override
+  String get boxDetailDailyLimitOff => 'Aus';
+
+  @override
+  String get boxDetailDailyLimitEnable => 'Tageslimit aktivieren';
 
   @override
   String get vocabListTitle => 'Vokabeln';

@@ -82,17 +82,35 @@
 
   "boxDetailDescription": "Beschreibung",
   "boxDetailOptions": "Optionen",
-  "boxDetailDueVocabs": "Zeitlich anstehende Vokabeln",
+  "boxDetailDueVocabs": "Fällige Vokabeln abfragen",
   "boxDetailMethod": "Lernmethode",
-  "boxDetailDailyLimit": "Tägliches Limit",
+  "boxDetailDailyLimit": "Tageslimit",
   "boxDetailNewCardsPerDay": "Neue Karten / Tag",
   "boxDetailDailyLimitInfo": "Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.",
   "boxDetailEditVocabs": "Vokabeln bearbeiten",
-  "boxDetailStart": "Start",
+  "boxDetailStart": "Abfrage starten",
   "boxDetailDeleteTitle": "Box löschen",
   "boxDetailDeleteMessage": "Möchtest du diese Box wirklich löschen?",
   "boxDetailDelete": "Löschen",
   "boxDetailNotFound": "Box nicht gefunden",
+  "boxDetailSubline": "{total} Vokabeln — {due} heute fällig",
+  "@boxDetailSubline": {
+    "placeholders": {
+      "total": { "type": "int" },
+      "due": { "type": "int" }
+    }
+  },
+  "boxDetailDailyLimitValue": "{count} Karten",
+  "@boxDetailDailyLimitValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "boxDetailEditAction": "Bearbeiten",
+  "boxDetailShareAction": "Teilen",
+  "boxDetailSaveAction": "Speichern",
+  "boxDetailDailyLimitOff": "Aus",
+  "boxDetailDailyLimitEnable": "Tageslimit aktivieren",
 
   "vocabListTitle": "Vokabeln",
   "vocabListEmpty": "Keine Vokabeln vorhanden.",

@@ -373,19 +373,19 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailDueVocabs.
   ///
   /// In de, this message translates to:
-  /// **'Zeitlich anstehende Vokabeln'**
+  /// **'Fällige Vokabeln abfragen'**
   String get boxDetailDueVocabs;
 
   /// No description provided for @boxDetailMethod.
   ///
   /// In de, this message translates to:
-  /// **'Lernmethode'**
+  /// **'Typ'**
   String get boxDetailMethod;
 
   /// No description provided for @boxDetailDailyLimit.
   ///
   /// In de, this message translates to:
-  /// **'Tägliches Limit'**
+  /// **'Tageslimit'**
   String get boxDetailDailyLimit;
 
   /// No description provided for @boxDetailNewCardsPerDay.
@@ -403,13 +403,13 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailEditVocabs.
   ///
   /// In de, this message translates to:
-  /// **'Vokabeln bearbeiten'**
+  /// **'Vokabelliste anzeigen'**
   String get boxDetailEditVocabs;
 
   /// No description provided for @boxDetailStart.
   ///
   /// In de, this message translates to:
-  /// **'Start'**
+  /// **'Abfrage starten'**
   String get boxDetailStart;
 
   /// No description provided for @boxDetailDeleteTitle.
@@ -435,6 +435,48 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Box nicht gefunden'**
   String get boxDetailNotFound;
+
+  /// No description provided for @boxDetailSubline.
+  ///
+  /// In de, this message translates to:
+  /// **'{total} Vokabeln — {due} heute fällig'**
+  String boxDetailSubline(int total, int due);
+
+  /// No description provided for @boxDetailDailyLimitValue.
+  ///
+  /// In de, this message translates to:
+  /// **'{count} Karten'**
+  String boxDetailDailyLimitValue(int count);
+
+  /// No description provided for @boxDetailEditAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Bearbeiten'**
+  String get boxDetailEditAction;
+
+  /// No description provided for @boxDetailShareAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Teilen'**
+  String get boxDetailShareAction;
+
+  /// No description provided for @boxDetailSaveAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Speichern'**
+  String get boxDetailSaveAction;
+
+  /// No description provided for @boxDetailDailyLimitOff.
+  ///
+  /// In de, this message translates to:
+  /// **'Aus'**
+  String get boxDetailDailyLimitOff;
+
+  /// No description provided for @boxDetailDailyLimitEnable.
+  ///
+  /// In de, this message translates to:
+  /// **'Tageslimit aktivieren'**
+  String get boxDetailDailyLimitEnable;
 
   /// No description provided for @vocabListTitle.
   ///
