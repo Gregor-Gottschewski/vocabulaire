@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
@@ -10,7 +10,12 @@ import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary_box.dart';
+import '../theme/app_typography.dart';
+import '../theme/theme_context_ext.dart';
 import 'box_detail_view.dart';
+import 'widgets/app_dialog.dart';
+import 'widgets/app_scaffold.dart';
+import 'widgets/text_link_button.dart';
 
 class BoxDetailPage extends StatefulWidget {
   final VocabularyBox box;
@@ -25,9 +30,7 @@ class BoxDetailPage extends StatefulWidget {
 class _BoxDetailPageState extends State<BoxDetailPage> {
   final BoxController _boxController = BoxController();
   late dynamic _boxKey;
-  late TextEditingController _controller;
   late AppLocalizations _l10n;
-  bool _isEditingTitle = false;
   bool _isPopping = false;
 
   @override
@@ -46,27 +49,6 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     if (box == null) {
       throw Exception('Box with key $_boxKey not found');
     }
-    _controller = TextEditingController(text: box.name);
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Future<void> _saveTitle() async {
-    final box = _box;
-    final newName = _controller.text.trim();
-    if (newName.isEmpty || box == null) return;
-
-    final updated = box.copyWith(name: newName);
-
-    _boxController.updateBox(widget.boxKey, updated);
-
-    setState(() {
-      _isEditingTitle = false;
-    });
   }
 
   Future<void> _exportBox() async {
@@ -110,27 +92,21 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     }
 
     final pageContext = context;
-    showCupertinoDialog(
+    showAppDialog(
       context: pageContext,
-      builder: (dialogContext) => CupertinoAlertDialog(
-        title: Text(_l10n.boxDetailDeleteTitle),
-        content: Text(_l10n.boxDetailDeleteMessage),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(_l10n.commonCancel),
-            onPressed: () => Navigator.of(dialogContext).pop(),
-          ),
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            child: Text(_l10n.boxDetailDelete),
-            onPressed: () {
-              Navigator.of(dialogContext).pop();
-              Navigator.of(pageContext).pop();
-              _boxController.deleteBox(widget.boxKey);
-            },
-          ),
-        ],
-      ),
+      title: _l10n.boxDetailDeleteTitle,
+      message: _l10n.boxDetailDeleteMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.boxDetailDelete,
+          destructive: true,
+          onPressed: () {
+            Navigator.of(pageContext).pop();
+            _boxController.deleteBox(widget.boxKey);
+          },
+        ),
+      ],
     );
   }
 
@@ -149,64 +125,26 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
             });
           }
 
-          return CupertinoPageScaffold(
-            navigationBar: CupertinoNavigationBar(
-              middle: Text(_l10n.boxDetailNotFound),
+          return AppScaffold(
+            backLabel: _l10n.tabBoxen,
+            body: Text(
+              _l10n.boxDetailNotFound,
+              style: AppTypography.bodySans.copyWith(
+                color: context.colors.textSecondary,
+              ),
             ),
-            child: const SizedBox.shrink(),
           );
         }
-        return CupertinoPageScaffold(
-          navigationBar: CupertinoNavigationBar(
-            middle: _isEditingTitle
-                ? SizedBox(
-                    height: 36,
-                    child: CupertinoTextField(
-                      controller: _controller,
-                      autofocus: true,
-                      onSubmitted: (_) => _saveTitle(),
-                    ),
-                  )
-                : Text(
-                    box.name,
-                    softWrap: false,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                  ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  child: Icon(
-                    _isEditingTitle
-                        ? CupertinoIcons.check_mark
-                        : CupertinoIcons.pencil,
-                  ),
-                  onPressed: () {
-                    if (_isEditingTitle) {
-                      _saveTitle();
-                    } else {
-                      setState(() => _isEditingTitle = true);
-                    }
-                  },
-                ),
-                const SizedBox(width: 5),
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: _exportBox,
-                  child: Icon(CupertinoIcons.share),
-                ),
-                const SizedBox(width: 5),
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  onPressed: _deleteBox,
-                  child: const Icon(CupertinoIcons.trash),
-                ),
-              ],
+        return AppScaffold(
+          backLabel: _l10n.tabBoxen,
+          actions: [
+            TextLinkButton(
+              label: _l10n.boxDetailShareAction,
+              onPressed: _exportBox,
             ),
-          ),
-          child: BoxDetailView(box: box, boxKey: widget.boxKey),
+            TextLinkButton(label: _l10n.boxDetailDelete, onPressed: _deleteBox),
+          ],
+          body: BoxDetailView(box: box, boxKey: widget.boxKey),
         );
       },
     );

@@ -165,7 +165,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailMethod => 'Learning method';
 
   @override
-  String get boxDetailDailyLimit => 'Daily limit';
+  String get boxDetailDailyLimit => 'New cards daily limit';
 
   @override
   String get boxDetailNewCardsPerDay => 'New cards / day';
@@ -195,7 +195,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String boxDetailSubline(int total, int due) {
-    return '$total words — $due due today';
+    return '$total words — $due due now';
   }
 
   @override

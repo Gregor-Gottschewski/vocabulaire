@@ -385,7 +385,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailDailyLimit.
   ///
   /// In de, this message translates to:
-  /// **'Tageslimit'**
+  /// **'Tageslimit neuer Karten'**
   String get boxDetailDailyLimit;
 
   /// No description provided for @boxDetailNewCardsPerDay.
@@ -439,7 +439,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailSubline.
   ///
   /// In de, this message translates to:
-  /// **'{total} Vokabeln — {due} heute fällig'**
+  /// **'{total} Vokabeln — {due} jetzt fällig'**
   String boxDetailSubline(int total, int due);
 
   /// No description provided for @boxDetailDailyLimitValue.

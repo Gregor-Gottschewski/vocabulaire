@@ -84,7 +84,7 @@
   "boxDetailOptions": "Optionen",
   "boxDetailDueVocabs": "Fällige Vokabeln abfragen",
   "boxDetailMethod": "Lernmethode",
-  "boxDetailDailyLimit": "Tageslimit",
+  "boxDetailDailyLimit": "Tageslimit neuer Karten",
   "boxDetailNewCardsPerDay": "Neue Karten / Tag",
   "boxDetailDailyLimitInfo": "Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.",
   "boxDetailEditVocabs": "Vokabeln bearbeiten",
@@ -93,7 +93,7 @@
   "boxDetailDeleteMessage": "Möchtest du diese Box wirklich löschen?",
   "boxDetailDelete": "Löschen",
   "boxDetailNotFound": "Box nicht gefunden",
-  "boxDetailSubline": "{total} Vokabeln — {due} heute fällig",
+  "boxDetailSubline": "{total} Vokabeln — {due} jetzt fällig",
   "@boxDetailSubline": {
     "placeholders": {
       "total": { "type": "int" },

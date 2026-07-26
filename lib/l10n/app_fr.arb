@@ -84,7 +84,7 @@
   "boxDetailOptions": "Options",
   "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",
-  "boxDetailDailyLimit": "Limite quotidienne",
+  "boxDetailDailyLimit": "limite quotidienne de nouvelles cartes",
   "boxDetailNewCardsPerDay": "Nouvelles cartes / jour",
   "boxDetailDailyLimitInfo": "La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.",
   "boxDetailEditVocabs": "Afficher la liste des vocabulaires",
@@ -93,7 +93,7 @@
   "boxDetailDeleteMessage": "Voulez-vous vraiment supprimer cette boîte ?",
   "boxDetailDelete": "Supprimer",
   "boxDetailNotFound": "Boîte introuvable",
-  "boxDetailSubline": "{total} mots — {due} à réviser aujourd'hui",
+  "boxDetailSubline": "{total} mots — {due} à réviser maintenant",
   "@boxDetailSubline": {
     "placeholders": {
       "total": { "type": "int" },
