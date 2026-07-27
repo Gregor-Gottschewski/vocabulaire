@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/theme_context_ext.dart';
 
-/// Pill toggle, replaces CupertinoSwitch. Green track when on, red when off.
+/// Pill toggle with green track when on, red when off.
 class PillToggle extends StatelessWidget {
   final bool value;
   final ValueChanged<bool>? onChanged;

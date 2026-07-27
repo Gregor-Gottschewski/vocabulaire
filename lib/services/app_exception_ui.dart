@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
 
@@ -28,13 +28,11 @@ extension AppExceptionDialog on BuildContext {
       AppError.ttsUnknownError => i18n.errorTtsUnknownError,
     };
 
-    return showCupertinoDialog(
+    return showAppDialog(
       context: this,
-      builder: (dialogContext) => AppDialog(
-        title: i18n.commonError,
-        message: message,
-        actions: [AppDialogAction(label: i18n.commonOk, onPressed: () {})],
-      ),
+      title: i18n.commonError,
+      message: message,
+      actions: [AppDialogAction(label: i18n.commonOk, onPressed: () {})],
     );
   }
 }

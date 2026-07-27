@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/theme/theme_context_ext.dart';
 

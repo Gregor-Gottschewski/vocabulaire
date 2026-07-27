@@ -102,7 +102,6 @@ class KeyValueRowGroup extends StatelessWidget {
     final colors = context.colors;
     return Column(
       children: [
-        Container(height: AppSpacing.hairline, color: colors.borderStrong),
         for (var i = 0; i < children.length; i++) ...[
           children[i],
           if (i != children.length - 1)

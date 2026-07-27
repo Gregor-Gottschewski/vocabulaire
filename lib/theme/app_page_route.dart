@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-/// Replaces CupertinoPageRoute: a plain fade + slight slide-up transition.
+/// Page route with plain fade and slide-up transition.
 class AppPageRoute<T> extends PageRouteBuilder<T> {
   AppPageRoute({required WidgetBuilder builder, super.settings})
     : super(

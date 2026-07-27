@@ -6,8 +6,6 @@ import '../../theme/theme_context_ext.dart';
 
 /// A selectable row with a leading selection dot and either a single label
 /// or a title/subtitle pair.
-/// Place multiple instances inside a [KeyValueRowGroup] for the grouped,
-/// hairline-bordered look, or use it directly for picker-style lists..
 class SelectableOptionCard extends StatelessWidget {
   final String title;
   final String? subtitle;

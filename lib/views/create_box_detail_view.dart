@@ -64,8 +64,11 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
   Future<String?> _showLanguagePicker(String title, String? langCode) {
     return Navigator.of(context).push<String>(
       AppPageRoute(
-        builder: (_) =>
-            LanguagePickerView(title: title, selectedCode: langCode),
+        builder: (_) => LanguagePickerView(
+          title: title,
+          backLabel: _l10n.createBoxNavTitle,
+          selectedCode: langCode,
+        ),
       ),
     );
   }
@@ -88,14 +91,12 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     setState(() => _target = result);
   }
 
-  /// Renders a language code as "flag  name" — falls back to a generic
-  /// globe glyph and the raw text for custom (non-[AppLanguage]) entries.
+  /// Renders a language code as its display name — falls back to the raw
+  /// text for custom (non-[AppLanguage]) entries.
   String _languageLabel(String? code) {
     if (code == null) return '';
     final language = AppLanguage.fromCode(code);
-    final flag = language?.flag ?? '🌐';
-    final name = language?.displayName(_l10n) ?? code;
-    return '$flag  $name';
+    return language?.displayName(_l10n) ?? code;
   }
 
   Future<void> _onFinish() async {
