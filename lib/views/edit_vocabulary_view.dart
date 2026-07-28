@@ -132,6 +132,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   Future<void> _initAudioPlayer() async {
     await _audioPlayer.setSourceDeviceFile(AppPaths.audioFilePath(_vocab.id));
+    if (!mounted) return;
     final duration = await _audioPlayer.getDuration();
     if (mounted) {
       setState(() {
@@ -361,6 +362,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         cardId: _vocab.id,
         languageId: widget.box.targetAppLanguage!.code,
       );
+      if (!mounted) return;
       await _initAudioPlayer();
       if (mounted) {
         setState(() {
