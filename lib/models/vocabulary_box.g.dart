@@ -21,8 +21,6 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       description: fields[1] as String,
       vocabularies: (fields[2] as List).cast<Vocabulary>(),
       type: fields[3] as String,
-      icon: fields[4] as String,
-      color: fields[5] as String,
       sourceLanguage: fields[6] as String?,
       targetLanguage: fields[7] as String?,
       dailyLimitEnabled: fields[8] == null ? false : fields[8] as bool,
@@ -35,7 +33,7 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
   @override
   void write(BinaryWriter writer, VocabularyBox obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(10)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -44,10 +42,6 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       ..write(obj.vocabularies)
       ..writeByte(3)
       ..write(obj.type)
-      ..writeByte(4)
-      ..write(obj.icon)
-      ..writeByte(5)
-      ..write(obj.color)
       ..writeByte(6)
       ..write(obj.sourceLanguage)
       ..writeByte(7)

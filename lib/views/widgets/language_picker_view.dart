@@ -1,6 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/app_language.dart';
+
+import '../../theme/app_spacing.dart';
+import '../../theme/app_typography.dart';
+import '../../theme/theme_context_ext.dart';
+import 'app_scaffold.dart';
+import 'app_text_field.dart';
+import 'key_value_row.dart';
+import 'primary_action_button.dart';
+import 'section_title.dart';
+import 'selectable_option_card.dart';
 
 /// A generic full-screen, searchable list of all [AppLanguage]s, plus a
 /// "Custom..." entry at the top that lets the user type an arbitrary
@@ -8,9 +18,15 @@ import 'package:vocabulaire/models/app_language.dart';
 /// view with an [AppLanguage.code] or the custom text as the result.
 class LanguagePickerView extends StatefulWidget {
   final String title;
+  final String? backLabel;
   final String? selectedCode;
 
-  const LanguagePickerView({super.key, required this.title, this.selectedCode});
+  const LanguagePickerView({
+    super.key,
+    required this.title,
+    this.backLabel,
+    this.selectedCode,
+  });
 
   @override
   State<LanguagePickerView> createState() => _LanguagePickerViewState();
@@ -36,30 +52,50 @@ class _LanguagePickerViewState extends State<LanguagePickerView> {
 
   Future<void> _pickCustom() async {
     final controller = TextEditingController();
-    final result = await showCupertinoDialog<String>(
+    final result = await showModalBottomSheet<String>(
       context: context,
-      builder: (dialogContext) => CupertinoAlertDialog(
-        title: Text(_l10n.languageCustomTitle),
-        content: Padding(
-          padding: const EdgeInsets.only(top: 12.0),
-          child: CupertinoTextField(
-            controller: controller,
-            autofocus: true,
-            textAlign: TextAlign.center,
-            placeholder: _l10n.languageCustomPlaceholder,
+      backgroundColor: context.colors.background,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      isScrollControlled: true,
+      builder: (sheetContext) {
+        return Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(sheetContext).viewInsets.bottom,
           ),
-        ),
-        actions: [
-          CupertinoDialogAction(
-            child: Text(_l10n.commonCancel),
-            onPressed: () => Navigator.of(dialogContext).pop(),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(
+                AppSpacing.pageHorizontal,
+                AppSpacing.sectionGap,
+                AppSpacing.pageHorizontal,
+                AppSpacing.sectionGap,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SectionTitle(text: _l10n.languageCustomTitle),
+                  const SizedBox(height: AppSpacing.gapMedium),
+                  AppTextField(
+                    controller: controller,
+                    autofocus: true,
+                    placeholder: _l10n.languageCustomPlaceholder,
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (v) =>
+                        Navigator.of(sheetContext).pop(v.trim()),
+                  ),
+                  const SizedBox(height: AppSpacing.sectionGap),
+                  PrimaryActionButton(
+                    label: _l10n.commonOk,
+                    onPressed: () =>
+                        Navigator.of(sheetContext).pop(controller.text.trim()),
+                  ),
+                ],
+              ),
+            ),
           ),
-          CupertinoDialogAction(
-            child: Text(_l10n.commonOk),
-            onPressed: () => Navigator.of(dialogContext).pop(controller.text.trim()),
-          ),
-        ],
-      ),
+        );
+      },
     );
 
     if (result == null || result.isEmpty || !mounted) return;
@@ -68,122 +104,47 @@ class _LanguagePickerViewState extends State<LanguagePickerView> {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final languages = _filteredLanguages;
 
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(middle: Text(widget.title)),
-      child: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12.0,
-                vertical: 8.0,
-              ),
-              child: CupertinoSearchTextField(
-                placeholder: _l10n.languageSearchPlaceholder,
-                onChanged: (value) => setState(() => _query = value),
+    return AppScaffold(
+      backLabel: widget.backLabel,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            style: AppTypography.headlineSerif.copyWith(
+              fontSize: 24,
+              color: colors.textPrimary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sectionGap),
+          AppTextField(
+            placeholder: _l10n.languageSearchPlaceholder,
+            onChanged: (value) => setState(() => _query = value),
+          ),
+          const SizedBox(height: AppSpacing.gapSmall),
+          Expanded(
+            child: SingleChildScrollView(
+              child: KeyValueRowGroup(
+                children: [
+                  SelectableOptionCard(
+                    title: _l10n.languageCustomOption,
+                    selected: false,
+                    onTap: _pickCustom,
+                  ),
+                  for (final language in languages)
+                    SelectableOptionCard(
+                      title: language.displayName(_l10n),
+                      selected: language.code == widget.selectedCode,
+                      onTap: () => Navigator.of(context).pop(language.code),
+                    ),
+                ],
               ),
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: languages.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == 0) {
-                    return Column(
-                      children: [
-                        CupertinoButton(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 12.0,
-                          ),
-                          onPressed: _pickCustom,
-                          child: Row(
-                            children: [
-                              Icon(
-                                CupertinoIcons.pencil,
-                                size: 20.0,
-                                color: CupertinoDynamicColor.resolve(
-                                  CupertinoColors.systemGrey,
-                                  context,
-                                ),
-                              ),
-                              const SizedBox(width: 12.0),
-                              Expanded(
-                                child: Text(
-                                  _l10n.languageCustomOption,
-                                  style: TextStyle(
-                                    fontSize: 17.0,
-                                    color: CupertinoDynamicColor.resolve(
-                                      CupertinoColors.label,
-                                      context,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: 0.5,
-                          margin: const EdgeInsets.symmetric(horizontal: 12.0),
-                          color: CupertinoColors.separator.resolveFrom(context),
-                        ),
-                      ],
-                    );
-                  }
-
-                  final language = languages[index - 1];
-                  final isSelected = language.code == widget.selectedCode;
-
-                  return Column(
-                    children: [
-                      CupertinoButton(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 12.0,
-                        ),
-                        onPressed: () => Navigator.of(context).pop(language.code),
-                        child: Row(
-                          children: [
-                            Text(
-                              language.flag,
-                              style: const TextStyle(fontSize: 20.0),
-                            ),
-                            const SizedBox(width: 12.0),
-                            Expanded(
-                              child: Text(
-                                language.displayName(_l10n),
-                                style: TextStyle(
-                                  fontSize: 17.0,
-                                  color: CupertinoDynamicColor.resolve(
-                                    CupertinoColors.label,
-                                    context,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            if (isSelected)
-                              const Icon(
-                                CupertinoIcons.check_mark,
-                                color: CupertinoColors.activeBlue,
-                              ),
-                          ],
-                        ),
-                      ),
-                      if (index == languages.length)
-                        Container(
-                          height: 0.5,
-                          margin: const EdgeInsets.symmetric(horizontal: 12.0),
-                          color: CupertinoColors.separator.resolveFrom(context),
-                        ),
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

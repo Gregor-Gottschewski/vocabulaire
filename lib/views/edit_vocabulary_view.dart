@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
@@ -14,6 +14,17 @@ import 'package:vocabulaire/services/tts_service.dart';
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
+import '../theme/theme_context_ext.dart';
+import 'widgets/app_dialog.dart';
+import 'widgets/app_progress_indicator.dart';
+import 'widgets/app_scaffold.dart';
+import 'widgets/app_text_field.dart';
+import 'widgets/label_text_field.dart';
+import 'widgets/primary_action_button.dart';
+import 'widgets/section_title.dart';
+import 'widgets/text_link_button.dart';
 
 enum _UnsavedChangesAction { saveAndLeave, discard }
 
@@ -158,19 +169,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final description = _descriptionController.text.trim();
 
     if (front.isEmpty || back.isEmpty) {
-      showCupertinoDialog(
+      showAppDialog(
         context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-          title: Text(_l10n.editVocabMissingInput),
-          content: Text(_l10n.editVocabMissingInputMessage),
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(_l10n.commonOk),
-            ),
-          ],
-        ),
+        title: _l10n.editVocabMissingInput,
+        message: _l10n.editVocabMissingInputMessage,
+        actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {})],
       );
       return false;
     }
@@ -183,29 +186,22 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
     if (widget.newVocabulary) {
       if (widget.box.vocabularies.any((e) => e.word == front)) {
-        final shouldAdd = await showCupertinoDialog<bool>(
+        var shouldAdd = false;
+        await showAppDialog(
           context: context,
-          builder: (ctx) => CupertinoAlertDialog(
-            title: Text(_l10n.editVocabExists),
-            content: Text(_l10n.editVocabExistsMessage),
-            actions: [
-              CupertinoDialogAction(
-                isDefaultAction: true,
-                onPressed: () => Navigator.of(ctx).pop(false),
-                child: Text(_l10n.commonCancel),
-              ),
-              CupertinoDialogAction(
-                isDestructiveAction: true,
-                onPressed: () => Navigator.of(ctx).pop(true),
-                child: Text(_l10n.editVocabAddAnyway),
-              ),
-            ],
-          ),
+          title: _l10n.editVocabExists,
+          message: _l10n.editVocabExistsMessage,
+          actions: [
+            AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+            AppDialogAction(
+              label: _l10n.editVocabAddAnyway,
+              destructive: true,
+              onPressed: () => shouldAdd = true,
+            ),
+          ],
         );
 
-        // this line looks confusing, however it handles shouldAdd == false
-        // that can happen if user closes pop-up without pressing a defined option
-        if (shouldAdd != true) {
+        if (!shouldAdd) {
           if (mounted) setState(() => _isSaving = false);
           return false;
         }
@@ -267,19 +263,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       }
       setState(() => _recording = !_recording);
     } else {
-      await showCupertinoDialog(
+      await showAppDialog(
         context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-          title: Text(_l10n.editVocabNoPermission),
-          content: Text(_l10n.editVocabMicPermission),
-          actions: [
-            CupertinoDialogAction(
-              isDefaultAction: true,
-              onPressed: () => Navigator.of(ctx).pop(),
-              child: Text(_l10n.commonOk),
-            ),
-          ],
-        ),
+        title: _l10n.editVocabNoPermission,
+        message: _l10n.editVocabMicPermission,
+        actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {})],
       );
     }
   }
@@ -344,25 +332,21 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final text = _backController.text.trim();
 
     if (_hasRecording) {
-      final confirmed = await showCupertinoDialog<bool>(
+      var confirmed = false;
+      await showAppDialog(
         context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-          title: Text(_l10n.editVocabOverwriteAudioTitle),
-          content: Text(_l10n.editVocabOverwriteAudioMessage),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: Text(_l10n.commonCancel),
-            ),
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text(_l10n.editVocabOverwriteAudioConfirm),
-            ),
-          ],
-        ),
+        title: _l10n.editVocabOverwriteAudioTitle,
+        message: _l10n.editVocabOverwriteAudioMessage,
+        actions: [
+          AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+          AppDialogAction(
+            label: _l10n.editVocabOverwriteAudioConfirm,
+            destructive: true,
+            onPressed: () => confirmed = true,
+          ),
+        ],
       );
-      if (confirmed != true) return;
+      if (!confirmed) return;
     }
 
     if (_isPlaying) {
@@ -411,28 +395,22 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Shown when the user tries to leave the screen while [_isDirty] is true.
   Future<void> _handleUnsavedChanges() async {
-    final action = await showCupertinoDialog<_UnsavedChangesAction>(
+    _UnsavedChangesAction? action;
+    await showAppDialog(
       context: context,
-      builder: (ctx) => CupertinoAlertDialog(
-        title: Text(_l10n.editVocabUnsavedChangesTitle),
-        actions: [
-          CupertinoDialogAction(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: Text(_l10n.commonCancel),
-          ),
-          CupertinoDialogAction(
-            onPressed: () =>
-                Navigator.of(ctx).pop(_UnsavedChangesAction.saveAndLeave),
-            child: Text(_l10n.editVocabUnsavedChangesSaveAndLeave),
-          ),
-          CupertinoDialogAction(
-            isDestructiveAction: true,
-            onPressed: () =>
-                Navigator.of(ctx).pop(_UnsavedChangesAction.discard),
-            child: Text(_l10n.editVocabUnsavedChangesDiscard),
-          ),
-        ],
-      ),
+      title: _l10n.editVocabUnsavedChangesTitle,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.editVocabUnsavedChangesSaveAndLeave,
+          onPressed: () => action = _UnsavedChangesAction.saveAndLeave,
+        ),
+        AppDialogAction(
+          label: _l10n.editVocabUnsavedChangesDiscard,
+          destructive: true,
+          onPressed: () => action = _UnsavedChangesAction.discard,
+        ),
+      ],
     );
 
     switch (action) {
@@ -448,8 +426,104 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
   }
 
+  Widget _buildAudioRow(BuildContext context) {
+    final colors = context.colors;
+    final showGenerate =
+        widget.box.boxType == BoxType.vocabulary &&
+        widget.box.targetAppLanguage != null;
+    final canGenerate = _canGenerateTts && !_recording && !_isGeneratingTts;
+    final canPlay = _hasRecording && !_isGeneratingTts;
+    final canDelete = _hasRecording && !_isGeneratingTts;
+
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        children: [
+          GestureDetector(
+            onTap: canPlay ? _playAudio : null,
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              width: 32,
+              height: 32,
+              child: Icon(
+                _isPlaying ? Icons.stop : Icons.play_arrow,
+                size: 24,
+                color: canPlay ? colors.textPrimary : colors.borderStrong,
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.gapMedium),
+          GestureDetector(
+            onTap: _isGeneratingTts ? null : _recordAudio,
+            behavior: HitTestBehavior.opaque,
+            child: SizedBox(
+              width: 32,
+              height: 32,
+              child: Center(
+                child: Container(
+                  width: _recording ? 20 : 14,
+                  height: _recording ? 20 : 14,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: colors.danger,
+                    border: _recording
+                        ? Border.all(
+                            color: colors.danger.withValues(alpha: 0.3),
+                            width: 3,
+                          )
+                        : null,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSpacing.gapMedium),
+          Text(
+            _formatDuration(_recordDuration),
+            style: AppTypography.captionSans.copyWith(
+              color: colors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const Spacer(),
+          if (showGenerate)
+            if (_isGeneratingTts)
+              const Padding(
+                padding: EdgeInsets.all(AppSpacing.gapMedium),
+                child: AppProgressIndicator(size: 16),
+              )
+            else
+              Opacity(
+                opacity: canGenerate ? 1 : 0.35,
+                child: TextLinkButton(
+                  label: _l10n.editVocabGenerateAudio,
+                  onPressed: canGenerate ? _generateTtsAudio : null,
+                ),
+              ),
+          // TextLinkButton carries its own EdgeInsets.all(gapMedium) hit
+          // padding (intentional, larger tap target). Shift the trailing
+          // one back by that amount so its visible edge lines up with the
+          // page's right margin instead of shrinking the tap target.
+          Transform.translate(
+            offset: const Offset(AppSpacing.gapMedium, 0),
+            child: Opacity(
+              opacity: canDelete ? 1 : 0.35,
+              child: TextLinkButton(
+                label: _l10n.boxDetailDelete,
+                color: colors.danger,
+                onPressed: canDelete ? _deleteAudio : null,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+
     return PopScope(
       canPop: !_isDirty,
       onPopInvokedWithResult: (didPop, result) async {
@@ -459,384 +533,153 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         }
         await _handleUnsavedChanges();
       },
-      child: CupertinoPageScaffold(
-        navigationBar: CupertinoNavigationBar(
-          middle: Text(
-            widget.newVocabulary ? _l10n.editVocabNew : _l10n.editVocabEdit,
-          ),
-          trailing: CupertinoButton(
-            padding: EdgeInsets.zero,
+      child: AppScaffold(
+        backLabel: _l10n.vocabListTitle,
+        actions: [
+          TextLinkButton(
+            label: _l10n.boxDetailDelete,
             onPressed: _deleteVocabulary,
-            child: const Icon(
-              CupertinoIcons.delete,
-              color: CupertinoColors.systemRed,
-            ),
           ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
+        ],
+        body: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () => FocusScope.of(context).unfocus(),
                 child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Front (word)
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            _l10n.editVocabFront,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: CupertinoColors.systemGrey,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.newVocabulary
+                            ? _l10n.editVocabNew
+                            : _l10n.editVocabEdit,
+                        style: AppTypography.headlineSerif.copyWith(
+                          color: colors.textPrimary,
                         ),
-                        const SizedBox(height: 8),
-                        CupertinoTextField(
+                      ),
+                      const SizedBox(height: AppSpacing.sectionGap),
+
+                      LabelTextField(
+                        label: _l10n.editVocabFront.toUpperCase(),
+                        textField: AppTextField(
                           controller: _frontController,
                           placeholder: _l10n.editVocabFrontHint,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 12,
-                          ),
-                          textInputAction: TextInputAction.newline,
                           maxLines: 4,
+                          textInputAction: TextInputAction.newline,
                         ),
+                      ),
+                      const SizedBox(height: AppSpacing.sectionGap),
 
-                        const SizedBox(height: 12),
-
-                        // Back (meaning)
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            _l10n.editVocabBack,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: CupertinoColors.systemGrey,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        CupertinoTextField(
+                      LabelTextField(
+                        label: _l10n.editVocabBack.toUpperCase(),
+                        textField: AppTextField(
                           controller: _backController,
                           placeholder: _l10n.editVocabBackHint,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 12,
-                          ),
-                          textInputAction: TextInputAction.newline,
                           maxLines: 4,
+                          textInputAction: TextInputAction.newline,
                         ),
-                        const SizedBox(height: 4),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            if (!_canGenerateTts &&
-                                _backController.text.trim().isNotEmpty)
-                              Expanded(
-                                child: Text(
-                                  _l10n.editVocabTtsTooLongHint(
-                                    _backController.text.trim().length,
-                                  ),
-                                  style: TextStyle(
-                                    fontSize: 11,
-                                    color: CupertinoColors.systemOrange,
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        // Description / Example
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            _l10n.editVocabDescriptionLabel,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: CupertinoColors.systemGrey,
-                              fontWeight: FontWeight.w500,
-                            ),
+                      ),
+                      if (!_canGenerateTts &&
+                          _backController.text.trim().isNotEmpty) ...[
+                        const SizedBox(height: AppSpacing.gapSmall),
+                        Text(
+                          _l10n.editVocabTtsTooLongHint(
+                            _backController.text.trim().length,
+                          ),
+                          style: AppTypography.captionSans.copyWith(
+                            color: colors.textSecondary,
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        CupertinoTextField(
+                      ],
+                      const SizedBox(height: AppSpacing.sectionGap),
+
+                      LabelTextField(
+                        label: _l10n.editVocabDescriptionLabel.toUpperCase(),
+                        textField: AppTextField(
                           controller: _descriptionController,
                           placeholder: _l10n.editVocabDescriptionHint,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 12,
-                          ),
                           maxLines: 4,
                           textInputAction: TextInputAction.newline,
                         ),
+                      ),
+                      const SizedBox(height: AppSpacing.sectionGap),
 
-                        const SizedBox(height: 12),
+                      SectionTitle(text: _l10n.editVocabAudio),
+                      const SizedBox(height: AppSpacing.gapMedium),
+                      _buildAudioRow(context),
 
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            _l10n.editVocabAudio,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: CupertinoColors.systemGrey,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                      if (!widget.newVocabulary) ...[
+                        const SizedBox(height: AppSpacing.sectionGap),
+                        SectionTitle(text: _l10n.editVocabStats),
+                        const SizedBox(height: AppSpacing.gapMedium),
+                        Builder(
+                          builder: (context) {
+                            final dueDate =
+                                _vocab.card.due.isAfter(DateTime.now())
+                                ? DateFormat.yMd(
+                                    Localizations.localeOf(
+                                      context,
+                                    ).toString(),
+                                  ).add_Hm().format(_vocab.card.due.toLocal())
+                                : _l10n.editVocabOverdue;
+                            return Text(
+                              _l10n.editVocabDue(dueDate),
+                              style: AppTypography.bodySans.copyWith(
+                                color: colors.textSecondary,
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(height: 8),
-
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              borderRadius: BorderRadius.circular(30),
-                              color: _recording
-                                  ? CupertinoColors.systemRed
-                                  : CupertinoColors.activeBlue,
-                              onPressed: _isGeneratingTts ? null : _recordAudio,
-                              child: SizedBox(
-                                width: 48,
-                                height: 48,
-                                child: Center(
-                                  child: Icon(
-                                    CupertinoIcons.mic_fill,
-                                    color: CupertinoColors.white,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
+                        if (_vocab.card.difficulty != null)
+                          Text(
+                            _l10n.editVocabDifficulty(
+                              _vocab.card.difficulty!.toStringAsFixed(2),
                             ),
-
-                            const SizedBox(width: 8),
-
-                            if (widget.box.boxType == BoxType.vocabulary &&
-                                widget.box.targetAppLanguage != null)
-                              Semantics(
-                                label: _l10n.editVocabGenerateAudio,
-                                child: Container(
-                                  width: 48,
-                                  height: 48,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient:
-                                        (_canGenerateTts &&
-                                            !_recording &&
-                                            !_isGeneratingTts)
-                                        ? const LinearGradient(
-                                            begin: Alignment.topLeft,
-                                            end: Alignment.bottomRight,
-                                            colors: [
-                                              CupertinoColors.systemPurple,
-                                              CupertinoColors.systemPink,
-                                              CupertinoColors.systemOrange,
-                                            ],
-                                          )
-                                        : null,
-                                    color:
-                                        (_canGenerateTts &&
-                                            !_recording &&
-                                            !_isGeneratingTts)
-                                        ? null
-                                        : CupertinoColors.systemGrey4,
-                                  ),
-                                  child: CupertinoButton(
-                                    padding: EdgeInsets.zero,
-                                    borderRadius: BorderRadius.circular(30),
-                                    onPressed:
-                                        (_canGenerateTts &&
-                                            !_recording &&
-                                            !_isGeneratingTts)
-                                        ? _generateTtsAudio
-                                        : null,
-                                    child: Center(
-                                      child: _isGeneratingTts
-                                          ? const CupertinoActivityIndicator(
-                                              color: CupertinoColors.white,
-                                            )
-                                          : const Icon(
-                                              CupertinoIcons.wand_stars,
-                                              color: CupertinoColors.white,
-                                              size: 20,
-                                            ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-
-                            const Spacer(),
-
-                            Text(
-                              _formatDuration(_recordDuration),
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: CupertinoColors.systemGrey,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-
-                            const SizedBox(width: 12),
-
-                            CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              borderRadius: BorderRadius.circular(30),
-                              onPressed: (_hasRecording && !_isGeneratingTts)
-                                  ? _playAudio
-                                  : null,
-                              child: SizedBox(
-                                width: 44,
-                                height: 44,
-                                child: Center(
-                                  child: Icon(
-                                    _isPlaying
-                                        ? CupertinoIcons.stop_fill
-                                        : CupertinoIcons.play_fill,
-                                    color: _hasRecording
-                                        ? CupertinoColors.systemBlue
-                                        : CupertinoColors.systemGrey,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            const SizedBox(width: 8),
-
-                            CupertinoButton(
-                              padding: EdgeInsets.zero,
-                              borderRadius: BorderRadius.circular(30),
-                              onPressed: (_hasRecording && !_isGeneratingTts)
-                                  ? _deleteAudio
-                                  : null,
-                              child: SizedBox(
-                                width: 44,
-                                height: 44,
-                                child: Center(
-                                  child: Icon(
-                                    CupertinoIcons.delete,
-                                    color: _hasRecording
-                                        ? CupertinoColors.systemRed
-                                        : CupertinoColors.systemGrey,
-                                    size: 20,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        if (!widget.newVocabulary) ...[
-                          const SizedBox(height: 12),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              _l10n.editVocabStats,
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: CupertinoColors.systemGrey,
-                                fontWeight: FontWeight.w500,
-                              ),
+                            style: AppTypography.bodySans.copyWith(
+                              color: colors.textSecondary,
                             ),
                           ),
-                          const SizedBox(height: 8),
-                          Builder(
-                            builder: (context) {
-                              final dueDate =
-                                  _vocab.card.due.isAfter(DateTime.now())
-                                  ? DateFormat.yMd(
-                                      Localizations.localeOf(
-                                        context,
-                                      ).toString(),
-                                    ).add_Hm().format(_vocab.card.due.toLocal())
-                                  : _l10n.editVocabOverdue;
-                              return Text(_l10n.editVocabDue(dueDate));
-                            },
+                        if (_vocab.card.stability != null)
+                          Text(
+                            _l10n.editVocabStability(
+                              _vocab.card.stability!.toStringAsFixed(2),
+                            ),
+                            style: AppTypography.bodySans.copyWith(
+                              color: colors.textSecondary,
+                            ),
                           ),
-                          if (_vocab.card.difficulty != null)
-                            Text(
-                              _l10n.editVocabDifficulty(
-                                _vocab.card.difficulty!.toStringAsFixed(2),
-                              ),
-                            ),
-                          if (_vocab.card.stability != null)
-                            Text(
-                              _l10n.editVocabStability(
-                                _vocab.card.stability!.toStringAsFixed(2),
-                              ),
-                            ),
-                        ],
-
-                        const SizedBox(height: 88),
                       ],
-                    ),
+
+                      const SizedBox(height: 88),
+                    ],
                   ),
                 ),
               ),
+            ),
 
-              Padding(
-                padding: const EdgeInsets.only(
-                  bottom: 8.0,
-                  left: 16.0,
-                  right: 16.0,
+            Row(
+              children: [
+                Expanded(
+                  child: PrimaryActionButton(
+                    label: _l10n.editVocabSave,
+                    isLoading: _isSaving,
+                    onPressed: _isSaving ? null : _savePressed,
+                  ),
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: CupertinoButton.filled(
-                        onPressed: _isSaving ? null : _savePressed,
-                        color: CupertinoColors.systemGreen,
-                        child: _isSaving
-                            ? const CupertinoActivityIndicator()
-                            : Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    CupertinoIcons.check_mark,
-                                    size: 20.0,
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                  Flexible(child: Text(_l10n.editVocabSave)),
-                                ],
-                              ),
-                      ),
+                if (widget.newVocabulary) ...[
+                  const SizedBox(width: AppSpacing.gapMedium),
+                  Expanded(
+                    child: PrimaryActionButton(
+                      label: _l10n.editVocabNext,
+                      isLoading: _isSaving,
+                      onPressed: _isSaving ? null : _saveAndNextPressed,
                     ),
-                    if (widget.newVocabulary) ...[
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: CupertinoButton.filled(
-                          onPressed: _isSaving ? null : _saveAndNextPressed,
-                          color: CupertinoColors.systemGreen,
-                          child: _isSaving
-                              ? const CupertinoActivityIndicator()
-                              : Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      CupertinoIcons.arrow_right_to_line,
-                                      size: 20.0,
-                                    ),
-                                    const SizedBox(width: 8.0),
-                                    Flexible(child: Text(_l10n.editVocabNext)),
-                                  ],
-                                ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-            ],
-          ),
+                  ),
+                ],
+              ],
+            ),
+          ],
         ),
       ),
     );

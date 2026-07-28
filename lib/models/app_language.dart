@@ -3,27 +3,26 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 /// [AppLanguage] represents a language that can be chosen
 /// as vocabulary language.
 enum AppLanguage {
-  german('de', '🇩🇪'),
-  english('en', '🇬🇧'),
-  french('fr', '🇫🇷'),
-  spanish('es', '🇪🇸'),
-  italian('it', '🇮🇹'),
-  portuguese('pt', '🇵🇹'),
-  dutch('nl', '🇳🇱'),
-  russian('ru', '🇷🇺'),
-  polish('pl', '🇵🇱'),
-  turkish('tr', '🇹🇷'),
-  chinese('zh', '🇨🇳'),
-  japanese('ja', '🇯🇵'),
-  danish('da', '🇩🇰'),
-  czech('cs', '🇨🇿'),
-  hungarian('hu', '🇭🇺'),
-  korean('ko', '🇰🇷');
+  german('de'),
+  english('en'),
+  french('fr'),
+  spanish('es'),
+  italian('it'),
+  portuguese('pt'),
+  dutch('nl'),
+  russian('ru'),
+  polish('pl'),
+  turkish('tr'),
+  chinese('zh'),
+  japanese('ja'),
+  danish('da'),
+  czech('cs'),
+  hungarian('hu'),
+  korean('ko');
 
   final String code;
-  final String flag;
 
-  const AppLanguage(this.code, this.flag);
+  const AppLanguage(this.code);
 
   static AppLanguage? fromCode(String? code) {
     if (code == null) return null;

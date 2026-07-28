@@ -1,7 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
-/// Widget for daily limit stepper.
+import '../../theme/app_typography.dart';
+import '../../theme/theme_context_ext.dart';
+
+/// Stepper for daily new-card limit.
 class DailyLimitStepper extends StatelessWidget {
   final int value;
   final ValueChanged<int> onChanged;
@@ -17,63 +20,77 @@ class DailyLimitStepper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final colors = context.colors;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _StepButton(
-          icon: CupertinoIcons.minus,
-          onPressed: value > min ? () => onChanged(value - 1) : null,
-        ),
-        const SizedBox(width: 24),
-        Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: '$value ',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: CupertinoDynamicColor.resolve(
-                    CupertinoColors.label,
-                    context,
-                  ),
-                ),
-              ),
-              TextSpan(
-                text: l10n.boxDetailNewCardsPerDay,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: CupertinoDynamicColor.resolve(
-                    CupertinoColors.secondaryLabel,
-                    context,
-                  ),
-                ),
-              ),
-            ],
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _StepButton(
+            label: '−',
+            onPressed: value > min ? () => onChanged(value - 1) : null,
           ),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(width: 24),
-        _StepButton(icon: CupertinoIcons.plus, onPressed: () => onChanged(value + 1)),
-      ],
+          const SizedBox(width: 24),
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: '$value ',
+                  style: AppTypography.headlineSerif.copyWith(
+                    fontSize: 20,
+                    color: colors.textPrimary,
+                  ),
+                ),
+                TextSpan(
+                  text: l10n.boxDetailNewCardsPerDay,
+                  style: AppTypography.captionSans.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(width: 24),
+          _StepButton(label: '+', onPressed: () => onChanged(value + 1)),
+        ],
+      ),
     );
   }
 }
 
 class _StepButton extends StatelessWidget {
-  final IconData icon;
+  final String label;
   final VoidCallback? onPressed;
 
-  const _StepButton({required this.icon, required this.onPressed});
+  const _StepButton({required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      padding: EdgeInsets.zero,
-      minimumSize: const Size(44, 44),
-      onPressed: onPressed,
-      child: Icon(icon, size: 24),
+    final colors = context.colors;
+    final disabled = onPressed == null;
+    return GestureDetector(
+      onTap: onPressed,
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        width: 44,
+        height: 44,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: disabled ? colors.borderStrong : colors.textPrimary,
+          ),
+        ),
+        child: Text(
+          label,
+          style: AppTypography.headlineSerif.copyWith(
+            fontSize: 20,
+            color: disabled ? colors.borderStrong : colors.textPrimary,
+          ),
+        ),
+      ),
     );
   }
 }

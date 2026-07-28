@@ -124,6 +124,18 @@ abstract class AppLocalizations {
   /// **'Keine Boxen vorhanden.'**
   String get homeEmpty;
 
+  /// No description provided for @addBox.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue Box'**
+  String get addBox;
+
+  /// No description provided for @cardsCounter.
+  ///
+  /// In de, this message translates to:
+  /// **'{num} Karten'**
+  String cardsCounter(int num);
+
   /// No description provided for @settingsTitle.
   ///
   /// In de, this message translates to:
@@ -265,7 +277,7 @@ abstract class AppLocalizations {
   /// No description provided for @editVocabNext.
   ///
   /// In de, this message translates to:
-  /// **'Nächste'**
+  /// **'Speichern & Nächste'**
   String get editVocabNext;
 
   /// No description provided for @editVocabStats.
@@ -298,12 +310,6 @@ abstract class AppLocalizations {
   /// **'Stabilität: {stability}'**
   String editVocabStability(String stability);
 
-  /// No description provided for @reviewTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Lernen'**
-  String get reviewTitle;
-
   /// No description provided for @reviewBack.
   ///
   /// In de, this message translates to:
@@ -313,14 +319,32 @@ abstract class AppLocalizations {
   /// No description provided for @reviewCard.
   ///
   /// In de, this message translates to:
-  /// **'Karte {index} / {total}'**
+  /// **'{index} von {total}'**
   String reviewCard(int index, int total);
 
   /// No description provided for @reviewPlay.
   ///
   /// In de, this message translates to:
-  /// **'Abspielen'**
+  /// **'Anhören'**
   String get reviewPlay;
+
+  /// No description provided for @reviewShowTranslation.
+  ///
+  /// In de, this message translates to:
+  /// **'Übersetzung anzeigen'**
+  String get reviewShowTranslation;
+
+  /// No description provided for @reviewShowBack.
+  ///
+  /// In de, this message translates to:
+  /// **'Rückseite anzeigen'**
+  String get reviewShowBack;
+
+  /// No description provided for @reviewRatingQuestion.
+  ///
+  /// In de, this message translates to:
+  /// **'Wie ist diese Vokabel?'**
+  String get reviewRatingQuestion;
 
   /// No description provided for @reviewAgain.
   ///
@@ -364,6 +388,12 @@ abstract class AppLocalizations {
   /// **'Beschreibung'**
   String get boxDetailDescription;
 
+  /// No description provided for @boxTileNoDescription.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Beschreibung vorhanden'**
+  String get boxTileNoDescription;
+
   /// No description provided for @boxDetailOptions.
   ///
   /// In de, this message translates to:
@@ -373,7 +403,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailDueVocabs.
   ///
   /// In de, this message translates to:
-  /// **'Zeitlich anstehende Vokabeln'**
+  /// **'Fällige Vokabeln abfragen'**
   String get boxDetailDueVocabs;
 
   /// No description provided for @boxDetailMethod.
@@ -385,7 +415,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailDailyLimit.
   ///
   /// In de, this message translates to:
-  /// **'Tägliches Limit'**
+  /// **'Tageslimit neuer Karten'**
   String get boxDetailDailyLimit;
 
   /// No description provided for @boxDetailNewCardsPerDay.
@@ -409,7 +439,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailStart.
   ///
   /// In de, this message translates to:
-  /// **'Start'**
+  /// **'Abfrage starten'**
   String get boxDetailStart;
 
   /// No description provided for @boxDetailDeleteTitle.
@@ -435,6 +465,48 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Box nicht gefunden'**
   String get boxDetailNotFound;
+
+  /// No description provided for @boxDetailSubline.
+  ///
+  /// In de, this message translates to:
+  /// **'{total} Vokabeln — {due} jetzt fällig'**
+  String boxDetailSubline(int total, int due);
+
+  /// No description provided for @boxDetailDailyLimitValue.
+  ///
+  /// In de, this message translates to:
+  /// **'{count} Karten'**
+  String boxDetailDailyLimitValue(int count);
+
+  /// No description provided for @boxDetailEditAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Bearbeiten'**
+  String get boxDetailEditAction;
+
+  /// No description provided for @boxDetailShareAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Teilen'**
+  String get boxDetailShareAction;
+
+  /// No description provided for @boxDetailSaveAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Speichern'**
+  String get boxDetailSaveAction;
+
+  /// No description provided for @boxDetailDailyLimitOff.
+  ///
+  /// In de, this message translates to:
+  /// **'Aus'**
+  String get boxDetailDailyLimitOff;
+
+  /// No description provided for @boxDetailDailyLimitEnable.
+  ///
+  /// In de, this message translates to:
+  /// **'Tageslimit aktivieren'**
+  String get boxDetailDailyLimitEnable;
 
   /// No description provided for @vocabListTitle.
   ///
@@ -622,6 +694,12 @@ abstract class AppLocalizations {
   /// **'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.'**
   String get errorTtsUnknownError;
 
+  /// No description provided for @language.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprache'**
+  String get language;
+
   /// No description provided for @languageGerman.
   ///
   /// In de, this message translates to:
@@ -766,18 +844,6 @@ abstract class AppLocalizations {
   /// **'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).'**
   String get createBoxTypeImportSubtitle;
 
-  /// No description provided for @createBoxIconEditTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Icon ändern'**
-  String get createBoxIconEditTitle;
-
-  /// No description provided for @createBoxIconEditPlaceholder.
-  ///
-  /// In de, this message translates to:
-  /// **'Emoji eingeben'**
-  String get createBoxIconEditPlaceholder;
-
   /// No description provided for @createBoxTitleLabel.
   ///
   /// In de, this message translates to:
@@ -793,13 +859,13 @@ abstract class AppLocalizations {
   /// No description provided for @createBoxDescriptionLabel.
   ///
   /// In de, this message translates to:
-  /// **'Beschreibung (optional)'**
+  /// **'Beschreibung'**
   String get createBoxDescriptionLabel;
 
   /// No description provided for @createBoxDescriptionHint.
   ///
   /// In de, this message translates to:
-  /// **'Kurze Beschreibung'**
+  /// **'Kurze optionale Beschreibung'**
   String get createBoxDescriptionHint;
 
   /// No description provided for @createBoxNameEmpty.
@@ -831,12 +897,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Zielsprache wählen'**
   String get createBoxTargetLanguagePickerTitle;
-
-  /// No description provided for @createBoxColorTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Farbe'**
-  String get createBoxColorTitle;
 
   /// No description provided for @createBoxFinish.
   ///

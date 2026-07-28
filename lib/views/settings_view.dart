@@ -1,9 +1,13 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show showLicensePage;
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
-import 'package:vocabulaire/views/widgets/navigation_row.dart';
 
 import '../controllers/settings_controller.dart';
+import '../theme/app_spacing.dart';
+import '../theme/app_typography.dart';
+import '../theme/theme_context_ext.dart';
+import 'widgets/app_scaffold.dart';
+import 'widgets/key_value_row.dart';
+import 'widgets/text_link_button.dart';
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -44,42 +48,36 @@ class _SettingsViewState extends State<SettingsView> {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        middle: Text(_l10n.settingsTitle),
-      ),
-      child: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16.0),
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    _l10n.settingsCardAnimations,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ),
-                CupertinoSwitch(
-                  value: _cardAnimations,
-                  onChanged: (v) => _setCardAnimations(v),
-                ),
-              ],
+    final colors = context.colors;
+    return AppScaffold(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            _l10n.settingsTitle,
+            style: AppTypography.headlineSerif.copyWith(
+              color: colors.textPrimary,
             ),
-            const SizedBox(height: 16.0),
-            NavigationRowGroup(
-              children: [
-                NavigationRow(
-                  primaryContent: Text(_l10n.settingsLicenses),
-                  onTap: () => showLicensePage(
-                    context: context,
-                    applicationName: 'Vocabulaire',
-                  ),
-                ),
-              ],
+          ),
+          const SizedBox(height: AppSpacing.sectionGap),
+          KeyValueRowGroup(
+            children: [
+              KeyValueRow.toggle(
+                label: _l10n.settingsCardAnimations,
+                value: _cardAnimations,
+                onChanged: _setCardAnimations,
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sectionGap),
+          TextLinkButton(
+            label: _l10n.settingsLicenses,
+            onPressed: () => showLicensePage(
+              context: context,
+              applicationName: 'Vocabulaire',
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

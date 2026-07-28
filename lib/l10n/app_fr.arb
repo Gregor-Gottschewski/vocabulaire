@@ -6,6 +6,14 @@
   "tabEinstellungen": "Paramètres",
 
   "homeEmpty": "Aucune boîte disponible.",
+  "addBox": "Nouvelle boîte",
+
+  "cardsCounter": "{num} cartes",
+  "@cardsCounter": {
+    "placeholders": {
+      "num": { "type":  "int" }
+    }
+  },
 
   "settingsTitle": "Paramètres",
   "settingsImportBox": "Importer une boîte",
@@ -36,7 +44,7 @@
   "editVocabExistsMessage": "Ce vocabulaire existe déjà dans cette boîte. Voulez-vous quand même l'ajouter ?",
   "editVocabAddAnyway": "Ajouter quand même",
   "editVocabSave": "Enregistrer",
-  "editVocabNext": "Suivant",
+  "editVocabNext": "Enregistrer & Suivant",
   "editVocabStats": "Statistiques",
   "editVocabDue": "Prochaine révision : {dueDate}",
   "@editVocabDue": {
@@ -58,16 +66,18 @@
     }
   },
 
-  "reviewTitle": "Étudier",
   "reviewBack": "Retour",
-  "reviewCard": "Carte {index} / {total}",
+  "reviewCard": "{index} sur {total}",
   "@reviewCard": {
     "placeholders": {
       "index": { "type": "int" },
       "total": { "type": "int" }
     }
   },
-  "reviewPlay": "Lire",
+  "reviewPlay": "Écouter",
+  "reviewShowTranslation": "Afficher la traduction",
+  "reviewShowBack": "Afficher le verso",
+  "reviewRatingQuestion": "Comment évalues-tu ce mot ?",
   "reviewAgain": "Encore",
   "reviewHard": "Difficile",
   "reviewGood": "Bien",
@@ -81,18 +91,37 @@
   },
 
   "boxDetailDescription": "Description",
+  "boxTileNoDescription": "Aucune description disponible",
   "boxDetailOptions": "Options",
-  "boxDetailDueVocabs": "Vocabulaires à réviser",
+  "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",
-  "boxDetailDailyLimit": "Limite quotidienne",
+  "boxDetailDailyLimit": "Limite quotidienne de nouvelles cartes",
   "boxDetailNewCardsPerDay": "Nouvelles cartes / jour",
   "boxDetailDailyLimitInfo": "La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.",
-  "boxDetailEditVocabs": "Modifier les vocabulaires",
-  "boxDetailStart": "Démarrer",
+  "boxDetailEditVocabs": "Afficher la liste des vocabulaires",
+  "boxDetailStart": "Démarrer la session",
   "boxDetailDeleteTitle": "Supprimer la boîte",
   "boxDetailDeleteMessage": "Voulez-vous vraiment supprimer cette boîte ?",
   "boxDetailDelete": "Supprimer",
   "boxDetailNotFound": "Boîte introuvable",
+  "boxDetailSubline": "{total} mots — {due} à réviser maintenant",
+  "@boxDetailSubline": {
+    "placeholders": {
+      "total": { "type": "int" },
+      "due": { "type": "int" }
+    }
+  },
+  "boxDetailDailyLimitValue": "{count} cartes",
+  "@boxDetailDailyLimitValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "boxDetailEditAction": "Modifier",
+  "boxDetailShareAction": "Partager",
+  "boxDetailSaveAction": "Enregistrer",
+  "boxDetailDailyLimitOff": "Désactivé",
+  "boxDetailDailyLimitEnable": "Activer la limite quotidienne",
 
   "vocabListTitle": "Vocabulaire",
   "vocabListEmpty": "Aucun vocabulaire disponible.",
@@ -136,6 +165,7 @@
   "errorTtsNotAuthenticated": "Échec de la connexion. Veuillez réessayer.",
   "errorTtsUnknownError": "La prononciation n'a pas pu être générée. Veuillez vérifier votre connexion internet.",
 
+  "language": "Langue",
   "languageGerman": "Allemand",
   "languageEnglish": "Anglais",
   "languageFrench": "Français",
@@ -162,18 +192,15 @@
   "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
   "createBoxTypeSubtitle": "Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.",
   "createBoxTypeImportSubtitle": "Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.",
-  "createBoxIconEditTitle": "Changer l'icône",
-  "createBoxIconEditPlaceholder": "Saisir un emoji",
   "createBoxTitleLabel": "Titre",
   "createBoxTitleHint": "Nom de la boîte",
-  "createBoxDescriptionLabel": "Description (optionnel)",
-  "createBoxDescriptionHint": "Courte description",
+  "createBoxDescriptionLabel": "Description",
+  "createBoxDescriptionHint": "Optionnel courte description",
   "createBoxNameEmpty": "Le nom ne peut pas être vide.",
   "createBoxSourceLanguageLabel": "Langue source - celle que tu connais déjà",
   "createBoxTargetLanguageLabel": "Langue cible - celle que tu apprends",
   "createBoxSourceLanguagePickerTitle": "Choisir la langue source",
   "createBoxTargetLanguagePickerTitle": "Choisir la langue cible",
-  "createBoxColorTitle": "Couleur",
   "createBoxFinish": "Terminé",
 
   "languageSearchPlaceholder": "Rechercher",

@@ -1,10 +1,12 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/vocabulary_list_view.dart';
 import '../controllers/box_controller.dart';
 import '../models/vocabulary_box.dart';
+import '../theme/theme_context_ext.dart';
 import 'home_view.dart';
 import 'settings_view.dart';
+import 'widgets/app_tab_bar.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -16,6 +18,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _allBoxesNotifier;
   late final List<Widget> _views;
+  final List<GlobalKey<NavigatorState>> _tabNavigatorKeys = List.generate(
+    3,
+    (_) => GlobalKey<NavigatorState>(),
+  );
   final BoxController _boxController = BoxController();
   late AppLocalizations _l10n;
   int _selectedIndex = 0;
@@ -44,35 +50,40 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
+  }
+
+  Widget _buildTab(int index) {
+    return Navigator(
+      key: _tabNavigatorKeys[index],
+      onGenerateRoute: (settings) => PageRouteBuilder(
+        settings: settings,
+        pageBuilder: (context, animation, secondaryAnimation) => _views[index],
+        transitionDuration: Duration.zero,
+        reverseTransitionDuration: Duration.zero,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoTabScaffold(
-      tabBar: CupertinoTabBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: const Icon(CupertinoIcons.cube_box),
-            label: _l10n.tabBoxen,
+    return Material(
+      color: context.colors.background,
+      child: Column(
+        children: [
+          Expanded(
+            child: IndexedStack(
+              index: _selectedIndex,
+              children: List.generate(_views.length, _buildTab),
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: const Icon(CupertinoIcons.book),
-            label: _l10n.tabVokabeln,
-          ),
-          BottomNavigationBarItem(
-            icon: const Icon(CupertinoIcons.settings),
-            label: _l10n.tabEinstellungen,
+          AppTabBar(
+            items: [_l10n.tabBoxen, _l10n.tabVokabeln, _l10n.tabEinstellungen],
+            currentIndex: _selectedIndex,
+            onTap: _onItemTapped,
           ),
         ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
-      tabBuilder: (context, index) {
-        return CupertinoTabView(builder: (context) => _views[index]);
-      },
     );
   }
 }

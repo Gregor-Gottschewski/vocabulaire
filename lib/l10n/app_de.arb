@@ -6,6 +6,16 @@
   "tabEinstellungen": "Einstellungen",
 
   "homeEmpty": "Keine Boxen vorhanden.",
+  "addBox": "Neue Box",
+
+  "cardsCounter": "{num} Karten",
+  "@cardsCounter": {
+    "placeholders": {
+      "num": {
+        "type": "int"
+      }
+    }
+  },
 
   "settingsTitle": "Einstellungen",
   "settingsImportBox": "Box importieren",
@@ -36,7 +46,7 @@
   "editVocabExistsMessage": "Diese Vokabel existiert bereits in diesem Box. Soll die Vokabel trotzdem hinzugefügt werden?",
   "editVocabAddAnyway": "Trotzdem hinzufügen",
   "editVocabSave": "Speichern",
-  "editVocabNext": "Nächste",
+  "editVocabNext": "Speichern & Nächste",
   "editVocabStats": "Statistiken",
   "editVocabDue": "Nächste Abfrage: {dueDate}",
   "@editVocabDue": {
@@ -58,16 +68,18 @@
     }
   },
 
-  "reviewTitle": "Lernen",
   "reviewBack": "Zurück",
-  "reviewCard": "Karte {index} / {total}",
+  "reviewCard": "{index} von {total}",
   "@reviewCard": {
     "placeholders": {
       "index": { "type": "int" },
       "total": { "type": "int" }
     }
   },
-  "reviewPlay": "Abspielen",
+  "reviewPlay": "Anhören",
+  "reviewShowTranslation": "Übersetzung anzeigen",
+  "reviewShowBack": "Rückseite anzeigen",
+  "reviewRatingQuestion": "Wie ist diese Vokabel?",
   "reviewAgain": "Nochmal",
   "reviewHard": "Schwer",
   "reviewGood": "Gut",
@@ -81,18 +93,37 @@
   },
 
   "boxDetailDescription": "Beschreibung",
+  "boxTileNoDescription": "Keine Beschreibung vorhanden",
   "boxDetailOptions": "Optionen",
-  "boxDetailDueVocabs": "Zeitlich anstehende Vokabeln",
+  "boxDetailDueVocabs": "Fällige Vokabeln abfragen",
   "boxDetailMethod": "Lernmethode",
-  "boxDetailDailyLimit": "Tägliches Limit",
+  "boxDetailDailyLimit": "Tageslimit neuer Karten",
   "boxDetailNewCardsPerDay": "Neue Karten / Tag",
   "boxDetailDailyLimitInfo": "Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.",
   "boxDetailEditVocabs": "Vokabeln bearbeiten",
-  "boxDetailStart": "Start",
+  "boxDetailStart": "Abfrage starten",
   "boxDetailDeleteTitle": "Box löschen",
   "boxDetailDeleteMessage": "Möchtest du diese Box wirklich löschen?",
   "boxDetailDelete": "Löschen",
   "boxDetailNotFound": "Box nicht gefunden",
+  "boxDetailSubline": "{total} Vokabeln — {due} jetzt fällig",
+  "@boxDetailSubline": {
+    "placeholders": {
+      "total": { "type": "int" },
+      "due": { "type": "int" }
+    }
+  },
+  "boxDetailDailyLimitValue": "{count} Karten",
+  "@boxDetailDailyLimitValue": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "boxDetailEditAction": "Bearbeiten",
+  "boxDetailShareAction": "Teilen",
+  "boxDetailSaveAction": "Speichern",
+  "boxDetailDailyLimitOff": "Aus",
+  "boxDetailDailyLimitEnable": "Tageslimit aktivieren",
 
   "vocabListTitle": "Vokabeln",
   "vocabListEmpty": "Keine Vokabeln vorhanden.",
@@ -136,6 +167,7 @@
   "errorTtsNotAuthenticated": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
   "errorTtsUnknownError": "Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.",
 
+  "language": "Sprache",
   "languageGerman": "Deutsch",
   "languageEnglish": "Englisch",
   "languageFrench": "Französisch",
@@ -162,18 +194,15 @@
   "createBoxTypeTitle": "Was für eine Box soll erstellt werden?",
   "createBoxTypeSubtitle": "Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.",
   "createBoxTypeImportSubtitle": "Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).",
-  "createBoxIconEditTitle": "Icon ändern",
-  "createBoxIconEditPlaceholder": "Emoji eingeben",
   "createBoxTitleLabel": "Titel",
   "createBoxTitleHint": "Name der Box",
-  "createBoxDescriptionLabel": "Beschreibung (optional)",
-  "createBoxDescriptionHint": "Kurze Beschreibung",
+  "createBoxDescriptionLabel": "Beschreibung",
+  "createBoxDescriptionHint": "Kurze optionale Beschreibung",
   "createBoxNameEmpty": "Der Name darf nicht leer sein.",
   "createBoxSourceLanguageLabel": "Ausgangssprache - das kennst du bereits",
   "createBoxTargetLanguageLabel": "Zielsprache - das lernst du",
   "createBoxSourceLanguagePickerTitle": "Ausgangssprache wählen",
   "createBoxTargetLanguagePickerTitle": "Zielsprache wählen",
-  "createBoxColorTitle": "Farbe",
   "createBoxFinish": "Fertig",
 
   "languageSearchPlaceholder": "Suchen",

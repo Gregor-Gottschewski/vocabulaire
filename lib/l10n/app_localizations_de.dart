@@ -21,6 +21,14 @@ class AppLocalizationsDe extends AppLocalizations {
   String get homeEmpty => 'Keine Boxen vorhanden.';
 
   @override
+  String get addBox => 'Neue Box';
+
+  @override
+  String cardsCounter(int num) {
+    return '$num Karten';
+  }
+
+  @override
   String get settingsTitle => 'Einstellungen';
 
   @override
@@ -96,7 +104,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editVocabSave => 'Speichern';
 
   @override
-  String get editVocabNext => 'Nächste';
+  String get editVocabNext => 'Speichern & Nächste';
 
   @override
   String get editVocabStats => 'Statistiken';
@@ -120,18 +128,24 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get reviewTitle => 'Lernen';
-
-  @override
   String get reviewBack => 'Zurück';
 
   @override
   String reviewCard(int index, int total) {
-    return 'Karte $index / $total';
+    return '$index von $total';
   }
 
   @override
-  String get reviewPlay => 'Abspielen';
+  String get reviewPlay => 'Anhören';
+
+  @override
+  String get reviewShowTranslation => 'Übersetzung anzeigen';
+
+  @override
+  String get reviewShowBack => 'Rückseite anzeigen';
+
+  @override
+  String get reviewRatingQuestion => 'Wie ist diese Vokabel?';
 
   @override
   String get reviewAgain => 'Nochmal';
@@ -157,16 +171,19 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxDetailDescription => 'Beschreibung';
 
   @override
+  String get boxTileNoDescription => 'Keine Beschreibung vorhanden';
+
+  @override
   String get boxDetailOptions => 'Optionen';
 
   @override
-  String get boxDetailDueVocabs => 'Zeitlich anstehende Vokabeln';
+  String get boxDetailDueVocabs => 'Fällige Vokabeln abfragen';
 
   @override
   String get boxDetailMethod => 'Lernmethode';
 
   @override
-  String get boxDetailDailyLimit => 'Tägliches Limit';
+  String get boxDetailDailyLimit => 'Tageslimit neuer Karten';
 
   @override
   String get boxDetailNewCardsPerDay => 'Neue Karten / Tag';
@@ -179,7 +196,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxDetailEditVocabs => 'Vokabeln bearbeiten';
 
   @override
-  String get boxDetailStart => 'Start';
+  String get boxDetailStart => 'Abfrage starten';
 
   @override
   String get boxDetailDeleteTitle => 'Box löschen';
@@ -193,6 +210,31 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get boxDetailNotFound => 'Box nicht gefunden';
+
+  @override
+  String boxDetailSubline(int total, int due) {
+    return '$total Vokabeln — $due jetzt fällig';
+  }
+
+  @override
+  String boxDetailDailyLimitValue(int count) {
+    return '$count Karten';
+  }
+
+  @override
+  String get boxDetailEditAction => 'Bearbeiten';
+
+  @override
+  String get boxDetailShareAction => 'Teilen';
+
+  @override
+  String get boxDetailSaveAction => 'Speichern';
+
+  @override
+  String get boxDetailDailyLimitOff => 'Aus';
+
+  @override
+  String get boxDetailDailyLimitEnable => 'Tageslimit aktivieren';
 
   @override
   String get vocabListTitle => 'Vokabeln';
@@ -305,6 +347,9 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.';
 
   @override
+  String get language => 'Sprache';
+
+  @override
   String get languageGerman => 'Deutsch';
 
   @override
@@ -381,22 +426,16 @@ class AppLocalizationsDe extends AppLocalizations {
       'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).';
 
   @override
-  String get createBoxIconEditTitle => 'Icon ändern';
-
-  @override
-  String get createBoxIconEditPlaceholder => 'Emoji eingeben';
-
-  @override
   String get createBoxTitleLabel => 'Titel';
 
   @override
   String get createBoxTitleHint => 'Name der Box';
 
   @override
-  String get createBoxDescriptionLabel => 'Beschreibung (optional)';
+  String get createBoxDescriptionLabel => 'Beschreibung';
 
   @override
-  String get createBoxDescriptionHint => 'Kurze Beschreibung';
+  String get createBoxDescriptionHint => 'Kurze optionale Beschreibung';
 
   @override
   String get createBoxNameEmpty => 'Der Name darf nicht leer sein.';
@@ -413,9 +452,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get createBoxTargetLanguagePickerTitle => 'Zielsprache wählen';
-
-  @override
-  String get createBoxColorTitle => 'Farbe';
 
   @override
   String get createBoxFinish => 'Fertig';

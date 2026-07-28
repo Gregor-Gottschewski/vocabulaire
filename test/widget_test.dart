@@ -1,30 +1,50 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:vocabulaire/main.dart';
+import 'package:vocabulaire/theme/app_theme.dart';
+import 'package:vocabulaire/views/widgets/app_scaffold.dart';
+import 'package:vocabulaire/views/widgets/primary_action_button.dart';
+import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('AppTheme.light and AppTheme.dark build without throwing', (
+    tester,
+  ) async {
+    expect(AppTheme.light, isNotNull);
+    expect(AppTheme.dark, isNotNull);
+  });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('AppScaffold renders back-link, body content and reacts to taps', (
+    tester,
+  ) async {
+    var tapped = false;
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
+        home: AppScaffold(
+          backLabel: 'Zurück',
+          body: Column(
+            children: [
+              const Text('Vocabulaire'),
+              PrimaryActionButton(
+                label: "Los geht's",
+                onPressed: () => tapped = true,
+              ),
+              TextLinkButton(label: 'Mehr', onPressed: () {}),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    expect(find.text('Vocabulaire'), findsOneWidget);
+    expect(find.text('← Zurück'), findsOneWidget);
+
+    await tester.tap(find.text("Los geht's"));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(tapped, isTrue);
   });
 }

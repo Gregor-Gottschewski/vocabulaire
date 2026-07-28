@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
@@ -14,6 +14,7 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/auth_service.dart';
 import 'models/vocabulary_box.dart';
 import 'models/vocabulary.dart';
+import 'theme/app_theme.dart';
 import 'views/home_page.dart';
 
 
@@ -51,11 +52,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoApp(
+    return MaterialApp(
       title: 'Vocabulaire',
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.system,
       localizationsDelegates: const [
         AppLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],

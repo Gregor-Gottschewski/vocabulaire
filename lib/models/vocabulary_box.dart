@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:vocabulaire/models/app_language.dart';
-import 'package:vocabulaire/models/box_color.dart';
 import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/vocabulary.dart';
 
@@ -20,14 +19,6 @@ class VocabularyBox {
   /// [BoxType.name] of this box.
   @HiveField(3)
   final String type;
-
-  /// A single emoji grapheme used as the box's icon.
-  @HiveField(4)
-  final String icon;
-
-  /// [BoxColor.name] of this box.
-  @HiveField(5)
-  final String color;
 
   /// [AppLanguage.code] of the source language, only set for [BoxType.vocabulary] boxes.
   @HiveField(6)
@@ -54,8 +45,6 @@ class VocabularyBox {
   final DateTime? lastNewVocabularyReview;
 
   BoxType get boxType => BoxType.fromName(type);
-
-  BoxColor get boxColor => BoxColor.fromName(color);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
 
@@ -93,8 +82,6 @@ class VocabularyBox {
     required this.description,
     required this.vocabularies,
     this.type = 'vocabulary',
-    this.icon = '📚',
-    this.color = 'purple',
     this.sourceLanguage,
     this.targetLanguage,
     this.dailyLimitEnabled = false,
@@ -108,8 +95,6 @@ class VocabularyBox {
     String? description,
     List<Vocabulary>? vocabularies,
     String? type,
-    String? icon,
-    String? color,
     String? sourceLanguage,
     String? targetLanguage,
     bool? dailyLimitEnabled,
@@ -122,8 +107,6 @@ class VocabularyBox {
       description: description ?? this.description,
       vocabularies: vocabularies ?? this.vocabularies,
       type: type ?? this.type,
-      icon: icon ?? this.icon,
-      color: color ?? this.color,
       sourceLanguage: sourceLanguage ?? this.sourceLanguage,
       targetLanguage: targetLanguage ?? this.targetLanguage,
       dailyLimitEnabled: dailyLimitEnabled ?? this.dailyLimitEnabled,
@@ -140,8 +123,6 @@ class VocabularyBox {
       'description': description,
       'vocabularies': vocabularies.map((v) => v.toMap()).toList(),
       'type': type,
-      'icon': icon,
-      'color': color,
       'sourceLanguage': sourceLanguage,
       'targetLanguage': targetLanguage,
     };
@@ -156,8 +137,6 @@ class VocabularyBox {
               .toList() ??
           [],
       type: map['type'] as String? ?? 'vocabulary',
-      icon: map['icon'] as String? ?? '📚',
-      color: map['color'] as String? ?? 'purple',
       sourceLanguage: map['sourceLanguage'] as String?,
       targetLanguage: map['targetLanguage'] as String?,
     );
