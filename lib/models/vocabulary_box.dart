@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 import 'package:vocabulaire/models/app_language.dart';
 import 'package:vocabulaire/models/box_type.dart';
@@ -155,6 +156,46 @@ class VocabularyBox {
       type: map['type'] as String? ?? 'vocabulary',
       sourceLanguage: map['sourceLanguage'] as String?,
       targetLanguage: map['targetLanguage'] as String?,
+    );
+  }
+
+  /// Firestore representation of the box's own fields — deliberately
+  /// excludes [vocabularies], which lives in the `vocabularies` subcollection
+  /// (see the migration plan's Firestore schema), and envelope fields
+  /// (`deleted`/`updatedAt`/`ownerUid`), which are added by [BoxSyncService].
+  Map<String, dynamic> toFirestore() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'type': type,
+      'sourceLanguage': sourceLanguage,
+      'targetLanguage': targetLanguage,
+      'dailyLimitEnabled': dailyLimitEnabled,
+      'dailyLimit': dailyLimit,
+      'newCardsReviewedToday': newCardsReviewedToday,
+      'lastNewVocabularyReview': lastNewVocabularyReview,
+    };
+  }
+
+  /// [vocabularies] is always empty here — callers populate it separately
+  /// from the box's `vocabularies` subcollection, see [BoxSyncService].
+  factory VocabularyBox.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    return VocabularyBox(
+      id: data['id'] as String? ?? doc.id,
+      name: data['name'] as String,
+      description: data['description'] as String,
+      vocabularies: const [],
+      type: data['type'] as String? ?? 'vocabulary',
+      sourceLanguage: data['sourceLanguage'] as String?,
+      targetLanguage: data['targetLanguage'] as String?,
+      dailyLimitEnabled: data['dailyLimitEnabled'] as bool? ?? false,
+      dailyLimit: data['dailyLimit'] as int? ?? 20,
+      newCardsReviewedToday: data['newCardsReviewedToday'] as int? ?? 0,
+      lastNewVocabularyReview:
+          (data['lastNewVocabularyReview'] as Timestamp?)?.toDate(),
+      deleted: data['deleted'] as bool? ?? false,
     );
   }
 }
