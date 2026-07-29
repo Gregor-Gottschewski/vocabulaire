@@ -46,6 +46,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
+  String get settingsSyncStatus => 'Synchronisierung';
+
+  @override
+  String get settingsSyncStatusSynced => 'Aktuell';
+
+  @override
+  String get settingsSyncStatusSyncing => 'Wird synchronisiert…';
+
+  @override
+  String get settingsSyncStatusOffline => 'Offline';
+
+  @override
   String get settingsLicenses => 'Lizenzen';
 
   @override

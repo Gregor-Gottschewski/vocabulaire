@@ -27,6 +27,10 @@
     }
   },
   "settingsCardAnimations": "Kartenanimationen",
+  "settingsSyncStatus": "Synchronisierung",
+  "settingsSyncStatusSynced": "Aktuell",
+  "settingsSyncStatusSyncing": "Wird synchronisiert…",
+  "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Lizenzen",
 
   "editVocabNew": "Neue Vokabel",

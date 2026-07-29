@@ -20,6 +20,10 @@
   "settingsImportSuccess": "Import successful",
   "settingsImportSuccessMessage": "Box \"{name}\" has been imported.",
   "settingsCardAnimations": "Card animations",
+  "settingsSyncStatus": "Sync",
+  "settingsSyncStatusSynced": "Up to date",
+  "settingsSyncStatusSyncing": "Syncing…",
+  "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Licenses",
 
   "editVocabNew": "New vocabulary",

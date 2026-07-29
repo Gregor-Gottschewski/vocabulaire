@@ -166,6 +166,30 @@ abstract class AppLocalizations {
   /// **'Kartenanimationen'**
   String get settingsCardAnimations;
 
+  /// No description provided for @settingsSyncStatus.
+  ///
+  /// In de, this message translates to:
+  /// **'Synchronisierung'**
+  String get settingsSyncStatus;
+
+  /// No description provided for @settingsSyncStatusSynced.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuell'**
+  String get settingsSyncStatusSynced;
+
+  /// No description provided for @settingsSyncStatusSyncing.
+  ///
+  /// In de, this message translates to:
+  /// **'Wird synchronisiert…'**
+  String get settingsSyncStatusSyncing;
+
+  /// No description provided for @settingsSyncStatusOffline.
+  ///
+  /// In de, this message translates to:
+  /// **'Offline'**
+  String get settingsSyncStatusOffline;
+
   /// No description provided for @settingsLicenses.
   ///
   /// In de, this message translates to:
