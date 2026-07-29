@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:vocabulaire/firebase_options.dart';
 import 'package:vocabulaire/models/app_settings.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/auth_service.dart';
+import 'package:vocabulaire/services/box_sync_service.dart';
 import 'models/vocabulary_box.dart';
 import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
@@ -31,6 +33,7 @@ void main() async {
   if (kDebugMode && _useFirebaseEmulator) {
     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
     await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
+    await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   }
 
   // TODO: switch to AppleAppAttestProvider (iOS) / AppleDeviceCheckProvider (macOS)
@@ -61,8 +64,42 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    // ensureSignedIn() has already completed in main() by the time this
+    // runs, so the first attach() attempt succeeds rather than waiting for
+    // the first `resumed` event (which doesn't fire on cold start).
+    BoxSyncService.instance.attach();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    BoxSyncService.instance.detach();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        BoxSyncService.instance.attach();
+      case AppLifecycleState.paused:
+        BoxSyncService.instance.detach();
+      default:
+        break;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

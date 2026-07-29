@@ -30,7 +30,7 @@ enum _UnsavedChangesAction { saveAndLeave, discard }
 
 /// Editing view (create or edit) for a vocabulary entry, allowing users to input front, back, and description/example fields.
 class EditVocabularyView extends StatefulWidget {
-  final dynamic boxKey;
+  final String boxKey;
   final VocabularyBox box;
   final Vocabulary? vocabulary;
   final bool newVocabulary;

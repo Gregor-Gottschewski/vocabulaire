@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/create_box_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
@@ -117,7 +118,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
     final box = VocabularyBox(
-      id: _boxController.generateUniqueId({}),
+      id: const Uuid().v4(),
       name: name,
       description: description,
       vocabularies: const [],

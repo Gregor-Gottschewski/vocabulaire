@@ -18,7 +18,7 @@ import 'widgets/section_title.dart';
 import 'widgets/text_link_button.dart';
 
 class ReviewView extends StatefulWidget {
-  final dynamic boxKey;
+  final String boxKey;
   final bool onlyTimely;
   final LearningMethod learningMethod;
 

@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path/path.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
@@ -22,15 +21,11 @@ class ImportController {
     try {
       VocabularyBox box = await _readStoreFile(extractedVocabularyBox.path);
 
-      BoxController boxController = BoxController();
-
       Map<String, String> newIds = {};
-      Set<String?> ids = boxController.vocabularyIDs;
 
       final safeVocabularies = box.vocabularies.map((v) {
-        final newId = boxController.generateUniqueId(ids);
+        final newId = const Uuid().v4();
         newIds[v.id] = newId;
-        ids.add(newId);
         return v.copyWith(id: newId);
       }).toList();
 
@@ -40,7 +35,7 @@ class ImportController {
       );
 
       return box.copyWith(
-        id: boxController.generateUniqueId({}),
+        id: const Uuid().v4(),
         vocabularies: safeVocabularies,
       );
     } finally {

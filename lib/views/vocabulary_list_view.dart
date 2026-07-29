@@ -13,7 +13,7 @@ import 'widgets/app_scaffold.dart';
 import 'widgets/text_link_button.dart';
 
 class VocabularyListView extends StatefulWidget {
-  final ValueListenable<List<MapEntry<dynamic, VocabularyBox>>> boxListenable;
+  final ValueListenable<List<MapEntry<String, VocabularyBox>>> boxListenable;
   final bool multipleBoxes;
 
   const VocabularyListView({
@@ -28,7 +28,7 @@ class VocabularyListView extends StatefulWidget {
 
 /// Helper class to combine box key, box and vocabulary for easier list rendering
 class _BoxVocabulary {
-  final dynamic boxKey;
+  final String boxKey;
   final VocabularyBox box;
   final Vocabulary vocabulary;
 
@@ -49,7 +49,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
   /// Option only available when not in multipleBoxes mode.
   ///  - [boxKey] The key of the box to which the new vocabulary will be added.
   ///  - [box] The box to which the new vocabulary will be added.
-  void _navigateToVocabularyEdit(dynamic boxKey, VocabularyBox box) {
+  void _navigateToVocabularyEdit(String boxKey, VocabularyBox box) {
     Navigator.push(
       context,
       AppPageRoute(
@@ -62,7 +62,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
   ///  - [boxKey] The key of the box containing the vocabulary to edit.
   ///  - [box] The box containing the vocabulary to edit.
   void _navigateToEdit(
-    dynamic boxKey,
+    String boxKey,
     VocabularyBox box,
     Vocabulary vocabulary,
   ) {
@@ -170,7 +170,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
 class _VocabularyRow extends StatelessWidget {
   final Vocabulary vocabulary;
   final VocabularyBox box;
-  final dynamic boxKey;
+  final String boxKey;
   final bool showBoxName;
   final String deleteLabel;
   final VoidCallback onTap;

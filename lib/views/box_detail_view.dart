@@ -25,7 +25,7 @@ import 'widgets/text_link_button.dart';
 /// session button and edit vocabulary list button.
 class BoxDetailView extends StatefulWidget {
   final VocabularyBox box;
-  final dynamic boxKey;
+  final String boxKey;
 
   const BoxDetailView({super.key, required this.box, required this.boxKey});
 
@@ -34,7 +34,7 @@ class BoxDetailView extends StatefulWidget {
 }
 
 class _BoxDetailWidget extends State<BoxDetailView> {
-  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _boxNotifier;
+  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxNotifier;
   late AppLocalizations _l10n;
   late TextEditingController _titleController;
   bool _onlyTimely = true;

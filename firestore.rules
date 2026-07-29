@@ -9,6 +9,30 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Basic per-user box/vocabulary sync rules (migration plan Phase 5).
+    // Per-field limit checks (Phase 4: free/premium vocabulary quota) are
+    // deliberately not part of this yet — box/vocabulary creation UI for
+    // online boxes doesn't exist yet either.
+    match /users/{userId}/boxes/{boxId} {
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+      allow create: if request.auth != null && request.auth.uid == userId
+                    && request.resource.data.ownerUid == userId
+                    && request.resource.data.keys().hasAll(['id', 'name', 'deleted']);
+
+      match /vocabularies/{vocabId} {
+        allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+        allow create: if request.auth != null && request.auth.uid == userId
+                      && request.resource.data.ownerUid == userId
+                      && request.resource.data.word is string;
+      }
+    }
+
+    // Required separately for collectionGroup('vocabularies') queries (the
+    // cross-box vocabulary tab) — the match above does not apply to those.
+    match /{path=**}/vocabularies/{vocabId} {
+      allow read: if request.auth != null && resource.data.ownerUid == request.auth.uid;
+    }
+
     // Default-deny: no other client-facing collections exist for this app.
     match /{document=**} {
       allow read, write: if false;

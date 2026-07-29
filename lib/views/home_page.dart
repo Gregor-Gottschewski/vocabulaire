@@ -16,7 +16,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late final ValueNotifier<List<MapEntry<dynamic, VocabularyBox>>> _allBoxesNotifier;
+  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>> _allBoxesNotifier;
   late final List<Widget> _views;
   final List<GlobalKey<NavigatorState>> _tabNavigatorKeys = List.generate(
     3,

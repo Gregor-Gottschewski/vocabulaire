@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import '../controllers/settings_controller.dart';
+import '../services/box_sync_service.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
@@ -18,6 +19,7 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   final SettingsController _controller = SettingsController();
+  final BoxSyncService _boxSync = BoxSyncService.instance;
   late AppLocalizations _l10n;
   bool _cardAnimations = true;
 
@@ -25,6 +27,23 @@ class _SettingsViewState extends State<SettingsView> {
   void initState() {
     super.initState();
     _initSettings();
+    _boxSync.listenable.addListener(_onSyncChanged);
+  }
+
+  @override
+  void dispose() {
+    _boxSync.listenable.removeListener(_onSyncChanged);
+    super.dispose();
+  }
+
+  void _onSyncChanged() {
+    if (mounted) setState(() {});
+  }
+
+  String get _syncStatusLabel {
+    if (_boxSync.isFromCache) return _l10n.settingsSyncStatusOffline;
+    if (_boxSync.hasPendingWrites) return _l10n.settingsSyncStatusSyncing;
+    return _l10n.settingsSyncStatusSynced;
   }
 
   @override
@@ -66,6 +85,10 @@ class _SettingsViewState extends State<SettingsView> {
                 label: _l10n.settingsCardAnimations,
                 value: _cardAnimations,
                 onChanged: _setCardAnimations,
+              ),
+              KeyValueRow.value(
+                label: _l10n.settingsSyncStatus,
+                value: _syncStatusLabel,
               ),
             ],
           ),
