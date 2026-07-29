@@ -39,7 +39,10 @@ class ImportController {
         newIds,
       );
 
-      return box.copyWith(vocabularies: safeVocabularies);
+      return box.copyWith(
+        id: boxController.generateUniqueId({}),
+        vocabularies: safeVocabularies,
+      );
     } finally {
       await extractedVocabularyBox.delete(recursive: true);
     }

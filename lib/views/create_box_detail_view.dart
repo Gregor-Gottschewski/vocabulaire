@@ -117,6 +117,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
     final box = VocabularyBox(
+      id: _boxController.generateUniqueId({}),
       name: name,
       description: description,
       vocabularies: const [],

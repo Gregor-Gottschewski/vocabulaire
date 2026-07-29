@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fsrs/fsrs.dart';
 import 'package:hive/hive.dart';
+
+import 'firestore_converters.dart';
 
 part 'vocabulary.g.dart';
 
@@ -49,6 +52,30 @@ class Vocabulary {
       example: map['example'] as String,
       cardData: Map<String, dynamic>.from(map['cardData'] as Map),
       id: map['id'] as String,
+    );
+  }
+
+  /// Firestore representation of the core vocabulary fields.
+  Map<String, dynamic> toFirestore() {
+    return {
+      'id': id,
+      'word': word,
+      'meaning': meaning,
+      'example': example,
+      'card': FirestoreConverters.cardDataToFirestore(cardData),
+    };
+  }
+
+  factory Vocabulary.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    return Vocabulary(
+      word: data['word'] as String,
+      meaning: data['meaning'] as String,
+      example: data['example'] as String,
+      cardData: FirestoreConverters.cardDataFromFirestore(
+        Map<String, dynamic>.from(data['card'] as Map),
+      ),
+      id: data['id'] as String? ?? doc.id,
     );
   }
 

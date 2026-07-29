@@ -44,6 +44,14 @@ class VocabularyBox {
   @HiveField(11)
   final DateTime? lastNewVocabularyReview;
 
+  /// Stable identity of this box, valid across both storage backends.
+  @HiveField(12, defaultValue: '')
+  final String id;
+
+  /// Soft-delete flag for online synchronization.
+  @HiveField(13, defaultValue: false)
+  final bool deleted;
+
   BoxType get boxType => BoxType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
@@ -78,6 +86,7 @@ class VocabularyBox {
   }
 
   VocabularyBox({
+    required this.id,
     required this.name,
     required this.description,
     required this.vocabularies,
@@ -88,9 +97,11 @@ class VocabularyBox {
     this.dailyLimit = 20,
     this.newCardsReviewedToday = 0,
     this.lastNewVocabularyReview,
+    this.deleted = false,
   });
 
   VocabularyBox copyWith({
+    String? id,
     String? name,
     String? description,
     List<Vocabulary>? vocabularies,
@@ -101,8 +112,10 @@ class VocabularyBox {
     int? dailyLimit,
     int? newCardsReviewedToday,
     DateTime? dailyLimitResetDate,
+    bool? deleted,
   }) {
     return VocabularyBox(
+      id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
       vocabularies: vocabularies ?? this.vocabularies,
@@ -114,9 +127,11 @@ class VocabularyBox {
       newCardsReviewedToday:
           newCardsReviewedToday ?? this.newCardsReviewedToday,
       lastNewVocabularyReview: dailyLimitResetDate ?? this.lastNewVocabularyReview,
+      deleted: deleted ?? this.deleted,
     );
   }
 
+  /// Used exclusively for the local `.vocab` export/import format.
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -130,6 +145,7 @@ class VocabularyBox {
 
   factory VocabularyBox.fromMap(Map<String, dynamic> map) {
     return VocabularyBox(
+      id: map['id'] as String? ?? '',
       name: map['name'] as String,
       description: map['description'] as String,
       vocabularies: (map['vocabularies'] as List<dynamic>?)
