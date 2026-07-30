@@ -169,7 +169,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsSyncStatus.
   ///
   /// In de, this message translates to:
-  /// **'Synchronisierung'**
+  /// **'Synchronisierungsstatus'**
   String get settingsSyncStatus;
 
   /// No description provided for @settingsSyncStatusSynced.

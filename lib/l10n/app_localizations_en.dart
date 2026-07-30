@@ -46,7 +46,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsCardAnimations => 'Card animations';
 
   @override
-  String get settingsSyncStatus => 'Sync';
+  String get settingsSyncStatus => 'Synchronization Status';
 
   @override
   String get settingsSyncStatusSynced => 'Up to date';

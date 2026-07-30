@@ -20,7 +20,7 @@
   "settingsImportSuccess": "Import successful",
   "settingsImportSuccessMessage": "Box \"{name}\" has been imported.",
   "settingsCardAnimations": "Card animations",
-  "settingsSyncStatus": "Sync",
+  "settingsSyncStatus": "Synchronization Status",
   "settingsSyncStatusSynced": "Up to date",
   "settingsSyncStatusSyncing": "Syncing…",
   "settingsSyncStatusOffline": "Offline",

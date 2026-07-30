@@ -27,7 +27,7 @@
     }
   },
   "settingsCardAnimations": "Kartenanimationen",
-  "settingsSyncStatus": "Synchronisierung",
+  "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
   "settingsSyncStatusSyncing": "Wird synchronisiert…",
   "settingsSyncStatusOffline": "Offline",
