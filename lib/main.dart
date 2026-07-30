@@ -19,7 +19,11 @@ import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
 import 'views/home_page.dart';
 
+/// When enabled, the local Firebase emulator will be used
 const bool _useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
+
+/// When enabled, the session is reset to remove real (old) session
+const bool _resetAuthSession = bool.fromEnvironment('RESET_AUTH_SESSION');
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,7 +54,10 @@ void main() async {
         : const AppleDebugProvider(),
   );
 
-  await AuthService.instance.ensureSignedIn();
+  // reset session if debug mode enabled, firebase emulator used and auth reset variable set to true
+  await AuthService.instance.ensureSignedIn(
+    forceFreshSession: kDebugMode && _useFirebaseEmulator && _resetAuthSession,
+  );
 
   await Hive.initFlutter();
   await AppPaths.init();
@@ -114,11 +121,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('de'),
-        Locale('en'),
-        Locale('fr'),
-      ],
+      supportedLocales: const [Locale('de'), Locale('en'), Locale('fr')],
       home: const MyHomePage(),
     );
   }
