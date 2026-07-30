@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:fsrs/fsrs.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -47,13 +49,22 @@ class BoxController {
     return online.copyWith(vocabularies: _vocabSync.cachedVocabularies(boxId));
   }
 
-  /// Adds a new local box. Throws if a box with the same name
-  /// already exists among the currently known boxes.
-  Future<String> addBox(VocabularyBox box) async {
+  /// Adds a new box, either as an online or local box.
+  /// Throws if a box with the same name already exists among the currently
+  /// known boxes.
+  Future<String> addBox(VocabularyBox box, {bool online = false}) async {
     if (boxes.any((b) => b.name == box.name)) {
       throw AppException(AppError.duplicateBoxName, details: box.name);
     }
-    await _localBox.put(box.id, box);
+    if (online) {
+      unawaited(
+        _boxSync.addBox(box).catchError((Object error) {
+          debugPrint('BoxController: background addBox failed: $error');
+        }),
+      );
+    } else {
+      await _localBox.put(box.id, box);
+    }
     return box.id;
   }
 

@@ -8,6 +8,7 @@ import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/box_sync_service.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
@@ -40,17 +41,18 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     _l10n = AppLocalizations.of(context)!;
   }
 
-  VocabularyBox? get _box => _boxController.getBox(_boxKey);
+  VocabularyBox? get _box {
+    final fromController = _boxController.getBox(_boxKey);
+    if (fromController != null) return fromController;
+    if (!BoxSyncService.instance.hasLoadedOnce) return widget.box;
+    return null;
+  }
 
   @override
   void initState() {
     super.initState();
     _boxKey = widget.boxKey;
     _boxNotifier = _boxController.listenableForKeys([_boxKey]);
-    final box = _boxController.getBox(_boxKey);
-    if (box == null) {
-      throw Exception('Box with key $_boxKey not found');
-    }
   }
 
   @override

@@ -466,6 +466,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get createBoxTargetLanguagePickerTitle => 'Zielsprache wählen';
 
   @override
+  String get createBoxOnlineSync => 'Online speichern';
+
+  @override
   String get createBoxFinish => 'Fertig';
 
   @override

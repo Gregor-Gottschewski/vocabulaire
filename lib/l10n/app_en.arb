@@ -175,6 +175,7 @@
   "createBoxTargetLanguageLabel": "Target language - what you're learning",
   "createBoxSourceLanguagePickerTitle": "Choose source language",
   "createBoxTargetLanguagePickerTitle": "Choose target language",
+  "createBoxOnlineSync": "Save online",
   "createBoxFinish": "Done",
 
   "languageSearchPlaceholder": "Search",

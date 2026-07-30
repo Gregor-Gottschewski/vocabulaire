@@ -205,6 +205,7 @@
   "createBoxTargetLanguageLabel": "Langue cible - celle que tu apprends",
   "createBoxSourceLanguagePickerTitle": "Choisir la langue source",
   "createBoxTargetLanguagePickerTitle": "Choisir la langue cible",
+  "createBoxOnlineSync": "Enregistrer en ligne",
   "createBoxFinish": "Terminé",
 
   "languageSearchPlaceholder": "Rechercher",

@@ -922,6 +922,12 @@ abstract class AppLocalizations {
   /// **'Zielsprache wählen'**
   String get createBoxTargetLanguagePickerTitle;
 
+  /// No description provided for @createBoxOnlineSync.
+  ///
+  /// In de, this message translates to:
+  /// **'Online speichern'**
+  String get createBoxOnlineSync;
+
   /// No description provided for @createBoxFinish.
   ///
   /// In de, this message translates to:

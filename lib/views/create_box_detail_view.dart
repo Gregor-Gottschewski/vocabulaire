@@ -39,6 +39,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
   String? _source;
   String? _target;
   bool _isSaving = false;
+  bool _saveOnline = true;
 
   @override
   void initState() {
@@ -128,7 +129,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     );
 
     try {
-      final key = await _boxController.addBox(box);
+      final key = await _boxController.addBox(box, online: _saveOnline);
       if (!mounted) return;
       Navigator.of(context, rootNavigator: true).pop((box: box, key: key));
     } on AppException catch (e) {
@@ -174,6 +175,16 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                         placeholder: _l10n.createBoxDescriptionHint,
                         maxLines: 3,
                       ),
+                    ),
+                    const SizedBox(height: AppSpacing.sectionGap),
+                    KeyValueRowGroup(
+                      children: [
+                        KeyValueRow.toggle(
+                          label: _l10n.createBoxOnlineSync,
+                          value: _saveOnline,
+                          onChanged: (v) => setState(() => _saveOnline = v),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: AppSpacing.gapSmall),
                     if (isVocabulary) ...[
