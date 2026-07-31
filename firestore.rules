@@ -23,7 +23,8 @@ service cloud.firestore {
         allow read, update, delete: if request.auth != null && request.auth.uid == userId;
         allow create: if request.auth != null && request.auth.uid == userId
                       && request.resource.data.ownerUid == userId
-                      && request.resource.data.word is string;
+                      && request.resource.data.word is string
+                      && get(/databases/$(database)/documents/rateLimits/$(userId)).data.vocabularyCountOnline < (get(/databases/$(database)/documents/rateLimits/$(userId)).data.isPremium == true ? 3000 : 100);
       }
     }
 
