@@ -87,6 +87,8 @@ class BoxController {
     final box = _localBox.get(boxId);
     if (box == null) throw StateError('Box with id $boxId not found');
 
+    await _boxSync.ensureVocabularyQuota(box.vocabularies.length);
+
     await _boxSync.addBox(box);
     await _vocabSync.addVocabularies(boxId, box.vocabularies);
     await _localBox.delete(boxId);

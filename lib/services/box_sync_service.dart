@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/vocabulary_box.dart';
+import 'app_exception.dart';
+import 'usage_service.dart';
 
 /// Owns the active Firestore listener on the current user's online
 /// boxes (`users/{uid}/boxes`, `deleted == false`) and exposes them as a
@@ -81,6 +83,16 @@ class BoxSyncService {
     _subscription?.cancel();
     _subscription = null;
     hasLoadedOnce = false;
+  }
+
+  /// Throws [AppException] with [AppError.vocabularyLimitReached] if adding
+  /// [additionalCount] vocabularies would exceed the user's online-vocabulary
+  /// quota
+  Future<void> ensureVocabularyQuota(int additionalCount) async {
+    final usage = await UsageService.instance.fetch();
+    if (usage.vocabularyCountOnline + additionalCount > usage.vocabularyLimit) {
+      throw AppException(AppError.vocabularyLimitReached);
+    }
   }
 
   Future<void> addBox(VocabularyBox box) async {

@@ -94,7 +94,9 @@ class _BoxSyncViewState extends State<BoxSyncView> {
             } catch (e) {
               if (!pageContext.mounted) return;
               await pageContext.showAppError(
-                AppException(AppError.moveBoxOnlineFailed, details: e),
+                e is AppException
+                    ? e
+                    : AppException(AppError.moveBoxOnlineFailed, details: e),
               );
             } finally {
               if (pageContext.mounted) {
