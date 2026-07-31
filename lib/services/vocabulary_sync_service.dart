@@ -19,8 +19,6 @@ class VocabularySyncService {
   _perBoxSubscriptions = {};
   final Map<String, int> _perBoxRefCounts = {};
 
-  final ValueNotifier<List<Vocabulary>> _allVocabulariesNotifier =
-      ValueNotifier(const []);
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>?
   _allVocabulariesSubscription;
 
@@ -83,37 +81,6 @@ class VocabularySyncService {
     } else {
       _perBoxRefCounts[boxId] = remaining;
     }
-  }
-
-  /// Fires whenever the cross-box vocabulary list changes. Only populated
-  /// while [attachAllVocabularies] is active.
-  ValueListenable<List<Vocabulary>> get allVocabulariesListenable =>
-      _allVocabulariesNotifier;
-
-  /// Starts the `collectionGroup('vocabularies')` listener backing the
-  /// cross-box vocabulary tab.
-  void attachAllVocabularies() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return;
-
-    _allVocabulariesSubscription?.cancel();
-    _allVocabulariesSubscription = FirebaseFirestore.instance
-        .collectionGroup('vocabularies')
-        .where('ownerUid', isEqualTo: uid)
-        .where('deleted', isEqualTo: false)
-        .snapshots(includeMetadataChanges: true)
-        .listen(
-          (snapshot) {
-            _allVocabulariesNotifier.value = snapshot.docs
-                .map(Vocabulary.fromFirestore)
-                .toList();
-          },
-          onError: (Object error, StackTrace stackTrace) {
-            debugPrint(
-              'VocabularySyncService: all-vocabularies listener error: $error',
-            );
-          },
-        );
   }
 
   void detachAllVocabularies() {
