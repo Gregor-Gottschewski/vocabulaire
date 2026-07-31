@@ -12,6 +12,7 @@ export {
   onVocabularyCreated,
   onVocabularyDeleted,
 } from "./counters";
+export { reconcileVocabularyCounts } from "./reconciliation";
 
 export const synthesizeSpeech = onCall(
   {

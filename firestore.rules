@@ -1,18 +1,28 @@
 rules_version = '2';
 
 service cloud.firestore {
+  // Rate-limit data (vocabularyCountOnline, isPremium, ...) defaults to
+  // free-tier zero values when the document/fields don't exist yet — e.g.
+  // for users who haven't triggered any Cloud Function write yet.
+  function rateLimitData(database, uid) {
+    return exists(/databases/$(database)/documents/rateLimits/$(uid))
+      ? get(/databases/$(database)/documents/rateLimits/$(uid)).data
+      : {'vocabularyCountOnline': 0, 'isPremium': false};
+  }
+
+  function vocabularyLimit(database, uid) {
+    return rateLimitData(database, uid).get('isPremium', false) == true ? 3000 : 100;
+  }
+
   match /databases/{database}/documents {
     // Rate-limit counters are written exclusively by the Cloud Function via
-    // the Admin SDK, which bypasses these rules. Clients must never be able
-    // to read or write their own counter directly.
+    // the Admin SDK, which bypasses these rules.
     match /rateLimits/{uid} {
-      allow read, write: if false;
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
     }
 
     // Basic per-user box/vocabulary sync rules (migration plan Phase 5).
-    // Per-field limit checks (Phase 4: free/premium vocabulary quota) are
-    // deliberately not part of this yet — box/vocabulary creation UI for
-    // online boxes doesn't exist yet either.
     match /users/{userId}/boxes/{boxId} {
       allow read, update, delete: if request.auth != null && request.auth.uid == userId;
       allow create: if request.auth != null && request.auth.uid == userId
@@ -24,7 +34,7 @@ service cloud.firestore {
         allow create: if request.auth != null && request.auth.uid == userId
                       && request.resource.data.ownerUid == userId
                       && request.resource.data.word is string
-                      && get(/databases/$(database)/documents/rateLimits/$(userId)).data.vocabularyCountOnline < (get(/databases/$(database)/documents/rateLimits/$(userId)).data.isPremium == true ? 3000 : 100);
+                      && rateLimitData(database, userId).get('vocabularyCountOnline', 0) < vocabularyLimit(database, userId);
       }
     }
 

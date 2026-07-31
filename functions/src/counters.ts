@@ -6,6 +6,10 @@ const REGION = "europe-west1";
 const VOCABULARY_PATH = "users/{uid}/boxes/{boxId}/vocabularies/{vocabId}";
 const AUDIO_PATH_PATTERN = /^users\/([^/]+)\/audio\//;
 
+// Keep in sync with the vocabulary quota check in firestore.rules.
+const VOCABULARY_LIMIT_FREE = 100;
+const VOCABULARY_LIMIT_PREMIUM = 3000;
+
 async function adjustRateLimitField(uid: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
     await getFirestore()
@@ -14,10 +18,34 @@ async function adjustRateLimitField(uid: string, field: string, delta: number): 
         .set({[field]: FieldValue.increment(delta)}, {merge: true});
 }
 
+// Re-validates the quota inside a transaction and deletes the vocabulary if a
+// race
 export const onVocabularyCreated = onDocumentCreated(
     {region: REGION, document: VOCABULARY_PATH},
     async (event) => {
-        await adjustRateLimitField(event.params.uid, "vocabularyCountOnline", 1);
+        const uid = event.params.uid;
+        const vocabRef = event.data?.ref;
+        if (!vocabRef) return;
+
+        const rateLimitRef = getFirestore().collection("rateLimits").doc(uid);
+        await getFirestore().runTransaction(async (tx) => {
+            const snap = await tx.get(rateLimitRef);
+            const data = snap.exists ? snap.data()! : {};
+            const isPremium = data.isPremium === true;
+            const limit = isPremium ? VOCABULARY_LIMIT_PREMIUM : VOCABULARY_LIMIT_FREE;
+            const count = (data.vocabularyCountOnline as number | undefined) ?? 0;
+
+            if (count >= limit) {
+                tx.delete(vocabRef);
+                tx.set(rateLimitRef, {
+                    vocabulariesRejectedCount: FieldValue.increment(1),
+                    lastRejectedAt: FieldValue.serverTimestamp(),
+                }, {merge: true});
+                return;
+            }
+
+            tx.set(rateLimitRef, {vocabularyCountOnline: FieldValue.increment(1)}, {merge: true});
+        });
     }
 );
 
