@@ -202,6 +202,30 @@ abstract class AppLocalizations {
   /// **'Box-Synchronisierung'**
   String get settingsBoxSync;
 
+  /// No description provided for @settingsVocabularyUsage.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabeln online'**
+  String get settingsVocabularyUsage;
+
+  /// No description provided for @settingsVocabularyUsageValue.
+  ///
+  /// In de, this message translates to:
+  /// **'{count}/{limit}'**
+  String settingsVocabularyUsageValue(int count, int limit);
+
+  /// No description provided for @settingsAudioUsage.
+  ///
+  /// In de, this message translates to:
+  /// **'Audiospeicher online'**
+  String get settingsAudioUsage;
+
+  /// No description provided for @settingsAudioUsageValue.
+  ///
+  /// In de, this message translates to:
+  /// **'{usedMb} MB / {limitMb} MB'**
+  String settingsAudioUsageValue(String usedMb, int limitMb);
+
   /// No description provided for @boxSyncTitle.
   ///
   /// In de, this message translates to:
@@ -711,6 +735,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Box konnte nicht online gestellt werden'**
   String get errorMoveBoxOnlineFailed;
+
+  /// No description provided for @errorVocabularyLimitReached.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.'**
+  String get errorVocabularyLimitReached;
+
+  /// No description provided for @errorAudioStorageLimitReached.
+  ///
+  /// In de, this message translates to:
+  /// **'Audio-Speicherlimit erreicht. Lagere eine Box aus, um Speicherplatz freizugeben.'**
+  String get errorAudioStorageLimitReached;
 
   /// No description provided for @editVocabGenerateAudio.
   ///

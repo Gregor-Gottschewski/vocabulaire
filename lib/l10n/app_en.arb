@@ -26,6 +26,22 @@
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Licenses",
   "settingsBoxSync": "Box synchronisation",
+  "settingsVocabularyUsage": "Online vocabulary",
+  "settingsVocabularyUsageValue": "{count}/{limit}",
+  "@settingsVocabularyUsageValue": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "limit": { "type": "int" }
+    }
+  },
+  "settingsAudioUsage": "Online audio storage",
+  "settingsAudioUsageValue": "{usedMb} MB / {limitMb} MB",
+  "@settingsAudioUsageValue": {
+    "placeholders": {
+      "usedMb": { "type": "String" },
+      "limitMb": { "type": "int" }
+    }
+  },
 
   "boxSyncTitle": "Box sync",
   "boxSyncDescription": "Boxes stored online are synced across your devices, local boxes are only available on this device. Move a box in either direction.",
@@ -151,6 +167,8 @@
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
   "errorMoveBoxOfflineFailed": "Box could not be moved offline",
   "errorMoveBoxOnlineFailed": "Box could not be moved online",
+  "errorVocabularyLimitReached": "Online-vocabulary limit reached. Move a box offline to make room for new online vocabulary.",
+  "errorAudioStorageLimitReached": "Audio storage limit reached. Move a box offline to free up storage space.",
 
   "language": "Language",
   "languageGerman": "German",

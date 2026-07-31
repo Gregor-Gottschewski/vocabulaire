@@ -23,6 +23,8 @@ extension AppExceptionDialog on BuildContext {
       ),
       AppError.moveBoxOfflineFailed => i18n.errorMoveBoxOfflineFailed,
       AppError.moveBoxOnlineFailed => i18n.errorMoveBoxOnlineFailed,
+      AppError.vocabularyLimitReached => i18n.errorVocabularyLimitReached,
+      AppError.audioStorageLimitReached => i18n.errorAudioStorageLimitReached,
       AppError.ttsEmptyText => i18n.errorTtsEmptyText,
       AppError.ttsTextTooLong => i18n.errorTtsTextTooLong,
       AppError.ttsRateLimitExceeded => i18n.errorTtsRateLimitExceeded,

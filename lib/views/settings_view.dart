@@ -3,6 +3,7 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import '../controllers/settings_controller.dart';
 import '../services/box_sync_service.dart';
+import '../services/usage_service.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -22,6 +23,7 @@ class SettingsView extends StatefulWidget {
 class _SettingsViewState extends State<SettingsView> {
   final SettingsController _controller = SettingsController();
   final BoxSyncService _boxSync = BoxSyncService.instance;
+  final UsageService _usage = UsageService.instance;
   late AppLocalizations _l10n;
   bool _cardAnimations = true;
 
@@ -30,11 +32,15 @@ class _SettingsViewState extends State<SettingsView> {
     super.initState();
     _initSettings();
     _boxSync.listenable.addListener(_onSyncChanged);
+    _usage.listenable.addListener(_onSyncChanged);
+    _usage.attach();
   }
 
   @override
   void dispose() {
     _boxSync.listenable.removeListener(_onSyncChanged);
+    _usage.listenable.removeListener(_onSyncChanged);
+    _usage.detach();
     super.dispose();
   }
 
@@ -46,6 +52,24 @@ class _SettingsViewState extends State<SettingsView> {
     if (_boxSync.isFromCache) return _l10n.settingsSyncStatusOffline;
     if (_boxSync.hasPendingWrites) return _l10n.settingsSyncStatusSyncing;
     return _l10n.settingsSyncStatusSynced;
+  }
+
+  String get _vocabularyUsageLabel {
+    final usage = _usage.listenable.value;
+    return _l10n.settingsVocabularyUsageValue(
+      usage.vocabularyCountOnline,
+      usage.vocabularyLimit,
+    );
+  }
+
+  String get _audioUsageLabel {
+    final usedMb =
+        _usage.listenable.value.audioBytesUsed / (1024 * 1024);
+    const limitMb = UsageService.audioStorageLimitBytes / (1024 * 1024);
+    return _l10n.settingsAudioUsageValue(
+      usedMb.toStringAsFixed(1),
+      limitMb.round(),
+    );
   }
 
   @override
@@ -91,6 +115,14 @@ class _SettingsViewState extends State<SettingsView> {
               KeyValueRow.value(
                 label: _l10n.settingsSyncStatus,
                 value: _syncStatusLabel,
+              ),
+              KeyValueRow.value(
+                label: _l10n.settingsVocabularyUsage,
+                value: _vocabularyUsageLabel,
+              ),
+              KeyValueRow.value(
+                label: _l10n.settingsAudioUsage,
+                value: _audioUsageLabel,
               ),
               KeyValueRow.submenu(
                 context,

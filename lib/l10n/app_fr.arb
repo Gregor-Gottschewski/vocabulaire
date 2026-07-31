@@ -31,6 +31,22 @@
   "settingsSyncStatusOffline": "Hors ligne",
   "settingsLicenses": "Licences",
   "settingsBoxSync": "Synchronisation des boîtes",
+  "settingsVocabularyUsage": "Vocabulaire en ligne",
+  "settingsVocabularyUsageValue": "{count}/{limit}",
+  "@settingsVocabularyUsageValue": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "limit": { "type": "int" }
+    }
+  },
+  "settingsAudioUsage": "Stockage audio en ligne",
+  "settingsAudioUsageValue": "{usedMb} Mo / {limitMb} Mo",
+  "@settingsAudioUsageValue": {
+    "placeholders": {
+      "usedMb": { "type": "String" },
+      "limitMb": { "type": "int" }
+    }
+  },
 
   "boxSyncTitle": "Synchronisation des boîtes",
   "boxSyncDescription": "Les boîtes stockées en ligne sont synchronisées sur tous vos appareils, les boîtes locales ne sont disponibles que sur cet appareil. Déplacez une boîte dans l'un ou l'autre sens.",
@@ -166,6 +182,8 @@
   },
   "errorMoveBoxOfflineFailed": "La boîte n'a pas pu être rendue locale",
   "errorMoveBoxOnlineFailed": "La boîte n'a pas pu être mise en ligne",
+  "errorVocabularyLimitReached": "Limite de vocabulaire en ligne atteinte. Rends une boîte locale pour libérer de la place pour du nouveau vocabulaire en ligne.",
+  "errorAudioStorageLimitReached": "Limite de stockage audio atteinte. Rends une boîte locale pour libérer de l'espace de stockage.",
 
   "editVocabGenerateAudio": "Générer la prononciation",
   "editVocabOverwriteAudioTitle": "Remplacer l'enregistrement ?",

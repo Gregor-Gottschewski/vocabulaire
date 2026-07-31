@@ -10,6 +10,8 @@ enum AppError {
   duplicateBoxName,
   moveBoxOfflineFailed,
   moveBoxOnlineFailed,
+  vocabularyLimitReached,
+  audioStorageLimitReached,
   ttsEmptyText,
   ttsTextTooLong,
   ttsRateLimitExceeded,

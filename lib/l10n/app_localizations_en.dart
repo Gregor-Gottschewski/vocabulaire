@@ -64,6 +64,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsBoxSync => 'Box synchronisation';
 
   @override
+  String get settingsVocabularyUsage => 'Online vocabulary';
+
+  @override
+  String settingsVocabularyUsageValue(int count, int limit) {
+    return '$count/$limit';
+  }
+
+  @override
+  String get settingsAudioUsage => 'Online audio storage';
+
+  @override
+  String settingsAudioUsageValue(String usedMb, int limitMb) {
+    return '$usedMb MB / $limitMb MB';
+  }
+
+  @override
   String get boxSyncTitle => 'Box sync';
 
   @override
@@ -344,6 +360,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorMoveBoxOnlineFailed => 'Box could not be moved online';
+
+  @override
+  String get errorVocabularyLimitReached =>
+      'Online-vocabulary limit reached. Move a box offline to make room for new online vocabulary.';
+
+  @override
+  String get errorAudioStorageLimitReached =>
+      'Audio storage limit reached. Move a box offline to free up storage space.';
 
   @override
   String get editVocabGenerateAudio => 'Generate pronunciation';
