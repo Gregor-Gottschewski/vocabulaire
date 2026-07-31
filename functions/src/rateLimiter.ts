@@ -19,7 +19,7 @@ export async function consumeRateLimit(uid: string): Promise<void> {
         const now = Timestamp.now();
 
         if (!snap.exists) {
-            tx.set(ref, {count: 1, windowStart: now, isPremium: false});
+            tx.set(ref, {ttsCallCount: 1, ttsWindowStart: now, isPremium: false});
             return;
         }
 
@@ -27,21 +27,21 @@ export async function consumeRateLimit(uid: string): Promise<void> {
         const isPremium = data.isPremium === true;
         const limit = isPremium ? DAILY_LIMIT_PREMIUM + DAILY_LIMIT_FREE : DAILY_LIMIT_FREE;
 
-        const windowStart = data.windowStart as Timestamp;
+        const windowStart = data.ttsWindowStart as Timestamp;
         const windowExpired = now.toMillis() - windowStart.toMillis() > WINDOW_MS;
 
         if (windowExpired) {
-            tx.set(ref, {count: 1, windowStart: now, isPremium}, {merge: true});
+            tx.set(ref, {ttsCallCount: 1, ttsWindowStart: now, isPremium}, {merge: true});
             return;
         }
 
-        if ((data.count ?? 0) >= limit) {
+        if ((data.ttsCallCount ?? 0) >= limit) {
             throw new HttpsError(
                 "resource-exhausted",
                 "Limit for text-to-speech reached."
             );
         }
 
-        tx.update(ref, {count: FieldValue.increment(1)});
+        tx.update(ref, {ttsCallCount: FieldValue.increment(1)});
     });
 }
