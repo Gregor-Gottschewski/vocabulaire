@@ -25,6 +25,11 @@
   "settingsSyncStatusSyncing": "Syncing…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Licenses",
+  "settingsBoxSync": "Box synchronisation",
+
+  "boxSyncTitle": "Box sync",
+  "boxSyncDescription": "Boxes stored online are synced across your devices, local boxes are only available on this device. Move a box in either direction.",
+  "boxSyncEmpty": "No boxes yet.",
 
   "editVocabNew": "New vocabulary",
   "editVocabEdit": "Edit vocabulary",
@@ -101,6 +106,12 @@
   "boxDetailSaveAction": "Save",
   "boxDetailDailyLimitOff": "Off",
   "boxDetailDailyLimitEnable": "Enable daily limit",
+  "boxDetailMoveOfflineAction": "Move offline",
+  "boxDetailMoveOfflineTitle": "Move box offline",
+  "boxDetailMoveOfflineMessage": "The box will be stored locally on this device and no longer synced across devices. Continue?",
+  "boxDetailMoveOnlineAction": "Move online",
+  "boxDetailMoveOnlineTitle": "Move box online",
+  "boxDetailMoveOnlineMessage": "The box will be uploaded to the cloud and synced across your devices. Continue?",
 
   "vocabListTitle": "Vocabulary",
   "vocabListEmpty": "No vocabulary yet.",
@@ -138,6 +149,8 @@
   "errorTtsNotAuthenticated": "Sign-in failed. Please try again.",
   "errorTtsUnknownError": "The pronunciation could not be generated. Please check your internet connection.",
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
+  "errorMoveBoxOfflineFailed": "Box could not be moved offline",
+  "errorMoveBoxOnlineFailed": "Box could not be moved online",
 
   "language": "Language",
   "languageGerman": "German",

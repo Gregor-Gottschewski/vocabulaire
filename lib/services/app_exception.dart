@@ -8,6 +8,8 @@ enum AppError {
   importMissingStoreFile,
   importInvalidFormat,
   duplicateBoxName,
+  moveBoxOfflineFailed,
+  moveBoxOnlineFailed,
   ttsEmptyText,
   ttsTextTooLong,
   ttsRateLimitExceeded,

@@ -84,7 +84,7 @@ class BoxSyncService {
   }
 
   Future<void> addBox(VocabularyBox box) async {
-    final uid = _requireUid();
+    final uid = _userUid();
     await _collection(uid).doc(box.id).set({
       ...box.toFirestore(),
       'ownerUid': uid,
@@ -97,7 +97,7 @@ class BoxSyncService {
     String boxId,
     Map<String, dynamic> changes,
   ) async {
-    final uid = _requireUid();
+    final uid = _userUid();
     await _collection(uid).doc(boxId).update({
       ...changes,
       'updatedAt': FieldValue.serverTimestamp(),
@@ -109,7 +109,7 @@ class BoxSyncService {
     String boxId, {
     required bool resetToday,
   }) async {
-    final uid = _requireUid();
+    final uid = _userUid();
     await _collection(uid).doc(boxId).update({
       'newCardsReviewedToday': resetToday
           ? 1
@@ -120,7 +120,7 @@ class BoxSyncService {
   }
 
   Future<void> softDeleteBox(String boxId) async {
-    final uid = _requireUid();
+    final uid = _userUid();
     await _collection(uid).doc(boxId).update({
       'deleted': true,
       'deletedAt': FieldValue.serverTimestamp(),
@@ -128,13 +128,26 @@ class BoxSyncService {
     });
   }
 
-  /// Hard-deletes the box document.
-  Future<void> hardDeleteBox(String boxId) async {
-    final uid = _requireUid();
-    await _collection(uid).doc(boxId).delete();
+  /// Hard-deletes the box document together with its `vocabularies`
+  /// subcollection.
+  Future<void> hardDeleteBoxWithVocabularies(String boxId) async {
+    final boxRef = _collection(_userUid()).doc(boxId);
+    final vocabDocs = await boxRef.collection('vocabularies').get();
+
+    // delete 400 chunks a time which keeps buffer of 100 chunks
+    const chunkSize = 400;
+    for (var i = 0; i < vocabDocs.docs.length; i += chunkSize) {
+      final batch = FirebaseFirestore.instance.batch();
+      for (final doc in vocabDocs.docs.skip(i).take(chunkSize)) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+    }
+
+    await boxRef.delete();
   }
 
-  String _requireUid() {
+  String _userUid() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
       throw StateError(

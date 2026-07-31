@@ -196,6 +196,30 @@ abstract class AppLocalizations {
   /// **'Lizenzen'**
   String get settingsLicenses;
 
+  /// No description provided for @settingsBoxSync.
+  ///
+  /// In de, this message translates to:
+  /// **'Box-Synchronisierung'**
+  String get settingsBoxSync;
+
+  /// No description provided for @boxSyncTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Box-Synchronisierung'**
+  String get boxSyncTitle;
+
+  /// No description provided for @boxSyncDescription.
+  ///
+  /// In de, this message translates to:
+  /// **'Online gespeicherte Boxen werden geräteübergreifend synchronisiert, lokale Boxen sind nur auf diesem Gerät verfügbar. Verschiebe eine Box in eine der beiden Richtungen.'**
+  String get boxSyncDescription;
+
+  /// No description provided for @boxSyncEmpty.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Boxen vorhanden.'**
+  String get boxSyncEmpty;
+
   /// No description provided for @editVocabNew.
   ///
   /// In de, this message translates to:
@@ -532,6 +556,42 @@ abstract class AppLocalizations {
   /// **'Tageslimit aktivieren'**
   String get boxDetailDailyLimitEnable;
 
+  /// No description provided for @boxDetailMoveOfflineAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Auslagern'**
+  String get boxDetailMoveOfflineAction;
+
+  /// No description provided for @boxDetailMoveOfflineTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Box auslagern'**
+  String get boxDetailMoveOfflineTitle;
+
+  /// No description provided for @boxDetailMoveOfflineMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Box wird lokal auf diesem Gerät gespeichert und nicht mehr geräteübergreifend synchronisiert. Fortfahren?'**
+  String get boxDetailMoveOfflineMessage;
+
+  /// No description provided for @boxDetailMoveOnlineAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Online stellen'**
+  String get boxDetailMoveOnlineAction;
+
+  /// No description provided for @boxDetailMoveOnlineTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Box online stellen'**
+  String get boxDetailMoveOnlineTitle;
+
+  /// No description provided for @boxDetailMoveOnlineMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Box wird in die Cloud hochgeladen und geräteübergreifend synchronisiert. Fortfahren?'**
+  String get boxDetailMoveOnlineMessage;
+
   /// No description provided for @vocabListTitle.
   ///
   /// In de, this message translates to:
@@ -639,6 +699,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
+
+  /// No description provided for @errorMoveBoxOfflineFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Box konnte nicht ausgelagert werden'**
+  String get errorMoveBoxOfflineFailed;
+
+  /// No description provided for @errorMoveBoxOnlineFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Box konnte nicht online gestellt werden'**
+  String get errorMoveBoxOnlineFailed;
 
   /// No description provided for @editVocabGenerateAudio.
   ///

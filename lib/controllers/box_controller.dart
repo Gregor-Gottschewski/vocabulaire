@@ -40,6 +40,9 @@ class BoxController {
     return local != null && local.id.isNotEmpty;
   }
 
+  /// Whether box [boxId] currently lives in local storage
+  bool isLocal(String boxId) => _isLocal(boxId);
+
   VocabularyBox? getBox(String boxId) {
     final local = _localBox.get(boxId);
     if (local != null && local.id.isNotEmpty) return local;
@@ -66,6 +69,27 @@ class BoxController {
       await _localBox.put(box.id, box);
     }
     return box.id;
+  }
+
+  /// Moves an online box to local storage.
+  Future<void> moveBoxOffline(String boxId) async {
+    if (_isLocal(boxId)) return;
+    final box = getBox(boxId);
+    if (box == null) throw StateError('Box with id $boxId not found');
+
+    await _localBox.put(boxId, box.copyWith(deleted: false));
+    await _boxSync.hardDeleteBoxWithVocabularies(boxId);
+  }
+
+  /// Moves a local box to online storage.
+  Future<void> moveBoxOnline(String boxId) async {
+    if (!_isLocal(boxId)) return;
+    final box = _localBox.get(boxId);
+    if (box == null) throw StateError('Box with id $boxId not found');
+
+    await _boxSync.addBox(box);
+    await _vocabSync.addVocabularies(boxId, box.vocabularies);
+    await _localBox.delete(boxId);
   }
 
   /// Deletes box with [boxId] regardless of their backend.

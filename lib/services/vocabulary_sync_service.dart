@@ -132,6 +132,29 @@ class VocabularySyncService {
     });
   }
 
+  /// Uploads [vocabularies] into [boxId]'s subcollection in chunked batches.
+  /// Writes the same per-document fields as [addVocabulary].
+  Future<void> addVocabularies(
+    String boxId,
+    List<Vocabulary> vocabularies,
+  ) async {
+    final uid = _requireUid();
+    const chunkSize = 400;
+    for (var i = 0; i < vocabularies.length; i += chunkSize) {
+      final batch = FirebaseFirestore.instance.batch();
+      for (final vocabulary in vocabularies.skip(i).take(chunkSize)) {
+        batch.set(_collection(uid, boxId).doc(vocabulary.id), {
+          ...vocabulary.toFirestore(),
+          'ownerUid': uid,
+          'deleted': false,
+          'audioSynced': false,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
+      await batch.commit();
+    }
+  }
+
   Future<void> updateVocabulary(String boxId, Vocabulary vocabulary) async {
     final uid = _requireUid();
     await _collection(uid, boxId).doc(vocabulary.id).update({

@@ -21,6 +21,8 @@ extension AppExceptionDialog on BuildContext {
       AppError.duplicateBoxName => i18n.errorDuplicateBoxName(
         e.details as String,
       ),
+      AppError.moveBoxOfflineFailed => i18n.errorMoveBoxOfflineFailed,
+      AppError.moveBoxOnlineFailed => i18n.errorMoveBoxOnlineFailed,
       AppError.ttsEmptyText => i18n.errorTtsEmptyText,
       AppError.ttsTextTooLong => i18n.errorTtsTextTooLong,
       AppError.ttsRateLimitExceeded => i18n.errorTtsRateLimitExceeded,

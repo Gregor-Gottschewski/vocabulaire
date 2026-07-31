@@ -32,6 +32,11 @@
   "settingsSyncStatusSyncing": "Wird synchronisiert…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Lizenzen",
+  "settingsBoxSync": "Box-Synchronisierung",
+
+  "boxSyncTitle": "Box-Synchronisierung",
+  "boxSyncDescription": "Online gespeicherte Boxen werden geräteübergreifend synchronisiert, lokale Boxen sind nur auf diesem Gerät verfügbar. Verschiebe eine Box in eine der beiden Richtungen.",
+  "boxSyncEmpty": "Keine Boxen vorhanden.",
 
   "editVocabNew": "Neue Vokabel",
   "editVocabEdit": "Vokabel bearbeiten",
@@ -128,6 +133,12 @@
   "boxDetailSaveAction": "Speichern",
   "boxDetailDailyLimitOff": "Aus",
   "boxDetailDailyLimitEnable": "Tageslimit aktivieren",
+  "boxDetailMoveOfflineAction": "Auslagern",
+  "boxDetailMoveOfflineTitle": "Box auslagern",
+  "boxDetailMoveOfflineMessage": "Die Box wird lokal auf diesem Gerät gespeichert und nicht mehr geräteübergreifend synchronisiert. Fortfahren?",
+  "boxDetailMoveOnlineAction": "Online stellen",
+  "boxDetailMoveOnlineTitle": "Box online stellen",
+  "boxDetailMoveOnlineMessage": "Die Box wird in die Cloud hochgeladen und geräteübergreifend synchronisiert. Fortfahren?",
 
   "vocabListTitle": "Vokabeln",
   "vocabListEmpty": "Keine Vokabeln vorhanden.",
@@ -155,6 +166,8 @@
       "name": { "type": "String" }
     }
   },
+  "errorMoveBoxOfflineFailed": "Box konnte nicht ausgelagert werden",
+  "errorMoveBoxOnlineFailed": "Box konnte nicht online gestellt werden",
 
   "editVocabGenerateAudio": "Aussprache generieren",
   "editVocabOverwriteAudioTitle": "Aufnahme überschreiben?",

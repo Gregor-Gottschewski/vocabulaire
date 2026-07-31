@@ -61,6 +61,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsLicenses => 'Licences';
 
   @override
+  String get settingsBoxSync => 'Synchronisation des boîtes';
+
+  @override
+  String get boxSyncTitle => 'Synchronisation des boîtes';
+
+  @override
+  String get boxSyncDescription =>
+      'Les boîtes stockées en ligne sont synchronisées sur tous vos appareils, les boîtes locales ne sont disponibles que sur cet appareil. Déplacez une boîte dans l\'un ou l\'autre sens.';
+
+  @override
+  String get boxSyncEmpty => 'Aucune boîte.';
+
+  @override
   String get editVocabNew => 'Nouveau vocabulaire';
 
   @override
@@ -248,6 +261,26 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailDailyLimitEnable => 'Activer la limite quotidienne';
 
   @override
+  String get boxDetailMoveOfflineAction => 'Rendre locale';
+
+  @override
+  String get boxDetailMoveOfflineTitle => 'Rendre la boîte locale';
+
+  @override
+  String get boxDetailMoveOfflineMessage =>
+      'La boîte sera stockée localement sur cet appareil et ne sera plus synchronisée entre appareils. Continuer ?';
+
+  @override
+  String get boxDetailMoveOnlineAction => 'Mettre en ligne';
+
+  @override
+  String get boxDetailMoveOnlineTitle => 'Mettre la boîte en ligne';
+
+  @override
+  String get boxDetailMoveOnlineMessage =>
+      'La boîte sera envoyée dans le cloud et synchronisée sur tous vos appareils. Continuer ?';
+
+  @override
   String get vocabListTitle => 'Vocabulaire';
 
   @override
@@ -308,6 +341,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String errorDuplicateBoxName(String name) {
     return 'Une boîte nommée \"$name\" existe déjà';
   }
+
+  @override
+  String get errorMoveBoxOfflineFailed =>
+      'La boîte n\'a pas pu être rendue locale';
+
+  @override
+  String get errorMoveBoxOnlineFailed =>
+      'La boîte n\'a pas pu être mise en ligne';
 
   @override
   String get editVocabGenerateAudio => 'Générer la prononciation';

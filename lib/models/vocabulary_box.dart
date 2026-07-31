@@ -127,7 +127,7 @@ class VocabularyBox {
       dailyLimit: dailyLimit ?? this.dailyLimit,
       newCardsReviewedToday:
           newCardsReviewedToday ?? this.newCardsReviewedToday,
-      lastNewVocabularyReview: dailyLimitResetDate ?? this.lastNewVocabularyReview,
+      lastNewVocabularyReview: dailyLimitResetDate ?? lastNewVocabularyReview,
       deleted: deleted ?? this.deleted,
     );
   }
