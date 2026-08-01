@@ -33,14 +33,12 @@ class _SettingsViewState extends State<SettingsView> {
     _initSettings();
     _boxSync.listenable.addListener(_onSyncChanged);
     _usage.listenable.addListener(_onSyncChanged);
-    _usage.attach();
   }
 
   @override
   void dispose() {
     _boxSync.listenable.removeListener(_onSyncChanged);
     _usage.listenable.removeListener(_onSyncChanged);
-    _usage.detach();
     super.dispose();
   }
 
@@ -63,8 +61,7 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   String get _audioUsageLabel {
-    final usedMb =
-        _usage.listenable.value.audioBytesUsed / (1024 * 1024);
+    final usedMb = _usage.listenable.value.audioBytesUsed / (1024 * 1024);
     const limitMb = UsageService.audioStorageLimitBytes / (1024 * 1024);
     return _l10n.settingsAudioUsageValue(
       usedMb.toStringAsFixed(1),
@@ -112,25 +109,27 @@ class _SettingsViewState extends State<SettingsView> {
                 value: _cardAnimations,
                 onChanged: _setCardAnimations,
               ),
-              KeyValueRow.value(
-                label: _l10n.settingsSyncStatus,
-                value: _syncStatusLabel,
-              ),
-              KeyValueRow.value(
-                label: _l10n.settingsVocabularyUsage,
-                value: _vocabularyUsageLabel,
-              ),
-              KeyValueRow.value(
-                label: _l10n.settingsAudioUsage,
-                value: _audioUsageLabel,
-              ),
-              KeyValueRow.submenu(
-                context,
-                label: _l10n.settingsBoxSync,
-                onTap: () => Navigator.of(context).push(
-                  AppPageRoute(builder: (_) => const BoxSyncView()),
+              if (_usage.listenable.value.isPremium) ...[
+                KeyValueRow.value(
+                  label: _l10n.settingsSyncStatus,
+                  value: _syncStatusLabel,
                 ),
-              ),
+                KeyValueRow.value(
+                  label: _l10n.settingsVocabularyUsage,
+                  value: _vocabularyUsageLabel,
+                ),
+                KeyValueRow.value(
+                  label: _l10n.settingsAudioUsage,
+                  value: _audioUsageLabel,
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsBoxSync,
+                  onTap: () => Navigator.of(
+                    context,
+                  ).push(AppPageRoute(builder: (_) => const BoxSyncView())),
+                ),
+              ],
             ],
           ),
           const SizedBox(height: AppSpacing.sectionGap),
