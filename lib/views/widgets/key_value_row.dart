@@ -46,6 +46,25 @@ class KeyValueRow extends StatelessWidget {
     );
   }
 
+  factory KeyValueRow.submenu(
+    BuildContext context, {
+    Key? key,
+    required String label,
+    required VoidCallback? onTap,
+  }) {
+    return KeyValueRow(
+      key: key,
+      label: label,
+      trailing: Text(
+        "→",
+        style: AppTypography.captionSans.copyWith(
+          color: context.colors.textSecondary,
+        ),
+      ),
+      onTap: onTap,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final row = Padding(
@@ -87,7 +106,9 @@ class _RowValueText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value,
-      style: AppTypography.serifValue.copyWith(color: context.colors.textPrimary),
+      style: AppTypography.serifValue.copyWith(
+        color: context.colors.textPrimary,
+      ),
     );
   }
 }

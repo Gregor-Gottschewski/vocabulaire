@@ -10,7 +10,7 @@ class ReviewController extends ChangeNotifier {
   final BoxController _boxController = BoxController();
   final Scheduler _scheduler = Scheduler();
 
-  final dynamic boxKey;
+  final String boxKey;
   final bool onlyTimely;
   final LearningMethod learningMethod;
 
@@ -57,9 +57,17 @@ class ReviewController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Remove vocabularies from current review session that are deleted.
+  /// Remove vocabularies from current review session that were deleted from
+  /// this box while the review session is in progress.
   void _onBoxChanged() {
-    _cards.removeWhere((v) => !_boxController.vocabularyIDs.contains(v.id));
+    final currentIds = _boxController
+        .getBox(boxKey)
+        ?.vocabularies
+        .map((v) => v.id)
+        .toSet();
+    if (currentIds != null) {
+      _cards.removeWhere((v) => !currentIds.contains(v.id));
+    }
     if (_index >= _cards.length) _index = _cards.length;
     notifyListeners();
   }
@@ -95,7 +103,13 @@ class ReviewController extends ChangeNotifier {
 
     final vocabulary = _cards[_index];
 
-    if (!_boxController.vocabularyIDs.contains(vocabulary.id)) {
+    final stillInBox =
+        _boxController
+            .getBox(boxKey)
+            ?.vocabularies
+            .any((v) => v.id == vocabulary.id) ??
+        false;
+    if (!stillInBox) {
       skip();
       return true;
     }
@@ -122,14 +136,13 @@ class ReviewController extends ChangeNotifier {
     final box = _boxController.getBox(boxKey);
     if (box == null) return;
 
-    final wasZero = box.newCardsReviewedToday == 0;
-    final updatedBox = box.copyWith(
+    _boxController.incrementNewCardsReviewedToday(boxKey, box);
+    _box = box.copyWith(
       newCardsReviewedToday: box.newCardsReviewedToday + 1,
-      dailyLimitResetDate: wasZero ? DateTime.now() : null,
+      dailyLimitResetDate: box.newCardsReviewedToday == 0
+          ? DateTime.now()
+          : null,
     );
-
-    _boxController.updateBox(boxKey, updatedBox);
-    _box = updatedBox;
   }
 
   void skip() {

@@ -28,7 +28,7 @@ extension LearningMethodExtension on LearningMethod {
 
 /// Represents a review session for a specific box with a chosen learning method.
 class ReviewSession {
-  final dynamic boxKey;
+  final String boxKey;
   final bool onlyTimely;
   final LearningMethod method;
 

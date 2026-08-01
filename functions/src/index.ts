@@ -6,6 +6,14 @@ import { validateLanguageCode, validateText } from "./validation";
 
 initializeApp();
 
+export {
+  onAudioDelete,
+  onAudioFinalize,
+  onVocabularyCreated,
+  onVocabularyDeleted,
+} from "./counters";
+export { reconcileVocabularyCounts } from "./reconciliation";
+
 export const synthesizeSpeech = onCall(
   {
     region: "europe-west1",

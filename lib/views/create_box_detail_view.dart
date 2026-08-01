@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/create_box_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
@@ -38,6 +39,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
   String? _source;
   String? _target;
   bool _isSaving = false;
+  bool _saveOnline = true;
 
   @override
   void initState() {
@@ -117,6 +119,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
     final box = VocabularyBox(
+      id: const Uuid().v4(),
       name: name,
       description: description,
       vocabularies: const [],
@@ -126,7 +129,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     );
 
     try {
-      final key = await _boxController.addBox(box);
+      final key = await _boxController.addBox(box, online: _saveOnline);
       if (!mounted) return;
       Navigator.of(context, rootNavigator: true).pop((box: box, key: key));
     } on AppException catch (e) {
@@ -172,6 +175,16 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                         placeholder: _l10n.createBoxDescriptionHint,
                         maxLines: 3,
                       ),
+                    ),
+                    const SizedBox(height: AppSpacing.sectionGap),
+                    KeyValueRowGroup(
+                      children: [
+                        KeyValueRow.toggle(
+                          label: _l10n.createBoxOnlineSync,
+                          value: _saveOnline,
+                          onChanged: (v) => setState(() => _saveOnline = v),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: AppSpacing.gapSmall),
                     if (isVocabulary) ...[

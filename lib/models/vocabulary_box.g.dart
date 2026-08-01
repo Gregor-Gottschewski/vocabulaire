@@ -17,6 +17,7 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return VocabularyBox(
+      id: fields[12] == null ? '' : fields[12] as String,
       name: fields[0] as String,
       description: fields[1] as String,
       vocabularies: (fields[2] as List).cast<Vocabulary>(),
@@ -27,13 +28,14 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       dailyLimit: fields[9] == null ? 20 : fields[9] as int,
       newCardsReviewedToday: fields[10] == null ? 0 : fields[10] as int,
       lastNewVocabularyReview: fields[11] as DateTime?,
+      deleted: fields[13] == null ? false : fields[13] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, VocabularyBox obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -53,7 +55,11 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       ..writeByte(10)
       ..write(obj.newCardsReviewedToday)
       ..writeByte(11)
-      ..write(obj.lastNewVocabularyReview);
+      ..write(obj.lastNewVocabularyReview)
+      ..writeByte(12)
+      ..write(obj.id)
+      ..writeByte(13)
+      ..write(obj.deleted);
   }
 
   @override

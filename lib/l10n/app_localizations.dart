@@ -166,11 +166,83 @@ abstract class AppLocalizations {
   /// **'Kartenanimationen'**
   String get settingsCardAnimations;
 
+  /// No description provided for @settingsSyncStatus.
+  ///
+  /// In de, this message translates to:
+  /// **'Synchronisierungsstatus'**
+  String get settingsSyncStatus;
+
+  /// No description provided for @settingsSyncStatusSynced.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuell'**
+  String get settingsSyncStatusSynced;
+
+  /// No description provided for @settingsSyncStatusSyncing.
+  ///
+  /// In de, this message translates to:
+  /// **'Wird synchronisiert…'**
+  String get settingsSyncStatusSyncing;
+
+  /// No description provided for @settingsSyncStatusOffline.
+  ///
+  /// In de, this message translates to:
+  /// **'Offline'**
+  String get settingsSyncStatusOffline;
+
   /// No description provided for @settingsLicenses.
   ///
   /// In de, this message translates to:
   /// **'Lizenzen'**
   String get settingsLicenses;
+
+  /// No description provided for @settingsBoxSync.
+  ///
+  /// In de, this message translates to:
+  /// **'Box-Synchronisierung'**
+  String get settingsBoxSync;
+
+  /// No description provided for @settingsVocabularyUsage.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabeln online'**
+  String get settingsVocabularyUsage;
+
+  /// No description provided for @settingsVocabularyUsageValue.
+  ///
+  /// In de, this message translates to:
+  /// **'{count}/{limit}'**
+  String settingsVocabularyUsageValue(int count, int limit);
+
+  /// No description provided for @settingsAudioUsage.
+  ///
+  /// In de, this message translates to:
+  /// **'Audiospeicher online'**
+  String get settingsAudioUsage;
+
+  /// No description provided for @settingsAudioUsageValue.
+  ///
+  /// In de, this message translates to:
+  /// **'{usedMb} MB / {limitMb} MB'**
+  String settingsAudioUsageValue(String usedMb, int limitMb);
+
+  /// No description provided for @boxSyncTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Box-Synchronisierung'**
+  String get boxSyncTitle;
+
+  /// No description provided for @boxSyncDescription.
+  ///
+  /// In de, this message translates to:
+  /// **'Online gespeicherte Boxen werden geräteübergreifend synchronisiert, lokale Boxen sind nur auf diesem Gerät verfügbar. Verschiebe eine Box in eine der beiden Richtungen.'**
+  String get boxSyncDescription;
+
+  /// No description provided for @boxSyncEmpty.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Boxen vorhanden.'**
+  String get boxSyncEmpty;
 
   /// No description provided for @editVocabNew.
   ///
@@ -508,6 +580,42 @@ abstract class AppLocalizations {
   /// **'Tageslimit aktivieren'**
   String get boxDetailDailyLimitEnable;
 
+  /// No description provided for @boxDetailMoveOfflineAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Auslagern'**
+  String get boxDetailMoveOfflineAction;
+
+  /// No description provided for @boxDetailMoveOfflineTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Box auslagern'**
+  String get boxDetailMoveOfflineTitle;
+
+  /// No description provided for @boxDetailMoveOfflineMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Box wird lokal auf diesem Gerät gespeichert und nicht mehr geräteübergreifend synchronisiert. Fortfahren?'**
+  String get boxDetailMoveOfflineMessage;
+
+  /// No description provided for @boxDetailMoveOnlineAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Online stellen'**
+  String get boxDetailMoveOnlineAction;
+
+  /// No description provided for @boxDetailMoveOnlineTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Box online stellen'**
+  String get boxDetailMoveOnlineTitle;
+
+  /// No description provided for @boxDetailMoveOnlineMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Box wird in die Cloud hochgeladen und geräteübergreifend synchronisiert. Fortfahren?'**
+  String get boxDetailMoveOnlineMessage;
+
   /// No description provided for @vocabListTitle.
   ///
   /// In de, this message translates to:
@@ -615,6 +723,36 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
+
+  /// No description provided for @errorMoveBoxOfflineFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Box konnte nicht ausgelagert werden'**
+  String get errorMoveBoxOfflineFailed;
+
+  /// No description provided for @errorMoveBoxOnlineFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Box konnte nicht online gestellt werden'**
+  String get errorMoveBoxOnlineFailed;
+
+  /// No description provided for @errorAddVocabularyFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel konnte nicht gespeichert werden'**
+  String get errorAddVocabularyFailed;
+
+  /// No description provided for @errorVocabularyLimitReached.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.'**
+  String get errorVocabularyLimitReached;
+
+  /// No description provided for @errorAudioStorageLimitReached.
+  ///
+  /// In de, this message translates to:
+  /// **'Audio-Speicherlimit erreicht. Lagere eine Box aus, um Speicherplatz freizugeben.'**
+  String get errorAudioStorageLimitReached;
 
   /// No description provided for @editVocabGenerateAudio.
   ///
@@ -897,6 +1035,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Zielsprache wählen'**
   String get createBoxTargetLanguagePickerTitle;
+
+  /// No description provided for @createBoxOnlineSync.
+  ///
+  /// In de, this message translates to:
+  /// **'Online speichern'**
+  String get createBoxOnlineSync;
 
   /// No description provided for @createBoxFinish.
   ///

@@ -9,6 +9,7 @@ import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
 
 import '../controllers/box_controller.dart';
@@ -30,7 +31,7 @@ enum _UnsavedChangesAction { saveAndLeave, discard }
 
 /// Editing view (create or edit) for a vocabulary entry, allowing users to input front, back, and description/example fields.
 class EditVocabularyView extends StatefulWidget {
-  final dynamic boxKey;
+  final String boxKey;
   final VocabularyBox box;
   final Vocabulary? vocabulary;
   final bool newVocabulary;
@@ -207,9 +208,31 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           return false;
         }
       }
-      _boxController.addVocabularyToBox(widget.boxKey, _vocab);
+      try {
+        await _boxController.addVocabularyToBox(widget.boxKey, _vocab);
+      } catch (e) {
+        if (mounted) {
+          setState(() => _isSaving = false);
+          await context.showAppError(
+            e is AppException
+                ? e
+                : AppException(AppError.addVocabularyFailed, details: e),
+          );
+        }
+        return false;
+      }
     } else {
       _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
+    }
+
+    if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
+      try {
+        await AudioSyncService.instance.uploadAudio(widget.boxKey, _vocab.id);
+      } on AppException catch (e) {
+        if (mounted) await context.showAppError(e);
+      } catch (e) {
+        debugPrint('EditVocabularyView: audio upload failed: $e');
+      }
     }
 
     if (mounted) {
@@ -318,6 +341,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final file = AppPaths.audioFile(_vocab.id);
     if (file.existsSync()) {
       await file.delete();
+      if (!widget.newVocabulary && !_boxController.isLocal(widget.boxKey)) {
+        unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
+      }
       _recordDuration = Duration.zero;
       setState(() {
         _hasRecording = false;

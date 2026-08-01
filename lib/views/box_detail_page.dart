@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/widgets.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
-import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/box_sync_service.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
@@ -19,7 +19,7 @@ import 'widgets/text_link_button.dart';
 
 class BoxDetailPage extends StatefulWidget {
   final VocabularyBox box;
-  final dynamic boxKey;
+  final String boxKey;
 
   const BoxDetailPage({super.key, required this.box, required this.boxKey});
 
@@ -29,7 +29,9 @@ class BoxDetailPage extends StatefulWidget {
 
 class _BoxDetailPageState extends State<BoxDetailPage> {
   final BoxController _boxController = BoxController();
-  late dynamic _boxKey;
+  late String _boxKey;
+  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>>
+  _boxNotifier;
   late AppLocalizations _l10n;
   bool _isPopping = false;
 
@@ -39,16 +41,24 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     _l10n = AppLocalizations.of(context)!;
   }
 
-  VocabularyBox? get _box => _boxController.getBox(_boxKey);
+  VocabularyBox? get _box {
+    final fromController = _boxController.getBox(_boxKey);
+    if (fromController != null) return fromController;
+    if (!BoxSyncService.instance.hasLoadedOnce) return widget.box;
+    return null;
+  }
 
   @override
   void initState() {
     super.initState();
     _boxKey = widget.boxKey;
-    final box = _boxController.getBox(_boxKey);
-    if (box == null) {
-      throw Exception('Box with key $_boxKey not found');
-    }
+    _boxNotifier = _boxController.listenableForKeys([_boxKey]);
+  }
+
+  @override
+  void dispose() {
+    _boxNotifier.dispose();
+    super.dispose();
   }
 
   Future<void> _exportBox() async {
@@ -112,8 +122,8 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<Box<VocabularyBox>>(
-      valueListenable: _boxController.listenable,
+    return ValueListenableBuilder(
+      valueListenable: _boxNotifier,
       builder: (context, _, _) {
         final box = _box;
         if (box == null) {

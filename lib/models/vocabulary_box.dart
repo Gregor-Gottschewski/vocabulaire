@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 import 'package:vocabulaire/models/app_language.dart';
 import 'package:vocabulaire/models/box_type.dart';
@@ -44,6 +45,14 @@ class VocabularyBox {
   @HiveField(11)
   final DateTime? lastNewVocabularyReview;
 
+  /// Stable identity of this box, valid across both storage backends.
+  @HiveField(12, defaultValue: '')
+  final String id;
+
+  /// Soft-delete flag for online synchronization.
+  @HiveField(13, defaultValue: false)
+  final bool deleted;
+
   BoxType get boxType => BoxType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
@@ -78,6 +87,7 @@ class VocabularyBox {
   }
 
   VocabularyBox({
+    required this.id,
     required this.name,
     required this.description,
     required this.vocabularies,
@@ -88,9 +98,11 @@ class VocabularyBox {
     this.dailyLimit = 20,
     this.newCardsReviewedToday = 0,
     this.lastNewVocabularyReview,
+    this.deleted = false,
   });
 
   VocabularyBox copyWith({
+    String? id,
     String? name,
     String? description,
     List<Vocabulary>? vocabularies,
@@ -101,8 +113,10 @@ class VocabularyBox {
     int? dailyLimit,
     int? newCardsReviewedToday,
     DateTime? dailyLimitResetDate,
+    bool? deleted,
   }) {
     return VocabularyBox(
+      id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
       vocabularies: vocabularies ?? this.vocabularies,
@@ -113,10 +127,12 @@ class VocabularyBox {
       dailyLimit: dailyLimit ?? this.dailyLimit,
       newCardsReviewedToday:
           newCardsReviewedToday ?? this.newCardsReviewedToday,
-      lastNewVocabularyReview: dailyLimitResetDate ?? this.lastNewVocabularyReview,
+      lastNewVocabularyReview: dailyLimitResetDate ?? lastNewVocabularyReview,
+      deleted: deleted ?? this.deleted,
     );
   }
 
+  /// Used exclusively for the local `.vocab` export/import format.
   Map<String, dynamic> toMap() {
     return {
       'name': name,
@@ -130,6 +146,7 @@ class VocabularyBox {
 
   factory VocabularyBox.fromMap(Map<String, dynamic> map) {
     return VocabularyBox(
+      id: map['id'] as String? ?? '',
       name: map['name'] as String,
       description: map['description'] as String,
       vocabularies: (map['vocabularies'] as List<dynamic>?)
@@ -139,6 +156,46 @@ class VocabularyBox {
       type: map['type'] as String? ?? 'vocabulary',
       sourceLanguage: map['sourceLanguage'] as String?,
       targetLanguage: map['targetLanguage'] as String?,
+    );
+  }
+
+  /// Firestore representation of the box's own fields — deliberately
+  /// excludes [vocabularies], which lives in the `vocabularies` subcollection
+  /// (see the migration plan's Firestore schema), and envelope fields
+  /// (`deleted`/`updatedAt`/`ownerUid`), which are added by [BoxSyncService].
+  Map<String, dynamic> toFirestore() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'type': type,
+      'sourceLanguage': sourceLanguage,
+      'targetLanguage': targetLanguage,
+      'dailyLimitEnabled': dailyLimitEnabled,
+      'dailyLimit': dailyLimit,
+      'newCardsReviewedToday': newCardsReviewedToday,
+      'lastNewVocabularyReview': lastNewVocabularyReview,
+    };
+  }
+
+  /// [vocabularies] is always empty here — callers populate it separately
+  /// from the box's `vocabularies` subcollection, see [BoxSyncService].
+  factory VocabularyBox.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    return VocabularyBox(
+      id: data['id'] as String? ?? doc.id,
+      name: data['name'] as String,
+      description: data['description'] as String,
+      vocabularies: const [],
+      type: data['type'] as String? ?? 'vocabulary',
+      sourceLanguage: data['sourceLanguage'] as String?,
+      targetLanguage: data['targetLanguage'] as String?,
+      dailyLimitEnabled: data['dailyLimitEnabled'] as bool? ?? false,
+      dailyLimit: data['dailyLimit'] as int? ?? 20,
+      newCardsReviewedToday: data['newCardsReviewedToday'] as int? ?? 0,
+      lastNewVocabularyReview:
+          (data['lastNewVocabularyReview'] as Timestamp?)?.toDate(),
+      deleted: data['deleted'] as bool? ?? false,
     );
   }
 }

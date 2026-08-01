@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fsrs/fsrs.dart';
 import 'package:hive/hive.dart';
+
+import 'firestore_converters.dart';
 
 part 'vocabulary.g.dart';
 
@@ -22,6 +25,11 @@ class Vocabulary {
   @HiveField(4)
   final String id;
 
+  /// Whether the locally recorded/generated audio for this vocabulary has
+  /// been uploaded to Firebase Storage.
+  @HiveField(5, defaultValue: false)
+  final bool audioSynced;
+
   Card get card => Card.fromMap(cardData);
 
   Vocabulary({
@@ -30,6 +38,7 @@ class Vocabulary {
     required this.example,
     required this.cardData,
     required this.id,
+    this.audioSynced = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -52,12 +61,39 @@ class Vocabulary {
     );
   }
 
+  /// Firestore representation of the core vocabulary fields.
+  Map<String, dynamic> toFirestore() {
+    return {
+      'id': id,
+      'word': word,
+      'meaning': meaning,
+      'example': example,
+      'card': FirestoreConverters.cardDataToFirestore(cardData),
+      'audioSynced': audioSynced,
+    };
+  }
+
+  factory Vocabulary.fromFirestore(DocumentSnapshot<Map<String, dynamic>> doc) {
+    final data = doc.data()!;
+    return Vocabulary(
+      word: data['word'] as String,
+      meaning: data['meaning'] as String,
+      example: data['example'] as String,
+      cardData: FirestoreConverters.cardDataFromFirestore(
+        Map<String, dynamic>.from(data['card'] as Map),
+      ),
+      id: data['id'] as String? ?? doc.id,
+      audioSynced: data['audioSynced'] as bool? ?? false,
+    );
+  }
+
   Vocabulary copyWith({
     String? word,
     String? meaning,
     String? example,
     Map<String, dynamic>? cardData,
     String? id,
+    bool? audioSynced,
   }) {
     return Vocabulary(
       word: word ?? this.word,
@@ -65,6 +101,7 @@ class Vocabulary {
       example: example ?? this.example,
       cardData: cardData ?? this.cardData,
       id: id ?? this.id,
+      audioSynced: audioSynced ?? this.audioSynced,
     );
   }
 }

@@ -46,7 +46,48 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
+  String get settingsSyncStatus => 'Synchronisierungsstatus';
+
+  @override
+  String get settingsSyncStatusSynced => 'Aktuell';
+
+  @override
+  String get settingsSyncStatusSyncing => 'Wird synchronisiert…';
+
+  @override
+  String get settingsSyncStatusOffline => 'Offline';
+
+  @override
   String get settingsLicenses => 'Lizenzen';
+
+  @override
+  String get settingsBoxSync => 'Box-Synchronisierung';
+
+  @override
+  String get settingsVocabularyUsage => 'Vokabeln online';
+
+  @override
+  String settingsVocabularyUsageValue(int count, int limit) {
+    return '$count/$limit';
+  }
+
+  @override
+  String get settingsAudioUsage => 'Audiospeicher online';
+
+  @override
+  String settingsAudioUsageValue(String usedMb, int limitMb) {
+    return '$usedMb MB / $limitMb MB';
+  }
+
+  @override
+  String get boxSyncTitle => 'Box-Synchronisierung';
+
+  @override
+  String get boxSyncDescription =>
+      'Online gespeicherte Boxen werden geräteübergreifend synchronisiert, lokale Boxen sind nur auf diesem Gerät verfügbar. Verschiebe eine Box in eine der beiden Richtungen.';
+
+  @override
+  String get boxSyncEmpty => 'Keine Boxen vorhanden.';
 
   @override
   String get editVocabNew => 'Neue Vokabel';
@@ -237,6 +278,26 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxDetailDailyLimitEnable => 'Tageslimit aktivieren';
 
   @override
+  String get boxDetailMoveOfflineAction => 'Auslagern';
+
+  @override
+  String get boxDetailMoveOfflineTitle => 'Box auslagern';
+
+  @override
+  String get boxDetailMoveOfflineMessage =>
+      'Die Box wird lokal auf diesem Gerät gespeichert und nicht mehr geräteübergreifend synchronisiert. Fortfahren?';
+
+  @override
+  String get boxDetailMoveOnlineAction => 'Online stellen';
+
+  @override
+  String get boxDetailMoveOnlineTitle => 'Box online stellen';
+
+  @override
+  String get boxDetailMoveOnlineMessage =>
+      'Die Box wird in die Cloud hochgeladen und geräteübergreifend synchronisiert. Fortfahren?';
+
+  @override
   String get vocabListTitle => 'Vokabeln';
 
   @override
@@ -297,6 +358,25 @@ class AppLocalizationsDe extends AppLocalizations {
   String errorDuplicateBoxName(String name) {
     return 'Eine Box mit dem Namen \"$name\" existiert bereits';
   }
+
+  @override
+  String get errorMoveBoxOfflineFailed => 'Box konnte nicht ausgelagert werden';
+
+  @override
+  String get errorMoveBoxOnlineFailed =>
+      'Box konnte nicht online gestellt werden';
+
+  @override
+  String get errorAddVocabularyFailed =>
+      'Vokabel konnte nicht gespeichert werden';
+
+  @override
+  String get errorVocabularyLimitReached =>
+      'Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.';
+
+  @override
+  String get errorAudioStorageLimitReached =>
+      'Audio-Speicherlimit erreicht. Lagere eine Box aus, um Speicherplatz freizugeben.';
 
   @override
   String get editVocabGenerateAudio => 'Aussprache generieren';
@@ -452,6 +532,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get createBoxTargetLanguagePickerTitle => 'Zielsprache wählen';
+
+  @override
+  String get createBoxOnlineSync => 'Online speichern';
 
   @override
   String get createBoxFinish => 'Fertig';

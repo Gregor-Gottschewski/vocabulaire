@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/views/box_detail_page.dart';
 import 'package:vocabulaire/views/widgets/box_tile.dart';
 
@@ -23,7 +22,21 @@ class HomeView extends StatefulWidget {
 
 class HomeViewWidget extends State<HomeView> {
   final BoxController _boxController = BoxController();
+  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>>
+  _boxesNotifier;
   late AppLocalizations _l10n;
+
+  @override
+  void initState() {
+    super.initState();
+    _boxesNotifier = _boxController.listenableForAll();
+  }
+
+  @override
+  void dispose() {
+    _boxesNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {
@@ -33,7 +46,7 @@ class HomeViewWidget extends State<HomeView> {
 
   Future<void> _createBox() async {
     final result = await Navigator.of(context, rootNavigator: true)
-        .push<({VocabularyBox box, dynamic key})>(
+        .push<({VocabularyBox box, String key})>(
           AppPageRoute(builder: (context) => const CreateBoxFlow()),
         );
     if (result == null || !mounted) return;
@@ -51,10 +64,8 @@ class HomeViewWidget extends State<HomeView> {
     return AppScaffold(
       actions: [TextLinkButton(label: _l10n.addBox, onPressed: _createBox)],
       body: ValueListenableBuilder(
-        valueListenable: _boxController.listenable,
-        builder: (context, Box<VocabularyBox> box, _) {
-          final keys = box.keys.cast<dynamic>().toList();
-
+        valueListenable: _boxesNotifier,
+        builder: (context, entries, _) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -65,7 +76,7 @@ class HomeViewWidget extends State<HomeView> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sectionGap),
-              if (keys.isEmpty)
+              if (entries.isEmpty)
                 Text(
                   _l10n.homeEmpty,
                   style: AppTypography.bodySans.copyWith(
@@ -84,16 +95,18 @@ class HomeViewWidget extends State<HomeView> {
                       ),
                     ),
                     child: ListView.builder(
-                      itemCount: keys.length,
+                      itemCount: entries.length,
                       itemBuilder: (context, index) {
-                        final b = box.get(keys[index]) as VocabularyBox;
+                        final entry = entries[index];
                         return BoxTile(
-                          box: b,
+                          box: entry.value,
                           onTap: () {
                             Navigator.of(context).push(
                               AppPageRoute(
-                                builder: (context) =>
-                                    BoxDetailPage(box: b, boxKey: keys[index]),
+                                builder: (context) => BoxDetailPage(
+                                  box: entry.value,
+                                  boxKey: entry.key,
+                                ),
                               ),
                             );
                           },

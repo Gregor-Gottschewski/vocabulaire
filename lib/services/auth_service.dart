@@ -7,9 +7,12 @@ class AuthService {
 
   static final AuthService instance = AuthService._();
 
-  Future<void> ensureSignedIn() async {
-    if (FirebaseAuth.instance.currentUser == null) {
-      await FirebaseAuth.instance.signInAnonymously();
-    }
+  Future<void> ensureSignedIn({bool forceFreshSession = false}) async {
+  if (forceFreshSession && FirebaseAuth.instance.currentUser != null) {
+    await FirebaseAuth.instance.signOut();
   }
+  if (FirebaseAuth.instance.currentUser == null) {
+    await FirebaseAuth.instance.signInAnonymously();
+  }
+}
 }
