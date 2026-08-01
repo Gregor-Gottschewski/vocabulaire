@@ -19,9 +19,7 @@ class UsageInfo {
     this.audioBytesUsed = 0,
   });
 
-  int get vocabularyLimit => isPremium
-      ? UsageService.vocabularyLimitPremium
-      : UsageService.vocabularyLimitFree;
+  int get vocabularyLimit => UsageService.vocabularyLimitPremium;
 
   static UsageInfo fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     final data = snap.data();
@@ -40,7 +38,6 @@ class UsageService {
 
   static final UsageService instance = UsageService._();
 
-  static const int vocabularyLimitFree = 100;
   static const int vocabularyLimitPremium = 3000;
   static const int audioStorageLimitBytes = 50 * 1024 * 1024;
 

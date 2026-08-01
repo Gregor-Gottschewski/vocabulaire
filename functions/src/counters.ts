@@ -7,7 +7,6 @@ const VOCABULARY_PATH = "users/{uid}/boxes/{boxId}/vocabularies/{vocabId}";
 const AUDIO_PATH_PATTERN = /^users\/([^/]+)\/audio\//;
 
 // Keep in sync with the vocabulary quota check in firestore.rules.
-const VOCABULARY_LIMIT_FREE = 100;
 const VOCABULARY_LIMIT_PREMIUM = 3000;
 
 async function adjustRateLimitField(uid: string, field: string, delta: number): Promise<void> {
@@ -18,8 +17,7 @@ async function adjustRateLimitField(uid: string, field: string, delta: number): 
         .set({[field]: FieldValue.increment(delta)}, {merge: true});
 }
 
-// Re-validates the quota inside a transaction and deletes the vocabulary if a
-// race
+// Re-validates the quota inside a transaction and deletes the vocabulary if a race condition occurs.
 export const onVocabularyCreated = onDocumentCreated(
     {region: REGION, document: VOCABULARY_PATH},
     async (event) => {
@@ -31,8 +29,7 @@ export const onVocabularyCreated = onDocumentCreated(
         await getFirestore().runTransaction(async (tx) => {
             const snap = await tx.get(rateLimitRef);
             const data = snap.exists ? snap.data()! : {};
-            const isPremium = data.isPremium === true;
-            const limit = isPremium ? VOCABULARY_LIMIT_PREMIUM : VOCABULARY_LIMIT_FREE;
+            const limit = VOCABULARY_LIMIT_PREMIUM;
             const count = (data.vocabularyCountOnline as number | undefined) ?? 0;
 
             if (count >= limit) {

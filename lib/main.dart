@@ -14,6 +14,7 @@ import 'package:vocabulaire/models/app_settings.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/auth_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
+import 'package:vocabulaire/services/usage_service.dart';
 import 'models/vocabulary_box.dart';
 import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
@@ -87,12 +88,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // runs, so the first attach() attempt succeeds rather than waiting for
     // the first `resumed` event (which doesn't fire on cold start).
     BoxSyncService.instance.attach();
+    UsageService.instance.attach();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     BoxSyncService.instance.detach();
+    UsageService.instance.detach();
     super.dispose();
   }
 
@@ -101,8 +104,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         BoxSyncService.instance.attach();
+        UsageService.instance.attach();
       case AppLifecycleState.paused:
         BoxSyncService.instance.detach();
+        UsageService.instance.detach();
       default:
         break;
     }

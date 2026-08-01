@@ -2,16 +2,11 @@ rules_version = '2';
 
 service cloud.firestore {
   // Rate-limit data (vocabularyCountOnline, isPremium, ...) defaults to
-  // free-tier zero values when the document/fields don't exist yet — e.g.
-  // for users who haven't triggered any Cloud Function write yet.
+  // free-tier zero values when the document/fields don't exist yet
   function rateLimitData(database, uid) {
     return exists(/databases/$(database)/documents/rateLimits/$(uid))
       ? get(/databases/$(database)/documents/rateLimits/$(uid)).data
       : {'vocabularyCountOnline': 0, 'isPremium': false};
-  }
-
-  function vocabularyLimit(database, uid) {
-    return rateLimitData(database, uid).get('isPremium', false) == true ? 3000 : 100;
   }
 
   match /databases/{database}/documents {
@@ -22,26 +17,31 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Basic per-user box/vocabulary sync rules (migration plan Phase 5).
+    // Basic per-user box/vocabulary sync rules.
     match /users/{userId}/boxes/{boxId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+      allow read, update, delete: if request.auth != null && request.auth.uid == userId
+                    && rateLimitData(database, userId).get('isPremium', false) == true;
       allow create: if request.auth != null && request.auth.uid == userId
+                    && rateLimitData(database, userId).get('isPremium', false) == true
                     && request.resource.data.ownerUid == userId
                     && request.resource.data.keys().hasAll(['id', 'name', 'deleted']);
 
       match /vocabularies/{vocabId} {
-        allow read, update, delete: if request.auth != null && request.auth.uid == userId;
+        allow read, update, delete: if request.auth != null && request.auth.uid == userId
+                      && rateLimitData(database, userId).get('isPremium', false) == true;
         allow create: if request.auth != null && request.auth.uid == userId
+                      && rateLimitData(database, userId).get('isPremium', false) == true
                       && request.resource.data.ownerUid == userId
                       && request.resource.data.word is string
-                      && rateLimitData(database, userId).get('vocabularyCountOnline', 0) < vocabularyLimit(database, userId);
+                      && rateLimitData(database, userId).get('vocabularyCountOnline', 0) < 3000;
       }
     }
 
     // Required separately for collectionGroup('vocabularies') queries (the
     // cross-box vocabulary tab) — the match above does not apply to those.
     match /{path=**}/vocabularies/{vocabId} {
-      allow read: if request.auth != null && resource.data.ownerUid == request.auth.uid;
+      allow read: if request.auth != null && resource.data.ownerUid == request.auth.uid
+                  && rateLimitData(database, request.auth.uid).get('isPremium', false) == true;
     }
 
     // Default-deny: no other client-facing collections exist for this app.
