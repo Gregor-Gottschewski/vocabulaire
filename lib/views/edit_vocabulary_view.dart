@@ -212,6 +212,16 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
     }
 
+    if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
+      try {
+        await AudioSyncService.instance.uploadAudio(widget.boxKey, _vocab.id);
+      } on AppException catch (e) {
+        if (mounted) await context.showAppError(e);
+      } catch (e) {
+        debugPrint('EditVocabularyView: audio upload failed: $e');
+      }
+    }
+
     if (mounted) {
       setState(() {
         _isSaving = false;

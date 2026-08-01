@@ -25,6 +25,11 @@ class Vocabulary {
   @HiveField(4)
   final String id;
 
+  /// Whether the locally recorded/generated audio for this vocabulary has
+  /// been uploaded to Firebase Storage.
+  @HiveField(5, defaultValue: false)
+  final bool audioSynced;
+
   Card get card => Card.fromMap(cardData);
 
   Vocabulary({
@@ -33,6 +38,7 @@ class Vocabulary {
     required this.example,
     required this.cardData,
     required this.id,
+    this.audioSynced = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -63,6 +69,7 @@ class Vocabulary {
       'meaning': meaning,
       'example': example,
       'card': FirestoreConverters.cardDataToFirestore(cardData),
+      'audioSynced': audioSynced,
     };
   }
 
@@ -76,6 +83,7 @@ class Vocabulary {
         Map<String, dynamic>.from(data['card'] as Map),
       ),
       id: data['id'] as String? ?? doc.id,
+      audioSynced: data['audioSynced'] as bool? ?? false,
     );
   }
 
@@ -85,6 +93,7 @@ class Vocabulary {
     String? example,
     Map<String, dynamic>? cardData,
     String? id,
+    bool? audioSynced,
   }) {
     return Vocabulary(
       word: word ?? this.word,
@@ -92,6 +101,7 @@ class Vocabulary {
       example: example ?? this.example,
       cardData: cardData ?? this.cardData,
       id: id ?? this.id,
+      audioSynced: audioSynced ?? this.audioSynced,
     );
   }
 }

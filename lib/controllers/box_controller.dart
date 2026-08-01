@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 import '../models/vocabulary.dart';
@@ -19,6 +20,7 @@ class BoxController {
   final Box<VocabularyBox> _localBox = Hive.box<VocabularyBox>('boxes');
   final BoxSyncService _boxSync = BoxSyncService.instance;
   final VocabularySyncService _vocabSync = VocabularySyncService.instance;
+  final AudioSyncService _audioSync = AudioSyncService.instance;
 
   /// All boxes across both backends.
   List<VocabularyBox> get boxes => [..._localBoxes, ..._onlineBoxes];
@@ -77,6 +79,12 @@ class BoxController {
     final box = getBox(boxId);
     if (box == null) throw StateError('Box with id $boxId not found');
 
+    for (final vocabulary in box.vocabularies) {
+      if (vocabulary.audioSynced) {
+        unawaited(_audioSync.deleteAudio(vocabulary.id));
+      }
+    }
+
     await _localBox.put(boxId, box.copyWith(deleted: false));
     await _boxSync.hardDeleteBoxWithVocabularies(boxId);
   }
@@ -92,6 +100,8 @@ class BoxController {
     await _boxSync.addBox(box);
     await _vocabSync.addVocabularies(boxId, box.vocabularies);
     await _localBox.delete(boxId);
+
+    await _audioSync.uploadMissingAudioForBox(boxId, box.vocabularies);
   }
 
   /// Deletes box with [boxId] regardless of their backend.
@@ -176,7 +186,7 @@ class BoxController {
   }
 
   /// Adds the given [Vocabulary] to the box indicated by [boxId].
-  void addVocabularyToBox(String boxId, Vocabulary vocabulary) {
+  Future<void> addVocabularyToBox(String boxId, Vocabulary vocabulary) async {
     if (_isLocal(boxId)) {
       final box = _localBox.get(boxId);
       if (box == null) throw StateError('Box with id $boxId not found');
@@ -199,6 +209,7 @@ class BoxController {
       _localBox.put(boxId, updated);
     } else {
       _vocabSync.softDeleteVocabulary(boxId, id);
+      unawaited(_audioSync.deleteAudio(id));
     }
 
     final audio = AppPaths.audioFile(id);

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/vocabulary.dart';
+import 'audio_sync_service.dart';
 
 /// Owns the per-box Firestore listeners on `users/{uid}/boxes/{boxId}/vocabularies`
 /// for online boxes, plus one `collectionGroup('vocabularies')` listener for
@@ -62,6 +63,7 @@ class VocabularySyncService {
             notifier.value = snapshot.docs
                 .map(Vocabulary.fromFirestore)
                 .toList();
+            AudioSyncService.instance.syncBoxAudio(boxId, notifier.value);
           },
           onError: (Object error, StackTrace stackTrace) {
             debugPrint(
@@ -94,7 +96,6 @@ class VocabularySyncService {
       ...vocabulary.toFirestore(),
       'ownerUid': uid,
       'deleted': false,
-      'audioSynced': false,
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
@@ -114,7 +115,6 @@ class VocabularySyncService {
           ...vocabulary.toFirestore(),
           'ownerUid': uid,
           'deleted': false,
-          'audioSynced': false,
           'updatedAt': FieldValue.serverTimestamp(),
         });
       }
@@ -127,6 +127,18 @@ class VocabularySyncService {
     await _collection(uid, boxId).doc(vocabulary.id).update({
       ...vocabulary.toFirestore(),
       'updatedAt': FieldValue.serverTimestamp(),
+    });
+  }
+
+  /// Updates the [Vocabulary.audioSynced] flag
+  Future<void> setAudioSynced(
+    String boxId,
+    String vocabularyId,
+    bool value,
+  ) async {
+    final uid = _requireUid();
+    await _collection(uid, boxId).doc(vocabularyId).update({
+      'audioSynced': value,
     });
   }
 
