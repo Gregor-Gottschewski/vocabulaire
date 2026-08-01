@@ -194,7 +194,8 @@ class BoxController {
         ..add(vocabulary);
       _localBox.put(boxId, box.copyWith(vocabularies: vocabularies));
     } else {
-      _vocabSync.addVocabulary(boxId, vocabulary);
+      await _boxSync.ensureVocabularyQuota(1);
+      await _vocabSync.addVocabulary(boxId, vocabulary);
     }
   }
 

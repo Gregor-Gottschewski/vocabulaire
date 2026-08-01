@@ -367,6 +367,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Box konnte nicht online gestellt werden';
 
   @override
+  String get errorAddVocabularyFailed =>
+      'Vokabel konnte nicht gespeichert werden';
+
+  @override
   String get errorVocabularyLimitReached =>
       'Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.';
 

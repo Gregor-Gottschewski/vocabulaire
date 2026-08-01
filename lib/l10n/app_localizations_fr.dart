@@ -367,6 +367,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'La boîte n\'a pas pu être mise en ligne';
 
   @override
+  String get errorAddVocabularyFailed =>
+      'Le vocabulaire n\'a pas pu être enregistré';
+
+  @override
   String get errorVocabularyLimitReached =>
       'Limite de vocabulaire en ligne atteinte. Rends une boîte locale pour libérer de la place pour du nouveau vocabulaire en ligne.';
 

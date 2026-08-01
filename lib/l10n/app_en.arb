@@ -167,6 +167,7 @@
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
   "errorMoveBoxOfflineFailed": "Box could not be moved offline",
   "errorMoveBoxOnlineFailed": "Box could not be moved online",
+  "errorAddVocabularyFailed": "Vocabulary could not be saved",
   "errorVocabularyLimitReached": "Online-vocabulary limit reached. Move a box offline to make room for new online vocabulary.",
   "errorAudioStorageLimitReached": "Audio storage limit reached. Move a box offline to free up storage space.",
 

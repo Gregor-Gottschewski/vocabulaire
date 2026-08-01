@@ -362,6 +362,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorMoveBoxOnlineFailed => 'Box could not be moved online';
 
   @override
+  String get errorAddVocabularyFailed => 'Vocabulary could not be saved';
+
+  @override
   String get errorVocabularyLimitReached =>
       'Online-vocabulary limit reached. Move a box offline to make room for new online vocabulary.';
 

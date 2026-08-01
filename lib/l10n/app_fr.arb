@@ -182,6 +182,7 @@
   },
   "errorMoveBoxOfflineFailed": "La boîte n'a pas pu être rendue locale",
   "errorMoveBoxOnlineFailed": "La boîte n'a pas pu être mise en ligne",
+  "errorAddVocabularyFailed": "Le vocabulaire n'a pas pu être enregistré",
   "errorVocabularyLimitReached": "Limite de vocabulaire en ligne atteinte. Rends une boîte locale pour libérer de la place pour du nouveau vocabulaire en ligne.",
   "errorAudioStorageLimitReached": "Limite de stockage audio atteinte. Rends une boîte locale pour libérer de l'espace de stockage.",
 

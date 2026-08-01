@@ -736,6 +736,12 @@ abstract class AppLocalizations {
   /// **'Box konnte nicht online gestellt werden'**
   String get errorMoveBoxOnlineFailed;
 
+  /// No description provided for @errorAddVocabularyFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel konnte nicht gespeichert werden'**
+  String get errorAddVocabularyFailed;
+
   /// No description provided for @errorVocabularyLimitReached.
   ///
   /// In de, this message translates to:

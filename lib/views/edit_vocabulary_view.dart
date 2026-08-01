@@ -9,6 +9,7 @@ import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
 
 import '../controllers/box_controller.dart';
@@ -207,7 +208,19 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           return false;
         }
       }
-      _boxController.addVocabularyToBox(widget.boxKey, _vocab);
+      try {
+        await _boxController.addVocabularyToBox(widget.boxKey, _vocab);
+      } catch (e) {
+        if (mounted) {
+          setState(() => _isSaving = false);
+          await context.showAppError(
+            e is AppException
+                ? e
+                : AppException(AppError.addVocabularyFailed, details: e),
+          );
+        }
+        return false;
+      }
     } else {
       _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
     }
@@ -328,6 +341,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final file = AppPaths.audioFile(_vocab.id);
     if (file.existsSync()) {
       await file.delete();
+      if (!widget.newVocabulary && !_boxController.isLocal(widget.boxKey)) {
+        unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
+      }
       _recordDuration = Duration.zero;
       setState(() {
         _hasRecording = false;
