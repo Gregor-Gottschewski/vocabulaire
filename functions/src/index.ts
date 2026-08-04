@@ -13,6 +13,7 @@ export {
   onVocabularyDeleted,
 } from "./counters";
 export { reconcileVocabularyCounts } from "./reconciliation";
+export { onUserCreated } from "./rateLimitDoc";
 
 export const synthesizeSpeech = onCall(
   {
