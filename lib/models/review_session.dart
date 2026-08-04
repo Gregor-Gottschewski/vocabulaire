@@ -65,13 +65,13 @@ class ReviewSession {
 
     switch (method) {
       case LearningMethod.onlyDifficult:
-        list = list.where((v) => v.card.difficulty! >= 7.0).toList();
+        list = list.where((v) => v.card.lastReview != null && v.card.difficulty! >= 7.0).toList();
         break;
       case LearningMethod.onlyNew:
         list = list.where((v) => v.card.lastReview == null).toList();
         break;
       case LearningMethod.onlyUnstable:
-        list = list.where((v) => v.card.stability! <= 5.0).toList();
+        list = list.where((v) => v.card.lastReview != null && v.card.stability! <= 5.0).toList();
         break;
       case LearningMethod.all:
         break;
