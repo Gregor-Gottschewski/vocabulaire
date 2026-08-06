@@ -17,8 +17,6 @@
 
   "settingsTitle": "Settings",
   "settingsImportBox": "Import box",
-  "settingsImportSuccess": "Import successful",
-  "settingsImportSuccessMessage": "Box \"{name}\" has been imported.",
   "settingsCardAnimations": "Card animations",
   "settingsSyncStatus": "Synchronization Status",
   "settingsSyncStatusSynced": "Up to date",

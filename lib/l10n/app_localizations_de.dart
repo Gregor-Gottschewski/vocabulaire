@@ -35,14 +35,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsImportBox => 'Box importieren';
 
   @override
-  String get settingsImportSuccess => 'Import erfolgreich';
-
-  @override
-  String settingsImportSuccessMessage(String name) {
-    return 'Box \"$name\" wurde importiert.';
-  }
-
-  @override
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override

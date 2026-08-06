@@ -13,7 +13,6 @@ import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/create_box_detail_view.dart';
-import 'package:vocabulaire/views/widgets/app_dialog.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
 import 'package:vocabulaire/views/widgets/primary_action_button.dart';
@@ -76,40 +75,42 @@ class _CreateBoxTypeViewState extends State<CreateBoxTypeView> {
     });
 
     try {
-      final result = await FilePicker.pickFiles(
+      final FilePickerResult? results = await FilePicker.pickFiles(
         dialogTitle: _l10n.settingsImportBox,
         type: FileType.custom,
         allowedExtensions: ['vocab'],
+        allowMultiple: true,
         withData: false,
       );
 
-      if (result == null || result.files.isEmpty) return;
+      if (results == null || results.files.isEmpty) return;
 
-      final path = result.files.single.path;
-
-      if (path == null) return;
-
-      final VocabularyBox importedBox =
-          await ImportController.importBoxFromFile(path);
-
-      if (!mounted) return;
-
-      final key = await _boxController.addBox(importedBox);
+      final importedBoxes = <VocabularyBox>[];
+      for (final result in results.files) {
+        final path = result.path;
+        if (path == null) return;
+        importedBoxes.add(await ImportController.importBoxFromFile(path));
+      }
 
       if (!mounted) return;
+      await _boxController.addBoxes(importedBoxes);
 
-      await showAppDialog(
-        context: context,
-        title: _l10n.settingsImportSuccess,
-        message: _l10n.settingsImportSuccessMessage(importedBox.name),
-        actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {})],
-      );
+      // await showAppDialog(
+      //   context: context,
+      //   title: _l10n.settingsImportSuccess,
+      //   message: _l10n.settingsImportSuccessMessage(importedBox.name),
+      //   actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {})],
+      // );
 
       if (!mounted) return;
-      Navigator.of(
-        context,
-        rootNavigator: true,
-      ).pop((box: importedBox, key: key));
+      if (results.files.length == 1) {
+        Navigator.of(
+          context,
+          rootNavigator: true,
+        ).pop((box: importedBoxes.first, key: importedBoxes.first.id));
+      } else {
+        Navigator.of(context, rootNavigator: true).pop();
+      }
     } on AppException catch (e) {
       if (!mounted) return;
       await context.showAppError(e);
@@ -142,9 +143,7 @@ class _CreateBoxTypeViewState extends State<CreateBoxTypeView> {
           const SizedBox(height: AppSpacing.gapSmall),
           Text(
             _l10n.createBoxTypeSubtitle,
-            style: AppTypography.bodySans.copyWith(
-              color: colors.textSecondary,
-            ),
+            style: AppTypography.bodySans.copyWith(color: colors.textSecondary),
           ),
           const SizedBox(height: AppSpacing.sectionGap),
           KeyValueRowGroup(

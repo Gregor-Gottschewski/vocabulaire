@@ -35,14 +35,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsImportBox => 'Importer une boîte';
 
   @override
-  String get settingsImportSuccess => 'Importation réussie';
-
-  @override
-  String settingsImportSuccessMessage(String name) {
-    return 'La boîte \"$name\" a été importée.';
-  }
-
-  @override
   String get settingsCardAnimations => 'Animations de cartes';
 
   @override

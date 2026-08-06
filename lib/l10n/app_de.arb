@@ -19,13 +19,6 @@
 
   "settingsTitle": "Einstellungen",
   "settingsImportBox": "Box importieren",
-  "settingsImportSuccess": "Import erfolgreich",
-  "settingsImportSuccessMessage": "Box \"{name}\" wurde importiert.",
-  "@settingsImportSuccessMessage": {
-    "placeholders": {
-      "name": { "type": "String" }
-    }
-  },
   "settingsCardAnimations": "Kartenanimationen",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",

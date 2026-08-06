@@ -17,13 +17,6 @@
 
   "settingsTitle": "Paramètres",
   "settingsImportBox": "Importer une boîte",
-  "settingsImportSuccess": "Importation réussie",
-  "settingsImportSuccessMessage": "La boîte \"{name}\" a été importée.",
-  "@settingsImportSuccessMessage": {
-    "placeholders": {
-      "name": { "type": "String" }
-    }
-  },
   "settingsCardAnimations": "Animations de cartes",
   "settingsSyncStatus": "État de synchronisation",
   "settingsSyncStatusSynced": "À jour",

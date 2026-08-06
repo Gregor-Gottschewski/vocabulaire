@@ -129,9 +129,9 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     );
 
     try {
-      final key = await _boxController.addBox(box, online: _saveOnline);
+      await _boxController.addBoxes([box], online: _saveOnline);
       if (!mounted) return;
-      Navigator.of(context, rootNavigator: true).pop((box: box, key: key));
+      Navigator.of(context, rootNavigator: true).pop((box: box, key: box.id));
     } on AppException catch (e) {
       if (!mounted) return;
       await context.showAppError(e);

@@ -148,18 +148,6 @@ abstract class AppLocalizations {
   /// **'Box importieren'**
   String get settingsImportBox;
 
-  /// No description provided for @settingsImportSuccess.
-  ///
-  /// In de, this message translates to:
-  /// **'Import erfolgreich'**
-  String get settingsImportSuccess;
-
-  /// No description provided for @settingsImportSuccessMessage.
-  ///
-  /// In de, this message translates to:
-  /// **'Box \"{name}\" wurde importiert.'**
-  String settingsImportSuccessMessage(String name);
-
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
