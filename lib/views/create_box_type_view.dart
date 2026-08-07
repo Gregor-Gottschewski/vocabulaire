@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
-import 'package:vocabulaire/controllers/create_box_draft.dart';
+import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/import_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/box_type.dart';
@@ -22,7 +22,7 @@ enum _TypeOption { vocabulary, flashcard, import }
 
 /// Choose between a vocabulary box, a flashcard box, or importing a box.
 class CreateBoxTypeView extends StatefulWidget {
-  final CreateBoxDraft draft;
+  final BoxDraft draft;
 
   const CreateBoxTypeView({super.key, required this.draft});
 

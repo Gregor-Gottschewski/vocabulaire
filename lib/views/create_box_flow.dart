@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:vocabulaire/controllers/create_box_draft.dart';
+import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/theme/app_page_route.dart';
 import 'package:vocabulaire/views/create_box_type_view.dart';
 
@@ -12,12 +12,12 @@ class CreateBoxFlow extends StatefulWidget {
 }
 
 class _CreateBoxFlowState extends State<CreateBoxFlow> {
-  late final CreateBoxDraft _draft;
+  late final BoxDraft _draft;
 
   @override
   void initState() {
     super.initState();
-    _draft = CreateBoxDraft();
+    _draft = BoxDraft();
   }
 
   @override

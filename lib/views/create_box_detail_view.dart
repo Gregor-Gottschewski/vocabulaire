@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
-import 'package:vocabulaire/controllers/create_box_draft.dart';
+import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/app_language.dart';
 import 'package:vocabulaire/models/box_type.dart';
@@ -23,7 +23,7 @@ import 'package:vocabulaire/views/widgets/section_title.dart';
 /// Step 2 of the box-creation flow: title, description and languages (only
 /// for vocabulary boxes), then creates the [VocabularyBox].
 class CreateBoxDetailView extends StatefulWidget {
-  final CreateBoxDraft draft;
+  final BoxDraft draft;
 
   const CreateBoxDetailView({super.key, required this.draft});
 
