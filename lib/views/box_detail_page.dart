@@ -1,18 +1,22 @@
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
+import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import '../models/vocabulary_box.dart';
+import '../theme/app_page_route.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
 import 'box_detail_view.dart';
+import 'create_box_detail_view.dart';
+import 'widgets/app_bottom_sheet.dart';
 import 'widgets/app_dialog.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/text_link_button.dart';
@@ -120,6 +124,43 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     );
   }
 
+  /// Opens [CreateBoxDetailView].
+  void _editBox() {
+    final box = _box;
+    if (box == null) return;
+    Navigator.of(context).push(
+      AppPageRoute(
+        builder: (_) => CreateBoxDetailView(draft: BoxDraft.fromBox(box)),
+      ),
+    );
+  }
+
+  /// Open bottom sheet with box edit options:
+  ///   - export
+  ///   - edit
+  ///   - delete
+  void _showBoxActionsSheet() {
+    showAppActionSheet(
+      context: context,
+      title: _l10n.boxDetailActionsSheetTitle,
+      actions: [
+        AppActionSheetAction(
+          label: _l10n.boxDetailShareAction,
+          onPressed: _exportBox,
+        ),
+        AppActionSheetAction(
+          label: _l10n.boxDetailEditAction,
+          onPressed: _editBox,
+        ),
+        AppActionSheetAction(
+          label: _l10n.boxDetailDelete,
+          destructive: true,
+          onPressed: _deleteBox,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -149,10 +190,9 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           backLabel: _l10n.tabBoxen,
           actions: [
             TextLinkButton(
-              label: _l10n.boxDetailShareAction,
-              onPressed: _exportBox,
+              label: _l10n.boxDetailEditAction,
+              onPressed: _showBoxActionsSheet,
             ),
-            TextLinkButton(label: _l10n.boxDetailDelete, onPressed: _deleteBox),
           ],
           body: BoxDetailView(box: box, boxKey: widget.boxKey),
         );

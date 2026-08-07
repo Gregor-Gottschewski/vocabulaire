@@ -325,7 +325,7 @@ class _ReviewViewState extends State<ReviewView>
         current != null && AppPaths.audioFile(current.id).existsSync();
 
     return AppScaffold(
-      backLabel: _l10n.reviewBack,
+      backLabel: _l10n.back,
       body: current == null
           ? const Center(child: AppProgressIndicator())
           : Column(

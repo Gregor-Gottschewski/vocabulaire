@@ -3,20 +3,15 @@ import 'package:flutter/material.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/theme_context_ext.dart';
-import 'selectable_option_card.dart';
 
-/// [showAppPicker] shows a bottom picker sheet.
+/// [showAppPicker] shows a bottom picker sheet for generic children.
 /// - [context] build context of the sheet.
 /// - [title] header of the sheet (longer texts are wrapped).
-/// - [options] generic options list.
-/// - [selected] selected element by default.
-/// - [labelBuilder] builder for [options].
+/// - [children] content in the sheet.
 Future<T?> showAppPicker<T>({
   required BuildContext context,
   String? title,
-  required List<T> options,
-  required T? selected,
-  required String Function(T) labelBuilder,
+  required List<Widget> children,
 }) {
   return showModalBottomSheet<T>(
     context: context,
@@ -46,17 +41,13 @@ Future<T?> showAppPicker<T>({
                 ),
                 const SizedBox(height: AppSpacing.gapLarge),
               ],
-              for (var i = 0; i < options.length; i++) ...[
+              for (var i = 0; i < children.length; i++) ...[
                 if (i != 0)
                   Container(
                     height: AppSpacing.hairline,
                     color: colors.borderSubtle,
                   ),
-                SelectableOptionCard(
-                  title: labelBuilder(options[i]),
-                  selected: options[i] == selected,
-                  onTap: () => Navigator.of(sheetContext).pop(options[i]),
-                ),
+                children[i],
               ],
             ],
           ),
@@ -64,4 +55,60 @@ Future<T?> showAppPicker<T>({
       );
     },
   );
+}
+
+/// A single row in [showAppActionSheet].
+class AppActionSheetAction {
+  final String label;
+  final VoidCallback onPressed;
+  final bool destructive;
+
+  const AppActionSheetAction({
+    required this.label,
+    required this.onPressed,
+    this.destructive = false,
+  });
+}
+
+/// Shows a bottom sheet listing [actions] as divider-separated rows.
+/// Sheet for action buttons.
+Future<void> showAppActionSheet({
+  required BuildContext context,
+  String? title,
+  required List<AppActionSheetAction> actions,
+}) {
+  return showAppPicker<void>(
+    context: context,
+    title: title,
+    children: [
+      for (final action in actions) _AppActionSheetRow(action: action),
+    ],
+  );
+}
+
+class _AppActionSheetRow extends StatelessWidget {
+  final AppActionSheetAction action;
+
+  const _AppActionSheetRow({required this.action});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {
+        Navigator.of(context).pop();
+        action.onPressed();
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.gapMedium + 4),
+        child: Text(
+          action.label,
+          style: AppTypography.bodySans.copyWith(
+            color: action.destructive ? colors.danger : colors.textPrimary,
+          ),
+        ),
+      ),
+    );
+  }
 }

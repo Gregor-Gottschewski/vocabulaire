@@ -8,6 +8,8 @@
   "homeEmpty": "Aucune boîte disponible.",
   "addBox": "Nouvelle boîte",
 
+  "back": "Retour",
+
   "cardsCounter": "{num} cartes",
   "@cardsCounter": {
     "placeholders": {
@@ -84,7 +86,6 @@
     }
   },
 
-  "reviewBack": "Retour",
   "reviewCard": "{index} sur {total}",
   "@reviewCard": {
     "placeholders": {
@@ -135,6 +136,7 @@
       "count": { "type": "int" }
     }
   },
+  "boxDetailActionsSheetTitle": "Modifier cette boîte.",
   "boxDetailEditAction": "Modifier",
   "boxDetailShareAction": "Partager",
   "boxDetailSaveAction": "Enregistrer",

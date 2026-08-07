@@ -24,6 +24,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addBox => 'Nouvelle boîte';
 
   @override
+  String get back => 'Retour';
+
+  @override
   String cardsCounter(int num) {
     return '$num cartes';
   }
@@ -160,9 +163,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get reviewBack => 'Retour';
-
-  @override
   String reviewCard(int index, int total) {
     return '$index sur $total';
   }
@@ -252,6 +252,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String boxDetailDailyLimitValue(int count) {
     return '$count cartes';
   }
+
+  @override
+  String get boxDetailActionsSheetTitle => 'Modifier cette boîte.';
 
   @override
   String get boxDetailEditAction => 'Modifier';

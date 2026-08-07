@@ -19,6 +19,7 @@ import 'widgets/daily_limit_stepper.dart';
 import 'widgets/key_value_row.dart';
 import 'widgets/pill_toggle.dart';
 import 'widgets/primary_action_button.dart';
+import 'widgets/selectable_option_card.dart';
 import 'widgets/text_link_button.dart';
 
 /// The [BoxDetailView] contains a box description, review options, start
@@ -36,12 +37,10 @@ class BoxDetailView extends StatefulWidget {
 class _BoxDetailWidget extends State<BoxDetailView> {
   late final ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxNotifier;
   late AppLocalizations _l10n;
-  late TextEditingController _titleController;
   bool _onlyTimely = true;
   LearningMethod _selectedOption = LearningMethod.all;
   bool _dailyLimitEnabled = false;
   int _dailyLimit = 20;
-  bool _isEditingTitle = false;
   Timer? _dueRefreshTimer;
   DateTime? _scheduledDueRefresh;
 
@@ -51,26 +50,6 @@ class _BoxDetailWidget extends State<BoxDetailView> {
     _boxNotifier = BoxController().listenableForKeys([widget.boxKey]);
     _dailyLimitEnabled = widget.box.dailyLimitEnabled;
     _dailyLimit = widget.box.dailyLimit;
-    _titleController = TextEditingController(text: widget.box.name);
-  }
-
-  @override
-  void didUpdateWidget(covariant BoxDetailView oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (!_isEditingTitle && widget.box.name != _titleController.text) {
-      _titleController.text = widget.box.name;
-    }
-  }
-
-  void _saveTitle() {
-    final newName = _titleController.text.trim();
-    setState(() => _isEditingTitle = false);
-    if (newName.isEmpty || newName == widget.box.name) {
-      _titleController.text = widget.box.name;
-      return;
-    }
-    final current = BoxController().getBox(widget.boxKey) ?? widget.box;
-    BoxController().updateBox(widget.boxKey, current.copyWith(name: newName));
   }
 
   /// Persists the daily-limit settings, reading the box fresh from
@@ -88,7 +67,6 @@ class _BoxDetailWidget extends State<BoxDetailView> {
   void dispose() {
     _dueRefreshTimer?.cancel();
     _boxNotifier.dispose();
-    _titleController.dispose();
     super.dispose();
   }
 
@@ -128,9 +106,14 @@ class _BoxDetailWidget extends State<BoxDetailView> {
     final result = await showAppPicker<LearningMethod>(
       context: context,
       title: _l10n.boxDetailMethod,
-      options: LearningMethod.values,
-      selected: _selectedOption,
-      labelBuilder: (m) => m.label(_l10n),
+      children: [
+        for (final method in LearningMethod.values)
+          SelectableOptionCard(
+            title: method.label(_l10n),
+            selected: method == _selectedOption,
+            onTap: () => Navigator.of(context).pop(method),
+          ),
+      ],
     );
     if (result != null) setState(() => _selectedOption = result);
   }
@@ -222,24 +205,12 @@ class _BoxDetailWidget extends State<BoxDetailView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _isEditingTitle
-            ? AppTextField(
-                controller: _titleController,
-                autofocus: true,
-                style: AppTypography.headlineSerif,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _saveTitle(),
-              )
-            : GestureDetector(
-                onTap: () => setState(() => _isEditingTitle = true),
-                behavior: HitTestBehavior.opaque,
-                child: Text(
-                  box.name,
-                  style: AppTypography.headlineSerif.copyWith(
-                    color: colors.textPrimary,
-                  ),
-                ),
-              ),
+        Text(
+          box.name,
+          style: AppTypography.headlineSerif.copyWith(
+            color: colors.textPrimary,
+          ),
+        ),
         const SizedBox(height: 6),
         Text(
           _l10n.boxDetailSubline(box.vocabularies.length, dueCount),

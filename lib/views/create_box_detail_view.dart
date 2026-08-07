@@ -63,6 +63,8 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     _l10n = AppLocalizations.of(context)!;
   }
 
+  bool get _isEditing => widget.draft.id != null;
+
   Future<String?> _showLanguagePicker(String title, String? langCode) {
     return Navigator.of(context).push<String>(
       AppPageRoute(

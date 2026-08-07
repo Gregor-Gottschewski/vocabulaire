@@ -8,6 +8,8 @@
   "homeEmpty": "No boxes yet.",
   "addBox": "Add Box",
 
+  "back": "Back",
+
   "cardsCounter": "{num} cards",
   "@cardsCounter": {
     "placeholders": {
@@ -69,7 +71,6 @@
   "editVocabDifficulty": "Difficulty: {difficulty} of 10",
   "editVocabStability": "Stability: {stability}",
 
-  "reviewBack": "Back",
   "reviewCard": "{index} of {total}",
   "@reviewCard": {
     "placeholders": {
@@ -115,6 +116,7 @@
       "count": { "type": "int" }
     }
   },
+  "boxDetailActionsSheetTitle": "Edit this box.",
   "boxDetailEditAction": "Edit",
   "boxDetailShareAction": "Share",
   "boxDetailSaveAction": "Save",

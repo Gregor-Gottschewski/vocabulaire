@@ -130,6 +130,12 @@ abstract class AppLocalizations {
   /// **'Neue Box'**
   String get addBox;
 
+  /// No description provided for @back.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurück'**
+  String get back;
+
   /// No description provided for @cardsCounter.
   ///
   /// In de, this message translates to:
@@ -370,12 +376,6 @@ abstract class AppLocalizations {
   /// **'Stabilität: {stability}'**
   String editVocabStability(String stability);
 
-  /// No description provided for @reviewBack.
-  ///
-  /// In de, this message translates to:
-  /// **'Zurück'**
-  String get reviewBack;
-
   /// No description provided for @reviewCard.
   ///
   /// In de, this message translates to:
@@ -537,6 +537,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'{count} Karten'**
   String boxDetailDailyLimitValue(int count);
+
+  /// No description provided for @boxDetailActionsSheetTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Box bearbeiten.'**
+  String get boxDetailActionsSheetTitle;
 
   /// No description provided for @boxDetailEditAction.
   ///

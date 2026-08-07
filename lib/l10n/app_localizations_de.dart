@@ -24,6 +24,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get addBox => 'Neue Box';
 
   @override
+  String get back => 'Zurück';
+
+  @override
   String cardsCounter(int num) {
     return '$num Karten';
   }
@@ -161,9 +164,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get reviewBack => 'Zurück';
-
-  @override
   String reviewCard(int index, int total) {
     return '$index von $total';
   }
@@ -253,6 +253,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String boxDetailDailyLimitValue(int count) {
     return '$count Karten';
   }
+
+  @override
+  String get boxDetailActionsSheetTitle => 'Diese Box bearbeiten.';
 
   @override
   String get boxDetailEditAction => 'Bearbeiten';
