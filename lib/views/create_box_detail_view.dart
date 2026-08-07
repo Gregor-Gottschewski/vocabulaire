@@ -120,17 +120,37 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     setState(() => _isSaving = true);
 
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
-    final box = VocabularyBox(
-      id: const Uuid().v4(),
-      name: name,
-      description: description,
-      vocabularies: const [],
-      type: widget.draft.type.name,
-      sourceLanguage: isVocabulary ? _source : null,
-      targetLanguage: isVocabulary ? _target : null,
-    );
 
     try {
+      if (_isEditing) {
+        final boxId = widget.draft.id!;
+        final current = _boxController.getBox(boxId);
+        if (current == null) {
+          if (!mounted) return;
+          Navigator.of(context).pop();
+          return;
+        }
+        final updated = current.copyWith(
+          name: name,
+          description: description,
+          sourceLanguage: isVocabulary ? _source : null,
+          targetLanguage: isVocabulary ? _target : null,
+        );
+        _boxController.updateBox(boxId, updated);
+        if (!mounted) return;
+        Navigator.of(context).pop();
+        return;
+      }
+
+      final box = VocabularyBox(
+        id: const Uuid().v4(),
+        name: name,
+        description: description,
+        vocabularies: const [],
+        type: widget.draft.type.name,
+        sourceLanguage: isVocabulary ? _source : null,
+        targetLanguage: isVocabulary ? _target : null,
+      );
       await _boxController.addBoxes([box], online: _saveOnline);
       if (!mounted) return;
       Navigator.of(context, rootNavigator: true).pop((box: box, key: box.id));
@@ -147,7 +167,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
 
     return AppScaffold(
-      backLabel: _l10n.createBoxNavTitle,
+      backLabel: _isEditing ? _l10n.back : _l10n.createBoxNavTitle,
       scrollable: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -178,17 +198,19 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                         maxLines: 3,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.sectionGap),
-                    KeyValueRowGroup(
-                      children: [
-                        KeyValueRow.toggle(
-                          label: _l10n.createBoxOnlineSync,
-                          value: _saveOnline,
-                          onChanged: (v) => setState(() => _saveOnline = v),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: AppSpacing.gapSmall),
+                    if (!_isEditing) ...[
+                      const SizedBox(height: AppSpacing.sectionGap),
+                      KeyValueRowGroup(
+                        children: [
+                          KeyValueRow.toggle(
+                            label: _l10n.createBoxOnlineSync,
+                            value: _saveOnline,
+                            onChanged: (v) => setState(() => _saveOnline = v),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.gapSmall),
+                    ],
                     if (isVocabulary) ...[
                       const SizedBox(height: AppSpacing.sectionGap),
                       SectionTitle(text: _l10n.language),
@@ -215,7 +237,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
           ),
           const SizedBox(height: AppSpacing.gapLarge),
           PrimaryActionButton(
-            label: _l10n.createBoxFinish,
+            label: _isEditing ? _l10n.boxDetailSaveAction : _l10n.createBoxFinish,
             isLoading: _isSaving,
             onPressed: _onFinish,
           ),
