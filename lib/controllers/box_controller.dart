@@ -5,7 +5,6 @@ import 'package:fsrs/fsrs.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
-import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';

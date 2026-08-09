@@ -11,7 +11,6 @@ import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
-import 'package:vocabulaire/views/widgets/header_text_button.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
