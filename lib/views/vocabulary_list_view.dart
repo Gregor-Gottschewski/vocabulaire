@@ -10,6 +10,7 @@ import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
 import 'widgets/app_scaffold.dart';
+import 'widgets/app_text_field.dart';
 import 'widgets/text_link_button.dart';
 
 class VocabularyListView extends StatefulWidget {
@@ -37,12 +38,19 @@ class _BoxVocabulary {
 
 class _VocabularyListViewState extends State<VocabularyListView> {
   final BoxController _controller = BoxController();
+  final TextEditingController _searchController = TextEditingController();
   late AppLocalizations _l10n;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _l10n = AppLocalizations.of(context)!;
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
   }
 
   /// Opens the EditVocabularyView for adding a new vocabulary to the specified box.
@@ -87,11 +95,27 @@ class _VocabularyListViewState extends State<VocabularyListView> {
       builder: (context, entries, _) {
         final firstEntry = entries.isEmpty ? null : entries.first;
 
-        final items = entries.expand((entry) {
-          final boxKey = entry.key;
-          final box = entry.value;
-          return box.vocabularies.map((v) => _BoxVocabulary(boxKey, box, v));
-        }).toList();
+        final items =
+            entries.expand((entry) {
+              final boxKey = entry.key;
+              final box = entry.value;
+              return box.vocabularies.map(
+                (v) => _BoxVocabulary(boxKey, box, v),
+              );
+            }).toList()..sort(
+              (a, b) => a.vocabulary.word.toLowerCase().compareTo(
+                b.vocabulary.word.toLowerCase(),
+              ),
+            );
+
+        final query = _searchController.text.trim().toLowerCase();
+        final filteredItems = query.isEmpty
+            ? items
+            : items.where((item) {
+                final word = item.vocabulary.word.toLowerCase();
+                final meaning = item.vocabulary.meaning.toLowerCase();
+                return word.contains(query) || meaning.contains(query);
+              }).toList();
 
         return AppScaffold(
           backLabel: widget.multipleBoxes ? null : firstEntry?.value.name,
@@ -116,6 +140,12 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sectionGap),
+              AppTextField(
+                controller: _searchController,
+                placeholder: _l10n.vocabListSearchPlaceholder,
+                onChanged: (_) => setState(() {}),
+              ),
+              const SizedBox(height: AppSpacing.sectionGap),
               if (items.isEmpty)
                 Text(
                   _l10n.vocabListEmpty,
@@ -123,40 +153,36 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                     color: colors.textSecondary,
                   ),
                 )
+              else if (filteredItems.isEmpty)
+                Text(
+                  _l10n.vocabListNoResults,
+                  style: AppTypography.bodySans.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                )
               else
                 Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        top: BorderSide(
-                          color: colors.borderStrong,
-                          width: AppSpacing.hairline,
+                  child: ListView.builder(
+                    itemCount: filteredItems.length,
+                    itemBuilder: (context, index) {
+                      final item = filteredItems[index];
+                      return _VocabularyRow(
+                        vocabulary: item.vocabulary,
+                        box: item.box,
+                        boxKey: item.boxKey,
+                        showBoxName: widget.multipleBoxes,
+                        deleteLabel: _l10n.boxDetailDelete,
+                        onTap: () => _navigateToEdit(
+                          item.boxKey,
+                          item.box,
+                          item.vocabulary,
                         ),
-                      ),
-                    ),
-                    child: ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final item = items[index];
-                        return _VocabularyRow(
-                          vocabulary: item.vocabulary,
-                          box: item.box,
-                          boxKey: item.boxKey,
-                          showBoxName: widget.multipleBoxes,
-                          deleteLabel: _l10n.boxDetailDelete,
-                          onTap: () => _navigateToEdit(
-                            item.boxKey,
-                            item.box,
-                            item.vocabulary,
-                          ),
-                          onDismissed: () =>
-                              _controller.removeVocabularyFromBox(
-                                item.boxKey,
-                                item.vocabulary.id,
-                              ),
-                        );
-                      },
-                    ),
+                        onDismissed: () => _controller.removeVocabularyFromBox(
+                          item.boxKey,
+                          item.vocabulary.id,
+                        ),
+                      );
+                    },
                   ),
                 ),
             ],

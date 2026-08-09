@@ -622,6 +622,18 @@ abstract class AppLocalizations {
   /// **'Keine Vokabeln vorhanden.'**
   String get vocabListEmpty;
 
+  /// No description provided for @vocabListSearchPlaceholder.
+  ///
+  /// In de, this message translates to:
+  /// **'Suchen'**
+  String get vocabListSearchPlaceholder;
+
+  /// No description provided for @vocabListNoResults.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine passende Vokabel gefunden.'**
+  String get vocabListNoResults;
+
   /// No description provided for @learningMethodAll.
   ///
   /// In de, this message translates to:

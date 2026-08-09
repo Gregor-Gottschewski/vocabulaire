@@ -153,6 +153,8 @@
 
   "vocabListTitle": "Vokabeln",
   "vocabListEmpty": "Keine Vokabeln vorhanden.",
+  "vocabListSearchPlaceholder": "Suchen",
+  "vocabListNoResults": "Keine Vokabel gefunden.",
 
   "learningMethodAll": "Alle",
   "learningMethodHard": "Nur schwierige",

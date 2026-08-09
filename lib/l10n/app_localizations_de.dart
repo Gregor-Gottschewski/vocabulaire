@@ -299,6 +299,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get vocabListEmpty => 'Keine Vokabeln vorhanden.';
 
   @override
+  String get vocabListSearchPlaceholder => 'Suchen';
+
+  @override
+  String get vocabListNoResults => 'Keine Vokabel gefunden.';
+
+  @override
   String get learningMethodAll => 'Alle';
 
   @override

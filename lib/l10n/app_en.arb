@@ -131,6 +131,8 @@
 
   "vocabListTitle": "Vocabulary",
   "vocabListEmpty": "No vocabulary yet.",
+  "vocabListSearchPlaceholder": "Search",
+  "vocabListNoResults": "No matching vocabulary found.",
 
   "learningMethodAll": "All",
   "learningMethodHard": "Difficult only",

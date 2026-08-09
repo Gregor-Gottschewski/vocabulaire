@@ -151,6 +151,8 @@
 
   "vocabListTitle": "Vocabulaire",
   "vocabListEmpty": "Aucun vocabulaire disponible.",
+  "vocabListSearchPlaceholder": "Rechercher",
+  "vocabListNoResults": "Aucun vocabulaire trouvé.",
 
   "learningMethodAll": "Tous",
   "learningMethodHard": "Difficiles uniquement",

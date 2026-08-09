@@ -298,6 +298,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get vocabListEmpty => 'Aucun vocabulaire disponible.';
 
   @override
+  String get vocabListSearchPlaceholder => 'Rechercher';
+
+  @override
+  String get vocabListNoResults => 'Aucun vocabulaire trouvé.';
+
+  @override
   String get learningMethodAll => 'Tous';
 
   @override
