@@ -33,14 +33,15 @@ class EditVocabularyView extends StatefulWidget {
   final String boxKey;
   final VocabularyBox box;
   final Vocabulary? vocabulary;
-  final bool newVocabulary;
+  final int number;
 
   const EditVocabularyView({
     super.key,
     required this.boxKey,
     required this.box,
+    this.number = 0,
     this.vocabulary,
-  }) : newVocabulary = (vocabulary == null);
+  });
 
   @override
   State<EditVocabularyView> createState() => _EditVocabularyViewState();
@@ -70,6 +71,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   Duration _recordDuration = Duration.zero;
   Timer? _recordTimer;
   StreamSubscription<void>? _playerCompleteSub;
+  int _vocabularyNumber = 0;
+
+  bool get _isEditing => widget.vocabulary != null;
 
   /// Initializes the text controllers with the existing vocabulary data when the view is created.
   @override
@@ -80,6 +84,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _frontController.text = _vocab.word;
     _backController.text = _vocab.meaning;
     _descriptionController.text = _vocab.example;
+    _vocabularyNumber = widget.number;
 
     _hasRecording = _checkExistingRecording();
     if (_hasRecording) {
@@ -143,9 +148,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Checks if an audio exists for the current vocabulary entry.
   bool _checkExistingRecording() {
-    return widget.newVocabulary
-        ? false
-        : AppPaths.audioFile(_vocab.id).existsSync();
+    return _isEditing
+        ? AppPaths.audioFile(_vocab.id).existsSync()
+        : false;
   }
 
   Future<Duration> getRecordingDuration() async {
@@ -185,7 +190,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _vocab.meaning = back;
     _vocab.example = description;
 
-    if (widget.newVocabulary) {
+    if (_isEditing) {
+      _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
+    } else {
       if (widget.box.vocabularies.any((e) => e.word == front)) {
         var shouldAdd = false;
         await showAppDialog(
@@ -220,8 +227,6 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         }
         return false;
       }
-    } else {
-      _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
     }
 
     if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
@@ -253,6 +258,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _frontController.clear();
     _backController.clear();
     _descriptionController.clear();
+    _vocabularyNumber++;
     if (mounted) setState(() => _isDirty = false);
   }
 
@@ -346,7 +352,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final file = AppPaths.audioFile(_vocab.id);
     if (file.existsSync()) {
       await file.delete();
-      if (!widget.newVocabulary && !_boxController.isLocal(widget.boxKey)) {
+      if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
         unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
       }
       _recordDuration = Duration.zero;
@@ -569,7 +575,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       child: AppScaffold(
         backLabel: _l10n.vocabListTitle,
         actions: [
-          if (!widget.newVocabulary) ...[
+          if (_isEditing) ...[
             TextLinkButton(
               label: _l10n.boxDetailDelete,
               onPressed: _deleteVocabulary,
@@ -591,9 +597,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.newVocabulary
-                            ? _l10n.editVocabNew
-                            : _l10n.editVocabEdit,
+                        _isEditing
+                            ? _l10n.editVocabEdit
+                            : "${_l10n.editVocabNew} #$_vocabularyNumber",
                         style: AppTypography.headlineSerif.copyWith(
                           color: colors.textPrimary,
                         ),
@@ -649,7 +655,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                       const SizedBox(height: AppSpacing.gapMedium),
                       _buildAudioRow(context),
 
-                      if (!widget.newVocabulary) ...[
+                      if (_isEditing) ...[
                         const SizedBox(height: AppSpacing.sectionGap),
                         SectionTitle(text: _l10n.editVocabStats),
                         const SizedBox(height: AppSpacing.gapMedium),

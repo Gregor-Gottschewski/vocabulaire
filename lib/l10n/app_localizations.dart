@@ -631,7 +631,7 @@ abstract class AppLocalizations {
   /// No description provided for @vocabListNoResults.
   ///
   /// In de, this message translates to:
-  /// **'Keine passende Vokabel gefunden.'**
+  /// **'Keine Vokabel gefunden.'**
   String get vocabListNoResults;
 
   /// No description provided for @learningMethodAll.

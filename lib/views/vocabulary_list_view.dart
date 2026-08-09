@@ -61,7 +61,11 @@ class _VocabularyListViewState extends State<VocabularyListView> {
     Navigator.push(
       context,
       AppPageRoute(
-        builder: (_) => EditVocabularyView(boxKey: boxKey, box: box),
+        builder: (_) => EditVocabularyView(
+          boxKey: boxKey,
+          box: box,
+          number: box.vocabularies.length,
+        ),
       ),
     );
   }
