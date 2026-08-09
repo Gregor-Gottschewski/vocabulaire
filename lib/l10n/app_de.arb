@@ -191,6 +191,9 @@
   "editVocabUnsavedChangesTitle": "Sollen deine Änderungen gespeichert werden?",
   "editVocabUnsavedChangesSaveAndLeave": "Speichern und verlassen",
   "editVocabUnsavedChangesDiscard": "Eingaben verwerfen",
+  "editVocabDeleteTitle": "Vokabel löschen",
+  "editVocabDeleteMessage": "Möchtest du diese Vokabel wirklich löschen?",
+  "editVocabDeleteConfirm": "Löschen",
 
   "errorTtsEmptyText": "Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.",
   "errorTtsTextTooLong": "Der Text für die Sprachausgabe darf maximal 65 Zeichen lang sein.",

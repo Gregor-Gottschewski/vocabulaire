@@ -259,8 +259,22 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Delete vocabulary from box and close edit view.
   void _deleteVocabulary() {
-    _boxController.removeVocabularyFromBox(widget.boxKey, _vocab.id);
-    Navigator.of(context).pop();
+    showAppDialog(
+      context: context,
+      title: _l10n.editVocabDeleteTitle,
+      message: _l10n.editVocabDeleteMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.editVocabDeleteConfirm,
+          destructive: true,
+          onPressed: () {
+            _boxController.removeVocabularyFromBox(widget.boxKey, _vocab.id);
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 
   void _recordAudio() async {

@@ -796,6 +796,24 @@ abstract class AppLocalizations {
   /// **'Eingaben verwerfen'**
   String get editVocabUnsavedChangesDiscard;
 
+  /// No description provided for @editVocabDeleteTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel löschen'**
+  String get editVocabDeleteTitle;
+
+  /// No description provided for @editVocabDeleteMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Möchtest du diese Vokabel wirklich löschen?'**
+  String get editVocabDeleteMessage;
+
+  /// No description provided for @editVocabDeleteConfirm.
+  ///
+  /// In de, this message translates to:
+  /// **'Löschen'**
+  String get editVocabDeleteConfirm;
+
   /// No description provided for @errorTtsEmptyText.
   ///
   /// In de, this message translates to:

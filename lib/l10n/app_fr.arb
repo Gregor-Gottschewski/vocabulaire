@@ -189,6 +189,9 @@
   "editVocabUnsavedChangesTitle": "Voulez-vous enregistrer vos modifications ?",
   "editVocabUnsavedChangesSaveAndLeave": "Enregistrer et quitter",
   "editVocabUnsavedChangesDiscard": "Ignorer les modifications",
+  "editVocabDeleteTitle": "Supprimer le vocabulaire",
+  "editVocabDeleteMessage": "Voulez-vous vraiment supprimer ce vocabulaire ?",
+  "editVocabDeleteConfirm": "Supprimer",
 
   "errorTtsEmptyText": "Le verso ne doit pas être vide pour générer une prononciation.",
   "errorTtsTextTooLong": "Le texte ne doit pas dépasser 65 caractères.",

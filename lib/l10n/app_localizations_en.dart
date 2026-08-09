@@ -396,6 +396,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editVocabUnsavedChangesDiscard => 'Discard changes';
 
   @override
+  String get editVocabDeleteTitle => 'Delete vocabulary';
+
+  @override
+  String get editVocabDeleteMessage =>
+      'Are you sure you want to delete this vocabulary?';
+
+  @override
+  String get editVocabDeleteConfirm => 'Delete';
+
+  @override
   String get errorTtsEmptyText =>
       'The back side must not be empty to generate a pronunciation.';
 

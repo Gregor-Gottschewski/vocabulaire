@@ -158,6 +158,9 @@
   "editVocabUnsavedChangesTitle": "Do you want to save your changes?",
   "editVocabUnsavedChangesSaveAndLeave": "Save and leave",
   "editVocabUnsavedChangesDiscard": "Discard changes",
+  "editVocabDeleteTitle": "Delete vocabulary",
+  "editVocabDeleteMessage": "Are you sure you want to delete this vocabulary?",
+  "editVocabDeleteConfirm": "Delete",
 
   "errorTtsEmptyText": "The back side must not be empty to generate a pronunciation.",
   "errorTtsTextTooLong": "The text must not be longer than 65 characters.",

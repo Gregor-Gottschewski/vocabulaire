@@ -402,6 +402,16 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editVocabUnsavedChangesDiscard => 'Eingaben verwerfen';
 
   @override
+  String get editVocabDeleteTitle => 'Vokabel löschen';
+
+  @override
+  String get editVocabDeleteMessage =>
+      'Möchtest du diese Vokabel wirklich löschen?';
+
+  @override
+  String get editVocabDeleteConfirm => 'Löschen';
+
+  @override
   String get errorTtsEmptyText =>
       'Die Rückseite darf nicht leer sein, um eine Aussprache zu generieren.';
 

@@ -402,6 +402,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editVocabUnsavedChangesDiscard => 'Ignorer les modifications';
 
   @override
+  String get editVocabDeleteTitle => 'Supprimer le vocabulaire';
+
+  @override
+  String get editVocabDeleteMessage =>
+      'Voulez-vous vraiment supprimer ce vocabulaire ?';
+
+  @override
+  String get editVocabDeleteConfirm => 'Supprimer';
+
+  @override
   String get errorTtsEmptyText =>
       'Le verso ne doit pas être vide pour générer une prononciation.';
 
