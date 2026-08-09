@@ -17,8 +17,8 @@ import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
 import 'package:vocabulaire/views/widgets/language_picker_view.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 import 'package:vocabulaire/views/widgets/section_title.dart';
+import 'package:vocabulaire/views/widgets/header_text_button.dart';
 
 /// Step 2 of the box-creation flow: title, description and languages (only
 /// for vocabulary boxes), then creates the [VocabularyBox].
@@ -169,6 +169,12 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     return AppScaffold(
       backLabel: _isEditing ? _l10n.back : _l10n.createBoxNavTitle,
       scrollable: false,
+      actions: [
+        HeaderTextButton(
+          label: "${_isEditing ? _l10n.boxDetailSaveAction : _l10n.createBoxFinish} →",
+          onPressed: _onFinish,
+        )
+      ],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -234,12 +240,6 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.gapLarge),
-          PrimaryActionButton(
-            label: _isEditing ? _l10n.boxDetailSaveAction : _l10n.createBoxFinish,
-            isLoading: _isSaving,
-            onPressed: _onFinish,
           ),
         ],
       ),

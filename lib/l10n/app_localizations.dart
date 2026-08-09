@@ -343,7 +343,7 @@ abstract class AppLocalizations {
   /// No description provided for @editVocabNext.
   ///
   /// In de, this message translates to:
-  /// **'Speichern & Nächste'**
+  /// **'Nächste'**
   String get editVocabNext;
 
   /// No description provided for @editVocabStats.

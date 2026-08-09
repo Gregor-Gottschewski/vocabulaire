@@ -53,7 +53,7 @@ class AppScaffold extends StatelessWidget {
                         ),
                 ),
                 for (final action in actions) ...[
-                  const SizedBox(width: AppSpacing.gapLarge),
+                  const SizedBox(width: AppSpacing.gapMedium),
                   action,
                 ],
               ],
@@ -76,7 +76,12 @@ class AppScaffold extends StatelessWidget {
 
     return Material(
       color: colors.background,
-      child: SafeArea(child: content),
+      child: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: content,
+        ),
+      ),
     );
   }
 }

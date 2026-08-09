@@ -15,8 +15,8 @@ import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/create_box_detail_view.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 import 'package:vocabulaire/views/widgets/selectable_option_card.dart';
+import 'package:vocabulaire/views/widgets/header_text_button.dart';
 
 enum _TypeOption { vocabulary, flashcard, import }
 
@@ -95,13 +95,6 @@ class _CreateBoxTypeViewState extends State<CreateBoxTypeView> {
       if (!mounted) return;
       await _boxController.addBoxes(importedBoxes);
 
-      // await showAppDialog(
-      //   context: context,
-      //   title: _l10n.settingsImportSuccess,
-      //   message: _l10n.settingsImportSuccessMessage(importedBox.name),
-      //   actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {})],
-      // );
-
       if (!mounted) return;
       if (results.files.length == 1) {
         Navigator.of(
@@ -130,6 +123,9 @@ class _CreateBoxTypeViewState extends State<CreateBoxTypeView> {
     return AppScaffold(
       backLabel: _l10n.commonCancel,
       onBack: () => Navigator.of(context, rootNavigator: true).pop(),
+      actions: [
+        HeaderTextButton(label: "${_l10n.commonNext} →", onPressed: _onNext),
+      ],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -167,12 +163,6 @@ class _CreateBoxTypeViewState extends State<CreateBoxTypeView> {
                 onTap: () => setState(() => _selected = _TypeOption.import),
               ),
             ],
-          ),
-          const Spacer(),
-          PrimaryActionButton(
-            label: _l10n.commonNext,
-            isLoading: _isImporting,
-            onPressed: _onNext,
           ),
         ],
       ),

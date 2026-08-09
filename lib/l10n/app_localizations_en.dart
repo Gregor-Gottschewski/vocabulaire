@@ -139,7 +139,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get editVocabSave => 'Save';
 
   @override
-  String get editVocabNext => 'Save & Next';
+  String get editVocabNext => 'Next';
 
   @override
   String get editVocabStats => 'Statistics';

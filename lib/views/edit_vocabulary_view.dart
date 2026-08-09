@@ -11,6 +11,7 @@ import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
+import 'package:vocabulaire/views/widgets/header_text_button.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
@@ -23,7 +24,6 @@ import 'widgets/app_progress_indicator.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/app_text_field.dart';
 import 'widgets/label_text_field.dart';
-import 'widgets/primary_action_button.dart';
 import 'widgets/section_title.dart';
 import 'widgets/text_link_button.dart';
 
@@ -243,14 +243,6 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
 
     return true;
-  }
-
-  Future<void> _savePressed() async {
-    if (await _save()) {
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
-    }
   }
 
   Future<void> _saveAndNextPressed() async {
@@ -564,10 +556,17 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       child: AppScaffold(
         backLabel: _l10n.vocabListTitle,
         actions: [
-          TextLinkButton(
-            label: _l10n.boxDetailDelete,
-            onPressed: _deleteVocabulary,
-          ),
+          if (!widget.newVocabulary) ...[
+            HeaderTextButton(
+              label: _l10n.boxDetailDelete,
+              onPressed: _deleteVocabulary,
+            ),
+          ] else ...[
+            HeaderTextButton(
+              label: _l10n.editVocabNext,
+              onPressed: _isSaving ? null : _saveAndNextPressed,
+            ),
+          ],
         ],
         body: Column(
           children: [
@@ -646,9 +645,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             final dueDate =
                                 _vocab.card.due.isAfter(DateTime.now())
                                 ? DateFormat.yMd(
-                                    Localizations.localeOf(
-                                      context,
-                                    ).toString(),
+                                    Localizations.localeOf(context).toString(),
                                   ).add_Hm().format(_vocab.card.due.toLocal())
                                 : _l10n.editVocabOverdue;
                             return Text(
@@ -684,28 +681,6 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                   ),
                 ),
               ),
-            ),
-
-            Row(
-              children: [
-                Expanded(
-                  child: PrimaryActionButton(
-                    label: _l10n.editVocabSave,
-                    isLoading: _isSaving,
-                    onPressed: _isSaving ? null : _savePressed,
-                  ),
-                ),
-                if (widget.newVocabulary) ...[
-                  const SizedBox(width: AppSpacing.gapMedium),
-                  Expanded(
-                    child: PrimaryActionButton(
-                      label: _l10n.editVocabNext,
-                      isLoading: _isSaving,
-                      onPressed: _isSaving ? null : _saveAndNextPressed,
-                    ),
-                  ),
-                ],
-              ],
             ),
           ],
         ),
