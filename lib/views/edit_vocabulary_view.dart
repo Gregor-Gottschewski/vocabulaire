@@ -571,13 +571,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         backLabel: _l10n.vocabListTitle,
         actions: [
           if (!widget.newVocabulary) ...[
-            HeaderTextButton(
+            TextLinkButton(
               label: _l10n.boxDetailDelete,
               onPressed: _deleteVocabulary,
             ),
           ] else ...[
-            HeaderTextButton(
-              label: _l10n.editVocabNext,
+            TextLinkButton(
+              label: _l10n.editVocabSave,
               onPressed: _isSaving ? null : _saveAndNextPressed,
             ),
           ],
