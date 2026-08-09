@@ -6,7 +6,7 @@ class AppSpacing {
   static const double headerTopGap = 16.0;
   static const double headerRowHeight = 40.0;
   static const double contentTop = 20.0;
-  static const double contentBottom = 0.0;
+  static const double contentBottom = 24.0;
   static const double sectionGap = 24.0;
   static const double rowVertical = 16.0;
   static const double buttonVertical = 17.0;

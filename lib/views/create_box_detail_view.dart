@@ -168,7 +168,6 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
     return AppScaffold(
       backLabel: _isEditing ? _l10n.back : _l10n.createBoxNavTitle,
-      scrollable: false,
       actions: [
         HeaderTextButton(
           label: "${_isEditing ? _l10n.boxDetailSaveAction : _l10n.createBoxFinish} →",

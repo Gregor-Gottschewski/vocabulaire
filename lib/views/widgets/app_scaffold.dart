@@ -10,15 +10,15 @@ class AppScaffold extends StatelessWidget {
   final VoidCallback? onBack;
   final List<Widget> actions;
   final Widget body;
-  final bool scrollable;
+  final bool bottomGap;
 
   const AppScaffold({
     super.key,
     this.backLabel,
     this.onBack,
     this.actions = const [],
+    this.bottomGap = true,
     required this.body,
-    this.scrollable = false,
   });
 
   @override
@@ -62,13 +62,13 @@ class AppScaffold extends StatelessWidget {
         ),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(
+            padding: EdgeInsets.fromLTRB(
               AppSpacing.pageHorizontal,
               AppSpacing.contentTop,
               AppSpacing.pageHorizontal,
-              AppSpacing.contentBottom,
+              bottomGap ? AppSpacing.contentBottom : 0,
             ),
-            child: scrollable ? SingleChildScrollView(child: body) : body,
+            child: body,
           ),
         ),
       ],

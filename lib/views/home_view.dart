@@ -62,6 +62,7 @@ class HomeViewWidget extends State<HomeView> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return AppScaffold(
+      bottomGap: false,
       actions: [TextLinkButton(label: _l10n.addBox, onPressed: _createBox)],
       body: ValueListenableBuilder(
         valueListenable: _boxesNotifier,

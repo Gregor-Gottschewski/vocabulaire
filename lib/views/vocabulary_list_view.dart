@@ -122,6 +122,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
               }).toList();
 
         return AppScaffold(
+          bottomGap: false,
           backLabel: widget.multipleBoxes ? null : firstEntry?.value.name,
           actions: widget.multipleBoxes || firstEntry == null
               ? []
