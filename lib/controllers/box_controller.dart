@@ -168,16 +168,10 @@ class BoxController {
 
   /// Returns a [ValueNotifier] that recomputes whenever any box changes.
   ValueNotifier<List<MapEntry<String, VocabularyBox>>> listenableForAll() {
-    final onlineIds = _boxSync.boxes.map((b) => b.id).toList();
-    final sources = <Listenable>[
-      _localBox.listenable(),
-      _boxSync.listenable,
-      for (final id in onlineIds) _vocabSync.listenableForBox(id),
-    ];
-    return _MergedBoxesNotifier(
-      () => entries,
-      sources,
-      onReleasedOnlineIds: onlineIds,
+    return _MergedAllBoxesNotifier(
+      getter: () => entries,
+      localBoxListenable: _localBox.listenable(),
+      boxSyncListenable: _boxSync.listenable,
       vocabSync: _vocabSync,
     );
   }
@@ -291,6 +285,73 @@ class _MergedBoxesNotifier
     for (final id in _onlineIds) {
       _vocabSync.releaseBox(id);
     }
+    super.dispose();
+  }
+}
+
+/// A ValueNotifier that recomputes its value whenever a box changes.
+class _MergedAllBoxesNotifier
+    extends ValueNotifier<List<MapEntry<String, VocabularyBox>>> {
+  final List<MapEntry<String, VocabularyBox>> Function() _getter;
+  final Listenable _localBoxListenable;
+  final ValueListenable<List<VocabularyBox>> _boxSyncListenable;
+  final VocabularySyncService _vocabSync;
+
+  final Map<String, ValueListenable<List<Vocabulary>>> _onlineListenables = {};
+  late final VoidCallback _recompute;
+  late final VoidCallback _onBoxSyncChanged;
+
+  _MergedAllBoxesNotifier({
+    required List<MapEntry<String, VocabularyBox>> Function() getter,
+    required Listenable localBoxListenable,
+    required ValueListenable<List<VocabularyBox>> boxSyncListenable,
+    required VocabularySyncService vocabSync,
+  }) : _getter = getter,
+       _localBoxListenable = localBoxListenable,
+       _boxSyncListenable = boxSyncListenable,
+       _vocabSync = vocabSync,
+       super(getter()) {
+    _recompute = () => value = _getter();
+    _onBoxSyncChanged = () {
+      _syncOnlineSubscriptions();
+      value = _getter();
+    };
+    _localBoxListenable.addListener(_recompute);
+    _boxSyncListenable.addListener(_onBoxSyncChanged);
+    _syncOnlineSubscriptions();
+  }
+
+  /// Reconciles the online boxes we hold a [_vocabSync] reference for with
+  /// the current [_boxSyncListenable] value, starting listeners for newly
+  /// discovered boxes and releasing ones for boxes no longer present.
+  void _syncOnlineSubscriptions() {
+    final currentIds = _boxSyncListenable.value.map((b) => b.id).toSet();
+
+    final staleIds = _onlineListenables.keys
+        .where((id) => !currentIds.contains(id))
+        .toList(growable: false);
+    for (final id in staleIds) {
+      _onlineListenables.remove(id)!.removeListener(_recompute);
+      _vocabSync.releaseBox(id);
+    }
+
+    for (final id in currentIds) {
+      if (_onlineListenables.containsKey(id)) continue;
+      final listenable = _vocabSync.listenableForBox(id);
+      listenable.addListener(_recompute);
+      _onlineListenables[id] = listenable;
+    }
+  }
+
+  @override
+  void dispose() {
+    _localBoxListenable.removeListener(_recompute);
+    _boxSyncListenable.removeListener(_onBoxSyncChanged);
+    for (final entry in _onlineListenables.entries) {
+      entry.value.removeListener(_recompute);
+      _vocabSync.releaseBox(entry.key);
+    }
+    _onlineListenables.clear();
     super.dispose();
   }
 }
