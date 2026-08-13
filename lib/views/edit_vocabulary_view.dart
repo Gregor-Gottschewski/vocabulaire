@@ -599,7 +599,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                       Text(
                         _isEditing
                             ? _l10n.editVocabEdit
-                            : "${_l10n.editVocabNew} #$_vocabularyNumber",
+                            : "${_l10n.editVocabNew} #${_vocabularyNumber + 1}",
                         style: AppTypography.headlineSerif.copyWith(
                           color: colors.textPrimary,
                         ),
