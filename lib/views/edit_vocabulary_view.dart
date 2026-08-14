@@ -249,6 +249,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (!saved) return;
     _vocab = _boxController.createVocabulary();
     _hasRecording = false;
+    _isGeneratingTts = false;
     _recordDuration = Duration.zero;
     _frontController.clear();
     _backController.clear();
@@ -364,6 +365,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (!_canGenerateTts) return;
     if (widget.box.targetAppLanguage == null) return;
     final text = _backController.text.trim();
+    final generatingVocabId = _vocab.id;
+    final boxKey = widget.boxKey;
 
     if (_hasRecording) {
       var confirmed = false;
@@ -392,10 +395,31 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     try {
       await TtsService.instance.synthesizeAndSave(
         text: text,
-        cardId: _vocab.id,
+        cardId: generatingVocabId,
         languageId: widget.box.targetAppLanguage!.code,
       );
-      if (!mounted) return;
+
+      final stillCurrent = mounted && _vocab.id == generatingVocabId;
+      if (!stillCurrent) {
+        final vocabStillExists =
+            _boxController.getBox(boxKey)?.vocabularies.any(
+              (v) => v.id == generatingVocabId,
+            ) ??
+            false;
+        if (vocabStillExists) {
+          if (!_boxController.isLocal(boxKey)) {
+            AudioUploadQueueService.instance.enqueue(
+              boxKey,
+              generatingVocabId,
+            );
+          }
+        } else {
+          final orphan = AppPaths.audioFile(generatingVocabId);
+          if (orphan.existsSync()) await orphan.delete();
+        }
+        return;
+      }
+
       await _initAudioPlayer();
       if (mounted) {
         setState(() {
@@ -405,7 +429,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         });
       }
     } on AppException catch (e) {
-      if (mounted) {
+      if (mounted && _vocab.id == generatingVocabId) {
         setState(() => _isGeneratingTts = false);
         await context.showAppError(e);
       }
