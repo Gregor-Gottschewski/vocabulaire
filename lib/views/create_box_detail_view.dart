@@ -8,6 +8,7 @@ import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
+import 'package:vocabulaire/services/usage_service.dart';
 import 'package:vocabulaire/theme/app_page_route.dart';
 import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
@@ -38,7 +39,6 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
   late AppLocalizations _l10n;
   String? _source;
   String? _target;
-  bool _isSaving = false;
   bool _saveOnline = true;
 
   @override
@@ -112,12 +112,12 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
         context: context,
         title: _l10n.commonError,
         message: _l10n.createBoxNameEmpty,
-        actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {}), ],
+        actions: [AppDialogAction(label: _l10n.commonOk, onPressed: () {})],
       );
       return;
     }
 
-    setState(() => _isSaving = true);
+    setState(() => {});
 
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
 
@@ -158,7 +158,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
       if (!mounted) return;
       await context.showAppError(e);
     } finally {
-      if (mounted) setState(() => _isSaving = false);
+      if (mounted) setState(() => {});
     }
   }
 
@@ -170,9 +170,10 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
       backLabel: _isEditing ? _l10n.back : _l10n.createBoxNavTitle,
       actions: [
         HeaderTextButton(
-          label: "${_isEditing ? _l10n.boxDetailSaveAction : _l10n.createBoxFinish} →",
+          label:
+              "${_isEditing ? _l10n.boxDetailSaveAction : _l10n.createBoxFinish} →",
           onPressed: _onFinish,
-        )
+        ),
       ],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -203,7 +204,8 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                         maxLines: 3,
                       ),
                     ),
-                    if (!_isEditing) ...[
+                    if (!_isEditing &&
+                        UsageService.instance.listenable.value.isPremium) ...[
                       const SizedBox(height: AppSpacing.sectionGap),
                       KeyValueRowGroup(
                         children: [
