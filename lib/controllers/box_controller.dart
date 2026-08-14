@@ -103,7 +103,7 @@ class BoxController {
     final box = _localBox.get(boxId);
     if (box == null) throw StateError('Box with id $boxId not found');
 
-    await _boxSync.ensureVocabularyQuota(box.vocabularies.length);
+    _boxSync.ensureVocabularyQuota(box.vocabularies.length);
 
     await _boxSync.addBox(box);
     await _vocabSync.addVocabularies(boxId, box.vocabularies);
@@ -196,7 +196,7 @@ class BoxController {
         ..add(vocabulary);
       _localBox.put(boxId, box.copyWith(vocabularies: vocabularies));
     } else {
-      await _boxSync.ensureVocabularyQuota(1);
+      _boxSync.ensureVocabularyQuota(1);
       await _vocabSync.addVocabulary(boxId, vocabulary);
     }
   }

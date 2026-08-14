@@ -88,8 +88,8 @@ class BoxSyncService {
   /// Throws [AppException] with [AppError.vocabularyLimitReached] if adding
   /// [additionalCount] vocabularies would exceed the user's online-vocabulary
   /// quota
-  Future<void> ensureVocabularyQuota(int additionalCount) async {
-    final usage = await UsageService.instance.fetch();
+  void ensureVocabularyQuota(int additionalCount) {
+    final usage = UsageService.instance.listenable.value;
     if (usage.vocabularyCountOnline + additionalCount > usage.vocabularyLimit) {
       throw AppException(AppError.vocabularyLimitReached);
     }
