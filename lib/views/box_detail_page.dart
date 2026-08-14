@@ -9,7 +9,6 @@ import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
-import 'package:vocabulaire/services/box_sync_service.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_typography.dart';
@@ -38,6 +37,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
   _boxNotifier;
   late AppLocalizations _l10n;
   bool _isPopping = false;
+  bool _hasSeenBox = false;
 
   @override
   void didChangeDependencies() {
@@ -45,10 +45,14 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     _l10n = AppLocalizations.of(context)!;
   }
 
+  /// Resolves the box to show.
   VocabularyBox? get _box {
     final fromController = _boxController.getBox(_boxKey);
-    if (fromController != null) return fromController;
-    if (!BoxSyncService.instance.hasLoadedOnce) return widget.box;
+    if (fromController != null) {
+      _hasSeenBox = true;
+      return fromController;
+    }
+    if (!_hasSeenBox) return widget.box;
     return null;
   }
 

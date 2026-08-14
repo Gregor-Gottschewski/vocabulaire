@@ -36,10 +36,6 @@ class BoxSyncService {
   /// cache rather than the server
   bool isFromCache = false;
 
-  /// True once the online-boxes listener has delivered at least one
-  /// snapshot (or failed) since the last [attach].
-  bool hasLoadedOnce = false;
-
   VocabularyBox? getBox(String boxId) {
     for (final box in boxes) {
       if (box.id == boxId) return box;
@@ -66,13 +62,11 @@ class BoxSyncService {
           (snapshot) {
             hasPendingWrites = snapshot.metadata.hasPendingWrites;
             isFromCache = snapshot.metadata.isFromCache;
-            hasLoadedOnce = true;
             _boxesNotifier.value = snapshot.docs
                 .map(VocabularyBox.fromFirestore)
                 .toList();
           },
           onError: (Object error, StackTrace stackTrace) {
-            hasLoadedOnce = true;
             debugPrint('BoxSyncService: snapshot listener error: $error');
           },
         );
@@ -82,7 +76,6 @@ class BoxSyncService {
   void detach() {
     _subscription?.cancel();
     _subscription = null;
-    hasLoadedOnce = false;
   }
 
   /// Throws [AppException] with [AppError.vocabularyLimitReached] if adding
