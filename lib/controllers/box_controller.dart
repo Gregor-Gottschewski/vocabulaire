@@ -7,6 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_sync_service.dart';
+import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 import '../models/vocabulary.dart';
@@ -20,6 +21,8 @@ class BoxController {
   final BoxSyncService _boxSync = BoxSyncService.instance;
   final VocabularySyncService _vocabSync = VocabularySyncService.instance;
   final AudioSyncService _audioSync = AudioSyncService.instance;
+  final AudioUploadQueueService _audioUploadQueue =
+      AudioUploadQueueService.instance;
 
   /// All boxes across both backends.
   List<VocabularyBox> get boxes => [..._localBoxes, ..._onlineBoxes];
@@ -88,6 +91,7 @@ class BoxController {
     if (box == null) throw StateError('Box with id $boxId not found');
 
     for (final vocabulary in box.vocabularies) {
+      _audioUploadQueue.cancel(vocabulary.id);
       if (vocabulary.audioSynced) {
         unawaited(_audioSync.deleteAudio(vocabulary.id));
       }
@@ -103,13 +107,17 @@ class BoxController {
     final box = _localBox.get(boxId);
     if (box == null) throw StateError('Box with id $boxId not found');
 
-    await _boxSync.ensureVocabularyQuota(box.vocabularies.length);
+    _boxSync.ensureVocabularyQuota(box.vocabularies.length);
 
     await _boxSync.addBox(box);
     await _vocabSync.addVocabularies(boxId, box.vocabularies);
     await _localBox.delete(boxId);
 
-    await _audioSync.uploadMissingAudioForBox(boxId, box.vocabularies);
+    for (final vocabulary in box.vocabularies) {
+      if (AppPaths.audioFile(vocabulary.id).existsSync()) {
+        _audioUploadQueue.enqueue(boxId, vocabulary.id);
+      }
+    }
   }
 
   /// Deletes box with [boxId] regardless of their backend.
@@ -196,7 +204,7 @@ class BoxController {
         ..add(vocabulary);
       _localBox.put(boxId, box.copyWith(vocabularies: vocabularies));
     } else {
-      await _boxSync.ensureVocabularyQuota(1);
+      _boxSync.ensureVocabularyQuota(1);
       await _vocabSync.addVocabulary(boxId, vocabulary);
     }
   }
@@ -212,6 +220,7 @@ class BoxController {
       _localBox.put(boxId, updated);
     } else {
       _vocabSync.softDeleteVocabulary(boxId, id);
+      _audioUploadQueue.cancel(id);
       unawaited(_audioSync.deleteAudio(id));
     }
 

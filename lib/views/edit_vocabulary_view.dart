@@ -10,6 +10,7 @@ import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_sync_service.dart';
+import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
 
 import '../controllers/box_controller.dart';
@@ -230,13 +231,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
 
     if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
-      try {
-        await AudioSyncService.instance.uploadAudio(widget.boxKey, _vocab.id);
-      } on AppException catch (e) {
-        if (mounted) await context.showAppError(e);
-      } catch (e) {
-        debugPrint('EditVocabularyView: audio upload failed: $e');
-      }
+      AudioUploadQueueService.instance.enqueue(widget.boxKey, _vocab.id);
     }
 
     if (mounted) {
@@ -353,6 +348,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (file.existsSync()) {
       await file.delete();
       if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
+        AudioUploadQueueService.instance.cancel(_vocab.id);
         unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
       }
       _recordDuration = Duration.zero;

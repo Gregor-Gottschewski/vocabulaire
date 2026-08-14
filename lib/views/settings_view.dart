@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
@@ -26,11 +29,14 @@ class _SettingsViewState extends State<SettingsView> {
   final UsageService _usage = UsageService.instance;
   late AppLocalizations _l10n;
   bool _cardAnimations = true;
+  bool _hasConnectivity = true;
+  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
   void initState() {
     super.initState();
     _initSettings();
+    _initConnectivity();
     _boxSync.listenable.addListener(_onSyncChanged);
     _usage.listenable.addListener(_onSyncChanged);
   }
@@ -39,6 +45,7 @@ class _SettingsViewState extends State<SettingsView> {
   void dispose() {
     _boxSync.listenable.removeListener(_onSyncChanged);
     _usage.listenable.removeListener(_onSyncChanged);
+    _connectivitySubscription?.cancel();
     super.dispose();
   }
 
@@ -46,8 +53,25 @@ class _SettingsViewState extends State<SettingsView> {
     if (mounted) setState(() {});
   }
 
+  Future<void> _initConnectivity() async {
+    final result = await Connectivity().checkConnectivity();
+    _onConnectivityChanged(result);
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen(
+      _onConnectivityChanged,
+    );
+  }
+
+  void _onConnectivityChanged(List<ConnectivityResult> results) {
+    final hasConnectivity = results.any(
+      (result) => result != ConnectivityResult.none,
+    );
+    if (mounted) setState(() => _hasConnectivity = hasConnectivity);
+  }
+
   String get _syncStatusLabel {
-    if (_boxSync.isFromCache) return _l10n.settingsSyncStatusOffline;
+    if (!_hasConnectivity || _boxSync.isFromCache) {
+      return _l10n.settingsSyncStatusOffline;
+    }
     if (_boxSync.hasPendingWrites) return _l10n.settingsSyncStatusSyncing;
     return _l10n.settingsSyncStatusSynced;
   }

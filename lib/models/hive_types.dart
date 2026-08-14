@@ -5,4 +5,5 @@ class HiveTypes {
   static const int vocabularyTypeId = 0;
   static const int vocabularyBoxTypeId = 1;
   static const int appSettingsTypeId = 2;
+  static const int pendingAudioUploadTypeId = 3;
 }

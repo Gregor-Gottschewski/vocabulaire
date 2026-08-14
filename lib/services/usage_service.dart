@@ -70,11 +70,4 @@ class UsageService {
     _subscription?.cancel();
     _subscription = null;
   }
-
-  /// One-shot read, independent of [attach]
-  Future<UsageInfo> fetch() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null) return const UsageInfo();
-    return UsageInfo.fromSnapshot(await _doc(uid).get());
-  }
 }
