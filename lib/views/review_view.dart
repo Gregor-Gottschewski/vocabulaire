@@ -120,6 +120,7 @@ class _ReviewViewState extends State<ReviewView>
 
   void _rate(Rating rating) {
     _resetFlip();
+    _player.stop();
     _reviewController.applyRating(rating);
   }
 
