@@ -96,23 +96,4 @@ class AudioSyncService {
     }
   }
 
-  /// Uploads every local audio recording found among [vocabularies].
-  Future<void> uploadMissingAudioForBox(
-    String boxId,
-    List<Vocabulary> vocabularies,
-  ) async {
-    if (!_isPremium) return;
-    for (final vocabulary in vocabularies) {
-      if (!AppPaths.audioFile(vocabulary.id).existsSync()) continue;
-      unawaited(
-        uploadAudio(boxId, vocabulary.id).catchError((Object error) {
-          debugPrint(
-            'AudioSyncService: background upload failed for '
-            '${vocabulary.id}: $error',
-          );
-          throw Exception(error);
-        }),
-      );
-    }
-  }
 }

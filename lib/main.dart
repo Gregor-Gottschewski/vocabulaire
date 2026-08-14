@@ -12,9 +12,11 @@ import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/firebase_options.dart';
 import 'package:vocabulaire/models/app_settings.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/auth_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
+import 'models/pending_audio_upload.dart';
 import 'models/vocabulary_box.dart';
 import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
@@ -66,9 +68,11 @@ void main() async {
   Hive.registerAdapter(VocabularyAdapter());
   Hive.registerAdapter(VocabularyBoxAdapter());
   Hive.registerAdapter(AppSettingsAdapter());
+  Hive.registerAdapter(PendingAudioUploadAdapter());
 
   await Hive.openBox<VocabularyBox>('boxes');
   await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
+  await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
   runApp(const MyApp());
 }
 
@@ -89,6 +93,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // the first `resumed` event (which doesn't fire on cold start).
     BoxSyncService.instance.attach();
     UsageService.instance.attach();
+    AudioUploadQueueService.instance.attach();
   }
 
   @override
@@ -96,6 +101,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.removeObserver(this);
     BoxSyncService.instance.detach();
     UsageService.instance.detach();
+    AudioUploadQueueService.instance.detach();
     super.dispose();
   }
 
@@ -105,9 +111,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       case AppLifecycleState.resumed:
         BoxSyncService.instance.attach();
         UsageService.instance.attach();
+        AudioUploadQueueService.instance.attach();
       case AppLifecycleState.paused:
         BoxSyncService.instance.detach();
         UsageService.instance.detach();
+        AudioUploadQueueService.instance.detach();
       default:
         break;
     }
