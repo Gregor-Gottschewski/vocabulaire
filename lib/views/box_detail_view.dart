@@ -191,15 +191,13 @@ class _BoxDetailWidget extends State<BoxDetailView> {
 
     _scheduleRebuild(box.vocabularies);
 
-    final hasMatchingCards = ReviewSession.filterVocabularies(
+    final matchingCards = ReviewSession.filterVocabularies(
       box.vocabularies,
       onlyTimely: _onlyTimely,
       method: _selectedOption,
       dailyLimitEnabled: box.dailyLimitEnabled,
       remainingNewCards: box.remainingNewCardsToday,
-    ).isNotEmpty;
-
-    final dueCount = ReviewSession.dueVocabularyCount(box);
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -212,7 +210,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
         ),
         const SizedBox(height: 6),
         Text(
-          _l10n.boxDetailSubline(box.vocabularies.length, dueCount),
+          _l10n.boxDetailSubline(box.vocabularies.length, matchingCards.length),
           style: AppTypography.captionSans.copyWith(
             color: colors.textSecondary,
           ),
@@ -256,7 +254,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
           children: [
             PrimaryActionButton(
               label: _l10n.boxDetailStart,
-              onPressed: hasMatchingCards
+              onPressed: matchingCards.isNotEmpty
                   ? () {
                       Navigator.of(context).push(
                         AppPageRoute(
