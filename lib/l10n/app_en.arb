@@ -25,6 +25,7 @@
   "settingsSyncStatusSyncing": "Syncing…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Licenses",
+  "settingsGithub": "Vocabulaire on GitHub",
   "settingsBoxSync": "Box synchronisation",
   "settingsVocabularyUsage": "Online vocabulary",
   "settingsVocabularyUsageValue": "{count}/{limit}",

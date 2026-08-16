@@ -56,6 +56,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLicenses => 'Licenses';
 
   @override
+  String get settingsGithub => 'Vocabulaire on GitHub';
+
+  @override
   String get settingsBoxSync => 'Box synchronisation';
 
   @override

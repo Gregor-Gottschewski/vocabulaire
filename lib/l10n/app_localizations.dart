@@ -190,6 +190,12 @@ abstract class AppLocalizations {
   /// **'Lizenzen'**
   String get settingsLicenses;
 
+  /// No description provided for @settingsGithub.
+  ///
+  /// In de, this message translates to:
+  /// **'Vocabulaire auf Github'**
+  String get settingsGithub;
+
   /// No description provided for @settingsBoxSync.
   ///
   /// In de, this message translates to:

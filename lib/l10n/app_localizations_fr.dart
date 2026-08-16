@@ -56,6 +56,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsLicenses => 'Licences';
 
   @override
+  String get settingsGithub => 'Vocabulaire à GitHub';
+
+  @override
   String get settingsBoxSync => 'Synchronisation des boîtes';
 
   @override

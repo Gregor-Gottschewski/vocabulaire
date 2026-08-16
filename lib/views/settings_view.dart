@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import '../controllers/settings_controller.dart';
@@ -112,6 +113,13 @@ class _SettingsViewState extends State<SettingsView> {
     await _controller.setCardAnimations(value);
   }
 
+  Future<void> _openGithub() async {
+    final uri = Uri.parse(
+      'https://github.com/Gregor-Gottschewski/vocabulaire/',
+    );
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -164,6 +172,7 @@ class _SettingsViewState extends State<SettingsView> {
               applicationName: 'Vocabulaire',
             ),
           ),
+          TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
         ],
       ),
     );
