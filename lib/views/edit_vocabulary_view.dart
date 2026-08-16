@@ -149,9 +149,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Checks if an audio exists for the current vocabulary entry.
   bool _checkExistingRecording() {
-    return _isEditing
-        ? AppPaths.audioFile(_vocab.id).existsSync()
-        : false;
+    return _isEditing ? AppPaths.audioFile(_vocab.id).existsSync() : false;
   }
 
   Future<Duration> getRecordingDuration() async {
@@ -247,6 +245,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   Future<void> _saveAndNextPressed() async {
     final saved = await _save();
     if (!saved) return;
+
+    if (_isEditing) {
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      return;
+    }
+
     _vocab = _boxController.createVocabulary();
     _hasRecording = false;
     _isGeneratingTts = false;
@@ -402,16 +407,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       final stillCurrent = mounted && _vocab.id == generatingVocabId;
       if (!stillCurrent) {
         final vocabStillExists =
-            _boxController.getBox(boxKey)?.vocabularies.any(
-              (v) => v.id == generatingVocabId,
-            ) ??
+            _boxController
+                .getBox(boxKey)
+                ?.vocabularies
+                .any((v) => v.id == generatingVocabId) ??
             false;
         if (vocabStillExists) {
           if (!_boxController.isLocal(boxKey)) {
-            AudioUploadQueueService.instance.enqueue(
-              boxKey,
-              generatingVocabId,
-            );
+            AudioUploadQueueService.instance.enqueue(boxKey, generatingVocabId);
           }
         } else {
           final orphan = AppPaths.audioFile(generatingVocabId);
@@ -595,17 +598,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       child: AppScaffold(
         backLabel: _l10n.vocabListTitle,
         actions: [
-          if (_isEditing) ...[
-            TextLinkButton(
-              label: _l10n.boxDetailDelete,
-              onPressed: _deleteVocabulary,
-            ),
-          ] else ...[
-            TextLinkButton(
-              label: _l10n.editVocabSave,
-              onPressed: _isSaving ? null : _saveAndNextPressed,
-            ),
-          ],
+          TextLinkButton(
+            label: _l10n.boxDetailDelete,
+            onPressed: _deleteVocabulary,
+          ),
+          TextLinkButton(
+            label: _l10n.editVocabSave,
+            onPressed: _isSaving ? null : _saveAndNextPressed,
+          ),
         ],
         body: Column(
           children: [
