@@ -1,7 +1,6 @@
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import 'vocabulary.dart';
-import 'vocabulary_box.dart';
 
 /// Learning method for a review session.
 /// - `all`: All cards in the box.

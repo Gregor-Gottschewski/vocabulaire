@@ -61,7 +61,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     sampleRate: 16000,
     numChannels: 1,
   );
-  late bool _hasRecording;
+  late bool _hasCommittedAudio;
+  bool _hasPendingNewAudio = false;
+  bool _pendingDelete = false;
   late Vocabulary _vocab;
   late AppLocalizations _l10n;
   bool _isSaving = false;
@@ -76,6 +78,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   bool get _isEditing => widget.vocabulary != null;
 
+  bool get _hasRecording =>
+      _hasPendingNewAudio || (_hasCommittedAudio && !_pendingDelete);
+
   /// Initializes the text controllers with the existing vocabulary data when the view is created.
   @override
   void initState() {
@@ -87,7 +92,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _descriptionController.text = _vocab.example;
     _vocabularyNumber = widget.number;
 
-    _hasRecording = _checkExistingRecording();
+    _hasCommittedAudio = _checkExistingRecording();
     if (_hasRecording) {
       _initAudioPlayer();
     }
@@ -136,8 +141,12 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _l10n = AppLocalizations.of(context)!;
   }
 
+  String _activeAudioPath() => _hasPendingNewAudio
+      ? AppPaths.audioTempFilePath(_vocab.id)
+      : AppPaths.audioFilePath(_vocab.id);
+
   Future<void> _initAudioPlayer() async {
-    await _audioPlayer.setSourceDeviceFile(AppPaths.audioFilePath(_vocab.id));
+    await _audioPlayer.setSourceDeviceFile(_activeAudioPath());
     if (!mounted) return;
     final duration = await _audioPlayer.getDuration();
     if (mounted) {
@@ -228,6 +237,23 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       }
     }
 
+    if (_hasPendingNewAudio) {
+      await _commitAudioFile(_vocab.id);
+      _hasCommittedAudio = true;
+      _hasPendingNewAudio = false;
+    } else if (_pendingDelete) {
+      final finalFile = AppPaths.audioFile(_vocab.id);
+      if (finalFile.existsSync()) {
+        await finalFile.delete();
+        if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
+          AudioUploadQueueService.instance.cancel(_vocab.id);
+          unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
+        }
+      }
+      _hasCommittedAudio = false;
+      _pendingDelete = false;
+    }
+
     if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
       AudioUploadQueueService.instance.enqueue(widget.boxKey, _vocab.id);
     }
@@ -242,6 +268,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     return true;
   }
 
+  /// Moves a temp audio from the temp location to its final location.
+  Future<void> _commitAudioFile(String vocabId) async {
+    final temp = AppPaths.audioTempFile(vocabId);
+    if (!await temp.exists()) return;
+    await temp.copy(AppPaths.audioFilePath(vocabId));
+    await temp.delete();
+  }
+
   Future<void> _saveAndNextPressed() async {
     final saved = await _save();
     if (!saved) return;
@@ -253,7 +287,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
 
     _vocab = _boxController.createVocabulary();
-    _hasRecording = false;
+    _hasCommittedAudio = false;
+    _hasPendingNewAudio = false;
+    _pendingDelete = false;
     _isGeneratingTts = false;
     _recordDuration = Duration.zero;
     _frontController.clear();
@@ -276,6 +312,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           destructive: true,
           onPressed: () {
             _boxController.removeVocabularyFromBox(widget.boxKey, _vocab.id);
+            if (_hasPendingNewAudio) {
+              final temp = AppPaths.audioTempFile(_vocab.id);
+              if (temp.existsSync()) unawaited(temp.delete());
+            }
             Navigator.of(context).pop();
           },
         ),
@@ -287,18 +327,20 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (await _audioRecorder.hasPermission()) {
       if (_recording) {
         await _audioRecorder.stop();
-        _hasRecording = true;
+        _hasPendingNewAudio = true;
+        _pendingDelete = false;
         _isDirty = true;
         _stopRecordTimer();
       } else {
         await _audioRecorder.start(
           _audioConfig,
-          path: AppPaths.audioFilePath(_vocab.id),
+          path: AppPaths.audioTempFilePath(_vocab.id),
         );
         _startRecordTimer();
       }
       setState(() => _recording = !_recording);
     } else {
+      if (!mounted) return;
       await showAppDialog(
         context: context,
         title: _l10n.editVocabNoPermission,
@@ -341,28 +383,25 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       return;
     }
 
-    await _audioPlayer.play(
-      DeviceFileSource(AppPaths.audioFilePath(_vocab.id)),
-    );
+    await _audioPlayer.play(DeviceFileSource(_activeAudioPath()));
 
     if (mounted) setState(() => _isPlaying = true);
   }
 
+  /// Removes the current audio.
   void _deleteAudio() async {
     if (!_hasRecording) return;
-    final file = AppPaths.audioFile(_vocab.id);
-    if (file.existsSync()) {
-      await file.delete();
-      if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
-        AudioUploadQueueService.instance.cancel(_vocab.id);
-        unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
-      }
-      _recordDuration = Duration.zero;
-      setState(() {
-        _hasRecording = false;
-        _isDirty = true;
-      });
+
+    if (_hasPendingNewAudio) {
+      final temp = AppPaths.audioTempFile(_vocab.id);
+      if (await temp.exists()) await temp.delete();
+      _hasPendingNewAudio = false;
+    } else {
+      _pendingDelete = true;
     }
+
+    _recordDuration = Duration.zero;
+    setState(() => _isDirty = true);
   }
 
   /// Generates an AI pronunciation of the back text.
@@ -413,11 +452,12 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                 .any((v) => v.id == generatingVocabId) ??
             false;
         if (vocabStillExists) {
+          await _commitAudioFile(generatingVocabId);
           if (!_boxController.isLocal(boxKey)) {
             AudioUploadQueueService.instance.enqueue(boxKey, generatingVocabId);
           }
         } else {
-          final orphan = AppPaths.audioFile(generatingVocabId);
+          final orphan = AppPaths.audioTempFile(generatingVocabId);
           if (orphan.existsSync()) await orphan.delete();
         }
         return;
@@ -426,7 +466,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       await _initAudioPlayer();
       if (mounted) {
         setState(() {
-          _hasRecording = true;
+          _hasPendingNewAudio = true;
+          _pendingDelete = false;
           _isGeneratingTts = false;
           _isDirty = true;
         });
@@ -447,12 +488,16 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     await _audioPlayer.stop();
   }
 
-  /// Deletes the audio file belonging to the current vocabulary from disk.
-  Future<void> _deleteAudioFileFromDisk() async {
-    final file = AppPaths.audioFile(_vocab.id);
-    if (file.existsSync()) {
-      await file.delete();
+  /// Discards any staged (not-yet-saved) audio change.
+  Future<void> _discardPendingAudio() async {
+    if (_hasPendingNewAudio) {
+      final file = AppPaths.audioTempFile(_vocab.id);
+      if (await file.exists()) {
+        await file.delete();
+      }
     }
+    _hasPendingNewAudio = false;
+    _pendingDelete = false;
   }
 
   /// Shown when the user tries to leave the screen while [_isDirty] is true.
@@ -481,7 +526,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           Navigator.of(context).pop();
         }
       case _UnsavedChangesAction.discard:
-        await _deleteAudioFileFromDisk();
+        await _discardPendingAudio();
         if (mounted) Navigator.of(context).pop();
       case null:
         break;

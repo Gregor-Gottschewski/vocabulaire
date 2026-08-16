@@ -8,15 +8,21 @@ class AppPaths {
   static late final Directory _applicationSupportBaseDir;
   static late final Directory _applicationTempBaseDir;
   static late final String audioDirPath;
+  static late final String audioTempDirPath;
 
   static Future<void> init() async {
     _applicationDocumentsBaseDir = await getApplicationDocumentsDirectory();
     _applicationSupportBaseDir = await getApplicationSupportDirectory();
     _applicationTempBaseDir = await getTemporaryDirectory();
     audioDirPath = p.join(_applicationDocumentsBaseDir.path, 'audio');
+    audioTempDirPath = p.join(_applicationTempBaseDir.path, 'audio_pending');
     final dir = Directory(audioDirPath);
     if (!await dir.exists()) {
       await dir.create(recursive: true);
+    }
+    final tempDir = Directory(audioTempDirPath);
+    if (!await tempDir.exists()) {
+      await tempDir.create(recursive: true);
     }
     final exportDir = applicationExportBaseDirectory;
     if (!await exportDir.exists()) {
@@ -29,6 +35,12 @@ class AppPaths {
   }
 
   static File audioFile(String cardId) => File(audioFilePath(cardId));
+
+  static String audioTempFilePath(String cardId) {
+    return p.join(audioTempDirPath, '$cardId.m4a');
+  }
+
+  static File audioTempFile(String cardId) => File(audioTempFilePath(cardId));
 
   static Directory get applicationExtractDirectory =>
       Directory(p.join(_applicationTempBaseDir.path, 'extracted'));

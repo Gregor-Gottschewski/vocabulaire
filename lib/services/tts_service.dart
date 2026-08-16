@@ -60,6 +60,6 @@ class TtsService {
 
     final audioContent = data['audioContent'] as String;
     final bytes = base64Decode(audioContent);
-    await AppPaths.audioFile(cardId).writeAsBytes(bytes, flush: true);
+    await AppPaths.audioTempFile(cardId).writeAsBytes(bytes, flush: true);
   }
 }
