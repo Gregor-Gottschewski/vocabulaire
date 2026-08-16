@@ -5,3 +5,7 @@
 # Xcode-related
 **/dgph
 **/xcuserdata/
+
+# Copied per-flavor by the "Select Firebase Config" build phase from
+# Runner/Firebase/<flavor>/GoogleService-Info.plist — not source of truth.
+Runner/GoogleService-Info.plist

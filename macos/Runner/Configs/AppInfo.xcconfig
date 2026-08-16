@@ -10,5 +10,8 @@ PRODUCT_NAME = vocabulaire
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = me.gregorgott.vocabulaire
 
+// The application's display name (overridden per-flavor in Configs/Flavors/)
+APP_DISPLAY_NAME = Vocabulaire
+
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 me.gregorgott. All rights reserved.

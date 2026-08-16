@@ -7,6 +7,14 @@
           "appId": "1:67152466070:ios:57f66a1b30abd2b4c8b2b7",
           "uploadDebugSymbols": false,
           "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        },
+        "buildConfigurations": {
+          "Debug-dev": {
+            "projectId": "vocabulaire-test",
+            "appId": "1:67152466070:ios:8ac3e4fdd11d3688c8b2b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "ios/Runner/Firebase/dev/GoogleService-Info.plist"
+          }
         }
       },
       "macos": {
@@ -15,6 +23,14 @@
           "appId": "1:67152466070:ios:57f66a1b30abd2b4c8b2b7",
           "uploadDebugSymbols": false,
           "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        },
+        "buildConfigurations": {
+          "Debug-dev": {
+            "projectId": "vocabulaire-test",
+            "appId": "1:67152466070:ios:8ac3e4fdd11d3688c8b2b7",
+            "uploadDebugSymbols": false,
+            "fileOutput": "macos/Runner/Firebase/dev/GoogleService-Info.plist"
+          }
         }
       },
       "dart": {
@@ -23,6 +39,13 @@
           "configurations": {
             "ios": "1:67152466070:ios:57f66a1b30abd2b4c8b2b7",
             "macos": "1:67152466070:ios:57f66a1b30abd2b4c8b2b7"
+          }
+        },
+        "lib/firebase_options_dev.dart": {
+          "projectId": "vocabulaire-test",
+          "configurations": {
+            "ios": "1:67152466070:ios:8ac3e4fdd11d3688c8b2b7",
+            "macos": "1:67152466070:ios:8ac3e4fdd11d3688c8b2b7"
           }
         }
       }

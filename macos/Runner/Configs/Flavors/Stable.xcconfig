@@ -1,0 +1,5 @@
+#include "../AppInfo.xcconfig"
+
+PRODUCT_NAME = vocabulaire
+PRODUCT_BUNDLE_IDENTIFIER = me.gregorgott.vocabulaire
+APP_DISPLAY_NAME = Vocabulaire
