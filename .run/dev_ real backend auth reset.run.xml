@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="dev: real backend auth reset" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define=RESET_AUTH_SESSION=true --flavor dev" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main_dev.dart" />
+    <method v="2" />
+  </configuration>
+</component>
