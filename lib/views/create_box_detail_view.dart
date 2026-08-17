@@ -151,7 +151,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
         sourceLanguage: isVocabulary ? _source : null,
         targetLanguage: isVocabulary ? _target : null,
       );
-      await _boxController.addBoxes([box], online: _saveOnline);
+      await _boxController.addBoxes([box], online: UsageService.instance.listenable.value.isPremium && _saveOnline);
       if (!mounted) return;
       Navigator.of(context, rootNavigator: true).pop((box: box, key: box.id));
     } on AppException catch (e) {
