@@ -30,7 +30,6 @@
 		6B223DB2049F1D457E8E3B55 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F7DC6C18256956BBDDC43C7 /* Pods_Runner.framework */; };
 		745EBFD62BC893251A115AED /* Pods_RunnerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 781130D5FEB8977DAA8A8951 /* Pods_RunnerTests.framework */; };
 		78A318202AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage in Frameworks */ = {isa = PBXBuildFile; productRef = 78A3181F2AECB46A00862997 /* FlutterGeneratedPluginSwiftPackage */; };
-		D398F1CF24926BDCDCDA36A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 387B6B76569F360AF0519942 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -367,7 +366,6 @@
 			files = (
 				33CC10F32044A3C60003C045 /* Assets.xcassets in Resources */,
 				33CC10F62044A3C60003C045 /* MainMenu.xib in Resources */,
-				D398F1CF24926BDCDCDA36A7 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
