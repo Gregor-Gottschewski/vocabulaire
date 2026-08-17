@@ -769,7 +769,7 @@ abstract class AppLocalizations {
   /// No description provided for @editVocabGenerateAudio.
   ///
   /// In de, this message translates to:
-  /// **'Aussprache generieren'**
+  /// **'Generieren'**
   String get editVocabGenerateAudio;
 
   /// No description provided for @editVocabOverwriteAudioTitle.

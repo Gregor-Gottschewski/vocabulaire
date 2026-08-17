@@ -153,7 +153,7 @@
   "errorImportMissingStoreFile": "Invalid file format: store.json not found in archive",
   "errorImportInvalidFormat": "Invalid file format: expected a JSON object",
 
-  "editVocabGenerateAudio": "Generate pronunciation",
+  "editVocabGenerateAudio": "Generate",
   "editVocabOverwriteAudioTitle": "Overwrite recording?",
   "editVocabOverwriteAudioMessage": "This card already has an audio recording. Replace it with the newly generated pronunciation?",
   "editVocabOverwriteAudioConfirm": "Overwrite",

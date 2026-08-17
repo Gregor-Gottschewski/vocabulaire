@@ -186,7 +186,7 @@
   "errorVocabularyLimitReached": "Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.",
   "errorAudioStorageLimitReached": "Audio-Speicherlimit erreicht. Lagere eine Box aus, um Speicherplatz freizugeben.",
 
-  "editVocabGenerateAudio": "Aussprache generieren",
+  "editVocabGenerateAudio": "Generieren",
   "editVocabOverwriteAudioTitle": "Aufnahme überschreiben?",
   "editVocabOverwriteAudioMessage": "Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?",
   "editVocabOverwriteAudioConfirm": "Überschreiben",

@@ -383,7 +383,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Limite de stockage audio atteinte. Rends une boîte locale pour libérer de l\'espace de stockage.';
 
   @override
-  String get editVocabGenerateAudio => 'Générer la prononciation';
+  String get editVocabGenerateAudio => 'Générer';
 
   @override
   String get editVocabOverwriteAudioTitle => 'Remplacer l\'enregistrement ?';

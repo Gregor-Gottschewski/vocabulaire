@@ -377,7 +377,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Audio storage limit reached. Move a box offline to free up storage space.';
 
   @override
-  String get editVocabGenerateAudio => 'Generate pronunciation';
+  String get editVocabGenerateAudio => 'Generate';
 
   @override
   String get editVocabOverwriteAudioTitle => 'Overwrite recording?';
