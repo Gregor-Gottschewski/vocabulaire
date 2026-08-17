@@ -12,6 +12,7 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
+import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/vocabulary.dart';
@@ -248,6 +249,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
           AudioUploadQueueService.instance.cancel(_vocab.id);
           unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
+          unawaited(
+            VocabularySyncService.instance.setAudioSynced(
+              widget.boxKey,
+              _vocab.id,
+              false,
+            ),
+          );
         }
       }
       _hasCommittedAudio = false;

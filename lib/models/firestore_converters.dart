@@ -24,10 +24,12 @@ class FirestoreConverters {
   }
 
   /// Reverses [cardDataToFirestore] — converts Firestore's `card` map back
-  /// into the ISO8601-string shape `Card.fromMap()` expects.
+  /// into the shape `Card.fromMap()` expects..
   static Map<String, dynamic> cardDataFromFirestore(Map<String, dynamic> data) {
     return {
       ...data,
+      'stability': (data['stability'] as num?)?.toDouble(),
+      'difficulty': (data['difficulty'] as num?)?.toDouble(),
       'due': timestampToIsoString(data['due']),
       'lastReview': timestampToIsoString(data['lastReview']),
     };

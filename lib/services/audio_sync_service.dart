@@ -70,6 +70,13 @@ class AudioSyncService {
       await ref.writeToFile(file);
     } on FirebaseException catch (e) {
       debugPrint('AudioSyncService: download failed for $vocabId: $e');
+      if (e.code == 'object-not-found') {
+        await VocabularySyncService.instance.setAudioSynced(
+          boxId,
+          vocabId,
+          false,
+        );
+      }
     }
   }
 
