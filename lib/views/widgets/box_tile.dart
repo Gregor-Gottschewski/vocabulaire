@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/review_session.dart';
+import 'package:vocabulaire/models/vocabulary.dart';
 import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 import '../../models/vocabulary_box.dart';
@@ -23,23 +24,25 @@ class BoxTile extends StatefulWidget {
 }
 
 class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
-  VoidCallback? _startSession(BuildContext context) {
-    final box = widget.box;
-    final matchingCards = ReviewSession.filterVocabularies(
-      box.vocabularies,
+
+  List<Vocabulary> _overdueVocabularies() {
+    return ReviewSession.filterVocabularies(
+      widget.box.vocabularies,
       onlyTimely: true,
       method: LearningMethod.all,
-      dailyLimitEnabled: box.dailyLimitEnabled,
-      remainingNewCards: box.remainingNewCardsToday,
+      dailyLimitEnabled: widget.box.dailyLimitEnabled,
+      remainingNewCards: widget.box.remainingNewCardsToday,
     );
+  }
 
-    if (matchingCards.isEmpty) return null;
+  VoidCallback? _startSession(BuildContext context) {
+    if (_overdueVocabularies().isEmpty) return null;
 
     return () {
       Navigator.of(context).push(
         AppPageRoute(
           builder: (_) => ReviewView(
-            boxKey: box.id,
+            boxKey: widget.box.id,
             onlyTimely: true,
             learningMethod: LearningMethod.all,
           ),
@@ -103,11 +106,12 @@ class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
               ),
               const SizedBox(width: AppSpacing.gapMedium),
               Text(
-                l10n.cardsCounter(box.vocabularies.length),
+                l10n.overdueCardsCounter(_overdueVocabularies().length),
                 style: AppTypography.serifValue.copyWith(
                   color: colors.textSecondary,
                 ),
               ),
+              const SizedBox(width: AppSpacing.gapMedium,),
               TextLinkButton(
                 label: l10n.boxDetailStart,
                 onPressed: _startSession(context),

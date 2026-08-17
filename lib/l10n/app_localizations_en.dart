@@ -27,8 +27,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get back => 'Back';
 
   @override
-  String cardsCounter(int num) {
-    return '$num cards';
+  String overdueCardsCounter(int num) {
+    return '$num overdue';
   }
 
   @override

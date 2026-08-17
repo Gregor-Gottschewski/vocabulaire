@@ -10,8 +10,8 @@
 
   "back": "Back",
 
-  "cardsCounter": "{num} cards",
-  "@cardsCounter": {
+  "overdueCardsCounter": "{num} overdue",
+  "@overdueCardsCounter": {
     "placeholders": {
       "num": { "type":  "int" }
     }

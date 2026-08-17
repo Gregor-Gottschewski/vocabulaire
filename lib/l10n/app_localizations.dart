@@ -136,11 +136,11 @@ abstract class AppLocalizations {
   /// **'Zurück'**
   String get back;
 
-  /// No description provided for @cardsCounter.
+  /// No description provided for @overdueCardsCounter.
   ///
   /// In de, this message translates to:
-  /// **'{num} Karten'**
-  String cardsCounter(int num);
+  /// **'{num} fällig'**
+  String overdueCardsCounter(int num);
 
   /// No description provided for @settingsTitle.
   ///
