@@ -9,6 +9,7 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color textSecondary;
   final Color textLabel;
   final Color textLink;
+  final Color deactivatedTextLink;
   final Color borderStrong;
   final Color borderSubtle;
   final Color danger;
@@ -24,6 +25,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.textSecondary,
     required this.textLabel,
     required this.textLink,
+    required this.deactivatedTextLink,
     required this.borderStrong,
     required this.borderSubtle,
     required this.danger,
@@ -40,6 +42,7 @@ class AppColors extends ThemeExtension<AppColors> {
     textSecondary: Color(0xFF66635D),
     textLabel: Color(0xFF58554F),
     textLink: Color(0xFF302D28),
+    deactivatedTextLink: Color(0xFF888888),
     borderStrong: Color(0xFFD8D4CD),
     borderSubtle: Color(0xFFE7E4E0),
     danger: Color(0xFFA7391E),
@@ -56,6 +59,7 @@ class AppColors extends ThemeExtension<AppColors> {
     textSecondary: Color(0xFF898680),
     textLabel: Color(0xFF9B9891),
     textLink: Color(0xFFC1BDB7),
+    deactivatedTextLink: Color(0xFF363636),
     borderStrong: Color(0xFF36322D),
     borderSubtle: Color(0xFF262421),
     danger: Color(0xFFD05F43),
@@ -73,6 +77,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? textSecondary,
     Color? textLabel,
     Color? textLink,
+    Color? deactivatedTextLink,
     Color? borderStrong,
     Color? borderSubtle,
     Color? danger,
@@ -88,6 +93,7 @@ class AppColors extends ThemeExtension<AppColors> {
       textSecondary: textSecondary ?? this.textSecondary,
       textLabel: textLabel ?? this.textLabel,
       textLink: textLink ?? this.textLink,
+      deactivatedTextLink: deactivatedTextLink ?? this.deactivatedTextLink,
       borderStrong: borderStrong ?? this.borderStrong,
       borderSubtle: borderSubtle ?? this.borderSubtle,
       danger: danger ?? this.danger,
@@ -108,6 +114,11 @@ class AppColors extends ThemeExtension<AppColors> {
       textSecondary: Color.lerp(textSecondary, other.textSecondary, t)!,
       textLabel: Color.lerp(textLabel, other.textLabel, t)!,
       textLink: Color.lerp(textLink, other.textLink, t)!,
+      deactivatedTextLink: Color.lerp(
+        deactivatedTextLink,
+        other.deactivatedTextLink,
+        t,
+      )!,
       borderStrong: Color.lerp(borderStrong, other.borderStrong, t)!,
       borderSubtle: Color.lerp(borderSubtle, other.borderSubtle, t)!,
       danger: Color.lerp(danger, other.danger, t)!,

@@ -19,7 +19,11 @@ class TextLinkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = this.color ?? context.colors.textLink;
+    final color =
+        this.color ??
+        (onPressed != null
+            ? context.colors.textLink
+            : context.colors.deactivatedTextLink);
     return Material(
       type: MaterialType.transparency,
       child: Center(
