@@ -1,12 +1,9 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/views/review_view.dart';
 
 import '../models/review_session.dart';
-import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
@@ -15,6 +12,7 @@ import '../theme/theme_context_ext.dart';
 import 'vocabulary_list_view.dart';
 import 'widgets/app_bottom_sheet.dart';
 import 'widgets/daily_limit_stepper.dart';
+import 'widgets/due_refresh_mixin.dart';
 import 'widgets/key_value_row.dart';
 import 'widgets/pill_toggle.dart';
 import 'widgets/primary_action_button.dart';
@@ -33,15 +31,14 @@ class BoxDetailView extends StatefulWidget {
   State<BoxDetailView> createState() => _BoxDetailWidget();
 }
 
-class _BoxDetailWidget extends State<BoxDetailView> {
+class _BoxDetailWidget extends State<BoxDetailView>
+    with DueRefreshMixin<BoxDetailView> {
   late final ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxNotifier;
   late AppLocalizations _l10n;
   bool _onlyTimely = true;
   LearningMethod _selectedOption = LearningMethod.all;
   bool _dailyLimitEnabled = false;
   int _dailyLimit = 20;
-  Timer? _dueRefreshTimer;
-  DateTime? _scheduledDueRefresh;
 
   @override
   void initState() {
@@ -64,35 +61,8 @@ class _BoxDetailWidget extends State<BoxDetailView> {
 
   @override
   void dispose() {
-    _dueRefreshTimer?.cancel();
     _boxNotifier.dispose();
     super.dispose();
-  }
-
-  /// Schedules a rebuild for the next moment a vocabulary in [vocabularies]
-  /// transitions from not-due to due
-  void _scheduleRebuild(List<Vocabulary> vocabularies) {
-    final now = DateTime.now();
-    DateTime? nextDue;
-    for (final v in vocabularies) {
-      if (v.card.due.isAfter(now)) {
-        if (nextDue == null || v.card.due.isBefore(nextDue)) {
-          nextDue = v.card.due;
-        }
-      }
-    }
-
-    if (nextDue == _scheduledDueRefresh) return;
-
-    _dueRefreshTimer?.cancel();
-    _scheduledDueRefresh = nextDue;
-    if (nextDue == null) return;
-
-    final delay = nextDue.difference(now);
-    _dueRefreshTimer = Timer(delay.isNegative ? Duration.zero : delay, () {
-      if (!mounted) return;
-      setState(() {});
-    });
   }
 
   @override
@@ -189,7 +159,7 @@ class _BoxDetailWidget extends State<BoxDetailView> {
     final colors = context.colors;
     final box = widget.box;
 
-    _scheduleRebuild(box.vocabularies);
+    scheduleDueRebuild(box.vocabularies);
 
     final matchingCards = ReviewSession.filterVocabularies(
       box.vocabularies,
