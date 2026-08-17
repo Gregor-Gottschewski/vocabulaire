@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'app_exception.dart';
 import 'app_paths.dart';
@@ -34,7 +35,11 @@ class TtsService {
       throw AppException(AppError.ttsTextTooLong);
     }
 
-    await AuthService.instance.ensureSignedIn();
+    try {
+      await AuthService.instance.ensureSignedIn();
+    } on FirebaseAuthException catch (e) {
+      throw AppException(AppError.ttsUnknownError, details: e);
+    }
 
     final Map<Object?, Object?> data;
     try {

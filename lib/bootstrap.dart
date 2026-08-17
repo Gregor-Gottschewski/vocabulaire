@@ -59,8 +59,12 @@ Future<void> bootstrap(Flavor flavor) async {
   );
 
   // reset session if debug mode enabled, firebase emulator used and auth reset variable set to true
-  await AuthService.instance.ensureSignedIn(
+  await AuthService.instance.ensureSignedInWithRetry(
     forceFreshSession: kDebugMode && _useFirebaseEmulator && _resetAuthSession,
+    onSignedIn: () {
+      BoxSyncService.instance.attach();
+      UsageService.instance.attach();
+    },
   );
 
   await Hive.initFlutter();
