@@ -231,7 +231,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailEditVocabs => 'Afficher la liste des vocabulaires';
 
   @override
-  String get boxDetailStart => 'Démarrer la session';
+  String get boxDetailStart => 'Démarrer';
 
   @override
   String get boxDetailDeleteTitle => 'Supprimer la boîte';

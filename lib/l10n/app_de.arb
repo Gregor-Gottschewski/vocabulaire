@@ -121,7 +121,7 @@
   "boxDetailNewCardsPerDay": "Neue Karten / Tag",
   "boxDetailDailyLimitInfo": "Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.",
   "boxDetailEditVocabs": "Vokabeln bearbeiten",
-  "boxDetailStart": "Abfrage starten",
+  "boxDetailStart": "Starten",
   "boxDetailDeleteTitle": "Box löschen",
   "boxDetailDeleteMessage": "Möchtest du diese Box wirklich löschen?",
   "boxDetailDelete": "Löschen",

@@ -231,7 +231,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailEditVocabs => 'View vocabulary list';
 
   @override
-  String get boxDetailStart => 'Start session';
+  String get boxDetailStart => 'Start';
 
   @override
   String get boxDetailDeleteTitle => 'Delete box';

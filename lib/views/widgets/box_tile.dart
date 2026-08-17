@@ -15,6 +15,8 @@ class BoxTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final colors = context.colors;
     return Material(
       type: MaterialType.transparency,
@@ -30,9 +32,7 @@ class BoxTile extends StatelessWidget {
               ),
             ),
           ),
-          padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.rowVertical,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.rowVertical),
           child: Row(
             children: [
               Expanded(
@@ -51,7 +51,7 @@ class BoxTile extends StatelessWidget {
                     Text(
                       box.description.isNotEmpty
                           ? box.description
-                          : AppLocalizations.of(context)!.boxTileNoDescription,
+                          : l10n.boxTileNoDescription,
                       style: AppTypography.captionSans.copyWith(
                         color: colors.textSecondary,
                         fontStyle: FontStyle.italic,
@@ -64,7 +64,7 @@ class BoxTile extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.gapMedium),
               Text(
-                AppLocalizations.of(context)!.cardsCounter(box.vocabularies.length),
+                l10n.cardsCounter(box.vocabularies.length),
                 style: AppTypography.serifValue.copyWith(
                   color: colors.textSecondary,
                 ),

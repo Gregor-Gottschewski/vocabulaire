@@ -505,7 +505,7 @@ abstract class AppLocalizations {
   /// No description provided for @boxDetailStart.
   ///
   /// In de, this message translates to:
-  /// **'Abfrage starten'**
+  /// **'Starten'**
   String get boxDetailStart;
 
   /// No description provided for @boxDetailDeleteTitle.

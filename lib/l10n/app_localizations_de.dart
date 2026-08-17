@@ -232,7 +232,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxDetailEditVocabs => 'Vokabeln bearbeiten';
 
   @override
-  String get boxDetailStart => 'Abfrage starten';
+  String get boxDetailStart => 'Starten';
 
   @override
   String get boxDetailDeleteTitle => 'Box löschen';
