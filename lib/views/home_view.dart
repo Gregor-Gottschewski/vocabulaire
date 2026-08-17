@@ -100,7 +100,7 @@ class HomeViewWidget extends State<HomeView> {
                       itemBuilder: (context, index) {
                         final entry = entries[index];
                         return BoxTile(
-≠                          key: ValueKey(entry.key),
+                          key: ValueKey(entry.key),
                           box: entry.value,
                           onTap: () {
                             Navigator.of(context).push(
