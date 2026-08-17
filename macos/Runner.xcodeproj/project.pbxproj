@@ -409,7 +409,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\nif [[ \"${CONFIGURATION}\" == *-dev ]]; then FLAVOR=\"dev\"; else FLAVOR=\"stable\"; fi\ncp -f \"${PROJECT_DIR}/Runner/Firebase/${FLAVOR}/GoogleService-Info.plist\" \"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\n";
+			shellScript = "set -e\nif [[ \"${CONFIGURATION}\" == *-dev ]]; then FLAVOR=\"dev\"; else FLAVOR=\"stable\"; fi\nSRC=\"${PROJECT_DIR}/Runner/Firebase/${FLAVOR}/GoogleService-Info.plist\"\nDEST=\"${PROJECT_DIR}/Runner/GoogleService-Info.plist\"\nif ! cmp -s \"$SRC\" \"$DEST\"; then\n  cp -f \"$SRC\" \"$DEST\"\nfi\n";
 		};
 		3399D490228B24CF009A79C7 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -457,11 +457,13 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
+				"$(PROJECT_DIR)/Runner/GoogleService-Info.plist",
 			);
 			name = "FlutterFire: \"flutterfire bundle-service-file\"";
 			outputFileListPaths = (
 			);
 			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(PRODUCT_NAME).app/Contents/Resources/GoogleService-Info.plist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
