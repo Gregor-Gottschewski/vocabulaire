@@ -16,6 +16,7 @@ import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/auth_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
+import 'models/conjugation.dart';
 import 'models/pending_audio_upload.dart';
 import 'models/vocabulary_box.dart';
 import 'models/vocabulary.dart';
@@ -74,6 +75,7 @@ Future<void> bootstrap(Flavor flavor) async {
   Hive.registerAdapter(VocabularyBoxAdapter());
   Hive.registerAdapter(AppSettingsAdapter());
   Hive.registerAdapter(PendingAudioUploadAdapter());
+  Hive.registerAdapter(ConjugationAdapter());
 
   await Hive.openBox<VocabularyBox>('boxes');
   await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
