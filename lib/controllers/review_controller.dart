@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import '../controllers/box_controller.dart';
+import '../models/reviewable_item.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
 import '../models/review_session.dart';
@@ -15,7 +16,7 @@ class ReviewController extends ChangeNotifier {
   final LearningMethod learningMethod;
 
   VocabularyBox? _box;
-  List<Vocabulary> _cards = [];
+  List<ReviewableItem> _cards = [];
   int _index = 0;
 
   late final ValueListenable _boxListenable;
@@ -34,9 +35,9 @@ class ReviewController extends ChangeNotifier {
 
   int get length => _cards.length;
 
-  Vocabulary? get current => _index < _cards.length ? _cards[_index] : null;
+  ReviewableItem? get current => _index < _cards.length ? _cards[_index] : null;
 
-  List<Vocabulary> get cards => List.unmodifiable(_cards);
+  List<ReviewableItem> get cards => List.unmodifiable(_cards);
 
   VocabularyBox? get box => _box;
 
@@ -57,24 +58,24 @@ class ReviewController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Remove vocabularies from current review session that were deleted from
-  /// this box while the review session is in progress.
+  /// Remove items from current review session that were deleted from this
+  /// box (as a vocabulary or a conjugation) while the review session is in
+  /// progress.
   void _onBoxChanged() {
-    final currentIds = _boxController
-        .getBox(boxKey)
-        ?.vocabularies
-        .map((v) => v.id)
-        .toSet();
-    if (currentIds != null) {
-      _cards.removeWhere((v) => !currentIds.contains(v.id));
+    final liveBox = _boxController.getBox(boxKey);
+    if (liveBox != null) {
+      final currentIds = ReviewSession.reviewableItemsForBox(
+        liveBox,
+      ).map((i) => i.id).toSet();
+      _cards.removeWhere((i) => !currentIds.contains(i.id));
     }
     if (_index >= _cards.length) _index = _cards.length;
     notifyListeners();
   }
 
-  /// Builds the list of vocabularies to review based on the box and applied filters.
+  /// Builds the list of reviewable items to review based on the box and applied filters.
   /// Returned list is shuffled.
-  List<Vocabulary> buildCardList() {
+  List<ReviewableItem> buildCardList() {
     var b = _boxController.getBox(boxKey);
     if (b == null) {
       throw Exception("Box with key $boxKey not found");
@@ -87,8 +88,8 @@ class ReviewController extends ChangeNotifier {
 
     _box = b;
 
-    return ReviewSession.filterVocabularies(
-      b.vocabularies,
+    return ReviewSession.filterItems(
+      ReviewSession.reviewableItemsForBox(b),
       onlyTimely: onlyTimely,
       method: learningMethod,
       dailyLimitEnabled: b.dailyLimitEnabled,
@@ -101,23 +102,46 @@ class ReviewController extends ChangeNotifier {
   Future<bool> applyRating(Rating rating) async {
     if (_index >= _cards.length) return false;
 
-    final vocabulary = _cards[_index];
+    final item = _cards[_index];
 
-    final stillInBox =
-        _boxController
-            .getBox(boxKey)
-            ?.vocabularies
-            .any((v) => v.id == vocabulary.id) ??
-        false;
-    if (!stillInBox) {
+    final liveBox = _boxController.getBox(boxKey);
+    final stillPresent =
+        liveBox != null &&
+        ReviewSession.reviewableItemsForBox(
+          liveBox,
+        ).any((i) => i.id == item.id);
+    if (!stillPresent) {
       skip();
       return true;
     }
 
-    final wasNew = vocabulary.card.lastReview == null;
-    final reviewResult = _scheduler.reviewCard(vocabulary.card, rating).card;
-    final updatedVocab = vocabulary.copyWith(cardData: reviewResult.toMap());
-    _cards[_index] = updatedVocab;
+    final wasNew = item.card.lastReview == null;
+    final reviewResult = _scheduler.reviewCard(item.card, rating).card;
+    final newCardData = reviewResult.toMap();
+
+    final Vocabulary updatedVocab;
+    final ReviewableItem updatedItem;
+    if (item is VocabularyItem) {
+      updatedVocab = item.vocabulary.copyWith(cardData: newCardData);
+      updatedItem = VocabularyItem(updatedVocab);
+    } else if (item is ConjugationItem) {
+      final updatedConjugations = item.parent.conjugations
+          .map(
+            (c) => c.id == item.conjugation.id
+                ? c.copyWith(cardData: newCardData)
+                : c,
+          )
+          .toList();
+      updatedVocab = item.parent.copyWith(conjugations: updatedConjugations);
+      updatedItem = ConjugationItem(
+        updatedVocab,
+        updatedVocab.conjugations.firstWhere((c) => c.id == item.id),
+      );
+    } else {
+      throw StateError('Unknown ReviewableItem variant');
+    }
+
+    _cards[_index] = updatedItem;
     if (_box != null) {
       _boxController.updateVocabularyInBox(boxKey, updatedVocab);
       if (wasNew) {

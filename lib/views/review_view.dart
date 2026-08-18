@@ -6,7 +6,7 @@ import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
 import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/review_session.dart';
-import 'package:vocabulaire/models/vocabulary.dart';
+import 'package:vocabulaire/models/reviewable_item.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 
 import '../theme/app_spacing.dart';
@@ -114,8 +114,10 @@ class _ReviewViewState extends State<ReviewView>
 
   void _playAudio() async {
     final current = _reviewController.current;
-    if (current == null) return;
-    await _player.play(DeviceFileSource(AppPaths.audioFilePath(current.id)));
+    if (current is! VocabularyItem) return;
+    await _player.play(
+      DeviceFileSource(AppPaths.audioFilePath(current.vocabulary.id)),
+    );
   }
 
   void _rate(Rating rating) {
@@ -187,11 +189,12 @@ class _ReviewViewState extends State<ReviewView>
     );
   }
 
-  Widget _buildCard(Vocabulary current, bool isVocabularyBox) {
+  Widget _buildCard(ReviewableItem current, bool isVocabularyBox) {
     final colors = context.colors;
     final showBackLabel = isVocabularyBox
         ? _l10n.reviewShowTranslation
         : _l10n.reviewShowBack;
+    final example = current is VocabularyItem ? current.vocabulary.example : '';
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -201,7 +204,7 @@ class _ReviewViewState extends State<ReviewView>
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              current.word,
+              current.frontText,
               textAlign: TextAlign.center,
               style: AppTypography.headlineSerif.copyWith(
                 color: colors.textPrimary,
@@ -237,7 +240,7 @@ class _ReviewViewState extends State<ReviewView>
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        current.meaning,
+                        current.backText,
                         textAlign: TextAlign.center,
                         style: AppTypography.headlineSerif.copyWith(
                           fontSize: 22,
@@ -246,10 +249,10 @@ class _ReviewViewState extends State<ReviewView>
                       ),
                     ),
                   ),
-                  if (current.example.isNotEmpty) ...[
+                  if (example.isNotEmpty) ...[
                     const SizedBox(height: AppSpacing.gapMedium),
                     Text(
-                      _l10n.reviewExample(current.example),
+                      _l10n.reviewExample(example),
                       textAlign: TextAlign.center,
                       style: AppTypography.labelSans.copyWith(
                         color: colors.textSecondary,
@@ -323,7 +326,8 @@ class _ReviewViewState extends State<ReviewView>
     final isVocabularyBox =
         _reviewController.box?.boxType == BoxType.vocabulary;
     final hasRecording =
-        current != null && AppPaths.audioFile(current.id).existsSync();
+        current is VocabularyItem &&
+        AppPaths.audioFile(current.vocabulary.id).existsSync();
 
     return AppScaffold(
       backLabel: _l10n.back,
