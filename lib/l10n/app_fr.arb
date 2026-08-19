@@ -87,6 +87,11 @@
     }
   },
 
+  "editVocabConjugationSection": "Conjugaison",
+  "editVocabConjugationTempsHint": "Temps",
+  "editVocabConjugationFormsHint": "Formes",
+  "editVocabConjugationAdd": "+ Ajouter une conjugaison",
+
   "reviewCard": "{index} sur {total}",
   "@reviewCard": {
     "placeholders": {

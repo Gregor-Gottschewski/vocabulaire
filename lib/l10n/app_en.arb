@@ -72,6 +72,11 @@
   "editVocabDifficulty": "Difficulty: {difficulty} of 10",
   "editVocabStability": "Stability: {stability}",
 
+  "editVocabConjugationSection": "Conjugation",
+  "editVocabConjugationTempsHint": "Tense",
+  "editVocabConjugationFormsHint": "Forms",
+  "editVocabConjugationAdd": "+ Add conjugation",
+
   "reviewCard": "{index} of {total}",
   "@reviewCard": {
     "placeholders": {

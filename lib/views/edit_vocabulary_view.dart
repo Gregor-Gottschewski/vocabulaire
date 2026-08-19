@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Card;
 import 'package:vocabulaire/l10n/app_localizations.dart';
+import 'package:fsrs/fsrs.dart' hide State;
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
@@ -15,6 +17,7 @@ import 'package:vocabulaire/services/tts_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 
 import '../controllers/box_controller.dart';
+import '../models/conjugation.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_spacing.dart';
@@ -53,6 +56,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   final TextEditingController _frontController = TextEditingController();
   final TextEditingController _backController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final Map<String, TextEditingController> _conjugationTempsControllers = {};
+  final Map<String, TextEditingController> _conjugationFormsControllers = {};
+  List<Conjugation> _conjugations = [];
   final BoxController _boxController = BoxController();
   final AudioRecorder _audioRecorder = AudioRecorder();
   final AudioPlayer _audioPlayer = AudioPlayer();
@@ -93,6 +99,14 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _descriptionController.text = _vocab.example;
     _vocabularyNumber = widget.number;
 
+    _conjugations = List<Conjugation>.from(_vocab.conjugations);
+    for (final c in _conjugations) {
+      _conjugationTempsControllers[c.id] = TextEditingController(text: c.temps)
+        ..addListener(_onInputChanged);
+      _conjugationFormsControllers[c.id] = TextEditingController(text: c.forms)
+        ..addListener(_onInputChanged);
+    }
+
     _hasCommittedAudio = _checkExistingRecording();
     if (_hasRecording) {
       _initAudioPlayer();
@@ -117,6 +131,12 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _frontController.dispose();
     _backController.dispose();
     _descriptionController.dispose();
+    for (final controller in _conjugationTempsControllers.values) {
+      controller.dispose();
+    }
+    for (final controller in _conjugationFormsControllers.values) {
+      controller.dispose();
+    }
     _audioRecorder.dispose();
     _audioPlayer.dispose();
     _playerCompleteSub?.cancel();
@@ -127,6 +147,51 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   /// Also updates the character counter
   void _onInputChanged() {
     if (mounted) setState(() => _isDirty = true);
+  }
+
+  /// Adds a new, empty conjugation row.
+  void _addConjugation() {
+    final conjugation = Conjugation(
+      temps: '',
+      forms: '',
+      cardData: Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap(),
+      id: const Uuid().v4(),
+    );
+    _conjugationTempsControllers[conjugation.id] = TextEditingController()
+      ..addListener(_onInputChanged);
+    _conjugationFormsControllers[conjugation.id] = TextEditingController()
+      ..addListener(_onInputChanged);
+    setState(() {
+      _conjugations = [..._conjugations, conjugation];
+      _isDirty = true;
+    });
+  }
+
+  /// Removes the conjugation with the given [id] and disposes its controllers.
+  void _removeConjugation(String id) {
+    _conjugationTempsControllers.remove(id)
+      ?..removeListener(_onInputChanged)
+      ..dispose();
+    _conjugationFormsControllers.remove(id)
+      ?..removeListener(_onInputChanged)
+      ..dispose();
+    setState(() {
+      _conjugations = _conjugations.where((c) => c.id != id).toList();
+      _isDirty = true;
+    });
+  }
+
+  /// Disposes and clears all per-row conjugation controllers.
+  void _resetConjugations() {
+    for (final controller in _conjugationTempsControllers.values) {
+      controller.dispose();
+    }
+    for (final controller in _conjugationFormsControllers.values) {
+      controller.dispose();
+    }
+    _conjugationTempsControllers.clear();
+    _conjugationFormsControllers.clear();
+    _conjugations = [];
   }
 
   /// Returns `true` if the back text is eligible for TTS generation, `false` otherwise.
@@ -198,6 +263,15 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _vocab.word = front;
     _vocab.meaning = back;
     _vocab.example = description;
+
+    for (final c in _conjugations) {
+      c.temps = _conjugationTempsControllers[c.id]!.text.trim();
+      c.forms = _conjugationFormsControllers[c.id]!.text.trim();
+    }
+    final syncedConjugations = _conjugations
+        .where((c) => c.temps.isNotEmpty || c.forms.isNotEmpty)
+        .toList();
+    _vocab = _vocab.copyWith(conjugations: syncedConjugations);
 
     if (_isEditing) {
       _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
@@ -303,6 +377,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     _frontController.clear();
     _backController.clear();
     _descriptionController.clear();
+    _resetConjugations();
     _vocabularyNumber++;
     if (mounted) setState(() => _isDirty = false);
   }
@@ -723,6 +798,51 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         ),
                       ),
                       const SizedBox(height: AppSpacing.sectionGap),
+
+                      if (widget.box.boxType == BoxType.vocabulary) ...[
+                        SectionTitle(text: _l10n.editVocabConjugationSection),
+                        const SizedBox(height: AppSpacing.gapMedium),
+                        for (final c in _conjugations) ...[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                flex: 2,
+                                child: AppTextField(
+                                  controller:
+                                      _conjugationTempsControllers[c.id],
+                                  placeholder:
+                                      _l10n.editVocabConjugationTempsHint,
+                                ),
+                              ),
+                              const SizedBox(width: AppSpacing.gapSmall),
+                              Expanded(
+                                flex: 3,
+                                child: AppTextField(
+                                  controller:
+                                      _conjugationFormsControllers[c.id],
+                                  placeholder:
+                                      _l10n.editVocabConjugationFormsHint,
+                                ),
+                              ),
+                              Transform.translate(
+                                offset: const Offset(AppSpacing.gapMedium, 0),
+                                child: TextLinkButton(
+                                  label: _l10n.boxDetailDelete,
+                                  color: colors.danger,
+                                  onPressed: () => _removeConjugation(c.id),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppSpacing.gapSmall),
+                        ],
+                        TextLinkButton(
+                          label: _l10n.editVocabConjugationAdd,
+                          onPressed: _addConjugation,
+                        ),
+                        const SizedBox(height: AppSpacing.sectionGap),
+                      ],
 
                       SectionTitle(text: _l10n.editVocabAudio),
                       const SizedBox(height: AppSpacing.gapMedium),

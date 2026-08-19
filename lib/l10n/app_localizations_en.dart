@@ -166,6 +166,18 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get editVocabConjugationSection => 'Conjugation';
+
+  @override
+  String get editVocabConjugationTempsHint => 'Tense';
+
+  @override
+  String get editVocabConjugationFormsHint => 'Forms';
+
+  @override
+  String get editVocabConjugationAdd => '+ Add conjugation';
+
+  @override
   String reviewCard(int index, int total) {
     return '$index of $total';
   }

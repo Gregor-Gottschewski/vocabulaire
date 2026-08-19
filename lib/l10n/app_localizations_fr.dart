@@ -166,6 +166,18 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get editVocabConjugationSection => 'Conjugaison';
+
+  @override
+  String get editVocabConjugationTempsHint => 'Temps';
+
+  @override
+  String get editVocabConjugationFormsHint => 'Formes';
+
+  @override
+  String get editVocabConjugationAdd => '+ Ajouter une conjugaison';
+
+  @override
   String reviewCard(int index, int total) {
     return '$index sur $total';
   }
