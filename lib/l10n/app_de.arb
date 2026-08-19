@@ -89,6 +89,11 @@
     }
   },
 
+  "editVocabConjugationSection": "Konjugation",
+  "editVocabConjugationTempsHint": "Tempus",
+  "editVocabConjugationFormsHint": "Formen",
+  "editVocabConjugationAdd": "+ Konjugation hinzufügen",
+
   "reviewCard": "{index} von {total}",
   "@reviewCard": {
     "placeholders": {

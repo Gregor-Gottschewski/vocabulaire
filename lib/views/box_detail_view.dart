@@ -159,10 +159,11 @@ class _BoxDetailWidget extends State<BoxDetailView>
     final colors = context.colors;
     final box = widget.box;
 
-    scheduleDueRebuild(box.vocabularies);
+    final items = ReviewSession.reviewableItemsForBox(box);
+    scheduleDueRebuild(items);
 
-    final matchingCards = ReviewSession.filterVocabularies(
-      box.vocabularies,
+    final matchingCards = ReviewSession.filterItems(
+      items,
       onlyTimely: _onlyTimely,
       method: _selectedOption,
       dailyLimitEnabled: box.dailyLimitEnabled,
@@ -180,7 +181,7 @@ class _BoxDetailWidget extends State<BoxDetailView>
         ),
         const SizedBox(height: 6),
         Text(
-          _l10n.boxDetailSubline(box.vocabularies.length, matchingCards.length),
+          _l10n.boxDetailSubline(items.length, matchingCards.length),
           style: AppTypography.captionSans.copyWith(
             color: colors.textSecondary,
           ),

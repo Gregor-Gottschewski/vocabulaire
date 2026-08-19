@@ -1,6 +1,8 @@
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
-import 'vocabulary.dart';
+import 'box_type.dart';
+import 'reviewable_item.dart';
+import 'vocabulary_box.dart';
 
 /// Learning method for a review session.
 /// - `all`: All cards in the box.
@@ -37,7 +39,22 @@ class ReviewSession {
     this.method = LearningMethod.all,
   });
 
-  /// Filters [vocabularies] down to the ones matching [onlyTimely] and [method].
+  /// Builds the flattened pool of reviewable items for [box]: every
+  /// [Vocabulary] itself, plus [ConjugationItem]s.
+  static List<ReviewableItem> reviewableItemsForBox(VocabularyBox box) {
+    final items = <ReviewableItem>[];
+    for (final v in box.vocabularies) {
+      items.add(VocabularyItem(v));
+      if (box.boxType == BoxType.vocabulary) {
+        for (final c in v.conjugations) {
+          items.add(ConjugationItem(v, c));
+        }
+      }
+    }
+    return items;
+  }
+
+  /// Filters [items] down to the ones matching [onlyTimely] and [method].
   /// Following heuristics based on FSRS card properties:
   ///   - `onlyDifficult`: Cards with difficulty >= 7.0.
   ///   - `onlyNew`: Cards that have never been reviewed (step == null).
@@ -47,30 +64,30 @@ class ReviewSession {
   /// - [method]: The learning method to filter cards, see [LearningMethod].
   /// - [dailyLimitEnabled] / [remainingNewCards]: If a daily limit is active,
   ///   caps the number of never-reviewed cards in the result to [remainingNewCards].
-  static List<Vocabulary> filterVocabularies(
-    List<Vocabulary> vocabularies, {
+  static List<ReviewableItem> filterItems(
+    List<ReviewableItem> items, {
     required bool onlyTimely,
     required LearningMethod method,
     bool dailyLimitEnabled = false,
     int? remainingNewCards,
   }) {
-    var list = List<Vocabulary>.from(vocabularies);
+    var list = List<ReviewableItem>.from(items);
 
     if (onlyTimely) {
       list = list
-          .where((v) => v.card.due.compareTo(DateTime.now()) < 0)
+          .where((i) => i.card.due.compareTo(DateTime.now()) < 0)
           .toList();
     }
 
     switch (method) {
       case LearningMethod.onlyDifficult:
-        list = list.where((v) => v.card.lastReview != null && v.card.difficulty! >= 7.0).toList();
+        list = list.where((i) => i.card.lastReview != null && i.card.difficulty! >= 7.0).toList();
         break;
       case LearningMethod.onlyNew:
-        list = list.where((v) => v.card.lastReview == null).toList();
+        list = list.where((i) => i.card.lastReview == null).toList();
         break;
       case LearningMethod.onlyUnstable:
-        list = list.where((v) => v.card.lastReview != null && v.card.stability! <= 5.0).toList();
+        list = list.where((i) => i.card.lastReview != null && i.card.stability! <= 5.0).toList();
         break;
       case LearningMethod.all:
         break;
@@ -78,16 +95,16 @@ class ReviewSession {
 
     if (dailyLimitEnabled && remainingNewCards != null) {
       if (remainingNewCards <= 0) {
-        list = list.where((v) => v.card.lastReview != null).toList();
+        list = list.where((i) => i.card.lastReview != null).toList();
       } else {
-        final newCards = list.where((v) => v.card.lastReview == null).toList();
+        final newCards = list.where((i) => i.card.lastReview == null).toList();
         if (newCards.length > remainingNewCards) {
           final excess = newCards.length - remainingNewCards;
           final excluded = newCards
               .sublist(newCards.length - excess)
-              .map((v) => v.id)
+              .map((i) => i.id)
               .toSet();
-          list = list.where((v) => !excluded.contains(v.id)).toList();
+          list = list.where((i) => !excluded.contains(i.id)).toList();
         }
       }
     }

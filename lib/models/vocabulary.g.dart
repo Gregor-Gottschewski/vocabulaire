@@ -23,13 +23,15 @@ class VocabularyAdapter extends TypeAdapter<Vocabulary> {
       cardData: (fields[3] as Map).cast<String, dynamic>(),
       id: fields[4] as String,
       audioSynced: fields[5] == null ? false : fields[5] as bool,
+      conjugations:
+          fields[6] == null ? [] : (fields[6] as List).cast<Conjugation>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Vocabulary obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.word)
       ..writeByte(1)
@@ -41,7 +43,9 @@ class VocabularyAdapter extends TypeAdapter<Vocabulary> {
       ..writeByte(4)
       ..write(obj.id)
       ..writeByte(5)
-      ..write(obj.audioSynced);
+      ..write(obj.audioSynced)
+      ..writeByte(6)
+      ..write(obj.conjugations);
   }
 
   @override

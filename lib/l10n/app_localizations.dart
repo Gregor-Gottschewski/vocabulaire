@@ -382,6 +382,30 @@ abstract class AppLocalizations {
   /// **'Stabilität: {stability}'**
   String editVocabStability(String stability);
 
+  /// No description provided for @editVocabConjugationSection.
+  ///
+  /// In de, this message translates to:
+  /// **'Konjugation'**
+  String get editVocabConjugationSection;
+
+  /// No description provided for @editVocabConjugationTempsHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Tempus'**
+  String get editVocabConjugationTempsHint;
+
+  /// No description provided for @editVocabConjugationFormsHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Formen'**
+  String get editVocabConjugationFormsHint;
+
+  /// No description provided for @editVocabConjugationAdd.
+  ///
+  /// In de, this message translates to:
+  /// **'+ Konjugation hinzufügen'**
+  String get editVocabConjugationAdd;
+
   /// No description provided for @reviewCard.
   ///
   /// In de, this message translates to:

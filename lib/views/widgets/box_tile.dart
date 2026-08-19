@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/review_session.dart';
-import 'package:vocabulaire/models/vocabulary.dart';
+import 'package:vocabulaire/models/reviewable_item.dart';
 import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 import '../../models/vocabulary_box.dart';
@@ -25,9 +25,9 @@ class BoxTile extends StatefulWidget {
 
 class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
 
-  List<Vocabulary> _overdueVocabularies() {
-    return ReviewSession.filterVocabularies(
-      widget.box.vocabularies,
+  List<ReviewableItem> _overdueItems() {
+    return ReviewSession.filterItems(
+      ReviewSession.reviewableItemsForBox(widget.box),
       onlyTimely: true,
       method: LearningMethod.all,
       dailyLimitEnabled: widget.box.dailyLimitEnabled,
@@ -36,7 +36,7 @@ class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
   }
 
   VoidCallback? _startSession(BuildContext context) {
-    if (_overdueVocabularies().isEmpty) return null;
+    if (_overdueItems().isEmpty) return null;
 
     return () {
       Navigator.of(context).push(
@@ -58,7 +58,7 @@ class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
     final colors = context.colors;
     final box = widget.box;
 
-    scheduleDueRebuild(box.vocabularies);
+    scheduleDueRebuild(ReviewSession.reviewableItemsForBox(box));
 
     return Material(
       type: MaterialType.transparency,
@@ -106,7 +106,7 @@ class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
               ),
               const SizedBox(width: AppSpacing.gapMedium),
               Text(
-                l10n.overdueCardsCounter(_overdueVocabularies().length),
+                l10n.overdueCardsCounter(_overdueItems().length),
                 style: AppTypography.serifValue.copyWith(
                   color: colors.textSecondary,
                 ),

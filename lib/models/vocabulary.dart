@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fsrs/fsrs.dart';
 import 'package:hive/hive.dart';
 
+import 'conjugation.dart';
 import 'firestore_converters.dart';
 
 part 'vocabulary.g.dart';
@@ -30,6 +31,10 @@ class Vocabulary {
   @HiveField(5, defaultValue: false)
   final bool audioSynced;
 
+  /// Conjugated forms of this vocabulary, each reviewed independently.
+  @HiveField(6, defaultValue: <Conjugation>[])
+  final List<Conjugation> conjugations;
+
   Card get card => Card.fromMap(cardData);
 
   Vocabulary({
@@ -39,6 +44,7 @@ class Vocabulary {
     required this.cardData,
     required this.id,
     this.audioSynced = false,
+    this.conjugations = const [],
   });
 
   Map<String, dynamic> toMap() {
@@ -48,6 +54,7 @@ class Vocabulary {
       'example': example,
       'cardData': cardData,
       'id': id,
+      'conjugations': conjugations.map((c) => c.toMap()).toList(),
     };
   }
 
@@ -58,6 +65,10 @@ class Vocabulary {
       example: map['example'] as String,
       cardData: Map<String, dynamic>.from(map['cardData'] as Map),
       id: map['id'] as String,
+      conjugations: (map['conjugations'] as List<dynamic>?)
+              ?.map((c) => Conjugation.fromMap(Map<String, dynamic>.from(c as Map)))
+              .toList() ??
+          [],
     );
   }
 
@@ -70,6 +81,7 @@ class Vocabulary {
       'example': example,
       'card': FirestoreConverters.cardDataToFirestore(cardData),
       'audioSynced': audioSynced,
+      'conjugations': conjugations.map((c) => c.toFirestore()).toList(),
     };
   }
 
@@ -84,6 +96,10 @@ class Vocabulary {
       ),
       id: data['id'] as String? ?? doc.id,
       audioSynced: data['audioSynced'] as bool? ?? false,
+      conjugations: (data['conjugations'] as List<dynamic>?)
+              ?.map((c) => Conjugation.fromFirestore(Map<String, dynamic>.from(c as Map)))
+              .toList() ??
+          [],
     );
   }
 
@@ -94,6 +110,7 @@ class Vocabulary {
     Map<String, dynamic>? cardData,
     String? id,
     bool? audioSynced,
+    List<Conjugation>? conjugations,
   }) {
     return Vocabulary(
       word: word ?? this.word,
@@ -102,6 +119,7 @@ class Vocabulary {
       cardData: cardData ?? this.cardData,
       id: id ?? this.id,
       audioSynced: audioSynced ?? this.audioSynced,
+      conjugations: conjugations ?? this.conjugations,
     );
   }
 }
