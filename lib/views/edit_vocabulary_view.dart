@@ -546,11 +546,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         return;
       }
 
+      _hasPendingNewAudio = true;
+      _pendingDelete = false;
       await _initAudioPlayer();
       if (mounted) {
         setState(() {
-          _hasPendingNewAudio = true;
-          _pendingDelete = false;
           _isGeneratingTts = false;
           _isDirty = true;
         });
@@ -559,6 +559,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       if (mounted && _vocab.id == generatingVocabId) {
         setState(() => _isGeneratingTts = false);
         await context.showAppError(e);
+      }
+    } catch (e) {
+      if (mounted && _vocab.id == generatingVocabId) {
+        setState(() => _isGeneratingTts = false);
+        await context.showAppError(
+          AppException(AppError.ttsUnknownError, details: e),
+        );
       }
     }
   }
