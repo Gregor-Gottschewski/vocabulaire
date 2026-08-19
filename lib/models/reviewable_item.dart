@@ -55,7 +55,7 @@ class ConjugationItem extends ReviewableItem {
   Map<String, dynamic> get cardData => conjugation.cardData;
 
   @override
-  String get frontText => '${parent.word} ${conjugation.temps}';
+  String get frontText => '(${conjugation.temps}) ${parent.word}';
 
   @override
   String get backText => conjugation.forms;
