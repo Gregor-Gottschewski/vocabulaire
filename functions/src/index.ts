@@ -12,7 +12,7 @@ export {
   onVocabularyCreated,
   onVocabularyDeleted,
 } from "./counters";
-export { reconcileVocabularyCounts } from "./reconciliation";
+export { reconcileAudioUsage, reconcileVocabularyCounts } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
 export { reserveAudioUpload } from "./audioReservations";
 
