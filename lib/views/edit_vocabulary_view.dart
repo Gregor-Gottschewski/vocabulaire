@@ -277,7 +277,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (_isEditing) {
       _boxController.updateVocabularyInBox(widget.boxKey, _vocab);
     } else {
-      if (widget.box.vocabularies.any((e) => e.word == front)) {
+      final currentVocabularies =
+          _boxController.getBox(widget.boxKey)?.vocabularies ??
+          widget.box.vocabularies;
+      if (currentVocabularies.any((e) => e.word == front)) {
         var shouldAdd = false;
         await showAppDialog(
           context: context,
