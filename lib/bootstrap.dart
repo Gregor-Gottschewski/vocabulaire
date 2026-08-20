@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -43,6 +44,9 @@ Future<void> bootstrap(Flavor flavor) async {
     FirebaseFirestore.instance.useFirestoreEmulator('localhost', 8080);
     await FirebaseStorage.instance.useStorageEmulator('localhost', 9199);
     await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+    FirebaseFunctions.instanceFor(
+      region: 'europe-west1',
+    ).useFunctionsEmulator('localhost', 5001);
   }
 
   // TODO: switch to AppleAppAttestProvider (iOS) / AppleDeviceCheckProvider (macOS)

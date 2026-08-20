@@ -17,6 +17,11 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /audioReservations/{id} {
+      allow read: if request.auth != null && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+
     // Basic per-user box/vocabulary sync rules.
     match /users/{userId}/boxes/{boxId} {
       allow read, update, delete: if request.auth != null && request.auth.uid == userId

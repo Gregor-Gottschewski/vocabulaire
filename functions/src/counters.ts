@@ -1,10 +1,11 @@
 import {FieldValue, getFirestore} from "firebase-admin/firestore";
 import {onDocumentCreated, onDocumentDeleted} from "firebase-functions/v2/firestore";
 import {onObjectDeleted, onObjectFinalized, StorageEvent} from "firebase-functions/v2/storage";
+import {consumeReservation, releaseReservation} from "./audioReservations";
 
 const REGION = "europe-west1";
 const VOCABULARY_PATH = "users/{uid}/boxes/{boxId}/vocabularies/{vocabId}";
-const AUDIO_PATH_PATTERN = /^users\/([^/]+)\/audio\//;
+const AUDIO_PATH_PATTERN = /^users\/([^/]+)\/audio\/([^/]+)$/;
 
 // Keep in sync with the vocabulary quota check in firestore.rules.
 const VOCABULARY_LIMIT_PREMIUM = 3000;
@@ -50,24 +51,23 @@ export const onVocabularyDeleted = onDocumentDeleted(
     {region: REGION, document: VOCABULARY_PATH},
     async (event) => {
         await adjustRateLimitField(event.params.uid, "vocabularyCountOnline", -1);
+        await releaseReservation(event.params.uid, `${event.params.vocabId}.m4a`);
     }
 );
 
-function uidFromAudioObjectName(objectName: string): string | null {
+function parseAudioObjectName(objectName: string): {uid: string; fileName: string} | null {
     const match = AUDIO_PATH_PATTERN.exec(objectName);
-    return match ? match[1] : null;
+    return match ? {uid: match[1], fileName: match[2]} : null;
 }
 
-async function handleAudioObjectEvent(event: StorageEvent, sign: 1 | -1): Promise<void> {
-    const uid = uidFromAudioObjectName(event.data.name);
-    if (!uid) return;
-    await adjustRateLimitField(uid, "audioBytesUsed", sign * event.data.size);
-}
-
-export const onAudioFinalize = onObjectFinalized({region: REGION}, async (event) => {
-    await handleAudioObjectEvent(event, 1);
+export const onAudioFinalize = onObjectFinalized({region: REGION}, async (event: StorageEvent) => {
+    const parsed = parseAudioObjectName(event.data.name);
+    if (!parsed) return;
+    await consumeReservation(parsed.uid, parsed.fileName, Number(event.data.size));
 });
 
-export const onAudioDelete = onObjectDeleted({region: REGION}, async (event) => {
-    await handleAudioObjectEvent(event, -1);
+export const onAudioDelete = onObjectDeleted({region: REGION}, async (event: StorageEvent) => {
+    const parsed = parseAudioObjectName(event.data.name);
+    if (!parsed) return;
+    await adjustRateLimitField(parsed.uid, "audioBytesUsed", -event.data.size);
 });

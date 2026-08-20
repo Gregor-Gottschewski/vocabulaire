@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +19,10 @@ class AudioSyncService {
   static final AudioSyncService instance = AudioSyncService._();
 
   bool get _isPremium => UsageService.instance.listenable.value.isPremium;
+
+  final FirebaseFunctions _functions = FirebaseFunctions.instanceFor(
+    region: 'europe-west1',
+  );
 
   Reference? _audioRef(String vocabId) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
@@ -44,6 +49,20 @@ class AudioSyncService {
     final usage = UsageService.instance.listenable.value;
     if (usage.audioBytesUsed + fileSize > UsageService.audioStorageLimitBytes) {
       throw AppException(AppError.audioStorageLimitReached);
+    }
+
+    try {
+      await _functions.httpsCallable('reserveAudioUpload').call({
+        'boxId': boxId,
+        'vocabId': vocabId,
+        'sizeBytes': fileSize,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      if (e.code == 'resource-exhausted') {
+        throw AppException(AppError.audioStorageLimitReached);
+      }
+      debugPrint('AudioSyncService: reservation failed for $vocabId: $e');
+      throw AppException(AppError.moveBoxOnlineFailed);
     }
 
     try {
@@ -102,5 +121,4 @@ class AudioSyncService {
       unawaited(downloadAudio(boxId, vocabulary.id));
     }
   }
-
 }
