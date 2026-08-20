@@ -9,7 +9,9 @@ service firebase.storage {
       allow create, update: if request.auth != null && request.auth.uid == userId
                              && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.isPremium == true
                              && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.audioBytesUsed
-                              + request.resource.size <= 50 * 1024 * 1024;
+                              + request.resource.size <= 50 * 1024 * 1024
+                             && firestore.get(/databases/(default)/documents/audioReservations/$(userId + '_' + vocabId)).data.sizeBytes == request.resource.size
+                             && firestore.get(/databases/(default)/documents/audioReservations/$(userId + '_' + vocabId)).data.expiresAt > request.time;
 
       allow delete: if request.auth != null && request.auth.uid == userId
                      && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.isPremium == true;
