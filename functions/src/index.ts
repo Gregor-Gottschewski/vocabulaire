@@ -12,7 +12,7 @@ export {
   onVocabularyCreated,
   onVocabularyDeleted,
 } from "./counters";
-export { reconcileAudioUsage, reconcileVocabularyCounts } from "./reconciliation";
+export { reconcileReservedAudioUsage, reconcileAudioUsageLimits, reconcileVocabularyCounts } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
 export { reserveAudioUpload } from "./audioReservations";
 
@@ -23,7 +23,7 @@ export const synthesizeSpeech = onCall(
   },
   async (request) => {
     if (!request.auth) {
-      throw new HttpsError("unauthenticated", "Anonymous login required.");
+      throw new HttpsError("unauthenticated", "Login required.");
     }
 
     const text = validateText(request.data?.text);

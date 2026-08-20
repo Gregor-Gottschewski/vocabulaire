@@ -53,7 +53,8 @@ class AudioSyncService {
 
     try {
       await _functions.httpsCallable('reserveAudioUpload').call({
-        'fileName': '$vocabId.m4a',
+        'boxId': boxId,
+        'vocabId': vocabId,
         'sizeBytes': fileSize,
       });
     } on FirebaseFunctionsException catch (e) {

@@ -31,23 +31,29 @@ export const reconcileVocabularyCounts = onSchedule(
     }
 );
 
-// Safety net against audio quota drift.
-export const reconcileAudioUsage = onSchedule(
+// Releases reservations left dangling by uploads that never completed (or failed to clean up).
+export const reconcileReservedAudioUsage = onSchedule(
     {region: REGION, schedule: "every 60 minutes"},
     async () => {
         const db = getFirestore();
-        const now = Timestamp.now();
 
         const expiredReservations = await db
             .collection("audioReservations")
-            .where("expiresAt", "<=", now)
+            .where("expiresAt", "<=", Timestamp.now())
             .get();
 
         await Promise.all(expiredReservations.docs.map((doc) => {
             const data = doc.data();
             return releaseReservation(data.uid as string, data.fileName as string);
         }));
+    }
+);
 
+// Safety net against audio quota drift.
+export const reconcileAudioUsageLimits = onSchedule(
+    {region: REGION, schedule: "every 120 minutes"},
+    async () => {
+        const db = getFirestore();
         const rateLimitDocs = await db.collection("rateLimits").get();
 
         await Promise.all(rateLimitDocs.docs.map(async (doc) => {

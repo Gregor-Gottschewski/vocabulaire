@@ -7,18 +7,18 @@ export const AUDIO_STORAGE_LIMIT_BYTES = 50 * 1024 * 1024;
 
 // A reservation is a short-lived promise of quota, made atomically inside a Firestore
 // transaction before the client uploads to Storage.
-const RESERVATION_TTL_MS = 10 * 60 * 1000;
+const RESERVATION_TTL_MS = 60 * 1000; // 1 minute: 1 * 60 * 1000
 
 function reservationRef(uid: string, fileName: string) {
     return getFirestore().collection("audioReservations").doc(`${uid}_${fileName}`);
 }
 
-function validateFileName(raw: unknown): string {
-    const fileName = typeof raw === "string" ? raw.trim() : "";
-    if (!/^[A-Za-z0-9_-]+\.m4a$/.test(fileName)) {
-        throw new HttpsError("invalid-argument", "Invalid audio file name.");
+function validateId(raw: unknown, label: string): string {
+    const id = typeof raw === "string" ? raw.trim() : "";
+    if (id.length === 0 || id.includes("/")) {
+        throw new HttpsError("invalid-argument", `Invalid ${label}.`);
     }
-    return fileName;
+    return id;
 }
 
 function validateSizeBytes(raw: unknown): number {
@@ -36,21 +36,29 @@ export const reserveAudioUpload = onCall(
     {region: REGION, enforceAppCheck: true},
     async (request) => {
         if (!request.auth) {
-            throw new HttpsError("unauthenticated", "Anonymous login required.");
+            throw new HttpsError("unauthenticated", "Login required.");
         }
         const uid = request.auth.uid;
-        const fileName = validateFileName(request.data?.fileName);
+        const boxId = validateId(request.data?.boxId, "box id");
+        const vocabId = validateId(request.data?.vocabId, "vocabulary id");
         const sizeBytes = validateSizeBytes(request.data?.sizeBytes);
+        const fileName = `${vocabId}.m4a`;
 
         const db = getFirestore();
         const rateLimitRef = db.collection("rateLimits").doc(uid);
         const reservation = reservationRef(uid, fileName);
+        const vocabRef = db.doc(`users/${uid}/boxes/${boxId}/vocabularies/${vocabId}`);
 
         await db.runTransaction(async (tx) => {
-            const [rateLimitSnap, reservationSnap] = await Promise.all([
+            const [rateLimitSnap, reservationSnap, vocabSnap] = await Promise.all([
                 tx.get(rateLimitRef),
                 tx.get(reservation),
+                tx.get(vocabRef),
             ]);
+
+            if (!vocabSnap.exists || vocabSnap.data()?.deleted === true) {
+                throw new HttpsError("not-found", "Vocabulary not found.");
+            }
 
             const rateLimitData = rateLimitSnap.exists ? rateLimitSnap.data()! : {};
             if (rateLimitData.isPremium !== true) {
