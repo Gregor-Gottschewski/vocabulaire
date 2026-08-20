@@ -14,6 +14,7 @@ export {
 } from "./counters";
 export { reconcileVocabularyCounts } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
+export { reserveAudioUpload } from "./audioReservations";
 
 export const synthesizeSpeech = onCall(
   {
