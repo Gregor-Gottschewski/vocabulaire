@@ -80,6 +80,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   bool _isDirty = false;
   Duration _recordDuration = Duration.zero;
   Timer? _recordTimer;
+  static const Duration _maxRecordDuration = Duration(seconds: 30);
   StreamSubscription<void>? _playerCompleteSub;
   int _vocabularyNumber = 0;
 
@@ -409,19 +410,15 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   void _recordAudio() async {
     if (await _audioRecorder.hasPermission()) {
       if (_recording) {
-        await _audioRecorder.stop();
-        _hasPendingNewAudio = true;
-        _pendingDelete = false;
-        _isDirty = true;
-        _stopRecordTimer();
+        await _stopRecording();
       } else {
         await _audioRecorder.start(
           _audioConfig,
           path: AppPaths.audioTempFilePath(_vocab.id),
         );
         _startRecordTimer();
+        setState(() => _recording = true);
       }
-      setState(() => _recording = !_recording);
     } else {
       if (!mounted) return;
       await showAppDialog(
@@ -433,14 +430,28 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
   }
 
+  /// Stops the current recording and marks the audio as pending.
+  Future<void> _stopRecording() async {
+    await _audioRecorder.stop();
+    _hasPendingNewAudio = true;
+    _pendingDelete = false;
+    _isDirty = true;
+    _stopRecordTimer();
+    if (mounted) setState(() => _recording = false);
+  }
+
   /// Starts a timer to track the duration of the current audio recording, updating the UI every second.
+  /// Recording is capped at [_maxRecordDuration] and stops automatically once reached.
   void _startRecordTimer() {
     _recordTimer?.cancel();
     _recordDuration = Duration.zero;
     _recordTimer = Timer.periodic(const Duration(seconds: 1), (_) {
-      setState(() {
-        _recordDuration = _recordDuration + const Duration(seconds: 1);
-      });
+      final duration = _recordDuration + const Duration(seconds: 1);
+      if (duration >= _maxRecordDuration) {
+        unawaited(_stopRecording());
+        return;
+      }
+      setState(() => _recordDuration = duration);
     });
   }
 
