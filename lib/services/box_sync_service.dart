@@ -13,7 +13,9 @@ import 'usage_service.dart';
 /// [ValueListenable].
 /// — [BoxController] is the sole consumer, other call sites go through it.
 class BoxSyncService {
-  BoxSyncService._();
+  BoxSyncService._() {
+    UsageService.instance.listenable.addListener(_onUsageChanged);
+  }
 
   static final BoxSyncService instance = BoxSyncService._();
 
@@ -21,6 +23,16 @@ class BoxSyncService {
     const [],
   );
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _subscription;
+
+  bool _wasPremium = false;
+
+  void _onUsageChanged() {
+    final isPremium = UsageService.instance.listenable.value.isPremium;
+    if (isPremium && !_wasPremium) {
+      attach();
+    }
+    _wasPremium = isPremium;
+  }
 
   /// Fires whenever the online box list changes, including metadata-only
   /// changes.
@@ -116,9 +128,7 @@ class BoxSyncService {
   }) async {
     final uid = _userUid();
     await _collection(uid).doc(boxId).update({
-      'newCardsReviewedToday': resetToday
-          ? 1
-          : FieldValue.increment(1),
+      'newCardsReviewedToday': resetToday ? 1 : FieldValue.increment(1),
       if (resetToday) 'lastNewVocabularyReview': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
