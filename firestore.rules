@@ -9,6 +9,94 @@ service cloud.firestore {
       : {'vocabularyCountOnline': 0, 'isPremium': false};
   }
 
+  // fsrs Card
+  function isCardValid(card) {
+    return card is map
+      && card.keys().hasOnly(['cardId', 'state', 'step', 'stability', 'difficulty', 'due', 'lastReview'])
+      && card.keys().hasAll(['cardId', 'state', 'step', 'stability', 'difficulty', 'due', 'lastReview'])
+      && card.cardId is int
+      && card.state is int && card.state in [1, 2, 3]
+      && (card.step == null || card.step is int)
+      && (card.stability == null || card.stability is float)
+      && (card.difficulty == null || card.difficulty is float)
+      && card.due is timestamp
+      && (card.lastReview == null || card.lastReview is timestamp);
+  }
+
+  function isConjugationValid(c) {
+    return c is map
+      && c.keys().hasOnly(['id', 'temps', 'forms', 'card'])
+      && c.keys().hasAll(['id', 'temps', 'forms', 'card'])
+      && c.id is string && c.id.size() == 36
+      && c.temps is string && c.temps.size() <= 50
+      && c.forms is string && c.forms.size() <= 180
+      && isCardValid(c.card);
+  }
+
+  // Max 4 conjugations; Firestore Rules has no list.every()/map() predicate
+  // helper, so this is unrolled by index up to the fixed cap.
+  function isConjugationsListValid(list) {
+    return list is list
+      && list.size() <= 4
+      && (list.size() < 1 || isConjugationValid(list[0]))
+      && (list.size() < 2 || isConjugationValid(list[1]))
+      && (list.size() < 3 || isConjugationValid(list[2]))
+      && (list.size() < 4 || isConjugationValid(list[3]));
+  }
+
+  function boxFieldsValid(data) {
+    return data.id is string && data.id.size() == 36
+      && data.name is string && data.name.size() <= 100
+      && data.type is string && data.type in ['vocabulary', 'flashcard']
+      && data.deleted is bool
+      && data.ownerUid is string
+      && data.updatedAt is timestamp
+      && (!('description' in data) || (data.description is string && data.description.size() <= 100))
+      && (!('sourceLanguage' in data) || data.sourceLanguage == null || (data.sourceLanguage is string && data.sourceLanguage.size() == 2))
+      && (!('targetLanguage' in data) || data.targetLanguage == null || (data.targetLanguage is string && data.targetLanguage.size() == 2))
+      && (!('dailyLimitEnabled' in data) || data.dailyLimitEnabled is bool)
+      && (!('dailyLimit' in data) || (data.dailyLimit is int && data.dailyLimit > 1))
+      && (!('newCardsReviewedToday' in data) || data.newCardsReviewedToday is int)
+      && (!('lastNewVocabularyReview' in data) || data.lastNewVocabularyReview == null || data.lastNewVocabularyReview is timestamp)
+      && (!('deletedAt' in data) || (data.deleted == true && data.deletedAt is timestamp));
+  }
+
+  function boxCreateFields() {
+    return ['id', 'name', 'deleted', 'dailyLimit', 'dailyLimitEnabled', 'description',
+            'lastNewVocabularyReview', 'newCardsReviewedToday', 'ownerUid', 'sourceLanguage',
+            'targetLanguage', 'type', 'updatedAt'];
+  }
+
+  function boxUpdateFields() {
+    return ['id', 'name', 'deleted', 'dailyLimit', 'dailyLimitEnabled', 'description',
+            'lastNewVocabularyReview', 'newCardsReviewedToday', 'ownerUid', 'sourceLanguage',
+            'targetLanguage', 'type', 'updatedAt', 'deletedAt'];
+  }
+
+  function vocabFieldsValid(data) {
+    return data.id is string && data.id.size() == 36
+      && data.word is string && data.word.size() <= 180
+      && data.meaning is string && data.meaning.size() <= 180
+      && isCardValid(data.card)
+      && data.audioSynced is bool
+      && data.ownerUid is string
+      && data.deleted is bool
+      && data.updatedAt is timestamp
+      && (!('example' in data) || (data.example is string && data.example.size() <= 100))
+      && (!('conjugations' in data) || isConjugationsListValid(data.conjugations))
+      && (!('deletedAt' in data) || (data.deleted == true && data.deletedAt is timestamp));
+  }
+
+  function vocabCreateFields() {
+    return ['audioSynced', 'card', 'deleted', 'example', 'id', 'meaning', 'ownerUid',
+            'updatedAt', 'word', 'conjugations'];
+  }
+
+  function vocabUpdateFields() {
+    return ['audioSynced', 'card', 'deleted', 'example', 'id', 'meaning', 'ownerUid',
+            'updatedAt', 'word', 'conjugations', 'deletedAt'];
+  }
+
   match /databases/{database}/documents {
     // Rate-limit counters are written exclusively by the Cloud Function via
     // the Admin SDK, which bypasses these rules.
@@ -24,29 +112,47 @@ service cloud.firestore {
 
     // Basic per-user box/vocabulary sync rules.
     match /users/{userId}/boxes/{boxId} {
-      allow read, update, delete: if request.auth != null && request.auth.uid == userId
+      allow read, delete: if request.auth != null && request.auth.uid == userId
                     && rateLimitData(database, userId).get('isPremium', false) == true;
+
+      allow update: if request.auth != null && request.auth.uid == userId
+                    && rateLimitData(database, userId).get('isPremium', false) == true
+                    && resource.data.deleted == false
+                    && request.resource.data.ownerUid == resource.data.ownerUid
+                    && request.resource.data.id == resource.data.id
+                    && request.resource.data.type == resource.data.type
+                    && request.resource.data.keys().hasOnly(boxUpdateFields())
+                    && boxFieldsValid(request.resource.data);
+
       allow create: if request.auth != null && request.auth.uid == userId
                     && rateLimitData(database, userId).get('isPremium', false) == true
                     && request.resource.data.ownerUid == userId
-                    && request.resource.data.keys().hasAll(['id', 'name', 'deleted']);
+                    && request.resource.data.deleted == false
+                    && request.resource.data.keys().hasAll(['id', 'name', 'deleted', 'type'])
+                    && request.resource.data.keys().hasOnly(boxCreateFields())
+                    && boxFieldsValid(request.resource.data);
 
       match /vocabularies/{vocabId} {
-        allow read, update, delete: if request.auth != null && request.auth.uid == userId
+        allow read, delete: if request.auth != null && request.auth.uid == userId
                       && rateLimitData(database, userId).get('isPremium', false) == true;
+
+        allow update: if request.auth != null && request.auth.uid == userId
+                      && rateLimitData(database, userId).get('isPremium', false) == true
+                      && resource.data.deleted == false
+                      && request.resource.data.ownerUid == resource.data.ownerUid
+                      && request.resource.data.id == resource.data.id
+                      && request.resource.data.keys().hasOnly(vocabUpdateFields())
+                      && vocabFieldsValid(request.resource.data);
+
         allow create: if request.auth != null && request.auth.uid == userId
                       && rateLimitData(database, userId).get('isPremium', false) == true
                       && request.resource.data.ownerUid == userId
-                      && request.resource.data.word is string
+                      && request.resource.data.deleted == false
+                      && request.resource.data.keys().hasAll(['audioSynced', 'card', 'deleted', 'id', 'meaning', 'ownerUid', 'updatedAt', 'word'])
+                      && request.resource.data.keys().hasOnly(vocabCreateFields())
+                      && vocabFieldsValid(request.resource.data)
                       && rateLimitData(database, userId).get('vocabularyCountOnline', 0) < 3000;
       }
-    }
-
-    // Required separately for collectionGroup('vocabularies') queries (the
-    // cross-box vocabulary tab) — the match above does not apply to those.
-    match /{path=**}/vocabularies/{vocabId} {
-      allow read: if request.auth != null && resource.data.ownerUid == request.auth.uid
-                  && rateLimitData(database, request.auth.uid).get('isPremium', false) == true;
     }
 
     // Default-deny: no other client-facing collections exist for this app.
