@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
@@ -9,6 +10,7 @@ class AppTextField extends StatelessWidget {
   final TextEditingController? controller;
   final String? placeholder;
   final int? maxLines;
+  final int? maxLength;
   final bool autofocus;
   final bool obscureText;
   final TextInputType? keyboardType;
@@ -24,6 +26,7 @@ class AppTextField extends StatelessWidget {
     this.controller,
     this.placeholder,
     this.maxLines = 1,
+    this.maxLength,
     this.autofocus = false,
     this.obscureText = false,
     this.keyboardType,
@@ -48,6 +51,8 @@ class AppTextField extends StatelessWidget {
         focusNode: focusNode,
         autofocus: autofocus,
         maxLines: obscureText ? 1 : maxLines,
+        maxLength: maxLength,
+        maxLengthEnforcement: MaxLengthEnforcement.truncateAfterCompositionEnds,
         obscureText: obscureText,
         keyboardType: keyboardType,
         textInputAction: textInputAction,
@@ -57,6 +62,7 @@ class AppTextField extends StatelessWidget {
         cursorColor: colors.textPrimary,
         cursorWidth: 1,
         decoration: InputDecoration(
+          counterText: '', // hide counter
           isDense: true,
           hintText: placeholder,
           hintStyle: baseStyle.copyWith(color: colors.textSecondary),

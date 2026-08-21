@@ -18,6 +18,7 @@ import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/conjugation.dart';
+import '../models/field_limits.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_spacing.dart';
@@ -781,6 +782,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           controller: _frontController,
                           placeholder: _l10n.editVocabFrontHint,
                           maxLines: 4,
+                          maxLength: FieldLimits.word,
                           textInputAction: TextInputAction.newline,
                         ),
                       ),
@@ -792,6 +794,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           controller: _backController,
                           placeholder: _l10n.editVocabBackHint,
                           maxLines: 4,
+                          maxLength: FieldLimits.meaning,
                           textInputAction: TextInputAction.newline,
                         ),
                       ),
@@ -815,6 +818,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           controller: _descriptionController,
                           placeholder: _l10n.editVocabDescriptionHint,
                           maxLines: 4,
+                          maxLength: FieldLimits.example,
                           textInputAction: TextInputAction.newline,
                         ),
                       ),
@@ -834,6 +838,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                       _conjugationTempsControllers[c.id],
                                   placeholder:
                                       _l10n.editVocabConjugationTempsHint,
+                                  maxLength: FieldLimits.conjugationTemps,
                                 ),
                               ),
                               const SizedBox(width: AppSpacing.gapSmall),
@@ -844,6 +849,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                                       _conjugationFormsControllers[c.id],
                                   placeholder:
                                       _l10n.editVocabConjugationFormsHint,
+                                  maxLength: FieldLimits.conjugationForms,
                                 ),
                               ),
                               Transform.translate(
@@ -860,7 +866,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         ],
                         TextLinkButton(
                           label: _l10n.editVocabConjugationAdd,
-                          onPressed: _addConjugation,
+                          onPressed: _conjugations.length < 4 ? _addConjugation : null,
                         ),
                         const SizedBox(height: AppSpacing.sectionGap),
                       ],
