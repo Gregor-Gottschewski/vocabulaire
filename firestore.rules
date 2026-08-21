@@ -28,8 +28,8 @@ service cloud.firestore {
       && c.keys().hasOnly(['id', 'temps', 'forms', 'card'])
       && c.keys().hasAll(['id', 'temps', 'forms', 'card'])
       && c.id is string && c.id.size() == 36
-      && c.temps is string && c.temps.size() <= 50
-      && c.forms is string && c.forms.size() <= 180
+      && c.temps is string && c.temps.size() <= 100
+      && c.forms is string && c.forms.size() <= 500
       && isCardValid(c.card);
   }
 
@@ -46,12 +46,12 @@ service cloud.firestore {
 
   function boxFieldsValid(data) {
     return data.id is string && data.id.size() == 36
-      && data.name is string && data.name.size() <= 100
+      && data.name is string && data.name.size() <= 150
       && data.type is string && data.type in ['vocabulary', 'flashcard']
       && data.deleted is bool
       && data.ownerUid is string
       && data.updatedAt is timestamp
-      && (!('description' in data) || (data.description is string && data.description.size() <= 100))
+      && (!('description' in data) || (data.description is string && data.description.size() <= 300))
       && (!('sourceLanguage' in data) || data.sourceLanguage == null || (data.sourceLanguage is string && data.sourceLanguage.size() == 2))
       && (!('targetLanguage' in data) || data.targetLanguage == null || (data.targetLanguage is string && data.targetLanguage.size() == 2))
       && (!('dailyLimitEnabled' in data) || data.dailyLimitEnabled is bool)
@@ -75,14 +75,14 @@ service cloud.firestore {
 
   function vocabFieldsValid(data) {
     return data.id is string && data.id.size() == 36
-      && data.word is string && data.word.size() <= 180
-      && data.meaning is string && data.meaning.size() <= 180
+      && data.word is string && data.word.size() <= 1000
+      && data.meaning is string && data.meaning.size() <= 1000
       && isCardValid(data.card)
       && data.audioSynced is bool
       && data.ownerUid is string
       && data.deleted is bool
       && data.updatedAt is timestamp
-      && (!('example' in data) || (data.example is string && data.example.size() <= 100))
+      && (!('example' in data) || (data.example is string && data.example.size() <= 1000))
       && (!('conjugations' in data) || isConjugationsListValid(data.conjugations))
       && (!('deletedAt' in data) || (data.deleted == true && data.deletedAt is timestamp));
   }
