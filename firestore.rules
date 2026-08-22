@@ -53,6 +53,7 @@ service cloud.firestore {
       && data.updatedAt is timestamp
       && (!('sourceLanguage' in data) || data.sourceLanguage == null || (data.sourceLanguage is string && data.sourceLanguage.size() == 2))
       && (!('targetLanguage' in data) || data.targetLanguage == null || (data.targetLanguage is string && data.targetLanguage.size() == 2))
+      && (!('boxCountOnline' in data) || data.boxCountOnline is int)
       && (!('deletedAt' in data) || (data.deleted == true && data.deletedAt is timestamp));
   }
 
@@ -61,7 +62,7 @@ service cloud.firestore {
   }
 
   function groupUpdateFields() {
-    return ['id', 'name', 'deleted', 'ownerUid', 'sourceLanguage', 'targetLanguage', 'type', 'updatedAt', 'deletedAt'];
+    return ['id', 'name', 'deleted', 'ownerUid', 'sourceLanguage', 'targetLanguage', 'type', 'updatedAt', 'deletedAt', 'boxCountOnline'];
   }
 
   function boxFieldsValid(data) {
@@ -130,6 +131,12 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /{path=**}/boxes/{boxId} {
+      allow list: if request.auth != null
+                    && resource.data.ownerUid == request.auth.uid
+                    && rateLimitData(database, request.auth.uid).get('isPremium', false) == true;
+    }
+
     // Groups own their boxes, which in turn own their vocabularies.
     match /users/{userId}/groups/{groupId} {
       allow read, delete: if request.auth != null && request.auth.uid == userId
@@ -143,6 +150,7 @@ service cloud.firestore {
                     && request.resource.data.type == resource.data.type
                     && request.resource.data.get('sourceLanguage', null) == resource.data.get('sourceLanguage', null)
                     && request.resource.data.get('targetLanguage', null) == resource.data.get('targetLanguage', null)
+                    && request.resource.data.get('boxCountOnline', 0) == resource.data.get('boxCountOnline', 0)
                     && request.resource.data.keys().hasOnly(groupUpdateFields())
                     && groupFieldsValid(request.resource.data);
 
@@ -156,7 +164,7 @@ service cloud.firestore {
                     && rateLimitData(database, userId).get('groupCountOnline', 0) < 1000;
 
       match /boxes/{boxId} {
-        allow read, delete: if request.auth != null && request.auth.uid == userId
+        allow get, delete: if request.auth != null && request.auth.uid == userId
                       && rateLimitData(database, userId).get('isPremium', false) == true;
 
         allow update: if request.auth != null && request.auth.uid == userId
