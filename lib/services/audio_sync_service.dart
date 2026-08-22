@@ -24,10 +24,12 @@ class AudioSyncService {
     region: 'europe-west1',
   );
 
-  Reference? _audioRef(String vocabId) {
+  Reference? _audioRef(String groupId, String boxId, String vocabId) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return null;
-    return FirebaseStorage.instance.ref('users/$uid/audio/$vocabId.m4a');
+    return FirebaseStorage.instance.ref(
+      'users/$uid/groups/$groupId/boxes/$boxId/audios/$vocabId.m4a',
+    );
   }
 
   /// Uploads the local audio recording for [vocabId] and marks it
@@ -42,7 +44,7 @@ class AudioSyncService {
     final file = AppPaths.audioFile(vocabId);
     if (!file.existsSync()) return;
 
-    final ref = _audioRef(vocabId);
+    final ref = _audioRef(groupId, boxId, vocabId);
     if (ref == null) return;
 
     final fileSize = await file.length();
@@ -82,7 +84,7 @@ class AudioSyncService {
 
   /// Downloads the remote audio recording for [vocabId] into
   /// [AppPaths.audioFile], unless it already exists locally.
-  Future<void> downloadAudio(
+  Future<void> _downloadAudio(
     String groupId,
     String boxId,
     String vocabId,
@@ -92,7 +94,7 @@ class AudioSyncService {
     final file = AppPaths.audioFile(vocabId);
     if (file.existsSync()) return;
 
-    final ref = _audioRef(vocabId);
+    final ref = _audioRef(groupId, boxId, vocabId);
     if (ref == null) return;
 
     try {
@@ -111,8 +113,8 @@ class AudioSyncService {
   }
 
   /// Deletes the remote audio recording for [vocabId], if any.
-  Future<void> deleteAudio(String vocabId) async {
-    final ref = _audioRef(vocabId);
+  Future<void> deleteAudio(String groupId, String boxId, String vocabId) async {
+    final ref = _audioRef(groupId, boxId, vocabId);
     if (ref == null) return;
 
     try {
@@ -133,7 +135,7 @@ class AudioSyncService {
     for (final vocabulary in vocabularies) {
       if (!vocabulary.audioSynced) continue;
       if (AppPaths.audioFile(vocabulary.id).existsSync()) continue;
-      unawaited(downloadAudio(groupId, boxId, vocabulary.id));
+      unawaited(_downloadAudio(groupId, boxId, vocabulary.id));
     }
   }
 }

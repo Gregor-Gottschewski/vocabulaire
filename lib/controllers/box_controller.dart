@@ -213,7 +213,7 @@ class BoxController {
     } else {
       _vocabSync.softDeleteVocabulary(box.groupId, boxId, id);
       _audioUploadQueue.cancel(id);
-      unawaited(_audioSync.deleteAudio(id));
+      unawaited(_audioSync.deleteAudio(box.groupId, box.groupId, boxId));
     }
 
     final audio = AppPaths.audioFile(id);

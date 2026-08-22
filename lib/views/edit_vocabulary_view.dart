@@ -327,7 +327,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         await finalFile.delete();
         if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
           AudioUploadQueueService.instance.cancel(_vocab.id);
-          unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
+          unawaited(
+            AudioSyncService.instance.deleteAudio(
+              widget.box.groupId,
+              widget.box.id,
+              _vocab.id,
+            ),
+          );
           unawaited(
             VocabularySyncService.instance.setAudioSynced(
               widget.box.groupId,
@@ -875,7 +881,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         ],
                         TextLinkButton(
                           label: _l10n.editVocabConjugationAdd,
-                          onPressed: _conjugations.length < 4 ? _addConjugation : null,
+                          onPressed: _conjugations.length < 4
+                              ? _addConjugation
+                              : null,
                         ),
                         const SizedBox(height: AppSpacing.sectionGap),
                       ],
