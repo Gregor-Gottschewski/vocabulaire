@@ -21,13 +21,14 @@ class PendingAudioUploadAdapter extends TypeAdapter<PendingAudioUpload> {
       boxId: fields[1] as String,
       attempts: fields[2] as int,
       createdAt: fields[3] as DateTime,
+      groupId: fields[4] == null ? '' : fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, PendingAudioUpload obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -35,7 +36,9 @@ class PendingAudioUploadAdapter extends TypeAdapter<PendingAudioUpload> {
       ..writeByte(2)
       ..write(obj.attempts)
       ..writeByte(3)
-      ..write(obj.createdAt);
+      ..write(obj.createdAt)
+      ..writeByte(4)
+      ..write(obj.groupId);
   }
 
   @override

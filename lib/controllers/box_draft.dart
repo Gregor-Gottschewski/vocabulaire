@@ -1,6 +1,7 @@
 import 'package:vocabulaire/models/app_language.dart';
 import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/models/vocabulary_group.dart';
 
 /// Mutable value holder passed through the box-creation flow's steps.
 class BoxDraft {
@@ -10,6 +11,7 @@ class BoxDraft {
   String description = '';
   String? sourceLanguage = AppLanguage.german.code;
   String? targetLanguage = AppLanguage.french.code;
+  String? groupId;
 
   BoxDraft();
 
@@ -19,5 +21,12 @@ class BoxDraft {
       name = box.name,
       description = box.description,
       sourceLanguage = box.sourceLanguage,
-      targetLanguage = box.targetLanguage;
+      targetLanguage = box.targetLanguage,
+      groupId = box.groupId.isEmpty ? null : box.groupId;
+
+  BoxDraft.fromGroup(VocabularyGroup group)
+    : groupId = group.id,
+      type = group.boxType,
+      sourceLanguage = group.sourceLanguage,
+      targetLanguage = group.targetLanguage;
 }

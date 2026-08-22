@@ -30,6 +30,8 @@ class VocabularyGroup {
   @HiveField(5, defaultValue: false)
   final bool deleted;
 
+  final int boxCountOnline;
+
   BoxType get boxType => BoxType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
@@ -43,6 +45,7 @@ class VocabularyGroup {
     this.sourceLanguage,
     this.targetLanguage,
     this.deleted = false,
+    this.boxCountOnline = 0,
   });
 
   VocabularyGroup copyWith({
@@ -52,6 +55,7 @@ class VocabularyGroup {
     String? sourceLanguage,
     String? targetLanguage,
     bool? deleted,
+    int? boxCountOnline,
   }) {
     return VocabularyGroup(
       id: id ?? this.id,
@@ -60,6 +64,7 @@ class VocabularyGroup {
       sourceLanguage: sourceLanguage ?? this.sourceLanguage,
       targetLanguage: targetLanguage ?? this.targetLanguage,
       deleted: deleted ?? this.deleted,
+      boxCountOnline: boxCountOnline ?? this.boxCountOnline,
     );
   }
 
@@ -77,6 +82,7 @@ class VocabularyGroup {
       sourceLanguage: data['sourceLanguage'] as String?,
       targetLanguage: data['targetLanguage'] as String?,
       deleted: data['deleted'] as bool? ?? false,
+      boxCountOnline: (data['boxCountOnline'] as num?)?.toInt() ?? 0,
     );
   }
 }
