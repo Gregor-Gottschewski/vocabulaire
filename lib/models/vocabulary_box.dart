@@ -53,6 +53,10 @@ class VocabularyBox {
   @HiveField(13, defaultValue: false)
   final bool deleted;
 
+  /// Id of the [VocabularyGroup] this box belongs to.
+  @HiveField(14, defaultValue: '')
+  final String groupId;
+
   BoxType get boxType => BoxType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
@@ -99,6 +103,7 @@ class VocabularyBox {
     this.newCardsReviewedToday = 0,
     this.lastNewVocabularyReview,
     this.deleted = false,
+    this.groupId = '',
   });
 
   VocabularyBox copyWith({
@@ -114,6 +119,7 @@ class VocabularyBox {
     int? newCardsReviewedToday,
     DateTime? dailyLimitResetDate,
     bool? deleted,
+    String? groupId,
   }) {
     return VocabularyBox(
       id: id ?? this.id,
@@ -129,6 +135,7 @@ class VocabularyBox {
           newCardsReviewedToday ?? this.newCardsReviewedToday,
       lastNewVocabularyReview: dailyLimitResetDate ?? lastNewVocabularyReview,
       deleted: deleted ?? this.deleted,
+      groupId: groupId ?? this.groupId,
     );
   }
 

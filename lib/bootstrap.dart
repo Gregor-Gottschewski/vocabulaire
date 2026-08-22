@@ -20,6 +20,7 @@ import 'package:vocabulaire/services/usage_service.dart';
 import 'models/conjugation.dart';
 import 'models/pending_audio_upload.dart';
 import 'models/vocabulary_box.dart';
+import 'models/vocabulary_group.dart';
 import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
 import 'views/home_page.dart';
@@ -80,8 +81,10 @@ Future<void> bootstrap(Flavor flavor) async {
   Hive.registerAdapter(AppSettingsAdapter());
   Hive.registerAdapter(PendingAudioUploadAdapter());
   Hive.registerAdapter(ConjugationAdapter());
+  Hive.registerAdapter(VocabularyGroupAdapter());
 
   await Hive.openBox<VocabularyBox>('boxes');
+  await Hive.openBox<VocabularyGroup>('groups');
   await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
   await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
   runApp(const MyApp());
