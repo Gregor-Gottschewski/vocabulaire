@@ -88,42 +88,6 @@ class BoxController {
     return;
   }
 
-  /// Moves an online box to local storage.
-  Future<void> moveBoxOffline(String boxId) async {
-    if (_isLocal(boxId)) return;
-    final box = getBox(boxId);
-    if (box == null) throw StateError('Box with id $boxId not found');
-
-    for (final vocabulary in box.vocabularies) {
-      _audioUploadQueue.cancel(vocabulary.id);
-      if (vocabulary.audioSynced) {
-        unawaited(_audioSync.deleteAudio(vocabulary.id));
-      }
-    }
-
-    await _localBox.put(boxId, box.copyWith(deleted: false));
-    await _boxSync.softDeleteBox(box.groupId, boxId);
-  }
-
-  /// Moves a local box to online storage.
-  Future<void> moveBoxOnline(String boxId) async {
-    if (!_isLocal(boxId)) return;
-    final box = _localBox.get(boxId);
-    if (box == null) throw StateError('Box with id $boxId not found');
-
-    _boxSync.ensureVocabularyQuota(box.vocabularies.length);
-
-    await _boxSync.addBox(box, box.groupId);
-    await _vocabSync.addVocabularies(box.groupId, boxId, box.vocabularies);
-    await _localBox.delete(boxId);
-
-    for (final vocabulary in box.vocabularies) {
-      if (AppPaths.audioFile(vocabulary.id).existsSync()) {
-        _audioUploadQueue.enqueue(box.groupId, boxId, vocabulary.id);
-      }
-    }
-  }
-
   /// Deletes box with [boxId] regardless of their backend.
   void deleteBox(String boxId) {
     final box = getBox(boxId);
@@ -178,17 +142,11 @@ class BoxController {
   ValueNotifier<List<MapEntry<String, VocabularyBox>>> listenableForKeys(
     List<String> boxIds,
   ) {
-    final onlineIds = boxIds.where((id) => !_isLocal(id)).toList();
-    final sources = <Listenable>[
-      _localBox.listenable(keys: boxIds),
-      _boxSync.listenable,
-      for (final id in onlineIds)
-        _vocabSync.listenableForBox(_groupIdFor(id), id),
-    ];
     return _MergedBoxesNotifier(
       () => _entriesForKeys(boxIds),
-      sources,
-      onReleasedOnlineIds: onlineIds,
+      boxIds: boxIds,
+      localBoxListenable: _localBox.listenable(keys: boxIds),
+      boxSyncListenable: _boxSync.listenable,
       vocabSync: _vocabSync,
     );
   }
@@ -215,8 +173,6 @@ class BoxController {
       vocabSync: _vocabSync,
     );
   }
-
-  String _groupIdFor(String boxId) => getBox(boxId)?.groupId ?? '';
 
   List<MapEntry<String, VocabularyBox>> _entriesForKeys(List<String> boxIds) {
     return boxIds
@@ -300,36 +256,79 @@ class BoxController {
   }
 }
 
-/// A ValueNotifier that recomputes its value whenever any of [_sources] fires.
+/// A ValueNotifier that recomputes its value whenever any of the boxes
+/// identified by [boxIds] changes.
 class _MergedBoxesNotifier
     extends ValueNotifier<List<MapEntry<String, VocabularyBox>>> {
-  final List<Listenable> _sources;
-  final List<String> _onlineIds;
+  final List<MapEntry<String, VocabularyBox>> Function() _getter;
+  final Set<String> _boxIds;
+  final Listenable _localBoxListenable;
+  final ValueListenable<List<VocabularyBox>> _boxSyncListenable;
   final VocabularySyncService _vocabSync;
-  late final VoidCallback _listener;
+
+  final Map<String, ValueListenable<List<Vocabulary>>> _onlineListenables = {};
+  late final VoidCallback _recompute;
+  late final VoidCallback _onBoxSyncChanged;
 
   _MergedBoxesNotifier(
-    List<MapEntry<String, VocabularyBox>> Function() getter,
-    this._sources, {
-    required List<String> onReleasedOnlineIds,
+    List<MapEntry<String, VocabularyBox>> Function() getter, {
+    required List<String> boxIds,
+    required Listenable localBoxListenable,
+    required ValueListenable<List<VocabularyBox>> boxSyncListenable,
     required VocabularySyncService vocabSync,
-  }) : _onlineIds = onReleasedOnlineIds,
+  }) : _getter = getter,
+       _boxIds = boxIds.toSet(),
+       _localBoxListenable = localBoxListenable,
+       _boxSyncListenable = boxSyncListenable,
        _vocabSync = vocabSync,
        super(getter()) {
-    _listener = () => value = getter();
-    for (final source in _sources) {
-      source.addListener(_listener);
+    _recompute = () => value = _getter();
+    _onBoxSyncChanged = () {
+      _syncOnlineSubscriptions();
+      value = _getter();
+    };
+    _localBoxListenable.addListener(_recompute);
+    _boxSyncListenable.addListener(_onBoxSyncChanged);
+    _syncOnlineSubscriptions();
+  }
+
+  /// Reconciles the online boxes we hold a [_vocabSync] reference for with
+  /// the current [_boxSyncListenable] value, starting listeners for newly
+  /// discovered boxes and releasing ones for boxes no longer present.
+  void _syncOnlineSubscriptions() {
+    final currentBoxes = {
+      for (final b in _boxSyncListenable.value)
+        if (_boxIds.contains(b.id)) b.id: b,
+    };
+
+    final staleIds = _onlineListenables.keys
+        .where((id) => !currentBoxes.containsKey(id))
+        .toList(growable: false);
+    for (final id in staleIds) {
+      _onlineListenables.remove(id)!.removeListener(_recompute);
+      _vocabSync.releaseBox(id);
+    }
+
+    for (final entry in currentBoxes.entries) {
+      if (_onlineListenables.containsKey(entry.key)) continue;
+      final listenable = _vocabSync.listenableForBox(
+        entry.value.groupId,
+        entry.key,
+      );
+      listenable.addListener(_recompute);
+      _onlineListenables[entry.key] = listenable;
     }
   }
 
   @override
   void dispose() {
-    for (final source in _sources) {
-      source.removeListener(_listener);
+    _localBoxListenable.removeListener(_recompute);
+    _boxSyncListenable.removeListener(_onBoxSyncChanged);
+    for (final entry in _onlineListenables.entries) {
+      entry.value.removeListener(_recompute);
+      _vocabSync.releaseBox(entry.key);
     }
-    for (final id in _onlineIds) {
-      _vocabSync.releaseBox(id);
-    }
+    _onlineListenables.clear();
     super.dispose();
   }
 }

@@ -14,11 +14,9 @@ import '../services/app_exception.dart';
 import '../services/app_exception_ui.dart';
 import '../services/box_sync_service.dart';
 import '../services/usage_service.dart';
-import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
-import 'box_sync_view.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/key_value_row.dart';
 import 'widgets/text_link_button.dart';
@@ -190,13 +188,6 @@ class _SettingsViewState extends State<SettingsView> {
                 KeyValueRow.value(
                   label: _l10n.settingsAudioUsage,
                   value: _audioUsageLabel,
-                ),
-                KeyValueRow.submenu(
-                  context,
-                  label: _l10n.settingsBoxSync,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).push(AppPageRoute(builder: (_) => const BoxSyncView())),
                 ),
               ],
             ],
