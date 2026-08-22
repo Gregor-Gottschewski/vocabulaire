@@ -9,7 +9,6 @@ class GroupDraft {
   String name = '';
   String? sourceLanguage = AppLanguage.german.code;
   String? targetLanguage = AppLanguage.french.code;
-  bool saveOnline = true;
 
   GroupDraft();
 

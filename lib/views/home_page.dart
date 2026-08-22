@@ -4,7 +4,7 @@ import 'package:vocabulaire/views/vocabulary_list_view.dart';
 import '../controllers/box_controller.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/theme_context_ext.dart';
-import 'home_view.dart';
+import 'groups_list_view.dart';
 import 'settings_view.dart';
 import 'widgets/app_tab_bar.dart';
 
@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _allBoxesNotifier = _boxController.listenableForAll();
     _views = [
-      const HomeView(),
+      const GroupsListView(),
       VocabularyListView(multipleBoxes: true, boxListenable: _allBoxesNotifier),
       const SettingsView(),
     ];
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           AppTabBar(
-            items: [_l10n.tabBoxen, _l10n.tabVokabeln, _l10n.tabEinstellungen],
+            items: [_l10n.tabGroups, _l10n.tabVokabeln, _l10n.tabEinstellungen],
             currentIndex: _selectedIndex,
             onTap: _onItemTapped,
           ),
