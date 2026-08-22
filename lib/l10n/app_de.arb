@@ -190,8 +190,12 @@
   },
   "errorMoveBoxOfflineFailed": "Box konnte nicht ausgelagert werden",
   "errorMoveBoxOnlineFailed": "Box konnte nicht online gestellt werden",
+  "errorMoveGroupOfflineFailed": "Gruppe konnte nicht ausgelagert werden",
+  "errorMoveGroupOnlineFailed": "Gruppe konnte nicht online gestellt werden",
   "errorAddVocabularyFailed": "Vokabel konnte nicht gespeichert werden",
   "errorVocabularyLimitReached": "Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.",
+  "errorGroupLimitReached": "Limit von 1000 Gruppen erreicht.",
+  "errorBoxLimitPerGroupReached": "Limit von 800 Boxen pro Gruppe erreicht.",
   "errorAudioStorageLimitReached": "Audio-Speicherlimit erreicht. Lagere eine Box aus, um Speicherplatz freizugeben.",
 
   "editVocabGenerateAudio": "Generieren",

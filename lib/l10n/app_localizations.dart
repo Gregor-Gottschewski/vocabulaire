@@ -790,6 +790,18 @@ abstract class AppLocalizations {
   /// **'Box konnte nicht online gestellt werden'**
   String get errorMoveBoxOnlineFailed;
 
+  /// No description provided for @errorMoveGroupOfflineFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Gruppe konnte nicht ausgelagert werden'**
+  String get errorMoveGroupOfflineFailed;
+
+  /// No description provided for @errorMoveGroupOnlineFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Gruppe konnte nicht online gestellt werden'**
+  String get errorMoveGroupOnlineFailed;
+
   /// No description provided for @errorAddVocabularyFailed.
   ///
   /// In de, this message translates to:
@@ -801,6 +813,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.'**
   String get errorVocabularyLimitReached;
+
+  /// No description provided for @errorGroupLimitReached.
+  ///
+  /// In de, this message translates to:
+  /// **'Limit von 1000 Gruppen erreicht.'**
+  String get errorGroupLimitReached;
+
+  /// No description provided for @errorBoxLimitPerGroupReached.
+  ///
+  /// In de, this message translates to:
+  /// **'Limit von 800 Boxen pro Gruppe erreicht.'**
+  String get errorBoxLimitPerGroupReached;
 
   /// No description provided for @errorAudioStorageLimitReached.
   ///

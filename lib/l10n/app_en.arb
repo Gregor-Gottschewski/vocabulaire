@@ -181,8 +181,12 @@
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
   "errorMoveBoxOfflineFailed": "Box could not be moved offline",
   "errorMoveBoxOnlineFailed": "Box could not be moved online",
+  "errorMoveGroupOfflineFailed": "Group could not be moved offline",
+  "errorMoveGroupOnlineFailed": "Group could not be moved online",
   "errorAddVocabularyFailed": "Vocabulary could not be saved",
   "errorVocabularyLimitReached": "Online-vocabulary limit reached. Move a box offline to make room for new online vocabulary.",
+  "errorGroupLimitReached": "Limit of 1000 groups reached.",
+  "errorBoxLimitPerGroupReached": "Limit of 800 boxes per group reached.",
   "errorAudioStorageLimitReached": "Audio storage limit reached. Move a box offline to free up storage space.",
 
   "language": "Language",

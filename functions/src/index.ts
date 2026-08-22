@@ -11,8 +11,18 @@ export {
   onAudioFinalize,
   onVocabularyCreated,
   onVocabularyDeleted,
+  onGroupCreated,
+  onGroupDeleted,
+  onBoxCreated,
+  onBoxDeleted,
 } from "./counters";
-export { reconcileReservedAudioUsage, reconcileAudioUsageLimits, reconcileVocabularyCounts } from "./reconciliation";
+export {
+  reconcileReservedAudioUsage,
+  reconcileAudioUsageLimits,
+  reconcileVocabularyCounts,
+  reconcileGroupCounts,
+  reconcileBoxCounts,
+} from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
 export { reserveAudioUpload } from "./audioReservations";
 

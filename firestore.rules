@@ -44,6 +44,26 @@ service cloud.firestore {
       && (list.size() < 4 || isConjugationValid(list[3]));
   }
 
+  function groupFieldsValid(data) {
+    return data.id is string && data.id.size() == 36
+      && data.name is string && data.name.size() <= 150
+      && data.type is string && data.type in ['vocabulary', 'flashcard']
+      && data.deleted is bool
+      && data.ownerUid is string
+      && data.updatedAt is timestamp
+      && (!('sourceLanguage' in data) || data.sourceLanguage == null || (data.sourceLanguage is string && data.sourceLanguage.size() == 2))
+      && (!('targetLanguage' in data) || data.targetLanguage == null || (data.targetLanguage is string && data.targetLanguage.size() == 2))
+      && (!('deletedAt' in data) || (data.deleted == true && data.deletedAt is timestamp));
+  }
+
+  function groupCreateFields() {
+    return ['id', 'name', 'deleted', 'ownerUid', 'sourceLanguage', 'targetLanguage', 'type', 'updatedAt'];
+  }
+
+  function groupUpdateFields() {
+    return ['id', 'name', 'deleted', 'ownerUid', 'sourceLanguage', 'targetLanguage', 'type', 'updatedAt', 'deletedAt'];
+  }
+
   function boxFieldsValid(data) {
     return data.id is string && data.id.size() == 36
       && data.name is string && data.name.size() <= 150
@@ -110,8 +130,8 @@ service cloud.firestore {
       allow write: if false;
     }
 
-    // Basic per-user box/vocabulary sync rules.
-    match /users/{userId}/boxes/{boxId} {
+    // Groups own their boxes, which in turn own their vocabularies.
+    match /users/{userId}/groups/{groupId} {
       allow read, delete: if request.auth != null && request.auth.uid == userId
                     && rateLimitData(database, userId).get('isPremium', false) == true;
 
@@ -121,18 +141,21 @@ service cloud.firestore {
                     && request.resource.data.ownerUid == resource.data.ownerUid
                     && request.resource.data.id == resource.data.id
                     && request.resource.data.type == resource.data.type
-                    && request.resource.data.keys().hasOnly(boxUpdateFields())
-                    && boxFieldsValid(request.resource.data);
+                    && request.resource.data.get('sourceLanguage', null) == resource.data.get('sourceLanguage', null)
+                    && request.resource.data.get('targetLanguage', null) == resource.data.get('targetLanguage', null)
+                    && request.resource.data.keys().hasOnly(groupUpdateFields())
+                    && groupFieldsValid(request.resource.data);
 
       allow create: if request.auth != null && request.auth.uid == userId
                     && rateLimitData(database, userId).get('isPremium', false) == true
                     && request.resource.data.ownerUid == userId
                     && request.resource.data.deleted == false
                     && request.resource.data.keys().hasAll(['id', 'name', 'deleted', 'type'])
-                    && request.resource.data.keys().hasOnly(boxCreateFields())
-                    && boxFieldsValid(request.resource.data);
+                    && request.resource.data.keys().hasOnly(groupCreateFields())
+                    && groupFieldsValid(request.resource.data)
+                    && rateLimitData(database, userId).get('groupCountOnline', 0) < 1000;
 
-      match /vocabularies/{vocabId} {
+      match /boxes/{boxId} {
         allow read, delete: if request.auth != null && request.auth.uid == userId
                       && rateLimitData(database, userId).get('isPremium', false) == true;
 
@@ -141,17 +164,42 @@ service cloud.firestore {
                       && resource.data.deleted == false
                       && request.resource.data.ownerUid == resource.data.ownerUid
                       && request.resource.data.id == resource.data.id
-                      && request.resource.data.keys().hasOnly(vocabUpdateFields())
-                      && vocabFieldsValid(request.resource.data);
+                      && request.resource.data.type == resource.data.type
+                      && request.resource.data.keys().hasOnly(boxUpdateFields())
+                      && boxFieldsValid(request.resource.data);
 
+        // A box's type must match its group's type.
         allow create: if request.auth != null && request.auth.uid == userId
                       && rateLimitData(database, userId).get('isPremium', false) == true
                       && request.resource.data.ownerUid == userId
                       && request.resource.data.deleted == false
-                      && request.resource.data.keys().hasAll(['audioSynced', 'card', 'deleted', 'id', 'meaning', 'ownerUid', 'updatedAt', 'word'])
-                      && request.resource.data.keys().hasOnly(vocabCreateFields())
-                      && vocabFieldsValid(request.resource.data)
-                      && rateLimitData(database, userId).get('vocabularyCountOnline', 0) < 3000;
+                      && request.resource.data.keys().hasAll(['id', 'name', 'deleted', 'type'])
+                      && request.resource.data.keys().hasOnly(boxCreateFields())
+                      && boxFieldsValid(request.resource.data)
+                      && get(/databases/$(database)/documents/users/$(userId)/groups/$(groupId)).data.get('boxCountOnline', 0) < 800
+                      && request.resource.data.type == get(/databases/$(database)/documents/users/$(userId)/groups/$(groupId)).data.type;
+
+        match /vocabularies/{vocabId} {
+          allow read, delete: if request.auth != null && request.auth.uid == userId
+                        && rateLimitData(database, userId).get('isPremium', false) == true;
+
+          allow update: if request.auth != null && request.auth.uid == userId
+                        && rateLimitData(database, userId).get('isPremium', false) == true
+                        && resource.data.deleted == false
+                        && request.resource.data.ownerUid == resource.data.ownerUid
+                        && request.resource.data.id == resource.data.id
+                        && request.resource.data.keys().hasOnly(vocabUpdateFields())
+                        && vocabFieldsValid(request.resource.data);
+
+          allow create: if request.auth != null && request.auth.uid == userId
+                        && rateLimitData(database, userId).get('isPremium', false) == true
+                        && request.resource.data.ownerUid == userId
+                        && request.resource.data.deleted == false
+                        && request.resource.data.keys().hasAll(['audioSynced', 'card', 'deleted', 'id', 'meaning', 'ownerUid', 'updatedAt', 'word'])
+                        && request.resource.data.keys().hasOnly(vocabCreateFields())
+                        && vocabFieldsValid(request.resource.data)
+                        && rateLimitData(database, userId).get('vocabularyCountOnline', 0) < 3000;
+        }
       }
     }
 

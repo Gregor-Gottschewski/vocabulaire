@@ -394,12 +394,27 @@ class AppLocalizationsFr extends AppLocalizations {
       'La boîte n\'a pas pu être mise en ligne';
 
   @override
+  String get errorMoveGroupOfflineFailed =>
+      'Le groupe n\'a pas pu être rendu local';
+
+  @override
+  String get errorMoveGroupOnlineFailed =>
+      'Le groupe n\'a pas pu être mis en ligne';
+
+  @override
   String get errorAddVocabularyFailed =>
       'Le vocabulaire n\'a pas pu être enregistré';
 
   @override
   String get errorVocabularyLimitReached =>
       'Limite de vocabulaire en ligne atteinte. Rends une boîte locale pour libérer de la place pour du nouveau vocabulaire en ligne.';
+
+  @override
+  String get errorGroupLimitReached => 'Limite de 1000 groupes atteinte.';
+
+  @override
+  String get errorBoxLimitPerGroupReached =>
+      'Limite de 800 boîtes par groupe atteinte.';
 
   @override
   String get errorAudioStorageLimitReached =>

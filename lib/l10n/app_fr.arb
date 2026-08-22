@@ -188,8 +188,12 @@
   },
   "errorMoveBoxOfflineFailed": "La boîte n'a pas pu être rendue locale",
   "errorMoveBoxOnlineFailed": "La boîte n'a pas pu être mise en ligne",
+  "errorMoveGroupOfflineFailed": "Le groupe n'a pas pu être rendu local",
+  "errorMoveGroupOnlineFailed": "Le groupe n'a pas pu être mis en ligne",
   "errorAddVocabularyFailed": "Le vocabulaire n'a pas pu être enregistré",
   "errorVocabularyLimitReached": "Limite de vocabulaire en ligne atteinte. Rends une boîte locale pour libérer de la place pour du nouveau vocabulaire en ligne.",
+  "errorGroupLimitReached": "Limite de 1000 groupes atteinte.",
+  "errorBoxLimitPerGroupReached": "Limite de 800 boîtes par groupe atteinte.",
   "errorAudioStorageLimitReached": "Limite de stockage audio atteinte. Rends une boîte locale pour libérer de l'espace de stockage.",
 
   "editVocabGenerateAudio": "Générer",

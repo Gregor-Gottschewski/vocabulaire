@@ -394,12 +394,27 @@ class AppLocalizationsDe extends AppLocalizations {
       'Box konnte nicht online gestellt werden';
 
   @override
+  String get errorMoveGroupOfflineFailed =>
+      'Gruppe konnte nicht ausgelagert werden';
+
+  @override
+  String get errorMoveGroupOnlineFailed =>
+      'Gruppe konnte nicht online gestellt werden';
+
+  @override
   String get errorAddVocabularyFailed =>
       'Vokabel konnte nicht gespeichert werden';
 
   @override
   String get errorVocabularyLimitReached =>
       'Vokabel-Limit für Online-Boxen erreicht. Lagere eine Box aus, um Platz für neue Online-Vokabeln zu schaffen.';
+
+  @override
+  String get errorGroupLimitReached => 'Limit von 1000 Gruppen erreicht.';
+
+  @override
+  String get errorBoxLimitPerGroupReached =>
+      'Limit von 800 Boxen pro Gruppe erreicht.';
 
   @override
   String get errorAudioStorageLimitReached =>

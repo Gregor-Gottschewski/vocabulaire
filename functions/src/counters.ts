@@ -4,7 +4,9 @@ import {onObjectDeleted, onObjectFinalized, StorageEvent} from "firebase-functio
 import {consumeReservation, releaseReservation} from "./audioReservations";
 
 const REGION = "europe-west1";
-const VOCABULARY_PATH = "users/{uid}/boxes/{boxId}/vocabularies/{vocabId}";
+const GROUP_PATH = "users/{uid}/groups/{groupId}";
+const BOX_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}";
+const VOCABULARY_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}/vocabularies/{vocabId}";
 const AUDIO_PATH_PATTERN = /^users\/([^/]+)\/audio\/([^/]+)$/;
 
 // Keep in sync with the vocabulary quota check in firestore.rules.
@@ -17,6 +19,45 @@ async function adjustRateLimitField(uid: string, field: string, delta: number): 
         .doc(uid)
         .set({[field]: FieldValue.increment(delta)}, {merge: true});
 }
+
+async function adjustGroupField(uid: string, groupId: string, field: string, delta: number): Promise<void> {
+    if (delta === 0) return;
+    await getFirestore()
+        .collection("users")
+        .doc(uid)
+        .collection("groups")
+        .doc(groupId)
+        .set({[field]: FieldValue.increment(delta)}, {merge: true});
+}
+
+// Keeps rateLimits/{uid}.groupCountOnline in sync with the user's groups.
+export const onGroupCreated = onDocumentCreated(
+    {region: REGION, document: GROUP_PATH},
+    async (event) => {
+        await adjustRateLimitField(event.params.uid, "groupCountOnline", 1);
+    }
+);
+
+export const onGroupDeleted = onDocumentDeleted(
+    {region: REGION, document: GROUP_PATH},
+    async (event) => {
+        await adjustRateLimitField(event.params.uid, "groupCountOnline", -1);
+    }
+);
+
+export const onBoxCreated = onDocumentCreated(
+    {region: REGION, document: BOX_PATH},
+    async (event) => {
+        await adjustGroupField(event.params.uid, event.params.groupId, "boxCountOnline", 1);
+    }
+);
+
+export const onBoxDeleted = onDocumentDeleted(
+    {region: REGION, document: BOX_PATH},
+    async (event) => {
+        await adjustGroupField(event.params.uid, event.params.groupId, "boxCountOnline", -1);
+    }
+);
 
 // Re-validates the quota inside a transaction and deletes the vocabulary if a race condition occurs.
 export const onVocabularyCreated = onDocumentCreated(
