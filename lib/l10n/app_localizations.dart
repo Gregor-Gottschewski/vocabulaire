@@ -100,17 +100,17 @@ abstract class AppLocalizations {
     Locale('fr'),
   ];
 
-  /// No description provided for @tabBoxen.
-  ///
-  /// In de, this message translates to:
-  /// **'Boxen'**
-  String get tabBoxen;
-
   /// No description provided for @tabVokabeln.
   ///
   /// In de, this message translates to:
   /// **'Vokabeln'**
   String get tabVokabeln;
+
+  /// No description provided for @tabGroups.
+  ///
+  /// In de, this message translates to:
+  /// **'Gruppen'**
+  String get tabGroups;
 
   /// No description provided for @tabEinstellungen.
   ///
@@ -130,6 +130,18 @@ abstract class AppLocalizations {
   /// **'Neue Box'**
   String get addBox;
 
+  /// No description provided for @groupsEmpty.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Gruppen vorhanden.'**
+  String get groupsEmpty;
+
+  /// No description provided for @addGroup.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue Gruppe'**
+  String get addGroup;
+
   /// No description provided for @back.
   ///
   /// In de, this message translates to:
@@ -142,17 +154,17 @@ abstract class AppLocalizations {
   /// **'{num} fällig'**
   String overdueCardsCounter(int num);
 
+  /// No description provided for @groupTileBoxCount.
+  ///
+  /// In de, this message translates to:
+  /// **'{count} Boxen'**
+  String groupTileBoxCount(int count);
+
   /// No description provided for @settingsTitle.
   ///
   /// In de, this message translates to:
   /// **'Einstellungen'**
   String get settingsTitle;
-
-  /// No description provided for @settingsImportBox.
-  ///
-  /// In de, this message translates to:
-  /// **'Box importieren'**
-  String get settingsImportBox;
 
   /// No description provided for @settingsCardAnimations.
   ///
@@ -196,12 +208,6 @@ abstract class AppLocalizations {
   /// **'Vocabulaire auf Github'**
   String get settingsGithub;
 
-  /// No description provided for @settingsBoxSync.
-  ///
-  /// In de, this message translates to:
-  /// **'Box-Synchronisierung'**
-  String get settingsBoxSync;
-
   /// No description provided for @settingsExportAll.
   ///
   /// In de, this message translates to:
@@ -231,24 +237,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'{usedMb} MB / {limitMb} MB'**
   String settingsAudioUsageValue(String usedMb, int limitMb);
-
-  /// No description provided for @boxSyncTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Box-Synchronisierung'**
-  String get boxSyncTitle;
-
-  /// No description provided for @boxSyncDescription.
-  ///
-  /// In de, this message translates to:
-  /// **'Online gespeicherte Boxen werden geräteübergreifend synchronisiert, lokale Boxen sind nur auf diesem Gerät verfügbar. Verschiebe eine Box in eine der beiden Richtungen.'**
-  String get boxSyncDescription;
-
-  /// No description provided for @boxSyncEmpty.
-  ///
-  /// In de, this message translates to:
-  /// **'Keine Boxen vorhanden.'**
-  String get boxSyncEmpty;
 
   /// No description provided for @editVocabNew.
   ///
@@ -351,12 +339,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Speichern'**
   String get editVocabSave;
-
-  /// No description provided for @editVocabNext.
-  ///
-  /// In de, this message translates to:
-  /// **'Nächste'**
-  String get editVocabNext;
 
   /// No description provided for @editVocabStats.
   ///
@@ -490,12 +472,6 @@ abstract class AppLocalizations {
   /// **'Keine Beschreibung vorhanden'**
   String get boxTileNoDescription;
 
-  /// No description provided for @boxDetailOptions.
-  ///
-  /// In de, this message translates to:
-  /// **'Optionen'**
-  String get boxDetailOptions;
-
   /// No description provided for @boxDetailDueVocabs.
   ///
   /// In de, this message translates to:
@@ -519,12 +495,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Neue Karten / Tag'**
   String get boxDetailNewCardsPerDay;
-
-  /// No description provided for @boxDetailDailyLimitInfo.
-  ///
-  /// In de, this message translates to:
-  /// **'Das tägliche Limit begrenzt die Anzahl der neuen Vokabeln, die pro Tag abgefragt werden.'**
-  String get boxDetailDailyLimitInfo;
 
   /// No description provided for @boxDetailEditVocabs.
   ///
@@ -580,23 +550,23 @@ abstract class AppLocalizations {
   /// **'Diese Box bearbeiten.'**
   String get boxDetailActionsSheetTitle;
 
-  /// No description provided for @boxDetailEditAction.
+  /// No description provided for @groupDetailActionsSheetTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Gruppe bearbeiten.'**
+  String get groupDetailActionsSheetTitle;
+
+  /// No description provided for @editAction.
   ///
   /// In de, this message translates to:
   /// **'Bearbeiten'**
-  String get boxDetailEditAction;
+  String get editAction;
 
   /// No description provided for @boxDetailShareAction.
   ///
   /// In de, this message translates to:
   /// **'Teilen'**
   String get boxDetailShareAction;
-
-  /// No description provided for @boxDetailSaveAction.
-  ///
-  /// In de, this message translates to:
-  /// **'Speichern'**
-  String get boxDetailSaveAction;
 
   /// No description provided for @boxDetailDailyLimitOff.
   ///
@@ -609,42 +579,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Tageslimit aktivieren'**
   String get boxDetailDailyLimitEnable;
-
-  /// No description provided for @boxDetailMoveOfflineAction.
-  ///
-  /// In de, this message translates to:
-  /// **'Auslagern'**
-  String get boxDetailMoveOfflineAction;
-
-  /// No description provided for @boxDetailMoveOfflineTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Box auslagern'**
-  String get boxDetailMoveOfflineTitle;
-
-  /// No description provided for @boxDetailMoveOfflineMessage.
-  ///
-  /// In de, this message translates to:
-  /// **'Die Box wird lokal auf diesem Gerät gespeichert und nicht mehr geräteübergreifend synchronisiert. Fortfahren?'**
-  String get boxDetailMoveOfflineMessage;
-
-  /// No description provided for @boxDetailMoveOnlineAction.
-  ///
-  /// In de, this message translates to:
-  /// **'Online stellen'**
-  String get boxDetailMoveOnlineAction;
-
-  /// No description provided for @boxDetailMoveOnlineTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Box online stellen'**
-  String get boxDetailMoveOnlineTitle;
-
-  /// No description provided for @boxDetailMoveOnlineMessage.
-  ///
-  /// In de, this message translates to:
-  /// **'Die Box wird in die Cloud hochgeladen und geräteübergreifend synchronisiert. Fortfahren?'**
-  String get boxDetailMoveOnlineMessage;
 
   /// No description provided for @vocabListTitle.
   ///
@@ -771,6 +705,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Ungültiges Dateiformat: JSON-Objekt erwartet'**
   String get errorImportInvalidFormat;
+
+  /// No description provided for @errorImportGroupMismatch.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Box passt nicht zur Gruppe: Typ oder Sprache stimmen nicht überein'**
+  String get errorImportGroupMismatch;
 
   /// No description provided for @errorDuplicateBoxName.
   ///
@@ -1030,53 +970,11 @@ abstract class AppLocalizations {
   /// **'Koreanisch'**
   String get languageKorean;
 
-  /// No description provided for @boxTypeVocabularyTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Vokabelbox'**
-  String get boxTypeVocabularyTitle;
-
-  /// No description provided for @boxTypeVocabularySubtitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Für das Vokabellernen einer Sprache mit zusätzlichen Funktionalitäten.'**
-  String get boxTypeVocabularySubtitle;
-
-  /// No description provided for @boxTypeFlashcardTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Karteikartenbox'**
-  String get boxTypeFlashcardTitle;
-
-  /// No description provided for @boxTypeFlashcardSubtitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Für beliebige Frage-Antwort-Karten. Alle Grundfunktionalitäten an Bord.'**
-  String get boxTypeFlashcardSubtitle;
-
   /// No description provided for @createBoxNavTitle.
   ///
   /// In de, this message translates to:
   /// **'Neue Box'**
   String get createBoxNavTitle;
-
-  /// No description provided for @createBoxTypeTitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Was für eine Box soll erstellt werden?'**
-  String get createBoxTypeTitle;
-
-  /// No description provided for @createBoxTypeSubtitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Wähle einen Typ für die neue Box. Der Typ kann später nicht mehr geändert werden.'**
-  String get createBoxTypeSubtitle;
-
-  /// No description provided for @createBoxTypeImportSubtitle.
-  ///
-  /// In de, this message translates to:
-  /// **'Importiere eine Box mit allen Vokabeln und Audiodateien (falls vorhanden).'**
-  String get createBoxTypeImportSubtitle;
 
   /// No description provided for @createBoxTitleLabel.
   ///
@@ -1138,11 +1036,71 @@ abstract class AppLocalizations {
   /// **'Online speichern'**
   String get createBoxOnlineSync;
 
-  /// No description provided for @createBoxFinish.
+  /// No description provided for @finish.
   ///
   /// In de, this message translates to:
   /// **'Fertig'**
-  String get createBoxFinish;
+  String get finish;
+
+  /// No description provided for @createGroupNavTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue Gruppe'**
+  String get createGroupNavTitle;
+
+  /// No description provided for @createGroupTypeTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Was für eine Gruppe soll erstellt werden?'**
+  String get createGroupTypeTitle;
+
+  /// No description provided for @createGroupTypeSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Wähle einen Typ für die neue Gruppe. Der Typ kann später nicht mehr geändert werden.'**
+  String get createGroupTypeSubtitle;
+
+  /// No description provided for @createGroupTitleHint.
+  ///
+  /// In de, this message translates to:
+  /// **'Name der Gruppe'**
+  String get createGroupTitleHint;
+
+  /// No description provided for @groupTypeVocabularyTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabelgruppe'**
+  String get groupTypeVocabularyTitle;
+
+  /// No description provided for @groupTypeVocabularySubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Für das Vokabellernen einer Sprache mit zusätzlichen Funktionalitäten.'**
+  String get groupTypeVocabularySubtitle;
+
+  /// No description provided for @groupTypeFlashcardTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Karteikartengruppe'**
+  String get groupTypeFlashcardTitle;
+
+  /// No description provided for @groupTypeFlashcardSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Für beliebige Frage-Antwort-Karten. Alle Grundfunktionalitäten an Bord.'**
+  String get groupTypeFlashcardSubtitle;
+
+  /// No description provided for @groupDetailDeleteTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gruppe löschen'**
+  String get groupDetailDeleteTitle;
+
+  /// No description provided for @groupDetailDeleteMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Möchtest du diese Gruppe wirklich löschen? Alle enthaltenen Boxen werden ebenfalls gelöscht.'**
+  String get groupDetailDeleteMessage;
 
   /// No description provided for @languageSearchPlaceholder.
   ///

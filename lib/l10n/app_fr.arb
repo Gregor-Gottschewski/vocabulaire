@@ -1,24 +1,30 @@
 {
   "@@locale": "fr",
-
-  "tabBoxen": "Boîtes",
   "tabVokabeln": "Vocabulaire",
+  "tabGroups": "Groupes",
   "tabEinstellungen": "Paramètres",
-
   "homeEmpty": "Aucune boîte disponible.",
   "addBox": "Nouvelle boîte",
-
+  "groupsEmpty": "Aucun groupe disponible.",
+  "addGroup": "Nouveau groupe",
   "back": "Retour",
-
   "overdueCardsCounter": "{num} en retard",
   "@overdueCardsCounter": {
     "placeholders": {
-      "num": { "type":  "int" }
+      "num": {
+        "type": "int"
+      }
     }
   },
-
+  "groupTileBoxCount": "{count} boîtes",
+  "@groupTileBoxCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "settingsTitle": "Paramètres",
-  "settingsImportBox": "Importer une boîte",
   "settingsCardAnimations": "Animations de cartes",
   "settingsSyncStatus": "État de synchronisation",
   "settingsSyncStatusSynced": "À jour",
@@ -26,29 +32,31 @@
   "settingsSyncStatusOffline": "Hors ligne",
   "settingsLicenses": "Licences",
   "settingsGithub": "Vocabulaire à GitHub",
-  "settingsBoxSync": "Synchronisation des boîtes",
   "settingsExportAll": "Exporter toutes les boîtes",
   "settingsVocabularyUsage": "Vocabulaire en ligne",
   "settingsVocabularyUsageValue": "{count}/{limit}",
   "@settingsVocabularyUsageValue": {
     "placeholders": {
-      "count": { "type": "int" },
-      "limit": { "type": "int" }
+      "count": {
+        "type": "int"
+      },
+      "limit": {
+        "type": "int"
+      }
     }
   },
   "settingsAudioUsage": "Stockage audio en ligne",
   "settingsAudioUsageValue": "{usedMb} Mo / {limitMb} Mo",
   "@settingsAudioUsageValue": {
     "placeholders": {
-      "usedMb": { "type": "String" },
-      "limitMb": { "type": "int" }
+      "usedMb": {
+        "type": "String"
+      },
+      "limitMb": {
+        "type": "int"
+      }
     }
   },
-
-  "boxSyncTitle": "Synchronisation des boîtes",
-  "boxSyncDescription": "Les boîtes stockées en ligne sont synchronisées sur tous vos appareils, les boîtes locales ne sont disponibles que sur cet appareil. Déplacez une boîte dans l'un ou l'autre sens.",
-  "boxSyncEmpty": "Aucune boîte.",
-
   "editVocabNew": "Nouveau vocabulaire",
   "editVocabEdit": "Modifier le vocabulaire",
   "editVocabFront": "Recto",
@@ -66,38 +74,45 @@
   "editVocabExistsMessage": "Ce vocabulaire existe déjà dans cette boîte. Voulez-vous quand même l'ajouter ?",
   "editVocabAddAnyway": "Ajouter quand même",
   "editVocabSave": "Enregistrer",
-  "editVocabNext": "Suivant",
   "editVocabStats": "Statistiques",
   "editVocabDue": "Prochaine révision : {dueDate}",
   "@editVocabDue": {
     "placeholders": {
-      "dueDate": { "type": "String" }
+      "dueDate": {
+        "type": "String"
+      }
     }
   },
   "editVocabOverdue": "en retard",
   "editVocabDifficulty": "Complexité : {difficulty} sur 10",
   "@editVocabDifficulty": {
     "placeholders": {
-      "difficulty": { "type": "String" }
+      "difficulty": {
+        "type": "String"
+      }
     }
   },
   "editVocabStability": "Stabilité : {stability}",
   "@editVocabStability": {
     "placeholders": {
-      "stability": { "type": "String" }
+      "stability": {
+        "type": "String"
+      }
     }
   },
-
   "editVocabConjugationSection": "Conjugaison",
   "editVocabConjugationTempsHint": "Temps",
   "editVocabConjugationFormsHint": "Formes",
   "editVocabConjugationAdd": "+ Ajouter une conjugaison",
-
   "reviewCard": "{index} sur {total}",
   "@reviewCard": {
     "placeholders": {
-      "index": { "type": "int" },
-      "total": { "type": "int" }
+      "index": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "reviewPlay": "Écouter",
@@ -112,18 +127,17 @@
   "reviewExample": "Exemple : {example}",
   "@reviewExample": {
     "placeholders": {
-      "example": { "type": "String" }
+      "example": {
+        "type": "String"
+      }
     }
   },
-
   "boxDetailDescription": "Description",
   "boxTileNoDescription": "Aucune description disponible",
-  "boxDetailOptions": "Options",
   "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",
   "boxDetailDailyLimit": "Limite quotidienne de nouvelles cartes",
   "boxDetailNewCardsPerDay": "Nouvelles cartes / jour",
-  "boxDetailDailyLimitInfo": "La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.",
   "boxDetailEditVocabs": "Afficher la liste des vocabulaires",
   "boxDetailStart": "Démarrer",
   "boxDetailDeleteTitle": "Supprimer la boîte",
@@ -133,44 +147,40 @@
   "boxDetailSubline": "{total} mots — {due} à réviser maintenant",
   "@boxDetailSubline": {
     "placeholders": {
-      "total": { "type": "int" },
-      "due": { "type": "int" }
+      "total": {
+        "type": "int"
+      },
+      "due": {
+        "type": "int"
+      }
     }
   },
   "boxDetailDailyLimitValue": "{count} cartes",
   "@boxDetailDailyLimitValue": {
     "placeholders": {
-      "count": { "type": "int" }
+      "count": {
+        "type": "int"
+      }
     }
   },
   "boxDetailActionsSheetTitle": "Modifier cette boîte.",
-  "boxDetailEditAction": "Modifier",
+  "groupDetailActionsSheetTitle": "Modifier cette groupe.",
+  "editAction": "Modifier",
   "boxDetailShareAction": "Partager",
-  "boxDetailSaveAction": "Enregistrer",
   "boxDetailDailyLimitOff": "Désactivé",
   "boxDetailDailyLimitEnable": "Activer la limite quotidienne",
-  "boxDetailMoveOfflineAction": "Rendre locale",
-  "boxDetailMoveOfflineTitle": "Rendre la boîte locale",
-  "boxDetailMoveOfflineMessage": "La boîte sera stockée localement sur cet appareil et ne sera plus synchronisée entre appareils. Continuer ?",
-  "boxDetailMoveOnlineAction": "Mettre en ligne",
-  "boxDetailMoveOnlineTitle": "Mettre la boîte en ligne",
-  "boxDetailMoveOnlineMessage": "La boîte sera envoyée dans le cloud et synchronisée sur tous vos appareils. Continuer ?",
-
   "vocabListTitle": "Vocabulaire",
   "vocabListEmpty": "Aucun vocabulaire disponible.",
   "vocabListSearchPlaceholder": "Rechercher",
   "vocabListNoResults": "Aucun vocabulaire trouvé.",
-
   "learningMethodAll": "Tous",
   "learningMethodHard": "Difficiles uniquement",
   "learningMethodNew": "Nouveaux uniquement",
   "learningMethodUnstable": "Instables uniquement",
-
   "commonOk": "OK",
   "commonCancel": "Annuler",
   "commonError": "Erreur",
   "commonNext": "Suivant",
-
   "errorExportDirectoryFailed": "Le répertoire d'exportation n'a pas pu être créé",
   "errorExportWriteFailed": "Les données de vocabulaire n'ont pas pu être enregistrées",
   "errorExportAudioFailed": "Les fichiers audio n'ont pas pu être copiés",
@@ -180,10 +190,13 @@
   "errorExportBulkArchiveFailed": "Les boîtes n'ont pas pu être regroupées pour l'exportation",
   "errorImportMissingStoreFile": "Format de fichier invalide : store.json introuvable dans l'archive",
   "errorImportInvalidFormat": "Format de fichier invalide : objet JSON attendu",
+  "errorImportGroupMismatch": "Cette boîte ne correspond pas au groupe : le type ou la langue diffère",
   "errorDuplicateBoxName": "Une boîte nommée \"{name}\" existe déjà",
   "@errorDuplicateBoxName": {
     "placeholders": {
-      "name": { "type": "String" }
+      "name": {
+        "type": "String"
+      }
     }
   },
   "errorMoveBoxOfflineFailed": "La boîte n'a pas pu être rendue locale",
@@ -195,7 +208,6 @@
   "errorGroupLimitReached": "Limite de 1000 groupes atteinte.",
   "errorBoxLimitPerGroupReached": "Limite de 800 boîtes par groupe atteinte.",
   "errorAudioStorageLimitReached": "Limite de stockage audio atteinte. Rends une boîte locale pour libérer de l'espace de stockage.",
-
   "editVocabGenerateAudio": "Générer",
   "editVocabOverwriteAudioTitle": "Remplacer l'enregistrement ?",
   "editVocabOverwriteAudioMessage": "Cette carte possède déjà un enregistrement audio. Le remplacer par la prononciation générée ?",
@@ -207,13 +219,11 @@
   "editVocabDeleteTitle": "Supprimer le vocabulaire",
   "editVocabDeleteMessage": "Voulez-vous vraiment supprimer ce vocabulaire ?",
   "editVocabDeleteConfirm": "Supprimer",
-
   "errorTtsEmptyText": "Le verso ne doit pas être vide pour générer une prononciation.",
   "errorTtsTextTooLong": "Le texte ne doit pas dépasser 65 caractères.",
   "errorTtsRateLimitExceeded": "Limite quotidienne de générations vocales atteinte.",
   "errorTtsNotAuthenticated": "Échec de la connexion. Veuillez réessayer.",
   "errorTtsUnknownError": "La prononciation n'a pas pu être générée. Veuillez vérifier votre connexion internet.",
-
   "language": "Langue",
   "languageGerman": "Allemand",
   "languageEnglish": "Anglais",
@@ -231,16 +241,7 @@
   "languageCzech": "Tchèque",
   "languageHungarian": "Hongrois",
   "languageKorean": "Coréen",
-
-  "boxTypeVocabularyTitle": "Boîte de vocabulaire",
-  "boxTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue, avec des fonctionnalités supplémentaires.",
-  "boxTypeFlashcardTitle": "Boîte de cartes",
-  "boxTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.",
-
   "createBoxNavTitle": "Nouvelle boîte",
-  "createBoxTypeTitle": "Quel type de boîte veux-tu créer ?",
-  "createBoxTypeSubtitle": "Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.",
-  "createBoxTypeImportSubtitle": "Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.",
   "createBoxTitleLabel": "Titre",
   "createBoxTitleHint": "Nom de la boîte",
   "createBoxDescriptionLabel": "Description",
@@ -251,8 +252,17 @@
   "createBoxSourceLanguagePickerTitle": "Choisir la langue source",
   "createBoxTargetLanguagePickerTitle": "Choisir la langue cible",
   "createBoxOnlineSync": "Enregistrer en ligne",
-  "createBoxFinish": "Terminé",
-
+  "finish": "Terminé",
+  "createGroupNavTitle": "Nouveau groupe",
+  "createGroupTypeTitle": "Quel type de groupe veux-tu créer ?",
+  "createGroupTypeSubtitle": "Choisis un type pour le nouveau groupe. Le type ne pourra plus être modifié par la suite.",
+  "createGroupTitleHint": "Nom du groupe",
+  "groupTypeVocabularyTitle": "Groupe de vocabulaire",
+  "groupTypeVocabularySubtitle": "Pour apprendre le vocabulaire d'une langue, avec des fonctionnalités supplémentaires.",
+  "groupTypeFlashcardTitle": "Groupe de cartes",
+  "groupTypeFlashcardSubtitle": "Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.",
+  "groupDetailDeleteTitle": "Supprimer le groupe",
+  "groupDetailDeleteMessage": "Veux-tu vraiment supprimer ce groupe ? Toutes les boîtes qu'il contient seront également supprimées.",
   "languageSearchPlaceholder": "Rechercher",
   "languageCustomOption": "Personnalisé...",
   "languageCustomTitle": "Langue personnalisée",

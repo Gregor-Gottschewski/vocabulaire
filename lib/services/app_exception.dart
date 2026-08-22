@@ -9,6 +9,7 @@ enum AppError {
   exportBulkArchiveFailed,
   importMissingStoreFile,
   importInvalidFormat,
+  importGroupMismatch,
   duplicateBoxName,
   moveBoxOfflineFailed,
   moveBoxOnlineFailed,

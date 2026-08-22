@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get tabBoxen => 'Boxes';
+  String get tabVokabeln => 'Vocabulary';
 
   @override
-  String get tabVokabeln => 'Vocabulary';
+  String get tabGroups => 'Groups';
 
   @override
   String get tabEinstellungen => 'Settings';
@@ -24,6 +24,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addBox => 'Add Box';
 
   @override
+  String get groupsEmpty => 'No groups yet.';
+
+  @override
+  String get addGroup => 'Add Group';
+
+  @override
   String get back => 'Back';
 
   @override
@@ -32,10 +38,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get settingsTitle => 'Settings';
+  String groupTileBoxCount(int count) {
+    return '$count boxes';
+  }
 
   @override
-  String get settingsImportBox => 'Import box';
+  String get settingsTitle => 'Settings';
 
   @override
   String get settingsCardAnimations => 'Card animations';
@@ -59,9 +67,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsGithub => 'Vocabulaire on GitHub';
 
   @override
-  String get settingsBoxSync => 'Box synchronisation';
-
-  @override
   String get settingsExportAll => 'Export all boxes';
 
   @override
@@ -79,16 +84,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsAudioUsageValue(String usedMb, int limitMb) {
     return '$usedMb MB / $limitMb MB';
   }
-
-  @override
-  String get boxSyncTitle => 'Box sync';
-
-  @override
-  String get boxSyncDescription =>
-      'Boxes stored online are synced across your devices, local boxes are only available on this device. Move a box in either direction.';
-
-  @override
-  String get boxSyncEmpty => 'No boxes yet.';
 
   @override
   String get editVocabNew => 'New vocabulary';
@@ -143,9 +138,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editVocabSave => 'Save';
-
-  @override
-  String get editVocabNext => 'Next';
 
   @override
   String get editVocabStats => 'Statistics';
@@ -224,9 +216,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxTileNoDescription => 'No description available';
 
   @override
-  String get boxDetailOptions => 'Options';
-
-  @override
   String get boxDetailDueVocabs => 'Query due vocabulary';
 
   @override
@@ -237,10 +226,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get boxDetailNewCardsPerDay => 'New cards / day';
-
-  @override
-  String get boxDetailDailyLimitInfo =>
-      'The daily limit restricts the number of new words reviewed per day.';
 
   @override
   String get boxDetailEditVocabs => 'View vocabulary list';
@@ -275,39 +260,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailActionsSheetTitle => 'Edit this box.';
 
   @override
-  String get boxDetailEditAction => 'Edit';
+  String get groupDetailActionsSheetTitle => 'Edit this group.';
+
+  @override
+  String get editAction => 'Edit';
 
   @override
   String get boxDetailShareAction => 'Share';
-
-  @override
-  String get boxDetailSaveAction => 'Save';
 
   @override
   String get boxDetailDailyLimitOff => 'Off';
 
   @override
   String get boxDetailDailyLimitEnable => 'Enable daily limit';
-
-  @override
-  String get boxDetailMoveOfflineAction => 'Move offline';
-
-  @override
-  String get boxDetailMoveOfflineTitle => 'Move box offline';
-
-  @override
-  String get boxDetailMoveOfflineMessage =>
-      'The box will be stored locally on this device and no longer synced across devices. Continue?';
-
-  @override
-  String get boxDetailMoveOnlineAction => 'Move online';
-
-  @override
-  String get boxDetailMoveOnlineTitle => 'Move box online';
-
-  @override
-  String get boxDetailMoveOnlineMessage =>
-      'The box will be uploaded to the cloud and synced across your devices. Continue?';
 
   @override
   String get vocabListTitle => 'Vocabulary';
@@ -375,6 +340,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorImportInvalidFormat =>
       'Invalid file format: expected a JSON object';
+
+  @override
+  String get errorImportGroupMismatch =>
+      'This box doesn\'t match the group: type or language differ';
 
   @override
   String errorDuplicateBoxName(String name) {
@@ -520,32 +489,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get languageKorean => 'Korean';
 
   @override
-  String get boxTypeVocabularyTitle => 'Vocabulary box';
-
-  @override
-  String get boxTypeVocabularySubtitle =>
-      'For learning the vocabulary of a language, with additional features.';
-
-  @override
-  String get boxTypeFlashcardTitle => 'Flashcard box';
-
-  @override
-  String get boxTypeFlashcardSubtitle =>
-      'For any kind of question-and-answer cards. All the basic features included.';
-
-  @override
   String get createBoxNavTitle => 'New box';
-
-  @override
-  String get createBoxTypeTitle => 'What kind of box do you want to create?';
-
-  @override
-  String get createBoxTypeSubtitle =>
-      'Choose a type for the new box. The type can\'t be changed later.';
-
-  @override
-  String get createBoxTypeImportSubtitle =>
-      'Import a box with all its vocabulary and audio files.';
 
   @override
   String get createBoxTitleLabel => 'Title';
@@ -580,7 +524,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createBoxOnlineSync => 'Save online';
 
   @override
-  String get createBoxFinish => 'Done';
+  String get finish => 'Done';
+
+  @override
+  String get createGroupNavTitle => 'New group';
+
+  @override
+  String get createGroupTypeTitle =>
+      'What kind of group do you want to create?';
+
+  @override
+  String get createGroupTypeSubtitle =>
+      'Choose a type for the new group. The type can\'t be changed later.';
+
+  @override
+  String get createGroupTitleHint => 'Group name';
+
+  @override
+  String get groupTypeVocabularyTitle => 'Vocabulary group';
+
+  @override
+  String get groupTypeVocabularySubtitle =>
+      'For learning the vocabulary of a language, with additional features.';
+
+  @override
+  String get groupTypeFlashcardTitle => 'Flashcard group';
+
+  @override
+  String get groupTypeFlashcardSubtitle =>
+      'For any kind of question-and-answer cards. All the basic features included.';
+
+  @override
+  String get groupDetailDeleteTitle => 'Delete group';
+
+  @override
+  String get groupDetailDeleteMessage =>
+      'Are you sure you want to delete this group? All boxes it contains will be deleted as well.';
 
   @override
   String get languageSearchPlaceholder => 'Search';
