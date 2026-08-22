@@ -56,6 +56,10 @@ class BoxController {
     return online.copyWith(vocabularies: _vocabSync.cachedVocabularies(boxId));
   }
 
+  /// Boxes belonging to group [groupId], across both backends.
+  List<VocabularyBox> boxesForGroup(String groupId) =>
+      boxes.where((b) => b.groupId == groupId).toList();
+
   /// Adds new boxes, either as an online or local box.
   /// A box with the name '[box.name] copy' is created if box with same
   /// already exists.
@@ -73,7 +77,7 @@ class BoxController {
       }
       if (online) {
         unawaited(
-          _boxSync.addBox(box).catchError((Object error) {
+          _boxSync.addBox(box, box.groupId).catchError((Object error) {
             debugPrint('BoxController: background addBox failed: $error');
           }),
         );
@@ -84,57 +88,31 @@ class BoxController {
     return;
   }
 
-  /// Moves an online box to local storage.
-  Future<void> moveBoxOffline(String boxId) async {
-    if (_isLocal(boxId)) return;
-    final box = getBox(boxId);
-    if (box == null) throw StateError('Box with id $boxId not found');
-
-    for (final vocabulary in box.vocabularies) {
-      _audioUploadQueue.cancel(vocabulary.id);
-      if (vocabulary.audioSynced) {
-        unawaited(_audioSync.deleteAudio(vocabulary.id));
-      }
-    }
-
-    await _localBox.put(boxId, box.copyWith(deleted: false));
-    await _boxSync.hardDeleteBoxWithVocabularies(boxId);
-  }
-
-  /// Moves a local box to online storage.
-  Future<void> moveBoxOnline(String boxId) async {
-    if (!_isLocal(boxId)) return;
-    final box = _localBox.get(boxId);
-    if (box == null) throw StateError('Box with id $boxId not found');
-
-    _boxSync.ensureVocabularyQuota(box.vocabularies.length);
-
-    await _boxSync.addBox(box);
-    await _vocabSync.addVocabularies(boxId, box.vocabularies);
-    await _localBox.delete(boxId);
-
-    for (final vocabulary in box.vocabularies) {
-      if (AppPaths.audioFile(vocabulary.id).existsSync()) {
-        _audioUploadQueue.enqueue(boxId, vocabulary.id);
-      }
-    }
-  }
-
   /// Deletes box with [boxId] regardless of their backend.
   void deleteBox(String boxId) {
+    final box = getBox(boxId);
+    if (box == null) return;
+
     if (_isLocal(boxId)) {
       _localBox.delete(boxId);
     } else {
-      _boxSync.softDeleteBox(boxId);
+      _boxSync.softDeleteBox(box.groupId, boxId);
     }
   }
 
   /// Updates box with [boxId] regardless of their backend.
   void updateBox(String boxId, VocabularyBox updatedBox) {
+    final box = getBox(boxId);
+    if (box == null) return;
+
     if (_isLocal(boxId)) {
       _localBox.put(boxId, updatedBox);
     } else {
-      _boxSync.updateBoxFields(boxId, updatedBox.toFirestore());
+      _boxSync.updateBoxFields(
+        updatedBox.groupId,
+        boxId,
+        updatedBox.toFirestore(),
+      );
     }
   }
 
@@ -151,7 +129,11 @@ class BoxController {
         ),
       );
     } else {
-      _boxSync.incrementNewCardsReviewedToday(boxId, resetToday: wasZero);
+      _boxSync.incrementNewCardsReviewedToday(
+        current.groupId,
+        boxId,
+        resetToday: wasZero,
+      );
     }
   }
 
@@ -160,16 +142,11 @@ class BoxController {
   ValueNotifier<List<MapEntry<String, VocabularyBox>>> listenableForKeys(
     List<String> boxIds,
   ) {
-    final onlineIds = boxIds.where((id) => !_isLocal(id)).toList();
-    final sources = <Listenable>[
-      _localBox.listenable(keys: boxIds),
-      _boxSync.listenable,
-      for (final id in onlineIds) _vocabSync.listenableForBox(id),
-    ];
     return _MergedBoxesNotifier(
       () => _entriesForKeys(boxIds),
-      sources,
-      onReleasedOnlineIds: onlineIds,
+      boxIds: boxIds,
+      localBoxListenable: _localBox.listenable(keys: boxIds),
+      boxSyncListenable: _boxSync.listenable,
       vocabSync: _vocabSync,
     );
   }
@@ -178,6 +155,19 @@ class BoxController {
   ValueNotifier<List<MapEntry<String, VocabularyBox>>> listenableForAll() {
     return _MergedAllBoxesNotifier(
       getter: () => entries,
+      localBoxListenable: _localBox.listenable(),
+      boxSyncListenable: _boxSync.listenable,
+      vocabSync: _vocabSync,
+    );
+  }
+
+  /// Returns a [ValueNotifier] that recomputes whenever any box belonging to
+  /// group [groupId] changes.
+  ValueNotifier<List<MapEntry<String, VocabularyBox>>> listenableForGroup(
+    String groupId,
+  ) {
+    return _MergedAllBoxesNotifier(
+      getter: () => entries.where((e) => e.value.groupId == groupId).toList(),
       localBoxListenable: _localBox.listenable(),
       boxSyncListenable: _boxSync.listenable,
       vocabSync: _vocabSync,
@@ -197,31 +187,33 @@ class BoxController {
 
   /// Adds the given [Vocabulary] to the box indicated by [boxId].
   Future<void> addVocabularyToBox(String boxId, Vocabulary vocabulary) async {
+    final box = getBox(boxId);
+    if (box == null) throw StateError('Box with id $boxId not found');
+
     if (_isLocal(boxId)) {
-      final box = _localBox.get(boxId);
-      if (box == null) throw StateError('Box with id $boxId not found');
       final vocabularies = List<Vocabulary>.from(box.vocabularies)
         ..add(vocabulary);
       _localBox.put(boxId, box.copyWith(vocabularies: vocabularies));
     } else {
       _boxSync.ensureVocabularyQuota(1);
-      await _vocabSync.addVocabulary(boxId, vocabulary);
+      await _vocabSync.addVocabulary(box.groupId, boxId, vocabulary);
     }
   }
 
   void removeVocabularyFromBox(String boxId, String id) {
+    final box = getBox(boxId);
+    if (box == null) throw StateError('Box with id $boxId not found');
+
     if (_isLocal(boxId)) {
-      final box = _localBox.get(boxId);
-      if (box == null) throw StateError('Box with id $boxId not found');
       final updated = box.copyWith(
         vocabularies: List<Vocabulary>.from(box.vocabularies)
           ..removeWhere((v) => v.id == id),
       );
       _localBox.put(boxId, updated);
     } else {
-      _vocabSync.softDeleteVocabulary(boxId, id);
+      _vocabSync.softDeleteVocabulary(box.groupId, boxId, id);
       _audioUploadQueue.cancel(id);
-      unawaited(_audioSync.deleteAudio(id));
+      unawaited(_audioSync.deleteAudio(box.groupId, box.groupId, boxId));
     }
 
     final audio = AppPaths.audioFile(id);
@@ -231,10 +223,10 @@ class BoxController {
   }
 
   void updateVocabularyInBox(String boxId, Vocabulary updatedVocabulary) {
-    if (_isLocal(boxId)) {
-      final box = _localBox.get(boxId);
-      if (box == null) throw StateError('Box with id $boxId not found');
+    final box = getBox(boxId);
+    if (box == null) throw StateError('Box with id $boxId not found');
 
+    if (_isLocal(boxId)) {
       final full = List<Vocabulary>.from(box.vocabularies);
       final idx = full.indexWhere((v) => v.id == updatedVocabulary.id);
 
@@ -248,7 +240,7 @@ class BoxController {
       full[idx] = updatedVocabulary;
       _localBox.put(boxId, box.copyWith(vocabularies: full));
     } else {
-      _vocabSync.updateVocabulary(boxId, updatedVocabulary);
+      _vocabSync.updateVocabulary(box.groupId, boxId, updatedVocabulary);
     }
   }
 
@@ -264,36 +256,79 @@ class BoxController {
   }
 }
 
-/// A ValueNotifier that recomputes its value whenever any of [_sources] fires.
+/// A ValueNotifier that recomputes its value whenever any of the boxes
+/// identified by [boxIds] changes.
 class _MergedBoxesNotifier
     extends ValueNotifier<List<MapEntry<String, VocabularyBox>>> {
-  final List<Listenable> _sources;
-  final List<String> _onlineIds;
+  final List<MapEntry<String, VocabularyBox>> Function() _getter;
+  final Set<String> _boxIds;
+  final Listenable _localBoxListenable;
+  final ValueListenable<List<VocabularyBox>> _boxSyncListenable;
   final VocabularySyncService _vocabSync;
-  late final VoidCallback _listener;
+
+  final Map<String, ValueListenable<List<Vocabulary>>> _onlineListenables = {};
+  late final VoidCallback _recompute;
+  late final VoidCallback _onBoxSyncChanged;
 
   _MergedBoxesNotifier(
-    List<MapEntry<String, VocabularyBox>> Function() getter,
-    this._sources, {
-    required List<String> onReleasedOnlineIds,
+    List<MapEntry<String, VocabularyBox>> Function() getter, {
+    required List<String> boxIds,
+    required Listenable localBoxListenable,
+    required ValueListenable<List<VocabularyBox>> boxSyncListenable,
     required VocabularySyncService vocabSync,
-  }) : _onlineIds = onReleasedOnlineIds,
+  }) : _getter = getter,
+       _boxIds = boxIds.toSet(),
+       _localBoxListenable = localBoxListenable,
+       _boxSyncListenable = boxSyncListenable,
        _vocabSync = vocabSync,
        super(getter()) {
-    _listener = () => value = getter();
-    for (final source in _sources) {
-      source.addListener(_listener);
+    _recompute = () => value = _getter();
+    _onBoxSyncChanged = () {
+      _syncOnlineSubscriptions();
+      value = _getter();
+    };
+    _localBoxListenable.addListener(_recompute);
+    _boxSyncListenable.addListener(_onBoxSyncChanged);
+    _syncOnlineSubscriptions();
+  }
+
+  /// Reconciles the online boxes we hold a [_vocabSync] reference for with
+  /// the current [_boxSyncListenable] value, starting listeners for newly
+  /// discovered boxes and releasing ones for boxes no longer present.
+  void _syncOnlineSubscriptions() {
+    final currentBoxes = {
+      for (final b in _boxSyncListenable.value)
+        if (_boxIds.contains(b.id)) b.id: b,
+    };
+
+    final staleIds = _onlineListenables.keys
+        .where((id) => !currentBoxes.containsKey(id))
+        .toList(growable: false);
+    for (final id in staleIds) {
+      _onlineListenables.remove(id)!.removeListener(_recompute);
+      _vocabSync.releaseBox(id);
+    }
+
+    for (final entry in currentBoxes.entries) {
+      if (_onlineListenables.containsKey(entry.key)) continue;
+      final listenable = _vocabSync.listenableForBox(
+        entry.value.groupId,
+        entry.key,
+      );
+      listenable.addListener(_recompute);
+      _onlineListenables[entry.key] = listenable;
     }
   }
 
   @override
   void dispose() {
-    for (final source in _sources) {
-      source.removeListener(_listener);
+    _localBoxListenable.removeListener(_recompute);
+    _boxSyncListenable.removeListener(_onBoxSyncChanged);
+    for (final entry in _onlineListenables.entries) {
+      entry.value.removeListener(_recompute);
+      _vocabSync.releaseBox(entry.key);
     }
-    for (final id in _onlineIds) {
-      _vocabSync.releaseBox(id);
-    }
+    _onlineListenables.clear();
     super.dispose();
   }
 }
@@ -334,21 +369,24 @@ class _MergedAllBoxesNotifier
   /// the current [_boxSyncListenable] value, starting listeners for newly
   /// discovered boxes and releasing ones for boxes no longer present.
   void _syncOnlineSubscriptions() {
-    final currentIds = _boxSyncListenable.value.map((b) => b.id).toSet();
+    final currentBoxes = {for (final b in _boxSyncListenable.value) b.id: b};
 
     final staleIds = _onlineListenables.keys
-        .where((id) => !currentIds.contains(id))
+        .where((id) => !currentBoxes.containsKey(id))
         .toList(growable: false);
     for (final id in staleIds) {
       _onlineListenables.remove(id)!.removeListener(_recompute);
       _vocabSync.releaseBox(id);
     }
 
-    for (final id in currentIds) {
-      if (_onlineListenables.containsKey(id)) continue;
-      final listenable = _vocabSync.listenableForBox(id);
+    for (final entry in currentBoxes.entries) {
+      if (_onlineListenables.containsKey(entry.key)) continue;
+      final listenable = _vocabSync.listenableForBox(
+        entry.value.groupId,
+        entry.key,
+      );
       listenable.addListener(_recompute);
-      _onlineListenables[id] = listenable;
+      _onlineListenables[entry.key] = listenable;
     }
   }
 

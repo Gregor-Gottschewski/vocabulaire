@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vocabulaire/controllers/box_controller.dart';
-import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/group_controller.dart';
+import 'package:vocabulaire/controllers/group_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/app_language.dart';
 import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/field_limits.dart';
-import 'package:vocabulaire/models/vocabulary_box.dart';
+import 'package:vocabulaire/models/vocabulary_group.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
+import 'package:vocabulaire/services/usage_service.dart';
 import 'package:vocabulaire/theme/app_page_route.dart';
 import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
@@ -22,39 +22,52 @@ import 'package:vocabulaire/views/widgets/language_picker_view.dart';
 import 'package:vocabulaire/views/widgets/section_title.dart';
 import 'package:vocabulaire/views/widgets/header_text_button.dart';
 
-/// Step 2 of the box-creation flow: title, description and languages (only
-/// for vocabulary boxes), then creates the [VocabularyBox].
-class CreateBoxDetailView extends StatefulWidget {
-  final BoxDraft draft;
+/// Step 2 of the group-creation flow, and the "Edit group" screen.
+///
+/// Creating: title, language (only for vocabulary groups) and online-sync.
+/// Editing: only the name and the online-sync status can change — type and
+/// language are fixed for the group's lifetime once created. Toggling
+/// online-sync in edit mode moves the group (and all its boxes) between
+/// local and online storage immediately, with no confirmation dialog.
+class CreateGroupDetailView extends StatefulWidget {
+  final GroupDraft draft;
+  final bool isEditing;
 
-  const CreateBoxDetailView({super.key, required this.draft});
+  const CreateGroupDetailView({
+    super.key,
+    required this.draft,
+    this.isEditing = false,
+  });
 
   @override
-  State<CreateBoxDetailView> createState() => _CreateBoxDetailViewState();
+  State<CreateGroupDetailView> createState() => _CreateGroupDetailViewState();
 }
 
-class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
-  final BoxController _boxController = BoxController();
+class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
   final GroupController _groupController = GroupController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _descController = TextEditingController();
   late AppLocalizations _l10n;
   String? _source;
   String? _target;
+  bool _saveOnline = true;
+  bool _isSyncing = false;
+
+  bool get _isEditing => widget.isEditing;
 
   @override
   void initState() {
     super.initState();
     _nameController.text = widget.draft.name;
-    _descController.text = widget.draft.description;
     _source = widget.draft.sourceLanguage;
     _target = widget.draft.targetLanguage;
+    if (_isEditing && widget.draft.id != null) {
+      _saveOnline = !_groupController.isLocal(widget.draft.id!);
+    }
   }
 
   @override
   void dispose() {
     _nameController.dispose();
-    _descController.dispose();
     super.dispose();
   }
 
@@ -64,14 +77,12 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     _l10n = AppLocalizations.of(context)!;
   }
 
-  bool get _isEditing => widget.draft.id != null;
-
   Future<String?> _showLanguagePicker(String title, String? langCode) {
     return Navigator.of(context).push<String>(
       AppPageRoute(
         builder: (_) => LanguagePickerView(
           title: title,
-          backLabel: _l10n.createBoxNavTitle,
+          backLabel: _l10n.createGroupNavTitle,
           selectedCode: langCode,
         ),
       ),
@@ -104,9 +115,45 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
     return language?.displayName(_l10n) ?? code;
   }
 
+  /// Moves the group between local and online storage. No confirmation
+  /// dialog — reverts the toggle and shows an error on failure.
+  Future<void> _toggleOnlineSync(bool value) async {
+    final groupId = widget.draft.id;
+    if (groupId == null || _isSyncing) return;
+
+    setState(() {
+      _isSyncing = true;
+      _saveOnline = value;
+    });
+
+    try {
+      if (value) {
+        await _groupController.moveGroupOnline(groupId);
+      } else {
+        await _groupController.moveGroupOffline(groupId);
+      }
+    } on AppException catch (e) {
+      if (!mounted) return;
+      setState(() => _saveOnline = !value);
+      await context.showAppError(e);
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _saveOnline = !value);
+      await context.showAppError(
+        AppException(
+          value
+              ? AppError.moveGroupOnlineFailed
+              : AppError.moveGroupOfflineFailed,
+          details: e,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isSyncing = false);
+    }
+  }
+
   Future<void> _onFinish() async {
     final name = _nameController.text.trim();
-    final description = _descController.text.trim();
 
     if (name.isEmpty) {
       await showAppDialog(
@@ -118,65 +165,50 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
       return;
     }
 
-    setState(() => {});
+    if (_isEditing) {
+      await _saveEdit(name);
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      return;
+    }
 
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isPremium = UsageService.instance.listenable.value.isPremium;
+    final group = VocabularyGroup(
+      id: const Uuid().v4(),
+      name: name,
+      type: widget.draft.type.name,
+      sourceLanguage: isVocabulary ? _source : null,
+      targetLanguage: isVocabulary ? _target : null,
+    );
 
     try {
-      if (_isEditing) {
-        final boxId = widget.draft.id!;
-        final current = _boxController.getBox(boxId);
-        if (current == null) {
-          if (!mounted) return;
-          Navigator.of(context).pop();
-          return;
-        }
-        final updated = current.copyWith(
-          name: name,
-          description: description,
-          sourceLanguage: isVocabulary ? _source : null,
-          targetLanguage: isVocabulary ? _target : null,
-        );
-        _boxController.updateBox(boxId, updated);
-        if (!mounted) return;
-        Navigator.of(context).pop();
-        return;
-      }
-
-      final groupId = widget.draft.groupId;
-      final box = VocabularyBox(
-        id: const Uuid().v4(),
-        name: name,
-        description: description,
-        vocabularies: const [],
-        type: widget.draft.type.name,
-        sourceLanguage: isVocabulary ? _source : null,
-        targetLanguage: isVocabulary ? _target : null,
-        groupId: groupId ?? '',
-      );
-      final online = groupId != null && !_groupController.isLocal(groupId);
-      await _boxController.addBoxes([box], online: online);
+      await _groupController.addGroups([
+        group,
+      ], online: isPremium && _saveOnline);
       if (!mounted) return;
-      Navigator.of(context, rootNavigator: true).pop((box: box, key: box.id));
+      Navigator.of(context, rootNavigator: true).pop(group);
     } on AppException catch (e) {
       if (!mounted) return;
       await context.showAppError(e);
-    } finally {
-      if (mounted) setState(() => {});
+    }
+  }
+
+  Future<void> _saveEdit(String name) async {
+    if (widget.draft.name != name) {
+      await _groupController.updateGroupName(widget.draft.id!, name);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isPremium = UsageService.instance.listenable.value.isPremium;
 
     return AppScaffold(
-      backLabel: _l10n.back,
+      backLabel: _isEditing ? _l10n.back : _l10n.createGroupNavTitle,
       actions: [
-        HeaderTextButton(
-          label: "${_l10n.finish} →",
-          onPressed: _onFinish,
-        ),
+        HeaderTextButton(label: "${_l10n.finish} →", onPressed: _onFinish),
       ],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -193,23 +225,29 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                       textField: AppTextField(
                         controller: _nameController,
                         style: AppTypography.headlineSerif,
-                        placeholder: _l10n.createBoxTitleHint,
-                        maxLength: FieldLimits.boxName,
-                        textInputAction: TextInputAction.next,
+                        placeholder: _l10n.createGroupTitleHint,
+                        maxLength: FieldLimits.groupName,
+                        textInputAction: TextInputAction.done,
                       ),
                     ),
-                    const SizedBox(height: AppSpacing.sectionGap),
-                    LabelTextField(
-                      label: _l10n.createBoxDescriptionLabel.toUpperCase(),
-                      textField: AppTextField(
-                        controller: _descController,
-                        style: AppTypography.serifValue,
-                        placeholder: _l10n.createBoxDescriptionHint,
-                        maxLines: 3,
-                        maxLength: FieldLimits.boxDescription,
+                    if (isPremium) ...[
+                      const SizedBox(height: AppSpacing.sectionGap),
+                      KeyValueRowGroup(
+                        children: [
+                          KeyValueRow.toggle(
+                            label: _l10n.createBoxOnlineSync,
+                            value: _saveOnline,
+                            onChanged: _isSyncing
+                                ? (_) {}
+                                : (_isEditing
+                                      ? _toggleOnlineSync
+                                      : (v) => setState(() => _saveOnline = v)),
+                          ),
+                        ],
                       ),
-                    ),
-                    if (isVocabulary && widget.draft.groupId == null) ...[
+                      const SizedBox(height: AppSpacing.gapSmall),
+                    ],
+                    if (isVocabulary) ...[
                       const SizedBox(height: AppSpacing.sectionGap),
                       SectionTitle(text: _l10n.language),
                       const SizedBox(height: AppSpacing.gapSmall),
@@ -218,12 +256,12 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
                           KeyValueRow.value(
                             label: _l10n.createBoxSourceLanguageLabel,
                             value: _languageLabel(_source),
-                            onTap: _pickSourceLanguage,
+                            onTap: _isEditing ? null : _pickSourceLanguage,
                           ),
                           KeyValueRow.value(
                             label: _l10n.createBoxTargetLanguageLabel,
                             value: _languageLabel(_target),
-                            onTap: _pickTargetLanguage,
+                            onTap: _isEditing ? null : _pickTargetLanguage,
                           ),
                         ],
                       ),

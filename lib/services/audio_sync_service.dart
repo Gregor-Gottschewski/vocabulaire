@@ -24,10 +24,12 @@ class AudioSyncService {
     region: 'europe-west1',
   );
 
-  Reference? _audioRef(String vocabId) {
+  Reference? _audioRef(String groupId, String boxId, String vocabId) {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return null;
-    return FirebaseStorage.instance.ref('users/$uid/audio/$vocabId.m4a');
+    return FirebaseStorage.instance.ref(
+      'users/$uid/groups/$groupId/boxes/$boxId/audios/$vocabId.m4a',
+    );
   }
 
   /// Uploads the local audio recording for [vocabId] and marks it
@@ -36,13 +38,13 @@ class AudioSyncService {
   /// Throws [AppException] with [AppError.audioStorageLimitReached] if the
   /// upload would exceed the user's storage quota. Other failures (network,
   /// permission) are logged and swallowed.
-  Future<void> uploadAudio(String boxId, String vocabId) async {
+  Future<void> uploadAudio(String groupId, String boxId, String vocabId) async {
     if (!_isPremium) return;
 
     final file = AppPaths.audioFile(vocabId);
     if (!file.existsSync()) return;
 
-    final ref = _audioRef(vocabId);
+    final ref = _audioRef(groupId, boxId, vocabId);
     if (ref == null) return;
 
     final fileSize = await file.length();
@@ -53,6 +55,7 @@ class AudioSyncService {
 
     try {
       await _functions.httpsCallable('reserveAudioUpload').call({
+        'groupId': groupId,
         'boxId': boxId,
         'vocabId': vocabId,
         'sizeBytes': fileSize,
@@ -67,7 +70,12 @@ class AudioSyncService {
 
     try {
       await ref.putFile(file);
-      await VocabularySyncService.instance.setAudioSynced(boxId, vocabId, true);
+      await VocabularySyncService.instance.setAudioSynced(
+        groupId,
+        boxId,
+        vocabId,
+        true,
+      );
     } on FirebaseException catch (e) {
       debugPrint('AudioSyncService: upload failed for $vocabId: $e');
       throw AppException(AppError.moveBoxOnlineFailed);
@@ -76,13 +84,17 @@ class AudioSyncService {
 
   /// Downloads the remote audio recording for [vocabId] into
   /// [AppPaths.audioFile], unless it already exists locally.
-  Future<void> downloadAudio(String boxId, String vocabId) async {
+  Future<void> _downloadAudio(
+    String groupId,
+    String boxId,
+    String vocabId,
+  ) async {
     if (!_isPremium) return;
 
     final file = AppPaths.audioFile(vocabId);
     if (file.existsSync()) return;
 
-    final ref = _audioRef(vocabId);
+    final ref = _audioRef(groupId, boxId, vocabId);
     if (ref == null) return;
 
     try {
@@ -91,6 +103,7 @@ class AudioSyncService {
       debugPrint('AudioSyncService: download failed for $vocabId: $e');
       if (e.code == 'object-not-found') {
         await VocabularySyncService.instance.setAudioSynced(
+          groupId,
           boxId,
           vocabId,
           false,
@@ -100,8 +113,8 @@ class AudioSyncService {
   }
 
   /// Deletes the remote audio recording for [vocabId], if any.
-  Future<void> deleteAudio(String vocabId) async {
-    final ref = _audioRef(vocabId);
+  Future<void> deleteAudio(String groupId, String boxId, String vocabId) async {
+    final ref = _audioRef(groupId, boxId, vocabId);
     if (ref == null) return;
 
     try {
@@ -113,12 +126,16 @@ class AudioSyncService {
   }
 
   /// Downloads audio for every vocabulary in [vocabularies].
-  void syncBoxAudio(String boxId, List<Vocabulary> vocabularies) {
+  void syncBoxAudio(
+    String groupId,
+    String boxId,
+    List<Vocabulary> vocabularies,
+  ) {
     if (!_isPremium) return;
     for (final vocabulary in vocabularies) {
       if (!vocabulary.audioSynced) continue;
       if (AppPaths.audioFile(vocabulary.id).existsSync()) continue;
-      unawaited(downloadAudio(boxId, vocabulary.id));
+      unawaited(_downloadAudio(groupId, boxId, vocabulary.id));
     }
   }
 }

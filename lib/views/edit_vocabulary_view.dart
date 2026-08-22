@@ -327,9 +327,16 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         await finalFile.delete();
         if (_isEditing && !_boxController.isLocal(widget.boxKey)) {
           AudioUploadQueueService.instance.cancel(_vocab.id);
-          unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
+          unawaited(
+            AudioSyncService.instance.deleteAudio(
+              widget.box.groupId,
+              widget.box.id,
+              _vocab.id,
+            ),
+          );
           unawaited(
             VocabularySyncService.instance.setAudioSynced(
+              widget.box.groupId,
               widget.boxKey,
               _vocab.id,
               false,
@@ -342,7 +349,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
 
     if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
-      AudioUploadQueueService.instance.enqueue(widget.boxKey, _vocab.id);
+      AudioUploadQueueService.instance.enqueue(
+        widget.box.groupId,
+        widget.boxKey,
+        _vocab.id,
+      );
     }
 
     if (mounted) {
@@ -552,7 +563,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         if (vocabStillExists) {
           await _commitAudioFile(generatingVocabId);
           if (!_boxController.isLocal(boxKey)) {
-            AudioUploadQueueService.instance.enqueue(boxKey, generatingVocabId);
+            AudioUploadQueueService.instance.enqueue(
+              widget.box.groupId,
+              boxKey,
+              generatingVocabId,
+            );
           }
         } else {
           final orphan = AppPaths.audioTempFile(generatingVocabId);
@@ -866,7 +881,9 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                         ],
                         TextLinkButton(
                           label: _l10n.editVocabConjugationAdd,
-                          onPressed: _conjugations.length < 4 ? _addConjugation : null,
+                          onPressed: _conjugations.length < 4
+                              ? _addConjugation
+                              : null,
                         ),
                         const SizedBox(height: AppSpacing.sectionGap),
                       ],

@@ -1,4 +1,4 @@
- import 'dart:async';
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,9 +7,9 @@ import 'package:flutter/foundation.dart';
 import '../models/vocabulary.dart';
 import 'audio_sync_service.dart';
 
-/// Owns the per-box Firestore listeners on `users/{uid}/boxes/{boxId}/vocabularies`
-/// for online boxes, plus one `collectionGroup('vocabularies')` listener for
-/// the cross-box vocabulary tab.
+/// Owns the per-box Firestore listeners on
+/// `users/{uid}/groups/{groupId}/boxes/{boxId}/vocabularies` for online
+/// boxes.
 class VocabularySyncService {
   VocabularySyncService._();
 
@@ -20,15 +20,15 @@ class VocabularySyncService {
   _perBoxSubscriptions = {};
   final Map<String, int> _perBoxRefCounts = {};
 
-  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>?
-  _allVocabulariesSubscription;
-
   CollectionReference<Map<String, dynamic>> _collection(
     String uid,
+    String groupId,
     String boxId,
   ) => FirebaseFirestore.instance
       .collection('users')
       .doc(uid)
+      .collection('groups')
+      .doc(groupId)
       .collection('boxes')
       .doc(boxId)
       .collection('vocabularies');
@@ -38,16 +38,20 @@ class VocabularySyncService {
 
   /// Returns a live list of an online box's vocabularies, starting the
   /// underlying Firestore listener on first access.
-  ValueListenable<List<Vocabulary>> listenableForBox(String boxId) {
+  ValueListenable<List<Vocabulary>> listenableForBox(
+    String groupId,
+    String boxId,
+  ) {
     _perBoxRefCounts[boxId] = (_perBoxRefCounts[boxId] ?? 0) + 1;
     return _perBoxNotifiers.putIfAbsent(boxId, () {
       final notifier = ValueNotifier<List<Vocabulary>>(const []);
-      _attachBoxListener(boxId, notifier);
+      _attachBoxListener(groupId, boxId, notifier);
       return notifier;
     });
   }
 
   void _attachBoxListener(
+    String groupId,
     String boxId,
     ValueNotifier<List<Vocabulary>> notifier,
   ) {
@@ -55,7 +59,7 @@ class VocabularySyncService {
     if (uid == null) return;
 
     _perBoxSubscriptions[boxId]?.cancel();
-    _perBoxSubscriptions[boxId] = _collection(uid, boxId)
+    _perBoxSubscriptions[boxId] = _collection(uid, groupId, boxId)
         .where('deleted', isEqualTo: false)
         .snapshots(includeMetadataChanges: true)
         .listen(
@@ -63,7 +67,11 @@ class VocabularySyncService {
             notifier.value = snapshot.docs
                 .map(Vocabulary.fromFirestore)
                 .toList();
-            AudioSyncService.instance.syncBoxAudio(boxId, notifier.value);
+            AudioSyncService.instance.syncBoxAudio(
+              groupId,
+              boxId,
+              notifier.value,
+            );
           },
           onError: (Object error, StackTrace stackTrace) {
             debugPrint(
@@ -85,14 +93,13 @@ class VocabularySyncService {
     }
   }
 
-  void detachAllVocabularies() {
-    _allVocabulariesSubscription?.cancel();
-    _allVocabulariesSubscription = null;
-  }
-
-  Future<void> addVocabulary(String boxId, Vocabulary vocabulary) async {
+  Future<void> addVocabulary(
+    String groupId,
+    String boxId,
+    Vocabulary vocabulary,
+  ) async {
     final uid = _requireUid();
-    await _collection(uid, boxId).doc(vocabulary.id).set({
+    await _collection(uid, groupId, boxId).doc(vocabulary.id).set({
       ...vocabulary.toFirestore(),
       'ownerUid': uid,
       'deleted': false,
@@ -103,6 +110,7 @@ class VocabularySyncService {
   /// Uploads [vocabularies] into [boxId]'s subcollection in chunked batches.
   /// Writes the same per-document fields as [addVocabulary].
   Future<void> addVocabularies(
+    String groupId,
     String boxId,
     List<Vocabulary> vocabularies,
   ) async {
@@ -111,7 +119,7 @@ class VocabularySyncService {
     for (var i = 0; i < vocabularies.length; i += chunkSize) {
       final batch = FirebaseFirestore.instance.batch();
       for (final vocabulary in vocabularies.skip(i).take(chunkSize)) {
-        batch.set(_collection(uid, boxId).doc(vocabulary.id), {
+        batch.set(_collection(uid, groupId, boxId).doc(vocabulary.id), {
           ...vocabulary.toFirestore(),
           'ownerUid': uid,
           'deleted': false,
@@ -122,9 +130,13 @@ class VocabularySyncService {
     }
   }
 
-  Future<void> updateVocabulary(String boxId, Vocabulary vocabulary) async {
+  Future<void> updateVocabulary(
+    String groupId,
+    String boxId,
+    Vocabulary vocabulary,
+  ) async {
     final uid = _requireUid();
-    await _collection(uid, boxId).doc(vocabulary.id).update({
+    await _collection(uid, groupId, boxId).doc(vocabulary.id).update({
       ...vocabulary.toFirestore(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -132,19 +144,26 @@ class VocabularySyncService {
 
   /// Updates the [Vocabulary.audioSynced] flag
   Future<void> setAudioSynced(
+    String groupId,
     String boxId,
     String vocabularyId,
     bool value,
   ) async {
     final uid = _requireUid();
-    await _collection(uid, boxId).doc(vocabularyId).update({
-      'audioSynced': value,
-    });
+    await _collection(
+      uid,
+      groupId,
+      boxId,
+    ).doc(vocabularyId).update({'audioSynced': value});
   }
 
-  Future<void> softDeleteVocabulary(String boxId, String vocabularyId) async {
+  Future<void> softDeleteVocabulary(
+    String groupId,
+    String boxId,
+    String vocabularyId,
+  ) async {
     final uid = _requireUid();
-    await _collection(uid, boxId).doc(vocabularyId).update({
+    await _collection(uid, groupId, boxId).doc(vocabularyId).update({
       'deleted': true,
       'deletedAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),

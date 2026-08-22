@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
+import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import '../models/vocabulary_box.dart';
@@ -31,9 +32,9 @@ class BoxDetailPage extends StatefulWidget {
 
 class _BoxDetailPageState extends State<BoxDetailPage> {
   final BoxController _boxController = BoxController();
+  final GroupController _groupController = GroupController();
   late String _boxKey;
-  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>>
-  _boxNotifier;
+  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxNotifier;
   late AppLocalizations _l10n;
   bool _isPopping = false;
   bool _hasSeenBox = false;
@@ -53,6 +54,11 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     }
     if (!_hasSeenBox) return widget.box;
     return null;
+  }
+
+  String get _backLabel {
+    final groupId = _box?.groupId ?? widget.box.groupId;
+    return _groupController.getGroup(groupId)?.name ?? _l10n.tabGroups;
   }
 
   @override
@@ -148,10 +154,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           label: _l10n.boxDetailShareAction,
           onPressed: _exportBox,
         ),
-        AppActionSheetAction(
-          label: _l10n.boxDetailEditAction,
-          onPressed: _editBox,
-        ),
+        AppActionSheetAction(label: _l10n.editAction, onPressed: _editBox),
         AppActionSheetAction(
           label: _l10n.boxDetailDelete,
           destructive: true,
@@ -177,7 +180,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           }
 
           return AppScaffold(
-            backLabel: _l10n.tabBoxen,
+            backLabel: _backLabel,
             body: Text(
               _l10n.boxDetailNotFound,
               style: AppTypography.bodySans.copyWith(
@@ -187,10 +190,10 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
           );
         }
         return AppScaffold(
-          backLabel: _l10n.tabBoxen,
+          backLabel: _backLabel,
           actions: [
             TextLinkButton(
-              label: _l10n.boxDetailEditAction,
+              label: _l10n.editAction,
               onPressed: _showBoxActionsSheet,
             ),
           ],

@@ -1,44 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pending_audio_upload.dart';
+part of 'vocabulary_group.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class PendingAudioUploadAdapter extends TypeAdapter<PendingAudioUpload> {
+class VocabularyGroupAdapter extends TypeAdapter<VocabularyGroup> {
   @override
-  final int typeId = 3;
+  final int typeId = 5;
 
   @override
-  PendingAudioUpload read(BinaryReader reader) {
+  VocabularyGroup read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return PendingAudioUpload(
+    return VocabularyGroup(
       id: fields[0] as String,
-      boxId: fields[1] as String,
-      attempts: fields[2] as int,
-      createdAt: fields[3] as DateTime,
-      groupId: fields[4] == null ? '' : fields[4] as String,
+      name: fields[1] as String,
+      type: fields[2] as String,
+      sourceLanguage: fields[3] as String?,
+      targetLanguage: fields[4] as String?,
+      deleted: fields[5] == null ? false : fields[5] as bool,
     );
   }
 
   @override
-  void write(BinaryWriter writer, PendingAudioUpload obj) {
+  void write(BinaryWriter writer, VocabularyGroup obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.boxId)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.attempts)
+      ..write(obj.type)
       ..writeByte(3)
-      ..write(obj.createdAt)
+      ..write(obj.sourceLanguage)
       ..writeByte(4)
-      ..write(obj.groupId);
+      ..write(obj.targetLanguage)
+      ..writeByte(5)
+      ..write(obj.deleted);
   }
 
   @override
@@ -47,7 +50,7 @@ class PendingAudioUploadAdapter extends TypeAdapter<PendingAudioUpload> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is PendingAudioUploadAdapter &&
+      other is VocabularyGroupAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

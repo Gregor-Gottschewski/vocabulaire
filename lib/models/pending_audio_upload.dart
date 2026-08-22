@@ -17,11 +17,15 @@ class PendingAudioUpload {
   @HiveField(3)
   final DateTime createdAt;
 
+  @HiveField(4, defaultValue: '')
+  final String groupId;
+
   PendingAudioUpload({
     required this.id,
     required this.boxId,
     this.attempts = 0,
     required this.createdAt,
+    this.groupId = '',
   });
 
   PendingAudioUpload copyWith({int? attempts}) {
@@ -30,6 +34,7 @@ class PendingAudioUpload {
       boxId: boxId,
       attempts: attempts ?? this.attempts,
       createdAt: createdAt,
+      groupId: groupId,
     );
   }
 }

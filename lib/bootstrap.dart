@@ -16,10 +16,12 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/auth_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
+import 'package:vocabulaire/services/group_sync_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
 import 'models/conjugation.dart';
 import 'models/pending_audio_upload.dart';
 import 'models/vocabulary_box.dart';
+import 'models/vocabulary_group.dart';
 import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
 import 'views/home_page.dart';
@@ -68,6 +70,7 @@ Future<void> bootstrap(Flavor flavor) async {
     forceFreshSession: kDebugMode && _useFirebaseEmulator && _resetAuthSession,
     onSignedIn: () {
       BoxSyncService.instance.attach();
+      GroupSyncService.instance.attach();
       UsageService.instance.attach();
     },
   );
@@ -80,8 +83,10 @@ Future<void> bootstrap(Flavor flavor) async {
   Hive.registerAdapter(AppSettingsAdapter());
   Hive.registerAdapter(PendingAudioUploadAdapter());
   Hive.registerAdapter(ConjugationAdapter());
+  Hive.registerAdapter(VocabularyGroupAdapter());
 
   await Hive.openBox<VocabularyBox>('boxes');
+  await Hive.openBox<VocabularyGroup>('groups');
   await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
   await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
   runApp(const MyApp());
@@ -103,6 +108,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     // runs, so the first attach() attempt succeeds rather than waiting for
     // the first `resumed` event (which doesn't fire on cold start).
     BoxSyncService.instance.attach();
+    GroupSyncService.instance.attach();
     UsageService.instance.attach();
     AudioUploadQueueService.instance.attach();
   }
@@ -111,6 +117,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     BoxSyncService.instance.detach();
+    GroupSyncService.instance.detach();
     UsageService.instance.detach();
     AudioUploadQueueService.instance.detach();
     super.dispose();
@@ -121,10 +128,12 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         BoxSyncService.instance.attach();
+        GroupSyncService.instance.attach();
         UsageService.instance.attach();
         AudioUploadQueueService.instance.attach();
       case AppLifecycleState.paused:
         BoxSyncService.instance.detach();
+        GroupSyncService.instance.detach();
         UsageService.instance.detach();
         AudioUploadQueueService.instance.detach();
       default:

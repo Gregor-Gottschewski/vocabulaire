@@ -29,13 +29,14 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       newCardsReviewedToday: fields[10] == null ? 0 : fields[10] as int,
       lastNewVocabularyReview: fields[11] as DateTime?,
       deleted: fields[13] == null ? false : fields[13] as bool,
+      groupId: fields[14] == null ? '' : fields[14] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, VocabularyBox obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
@@ -59,7 +60,9 @@ class VocabularyBoxAdapter extends TypeAdapter<VocabularyBox> {
       ..writeByte(12)
       ..write(obj.id)
       ..writeByte(13)
-      ..write(obj.deleted);
+      ..write(obj.deleted)
+      ..writeByte(14)
+      ..write(obj.groupId);
   }
 
   @override

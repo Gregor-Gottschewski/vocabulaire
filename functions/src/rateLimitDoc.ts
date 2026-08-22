@@ -10,6 +10,7 @@ export const onUserCreated = functionsV1
       ttsWindowStart: Timestamp.now(),
       isPremium: false,
       vocabularyCountOnline: 0,
+      groupCountOnline: 0,
       audioBytesUsed: 0,
     });
   });

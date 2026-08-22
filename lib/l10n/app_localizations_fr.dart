@@ -9,10 +9,10 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get tabBoxen => 'Boîtes';
+  String get tabVokabeln => 'Vocabulaire';
 
   @override
-  String get tabVokabeln => 'Vocabulaire';
+  String get tabGroups => 'Groupes';
 
   @override
   String get tabEinstellungen => 'Paramètres';
@@ -24,6 +24,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get addBox => 'Nouvelle boîte';
 
   @override
+  String get groupsEmpty => 'Aucun groupe disponible.';
+
+  @override
+  String get addGroup => 'Nouveau groupe';
+
+  @override
   String get back => 'Retour';
 
   @override
@@ -32,10 +38,12 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get settingsTitle => 'Paramètres';
+  String groupTileBoxCount(int count) {
+    return '$count boîtes';
+  }
 
   @override
-  String get settingsImportBox => 'Importer une boîte';
+  String get settingsTitle => 'Paramètres';
 
   @override
   String get settingsCardAnimations => 'Animations de cartes';
@@ -59,9 +67,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsGithub => 'Vocabulaire à GitHub';
 
   @override
-  String get settingsBoxSync => 'Synchronisation des boîtes';
-
-  @override
   String get settingsExportAll => 'Exporter toutes les boîtes';
 
   @override
@@ -79,16 +84,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String settingsAudioUsageValue(String usedMb, int limitMb) {
     return '$usedMb Mo / $limitMb Mo';
   }
-
-  @override
-  String get boxSyncTitle => 'Synchronisation des boîtes';
-
-  @override
-  String get boxSyncDescription =>
-      'Les boîtes stockées en ligne sont synchronisées sur tous vos appareils, les boîtes locales ne sont disponibles que sur cet appareil. Déplacez une boîte dans l\'un ou l\'autre sens.';
-
-  @override
-  String get boxSyncEmpty => 'Aucune boîte.';
 
   @override
   String get editVocabNew => 'Nouveau vocabulaire';
@@ -143,9 +138,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get editVocabSave => 'Enregistrer';
-
-  @override
-  String get editVocabNext => 'Suivant';
 
   @override
   String get editVocabStats => 'Statistiques';
@@ -224,9 +216,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxTileNoDescription => 'Aucune description disponible';
 
   @override
-  String get boxDetailOptions => 'Options';
-
-  @override
   String get boxDetailDueVocabs => 'Interroger les vocabulaires à réviser';
 
   @override
@@ -237,10 +226,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get boxDetailNewCardsPerDay => 'Nouvelles cartes / jour';
-
-  @override
-  String get boxDetailDailyLimitInfo =>
-      'La limite quotidienne restreint le nombre de nouveaux mots révisés par jour.';
 
   @override
   String get boxDetailEditVocabs => 'Afficher la liste des vocabulaires';
@@ -275,39 +260,19 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxDetailActionsSheetTitle => 'Modifier cette boîte.';
 
   @override
-  String get boxDetailEditAction => 'Modifier';
+  String get groupDetailActionsSheetTitle => 'Modifier cette groupe.';
+
+  @override
+  String get editAction => 'Modifier';
 
   @override
   String get boxDetailShareAction => 'Partager';
-
-  @override
-  String get boxDetailSaveAction => 'Enregistrer';
 
   @override
   String get boxDetailDailyLimitOff => 'Désactivé';
 
   @override
   String get boxDetailDailyLimitEnable => 'Activer la limite quotidienne';
-
-  @override
-  String get boxDetailMoveOfflineAction => 'Rendre locale';
-
-  @override
-  String get boxDetailMoveOfflineTitle => 'Rendre la boîte locale';
-
-  @override
-  String get boxDetailMoveOfflineMessage =>
-      'La boîte sera stockée localement sur cet appareil et ne sera plus synchronisée entre appareils. Continuer ?';
-
-  @override
-  String get boxDetailMoveOnlineAction => 'Mettre en ligne';
-
-  @override
-  String get boxDetailMoveOnlineTitle => 'Mettre la boîte en ligne';
-
-  @override
-  String get boxDetailMoveOnlineMessage =>
-      'La boîte sera envoyée dans le cloud et synchronisée sur tous vos appareils. Continuer ?';
 
   @override
   String get vocabListTitle => 'Vocabulaire';
@@ -381,6 +346,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Format de fichier invalide : objet JSON attendu';
 
   @override
+  String get errorImportGroupMismatch =>
+      'Cette boîte ne correspond pas au groupe : le type ou la langue diffère';
+
+  @override
   String errorDuplicateBoxName(String name) {
     return 'Une boîte nommée \"$name\" existe déjà';
   }
@@ -394,12 +363,27 @@ class AppLocalizationsFr extends AppLocalizations {
       'La boîte n\'a pas pu être mise en ligne';
 
   @override
+  String get errorMoveGroupOfflineFailed =>
+      'Le groupe n\'a pas pu être rendu local';
+
+  @override
+  String get errorMoveGroupOnlineFailed =>
+      'Le groupe n\'a pas pu être mis en ligne';
+
+  @override
   String get errorAddVocabularyFailed =>
       'Le vocabulaire n\'a pas pu être enregistré';
 
   @override
   String get errorVocabularyLimitReached =>
       'Limite de vocabulaire en ligne atteinte. Rends une boîte locale pour libérer de la place pour du nouveau vocabulaire en ligne.';
+
+  @override
+  String get errorGroupLimitReached => 'Limite de 1000 groupes atteinte.';
+
+  @override
+  String get errorBoxLimitPerGroupReached =>
+      'Limite de 800 boîtes par groupe atteinte.';
 
   @override
   String get errorAudioStorageLimitReached =>
@@ -515,32 +499,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get languageKorean => 'Coréen';
 
   @override
-  String get boxTypeVocabularyTitle => 'Boîte de vocabulaire';
-
-  @override
-  String get boxTypeVocabularySubtitle =>
-      'Pour apprendre le vocabulaire d\'une langue, avec des fonctionnalités supplémentaires.';
-
-  @override
-  String get boxTypeFlashcardTitle => 'Boîte de cartes';
-
-  @override
-  String get boxTypeFlashcardSubtitle =>
-      'Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.';
-
-  @override
   String get createBoxNavTitle => 'Nouvelle boîte';
-
-  @override
-  String get createBoxTypeTitle => 'Quel type de boîte veux-tu créer ?';
-
-  @override
-  String get createBoxTypeSubtitle =>
-      'Choisis un type pour la nouvelle boîte. Le type ne peut plus être modifié par la suite.';
-
-  @override
-  String get createBoxTypeImportSubtitle =>
-      'Importe une boîte avec tous ses mots de vocabulaire et ses fichiers audio.';
 
   @override
   String get createBoxTitleLabel => 'Titre';
@@ -575,7 +534,41 @@ class AppLocalizationsFr extends AppLocalizations {
   String get createBoxOnlineSync => 'Enregistrer en ligne';
 
   @override
-  String get createBoxFinish => 'Terminé';
+  String get finish => 'Terminé';
+
+  @override
+  String get createGroupNavTitle => 'Nouveau groupe';
+
+  @override
+  String get createGroupTypeTitle => 'Quel type de groupe veux-tu créer ?';
+
+  @override
+  String get createGroupTypeSubtitle =>
+      'Choisis un type pour le nouveau groupe. Le type ne pourra plus être modifié par la suite.';
+
+  @override
+  String get createGroupTitleHint => 'Nom du groupe';
+
+  @override
+  String get groupTypeVocabularyTitle => 'Groupe de vocabulaire';
+
+  @override
+  String get groupTypeVocabularySubtitle =>
+      'Pour apprendre le vocabulaire d\'une langue, avec des fonctionnalités supplémentaires.';
+
+  @override
+  String get groupTypeFlashcardTitle => 'Groupe de cartes';
+
+  @override
+  String get groupTypeFlashcardSubtitle =>
+      'Pour toutes sortes de cartes question-réponse. Toutes les fonctionnalités de base incluses.';
+
+  @override
+  String get groupDetailDeleteTitle => 'Supprimer le groupe';
+
+  @override
+  String get groupDetailDeleteMessage =>
+      'Veux-tu vraiment supprimer ce groupe ? Toutes les boîtes qu\'il contient seront également supprimées.';
 
   @override
   String get languageSearchPlaceholder => 'Rechercher';
