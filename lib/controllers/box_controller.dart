@@ -6,7 +6,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_paths.dart';
-import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
@@ -20,7 +19,6 @@ class BoxController {
   final Box<VocabularyBox> _localBox = Hive.box<VocabularyBox>('boxes');
   final BoxSyncService _boxSync = BoxSyncService.instance;
   final VocabularySyncService _vocabSync = VocabularySyncService.instance;
-  final AudioSyncService _audioSync = AudioSyncService.instance;
   final AudioUploadQueueService _audioUploadQueue =
       AudioUploadQueueService.instance;
 
@@ -213,7 +211,6 @@ class BoxController {
     } else {
       _vocabSync.softDeleteVocabulary(box.groupId, boxId, id);
       _audioUploadQueue.cancel(id);
-      unawaited(_audioSync.deleteAudio(box.groupId, box.groupId, boxId));
     }
 
     final audio = AppPaths.audioFile(id);

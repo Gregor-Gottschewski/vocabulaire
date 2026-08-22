@@ -2,12 +2,12 @@ import {FieldValue, getFirestore} from "firebase-admin/firestore";
 import {onDocumentCreated, onDocumentDeleted} from "firebase-functions/v2/firestore";
 import {onObjectDeleted, onObjectFinalized, StorageEvent} from "firebase-functions/v2/storage";
 import {consumeReservation, releaseReservation} from "./audioReservations";
+import {AUDIO_PATH_PATTERN} from "./storagePaths";
 
-const REGION = "europe-west1";
-const GROUP_PATH = "users/{uid}/groups/{groupId}";
-const BOX_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}";
-const VOCABULARY_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}/vocabularies/{vocabId}";
-const AUDIO_PATH_PATTERN = /^users\/([^/]+)\/audio\/([^/]+)$/;
+export const REGION = "europe-west1";
+export const GROUP_PATH = "users/{uid}/groups/{groupId}";
+export const BOX_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}";
+export const VOCABULARY_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}/vocabularies/{vocabId}";
 
 // Keep in sync with the vocabulary quota check in firestore.rules.
 const VOCABULARY_LIMIT_PREMIUM = 3000;
@@ -98,7 +98,7 @@ export const onVocabularyDeleted = onDocumentDeleted(
 
 function parseAudioObjectName(objectName: string): {uid: string; fileName: string} | null {
     const match = AUDIO_PATH_PATTERN.exec(objectName);
-    return match ? {uid: match[1], fileName: match[2]} : null;
+    return match ? {uid: match[1], fileName: match[4]} : null;
 }
 
 export const onAudioFinalize = onObjectFinalized({region: REGION}, async (event: StorageEvent) => {

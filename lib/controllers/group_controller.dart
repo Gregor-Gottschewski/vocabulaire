@@ -162,10 +162,10 @@ class GroupController {
         _audioUploadQueue.cancel(vocabulary.id);
       }
       await _localBoxes.put(box.id, box.copyWith(deleted: false));
-      await _boxSync.softDeleteBox(groupId, box.id);
     }
 
     await _localGroups.put(groupId, group.copyWith(deleted: false));
+    await _groupSync.softDeleteGroup(groupId);
   }
 }
 

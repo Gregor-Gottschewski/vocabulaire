@@ -25,6 +25,11 @@ export {
 } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
 export { reserveAudioUpload } from "./audioReservations";
+export {
+  onGroupSoftDeleted,
+  onBoxSoftDeleted,
+  onVocabularySoftDeleted,
+} from "./cascadeDelete";
 
 export const synthesizeSpeech = onCall(
   {

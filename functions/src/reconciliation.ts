@@ -2,6 +2,7 @@ import {Timestamp, getFirestore} from "firebase-admin/firestore";
 import {getStorage} from "firebase-admin/storage";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {releaseReservation} from "./audioReservations";
+import {AUDIO_PATH_PATTERN} from "./storagePaths";
 
 const REGION = "europe-west1";
 
@@ -119,8 +120,10 @@ export const reconcileAudioUsageLimits = onSchedule(
             const uid = doc.id;
             const stored = (doc.data().audioBytesUsed as number | undefined) ?? 0;
 
-            const [files] = await getStorage().bucket().getFiles({prefix: `users/${uid}/audio/`});
-            const actual = files.reduce((sum, file) => sum + Number(file.metadata.size ?? 0), 0);
+            const [files] = await getStorage().bucket().getFiles({prefix: `users/${uid}/groups/`});
+            const actual = files
+                .filter((file) => AUDIO_PATH_PATTERN.test(file.name))
+                .reduce((sum, file) => sum + Number(file.metadata.size ?? 0), 0);
 
             if (actual !== stored) {
                 await doc.ref.set({audioBytesUsed: actual}, {merge: true});
