@@ -9,4 +9,5 @@ class FieldLimits {
   static const int conjugationForms = 500;
   static const int boxName = 150;
   static const int boxDescription = 300;
+  static const int groupName = 150;
 }

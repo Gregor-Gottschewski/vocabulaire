@@ -9,8 +9,8 @@ import 'app_exception.dart';
 import 'usage_service.dart';
 
 /// Owns the active Firestore listener on the current user's online
-/// boxes (`users/{uid}/boxes`, `deleted == false`) and exposes them as a
-/// [ValueListenable].
+/// boxes (`users/{uid}/groups/*/boxes`, `deleted == false`, queried via
+/// `collectionGroup('boxes')`) and exposes them as a [ValueListenable].
 /// — [BoxController] is the sole consumer, other call sites go through it.
 class BoxSyncService {
   BoxSyncService._() {
@@ -55,19 +55,27 @@ class BoxSyncService {
     return null;
   }
 
-  CollectionReference<Map<String, dynamic>> _collection(String uid) =>
-      FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .collection('boxes');
+  CollectionReference<Map<String, dynamic>> _boxesCollection(
+    String uid,
+    String groupId,
+  ) => FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('groups')
+      .doc(groupId)
+      .collection('boxes');
 
-  /// Starts the listener for the currently signed-in user.
+  /// Starts the listener for the currently signed-in user. Uses a
+  /// `collectionGroup('boxes')` query so it doesn't need to know the set of
+  /// groups upfront — new/removed groups are picked up automatically.
   void attach() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
     _subscription?.cancel();
-    _subscription = _collection(uid)
+    _subscription = FirebaseFirestore.instance
+        .collectionGroup('boxes')
+        .where('ownerUid', isEqualTo: uid)
         .where('deleted', isEqualTo: false)
         .snapshots(includeMetadataChanges: true)
         .listen(
@@ -75,7 +83,11 @@ class BoxSyncService {
             hasPendingWrites = snapshot.metadata.hasPendingWrites;
             isFromCache = snapshot.metadata.isFromCache;
             _boxesNotifier.value = snapshot.docs
-                .map(VocabularyBox.fromFirestore)
+                .map(
+                  (doc) => VocabularyBox.fromFirestore(
+                    doc,
+                  ).copyWith(groupId: doc.reference.parent.parent!.id),
+                )
                 .toList();
           },
           onError: (Object error, StackTrace stackTrace) {
@@ -100,9 +112,9 @@ class BoxSyncService {
     }
   }
 
-  Future<void> addBox(VocabularyBox box) async {
+  Future<void> addBox(VocabularyBox box, String groupId) async {
     final uid = _userUid();
-    await _collection(uid).doc(box.id).set({
+    await _boxesCollection(uid, groupId).doc(box.id).set({
       ...box.toFirestore(),
       'ownerUid': uid,
       'deleted': false,
@@ -111,11 +123,12 @@ class BoxSyncService {
   }
 
   Future<void> updateBoxFields(
+    String groupId,
     String boxId,
     Map<String, dynamic> changes,
   ) async {
     final uid = _userUid();
-    await _collection(uid).doc(boxId).update({
+    await _boxesCollection(uid, groupId).doc(boxId).update({
       ...changes,
       'updatedAt': FieldValue.serverTimestamp(),
     });
@@ -123,50 +136,32 @@ class BoxSyncService {
 
   /// Increments [VocabularyBox.newCardsReviewedToday] atomically.
   Future<void> incrementNewCardsReviewedToday(
+    String groupId,
     String boxId, {
     required bool resetToday,
   }) async {
     final uid = _userUid();
-    await _collection(uid).doc(boxId).update({
+    await _boxesCollection(uid, groupId).doc(boxId).update({
       'newCardsReviewedToday': resetToday ? 1 : FieldValue.increment(1),
       if (resetToday) 'lastNewVocabularyReview': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
-  Future<void> softDeleteBox(String boxId) async {
+  Future<void> softDeleteBox(String groupId, String boxId) async {
     final uid = _userUid();
-    await _collection(uid).doc(boxId).update({
+    await _boxesCollection(uid, groupId).doc(boxId).update({
       'deleted': true,
       'deletedAt': FieldValue.serverTimestamp(),
       'updatedAt': FieldValue.serverTimestamp(),
     });
   }
 
-  /// Hard-deletes the box document together with its `vocabularies`
-  /// subcollection.
-  Future<void> hardDeleteBoxWithVocabularies(String boxId) async {
-    final boxRef = _collection(_userUid()).doc(boxId);
-    final vocabDocs = await boxRef.collection('vocabularies').get();
-
-    // delete 400 chunks a time which keeps buffer of 100 chunks
-    const chunkSize = 400;
-    for (var i = 0; i < vocabDocs.docs.length; i += chunkSize) {
-      final batch = FirebaseFirestore.instance.batch();
-      for (final doc in vocabDocs.docs.skip(i).take(chunkSize)) {
-        batch.delete(doc.reference);
-      }
-      await batch.commit();
-    }
-
-    await boxRef.delete();
-  }
-
   String _userUid() {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) {
       throw StateError(
-        'BoxSyncService write attempted before sign-in completed.',
+        'BoxSyncService: write attempted before sign-in completed.',
       );
     }
     return uid;

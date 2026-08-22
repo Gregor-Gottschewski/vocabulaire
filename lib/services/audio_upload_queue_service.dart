@@ -34,10 +34,15 @@ class AudioUploadQueueService {
   bool _drainAgain = false;
 
   /// Persists [vocabId] as pending and schedules background processing.
-  void enqueue(String boxId, String vocabId) {
+  void enqueue(String groupId, String boxId, String vocabId) {
     _queueBox.put(
       vocabId,
-      PendingAudioUpload(id: vocabId, boxId: boxId, createdAt: DateTime.now()),
+      PendingAudioUpload(
+        id: vocabId,
+        boxId: boxId,
+        groupId: groupId,
+        createdAt: DateTime.now(),
+      ),
     );
     _scheduleDrain();
   }
@@ -107,7 +112,7 @@ class AudioUploadQueueService {
     if (_queueBox.get(entry.id) == null) return;
 
     try {
-      await _audioSync.uploadAudio(entry.boxId, entry.id);
+      await _audioSync.uploadAudio(entry.groupId, entry.boxId, entry.id);
       await _queueBox.delete(entry.id);
     } on AppException catch (e) {
       if (e.error == AppError.audioStorageLimitReached) {

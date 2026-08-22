@@ -4,22 +4,23 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
-/// Snapshot of the current user's `rateLimits/{uid}` usage document —
-/// online-vocabulary count and synced-audio storage, both maintained
-/// server-side (see `functions/src/counters.ts`) and mirrored by the
-/// `firestore.rules`/`storage.rules` limit checks.
+/// Snapshot of the current user's `rateLimits/{uid}` usage document
 class UsageInfo {
   final int vocabularyCountOnline;
   final bool isPremium;
   final int audioBytesUsed;
+  final int groupCountOnline;
 
   const UsageInfo({
     this.vocabularyCountOnline = 0,
     this.isPremium = false,
     this.audioBytesUsed = 0,
+    this.groupCountOnline = 0,
   });
 
   int get vocabularyLimit => UsageService.vocabularyLimitPremium;
+
+  int get groupLimit => UsageService.groupLimitPremium;
 
   static UsageInfo fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     final data = snap.data();
@@ -28,6 +29,7 @@ class UsageInfo {
           (data?['vocabularyCountOnline'] as num?)?.toInt() ?? 0,
       isPremium: data?['isPremium'] == true,
       audioBytesUsed: (data?['audioBytesUsed'] as num?)?.toInt() ?? 0,
+      groupCountOnline: (data?['groupCountOnline'] as num?)?.toInt() ?? 0,
     );
   }
 }
@@ -40,6 +42,8 @@ class UsageService {
 
   static const int vocabularyLimitPremium = 3000;
   static const int audioStorageLimitBytes = 50 * 1024 * 1024;
+  static const int groupLimitPremium = 1000;
+  static const int boxLimitPerGroup = 800;
 
   final ValueNotifier<UsageInfo> _usageNotifier = ValueNotifier(
     const UsageInfo(),

@@ -330,6 +330,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
           unawaited(AudioSyncService.instance.deleteAudio(_vocab.id));
           unawaited(
             VocabularySyncService.instance.setAudioSynced(
+              widget.box.groupId,
               widget.boxKey,
               _vocab.id,
               false,
@@ -342,7 +343,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     }
 
     if (!_boxController.isLocal(widget.boxKey) && _hasRecording) {
-      AudioUploadQueueService.instance.enqueue(widget.boxKey, _vocab.id);
+      AudioUploadQueueService.instance.enqueue(
+        widget.box.groupId,
+        widget.boxKey,
+        _vocab.id,
+      );
     }
 
     if (mounted) {
@@ -552,7 +557,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         if (vocabStillExists) {
           await _commitAudioFile(generatingVocabId);
           if (!_boxController.isLocal(boxKey)) {
-            AudioUploadQueueService.instance.enqueue(boxKey, generatingVocabId);
+            AudioUploadQueueService.instance.enqueue(
+              widget.box.groupId,
+              boxKey,
+              generatingVocabId,
+            );
           }
         } else {
           final orphan = AppPaths.audioTempFile(generatingVocabId);
