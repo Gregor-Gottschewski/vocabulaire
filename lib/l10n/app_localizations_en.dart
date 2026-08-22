@@ -62,6 +62,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsBoxSync => 'Box synchronisation';
 
   @override
+  String get settingsExportAll => 'Export all boxes';
+
+  @override
   String get settingsVocabularyUsage => 'Online vocabulary';
 
   @override
@@ -357,6 +360,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorExportCacheFailed => 'Export cache could not be cleared';
+
+  @override
+  String get errorExportBulkDirectoryFailed => 'Export could not be prepared';
+
+  @override
+  String get errorExportBulkArchiveFailed =>
+      'Boxes could not be packaged for export';
 
   @override
   String get errorImportMissingStoreFile =>

@@ -16,6 +16,9 @@ extension AppExceptionDialog on BuildContext {
       AppError.exportAudioFailed => i18n.errorExportAudioFailed,
       AppError.exportArchiveFailed => i18n.errorExportArchiveFailed,
       AppError.exportCacheFailed => i18n.errorExportCacheFailed,
+      AppError.exportBulkDirectoryFailed =>
+        i18n.errorExportBulkDirectoryFailed,
+      AppError.exportBulkArchiveFailed => i18n.errorExportBulkArchiveFailed,
       AppError.importMissingStoreFile => i18n.errorImportMissingStoreFile,
       AppError.importInvalidFormat => i18n.errorImportInvalidFormat,
       AppError.duplicateBoxName => i18n.errorDuplicateBoxName(

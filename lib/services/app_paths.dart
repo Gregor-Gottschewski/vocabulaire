@@ -50,4 +50,8 @@ class AppPaths {
 
   static Future<Directory> createBoxExportDirectory() async =>
       Directory(p.join(applicationExportBaseDirectory.path, Uuid().v4())).create(recursive: true);
+
+  static Future<Directory> createBulkExportDirectory() async => Directory(
+    p.join(_applicationTempBaseDir.path, "bulk_export", Uuid().v4()),
+  ).create(recursive: true);
 }

@@ -5,6 +5,8 @@ enum AppError {
   exportAudioFailed,
   exportArchiveFailed,
   exportCacheFailed,
+  exportBulkDirectoryFailed,
+  exportBulkArchiveFailed,
   importMissingStoreFile,
   importInvalidFormat,
   duplicateBoxName,

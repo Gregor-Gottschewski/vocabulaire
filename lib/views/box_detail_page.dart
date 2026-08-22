@@ -8,7 +8,6 @@ import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
-import 'package:vocabulaire/services/app_paths.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_typography.dart';
@@ -73,10 +72,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     final box = _box;
     if (box == null) return;
 
-    final exportDir = AppPaths.applicationExportBaseDirectory;
-
     try {
-      if (exportDir.existsSync()) await exportDir.delete(recursive: true);
       final zipFile = await ExportController.exportBox(box);
 
       await SharePlus.instance.share(

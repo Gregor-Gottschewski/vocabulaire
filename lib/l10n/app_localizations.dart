@@ -202,6 +202,12 @@ abstract class AppLocalizations {
   /// **'Box-Synchronisierung'**
   String get settingsBoxSync;
 
+  /// No description provided for @settingsExportAll.
+  ///
+  /// In de, this message translates to:
+  /// **'Alle Boxen exportieren'**
+  String get settingsExportAll;
+
   /// No description provided for @settingsVocabularyUsage.
   ///
   /// In de, this message translates to:
@@ -741,6 +747,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Export-Cache konnte nicht geleert werden'**
   String get errorExportCacheFailed;
+
+  /// No description provided for @errorExportBulkDirectoryFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Export konnte nicht vorbereitet werden'**
+  String get errorExportBulkDirectoryFailed;
+
+  /// No description provided for @errorExportBulkArchiveFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Boxen konnten nicht für den Export verpackt werden'**
+  String get errorExportBulkArchiveFailed;
 
   /// No description provided for @errorImportMissingStoreFile.
   ///

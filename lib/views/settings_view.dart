@@ -1,11 +1,17 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
+import '../controllers/box_controller.dart';
+import '../controllers/export_controller.dart';
 import '../controllers/settings_controller.dart';
+import '../services/app_exception.dart';
+import '../services/app_exception_ui.dart';
 import '../services/box_sync_service.dart';
 import '../services/usage_service.dart';
 import '../theme/app_page_route.dart';
@@ -26,11 +32,13 @@ class SettingsView extends StatefulWidget {
 
 class _SettingsViewState extends State<SettingsView> {
   final SettingsController _controller = SettingsController();
+  final BoxController _boxController = BoxController();
   final BoxSyncService _boxSync = BoxSyncService.instance;
   final UsageService _usage = UsageService.instance;
   late AppLocalizations _l10n;
   bool _cardAnimations = true;
   bool _hasConnectivity = true;
+  bool _isExportingAll = false;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
@@ -113,6 +121,35 @@ class _SettingsViewState extends State<SettingsView> {
     await _controller.setCardAnimations(value);
   }
 
+  /// Exports all boxes as `.vocab` files grouped into a single ZIP archive
+  Future<void> _exportAllBoxes() async {
+    final boxes = _boxController.boxes;
+    if (boxes.isEmpty) return;
+
+    setState(() => _isExportingAll = true);
+
+    try {
+      final zipFile = await ExportController.exportAllBoxes(boxes);
+
+      await SharePlus.instance.share(
+        ShareParams(
+          title: _l10n.settingsExportAll,
+          files: [XFile(zipFile.path)],
+        ),
+      );
+    } on FileSystemException catch (e) {
+      if (!mounted) return;
+      await context.showAppError(
+        AppException(AppError.exportCacheFailed, details: e),
+      );
+    } on AppException catch (e) {
+      if (!mounted) return;
+      await context.showAppError(e);
+    } finally {
+      if (mounted) setState(() => _isExportingAll = false);
+    }
+  }
+
   Future<void> _openGithub() async {
     final uri = Uri.parse(
       'https://github.com/Gregor-Gottschewski/vocabulaire/',
@@ -163,6 +200,13 @@ class _SettingsViewState extends State<SettingsView> {
                 ),
               ],
             ],
+          ),
+          KeyValueRow.submenu(
+            context,
+            label: _l10n.settingsExportAll,
+            onTap: (_isExportingAll || _boxController.boxes.isEmpty)
+                ? null
+                : _exportAllBoxes,
           ),
           const SizedBox(height: AppSpacing.sectionGap),
           TextLinkButton(

@@ -27,6 +27,7 @@
   "settingsLicenses": "Licences",
   "settingsGithub": "Vocabulaire à GitHub",
   "settingsBoxSync": "Synchronisation des boîtes",
+  "settingsExportAll": "Exporter toutes les boîtes",
   "settingsVocabularyUsage": "Vocabulaire en ligne",
   "settingsVocabularyUsageValue": "{count}/{limit}",
   "@settingsVocabularyUsageValue": {
@@ -175,6 +176,8 @@
   "errorExportAudioFailed": "Les fichiers audio n'ont pas pu être copiés",
   "errorExportArchiveFailed": "L'archive n'a pas pu être créée",
   "errorExportCacheFailed": "Le cache d'exportation n'a pas pu être vidé",
+  "errorExportBulkDirectoryFailed": "L'exportation n'a pas pu être préparée",
+  "errorExportBulkArchiveFailed": "Les boîtes n'ont pas pu être regroupées pour l'exportation",
   "errorImportMissingStoreFile": "Format de fichier invalide : store.json introuvable dans l'archive",
   "errorImportInvalidFormat": "Format de fichier invalide : objet JSON attendu",
   "errorDuplicateBoxName": "Une boîte nommée \"{name}\" existe déjà",
