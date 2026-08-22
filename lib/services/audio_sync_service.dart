@@ -53,6 +53,7 @@ class AudioSyncService {
 
     try {
       await _functions.httpsCallable('reserveAudioUpload').call({
+        'groupId': groupId,
         'boxId': boxId,
         'vocabId': vocabId,
         'sizeBytes': fileSize,

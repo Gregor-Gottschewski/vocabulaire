@@ -39,6 +39,7 @@ export const reserveAudioUpload = onCall(
             throw new HttpsError("unauthenticated", "Login required.");
         }
         const uid = request.auth.uid;
+        const groupId = validateId(request.data?.groupId, "group id");
         const boxId = validateId(request.data?.boxId, "box id");
         const vocabId = validateId(request.data?.vocabId, "vocabulary id");
         const sizeBytes = validateSizeBytes(request.data?.sizeBytes);
@@ -47,7 +48,9 @@ export const reserveAudioUpload = onCall(
         const db = getFirestore();
         const rateLimitRef = db.collection("rateLimits").doc(uid);
         const reservation = reservationRef(uid, fileName);
-        const vocabRef = db.doc(`users/${uid}/boxes/${boxId}/vocabularies/${vocabId}`);
+        const vocabRef = db.doc(
+            `users/${uid}/groups/${groupId}/boxes/${boxId}/vocabularies/${vocabId}`
+        );
 
         await db.runTransaction(async (tx) => {
             const [rateLimitSnap, reservationSnap, vocabSnap] = await Promise.all([
