@@ -1,0 +1,106 @@
+name: "Bug Report"
+description: Reporting an issue.
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! The more precise the details, the faster we can reproduce and fix it.
+
+  - type: textarea
+    id: preconditions
+    attributes:
+      label: Preconditions
+      description: State of the system/user before the error occurred.
+      placeholder: Device not connected to the internet.
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Numbered steps to reliably trigger the error.
+      placeholder: |
+        1. Open Settings
+        2. Click on 'Export'
+        3. Select box with more than 10 vocabularies
+      value: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+
+  - type: textarea
+    id: misbehaviour
+    attributes:
+      label: Misbehaviour
+      description: What actually happens (the faulty behaviour)?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: Expected Behaviour
+      description: What should happen instead?
+    validations:
+      required: true
+
+  - type: input
+    id: app-version
+    attributes:
+      label: App/Build Version
+      placeholder: e.g. 2.4.1 (Build 137)
+    validations:
+      required: false
+
+  - type: input
+    id: os
+    attributes:
+      label: Operating System
+      placeholder: e.g. macOS 11.3, iOS 26.1
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Device
+      placeholder: e.g. iPhone, iPad, Mac, Simulator
+    validations:
+      required: false
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Blocker
+        - Major
+        - Minor
+        - Cosmetic
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frequency
+    attributes:
+      label: Frequency
+      options:
+        - Always
+        - Sometimes
+        - Once
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Screenshots / Logs
+      description: Optional. Screenshots, stack traces, log excerpts.
+      render: shell
+    validations:
+      required: false
