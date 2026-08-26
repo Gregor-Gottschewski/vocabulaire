@@ -65,9 +65,9 @@ Future<void> bootstrap(Flavor flavor) async {
         : const AppleDebugProvider(),
   );
 
-  // reset session if debug mode enabled, firebase emulator used and auth reset variable set to true
+  // reset session if debug mode enabled and auth reset variable set to true
   await AuthService.instance.ensureSignedInWithRetry(
-    forceFreshSession: kDebugMode && _useFirebaseEmulator && _resetAuthSession,
+    forceFreshSession: kDebugMode && _resetAuthSession,
     onSignedIn: () {
       BoxSyncService.instance.attach();
       GroupSyncService.instance.attach();
