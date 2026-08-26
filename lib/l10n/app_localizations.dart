@@ -568,6 +568,18 @@ abstract class AppLocalizations {
   /// **'Teilen'**
   String get boxDetailShareAction;
 
+  /// No description provided for @groupDetailImportAction.
+  ///
+  /// In de, this message translates to:
+  /// **'Importieren'**
+  String get groupDetailImportAction;
+
+  /// No description provided for @settingsImportBox.
+  ///
+  /// In de, this message translates to:
+  /// **'Box importieren'**
+  String get settingsImportBox;
+
   /// No description provided for @boxDetailDailyLimitOff.
   ///
   /// In de, this message translates to:
@@ -711,6 +723,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Diese Box passt nicht zur Gruppe: Typ oder Sprache stimmen nicht überein'**
   String get errorImportGroupMismatch;
+
+  /// No description provided for @errorImportFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Box konnte nicht importiert werden.'**
+  String get errorImportFailed;
 
   /// No description provided for @errorDuplicateBoxName.
   ///

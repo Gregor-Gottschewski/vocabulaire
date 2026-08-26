@@ -22,6 +22,7 @@ extension AppExceptionDialog on BuildContext {
       AppError.importMissingStoreFile => i18n.errorImportMissingStoreFile,
       AppError.importInvalidFormat => i18n.errorImportInvalidFormat,
       AppError.importGroupMismatch => i18n.errorImportGroupMismatch,
+      AppError.importFailed => i18n.errorImportFailed,
       AppError.duplicateBoxName => i18n.errorDuplicateBoxName(
         e.details as String,
       ),

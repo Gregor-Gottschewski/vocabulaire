@@ -10,6 +10,7 @@ enum AppError {
   importMissingStoreFile,
   importInvalidFormat,
   importGroupMismatch,
+  importFailed,
   duplicateBoxName,
   moveBoxOfflineFailed,
   moveBoxOnlineFailed,

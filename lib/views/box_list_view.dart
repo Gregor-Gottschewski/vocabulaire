@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
@@ -11,8 +12,11 @@ import 'package:vocabulaire/views/widgets/box_tile.dart';
 import '../controllers/box_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/group_draft.dart';
+import '../controllers/import_controller.dart';
 import '../models/vocabulary_box.dart';
 import '../models/vocabulary_group.dart';
+import '../services/app_exception.dart';
+import '../services/app_exception_ui.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -114,6 +118,10 @@ class _BoxListViewState extends State<BoxListView> {
       actions: [
         AppActionSheetAction(label: _l10n.editAction, onPressed: _editGroup),
         AppActionSheetAction(
+          label: _l10n.groupDetailImportAction,
+          onPressed: _importBox,
+        ),
+        AppActionSheetAction(
           label: _l10n.boxDetailDelete,
           destructive: true,
           onPressed: _deleteGroup,
@@ -140,6 +148,38 @@ class _BoxListViewState extends State<BoxListView> {
         ),
       ],
     );
+  }
+
+  /// Handle box import action.
+  Future<void> _importBox() async {
+    try {
+      final FilePickerResult? results = await FilePicker.pickFiles(
+        dialogTitle: _l10n.settingsImportBox,
+        type: FileType.custom,
+        allowedExtensions: ['vocab'],
+        allowMultiple: true,
+        withData: false,
+      );
+
+      if (results == null || results.files.isEmpty) return;
+
+      final importedBoxes = <VocabularyBox>[];
+      for (final result in results.files) {
+        final path = result.path;
+        if (path == null) return;
+        final box = await ImportController.importBoxFromFile(path);
+        importedBoxes.add(box.copyWith(groupId: widget.groupId));
+      }
+
+      final online = !_groupController.isLocal(widget.groupId);
+      await _boxController.addBoxes(importedBoxes, online: online);
+    } on AppException catch (e) {
+      if (!mounted) return;
+      await context.showAppError(e);
+    } catch (e) {
+      if (!mounted) return;
+      await context.showAppError(AppException(AppError.importFailed, details: e));
+    }
   }
 
   @override

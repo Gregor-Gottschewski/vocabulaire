@@ -59,26 +59,37 @@ class BoxController {
       boxes.where((b) => b.groupId == groupId).toList();
 
   /// Adds new boxes, either as an online or local box.
-  /// A box with the name '[box.name] copy' is created if box with same
-  /// already exists.
+  /// A box with the name '[box.name] copy' is created if a box with the same
+  /// name already exists within the same group.
   Future<void> addBoxes(
     List<VocabularyBox> importBoxes, {
     bool online = false,
   }) async {
-    List<String> names = boxes.map((box) => box.name).toList();
+    final namesByGroup = <String, List<String>>{};
     for (final finalBox in importBoxes) {
       VocabularyBox box = finalBox.copyWith();
+      final names = namesByGroup.putIfAbsent(
+        box.groupId,
+        () => boxesForGroup(box.groupId).map((b) => b.name).toList(),
+      );
       String boxName = box.name;
       while (names.contains(boxName)) {
         boxName = "$boxName copy";
         box = box.copyWith(name: boxName);
       }
+      names.add(boxName);
       if (online) {
-        unawaited(
-          _boxSync.addBox(box, box.groupId).catchError((Object error) {
-            debugPrint('BoxController: background addBox failed: $error');
-          }),
-        );
+        if (box.vocabularies.isNotEmpty) {
+          _boxSync.ensureVocabularyQuota(box.vocabularies.length);
+        }
+        await _boxSync.addBox(box, box.groupId);
+        if (box.vocabularies.isNotEmpty) {
+          await _vocabSync.addVocabularies(
+            box.groupId,
+            box.id,
+            box.vocabularies,
+          );
+        }
       } else {
         await _localBox.put(box.id, box);
       }

@@ -167,6 +167,8 @@
   "groupDetailActionsSheetTitle": "Modifier cette groupe.",
   "editAction": "Modifier",
   "boxDetailShareAction": "Partager",
+  "groupDetailImportAction": "Importer",
+  "settingsImportBox": "Importer une boîte",
   "boxDetailDailyLimitOff": "Désactivé",
   "boxDetailDailyLimitEnable": "Activer la limite quotidienne",
   "vocabListTitle": "Vocabulaire",
@@ -191,6 +193,7 @@
   "errorImportMissingStoreFile": "Format de fichier invalide : store.json introuvable dans l'archive",
   "errorImportInvalidFormat": "Format de fichier invalide : objet JSON attendu",
   "errorImportGroupMismatch": "Cette boîte ne correspond pas au groupe : le type ou la langue diffère",
+  "errorImportFailed": "La boîte n'a pas pu être importée.",
   "errorDuplicateBoxName": "Une boîte nommée \"{name}\" existe déjà",
   "@errorDuplicateBoxName": {
     "placeholders": {

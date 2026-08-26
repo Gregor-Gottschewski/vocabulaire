@@ -269,6 +269,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxDetailShareAction => 'Share';
 
   @override
+  String get groupDetailImportAction => 'Import';
+
+  @override
+  String get settingsImportBox => 'Import box';
+
+  @override
   String get boxDetailDailyLimitOff => 'Off';
 
   @override
@@ -344,6 +350,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorImportGroupMismatch =>
       'This box doesn\'t match the group: type or language differ';
+
+  @override
+  String get errorImportFailed => 'The box could not be imported.';
 
   @override
   String errorDuplicateBoxName(String name) {
