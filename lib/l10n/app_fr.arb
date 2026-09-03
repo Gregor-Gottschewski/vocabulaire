@@ -166,7 +166,7 @@
   "boxDetailActionsSheetTitle": "Modifier cette boîte.",
   "groupDetailActionsSheetTitle": "Modifier cette groupe.",
   "editAction": "Modifier",
-  "boxDetailShareAction": "Partager",
+  "export": "Exporter",
   "groupDetailImportAction": "Importer",
   "settingsImportBox": "Importer une boîte",
   "boxDetailDailyLimitOff": "Désactivé",

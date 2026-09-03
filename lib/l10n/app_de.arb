@@ -166,7 +166,7 @@
   "boxDetailActionsSheetTitle": "Diese Box bearbeiten.",
   "groupDetailActionsSheetTitle": "Diese Gruppe bearbeiten.",
   "editAction": "Bearbeiten",
-  "boxDetailShareAction": "Teilen",
+  "export": "Exportieren",
   "groupDetailImportAction": "Importieren",
   "settingsImportBox": "Box importieren",
   "boxDetailDailyLimitOff": "Aus",

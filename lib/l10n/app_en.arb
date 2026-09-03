@@ -138,7 +138,7 @@
   "boxDetailActionsSheetTitle": "Edit this box.",
   "groupDetailActionsSheetTitle": "Edit this group.",
   "editAction": "Edit",
-  "boxDetailShareAction": "Share",
+  "export": "Export",
   "groupDetailImportAction": "Import",
   "settingsImportBox": "Import box",
   "boxDetailDailyLimitOff": "Off",

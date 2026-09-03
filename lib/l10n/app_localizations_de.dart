@@ -267,7 +267,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editAction => 'Bearbeiten';
 
   @override
-  String get boxDetailShareAction => 'Teilen';
+  String get export => 'Exportieren';
 
   @override
   String get groupDetailImportAction => 'Importieren';

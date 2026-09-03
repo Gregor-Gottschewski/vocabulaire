@@ -151,7 +151,7 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
       title: _l10n.boxDetailActionsSheetTitle,
       actions: [
         AppActionSheetAction(
-          label: _l10n.boxDetailShareAction,
+          label: _l10n.export,
           onPressed: _exportBox,
         ),
         AppActionSheetAction(label: _l10n.editAction, onPressed: _editBox),

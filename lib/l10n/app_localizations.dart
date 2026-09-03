@@ -562,11 +562,11 @@ abstract class AppLocalizations {
   /// **'Bearbeiten'**
   String get editAction;
 
-  /// No description provided for @boxDetailShareAction.
+  /// No description provided for @export.
   ///
   /// In de, this message translates to:
-  /// **'Teilen'**
-  String get boxDetailShareAction;
+  /// **'Exportieren'**
+  String get export;
 
   /// No description provided for @groupDetailImportAction.
   ///
