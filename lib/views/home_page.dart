@@ -67,22 +67,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: context.colors.background,
-      child: Column(
-        children: [
-          Expanded(
-            child: IndexedStack(
-              index: _selectedIndex,
-              children: List.generate(_views.length, _buildTab),
-            ),
-          ),
-          AppTabBar(
-            items: [_l10n.tabGroups, _l10n.tabVokabeln, _l10n.tabEinstellungen],
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-          ),
-        ],
+    return Scaffold(
+      backgroundColor: context.colors.background,
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: List.generate(_views.length, _buildTab),
+      ),
+      bottomNavigationBar: AppTabBar(
+        items: [_l10n.tabGroups, _l10n.tabVokabeln, _l10n.tabEinstellungen],
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
       ),
     );
   }
