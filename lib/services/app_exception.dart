@@ -26,6 +26,15 @@ enum AppError {
   ttsRateLimitExceeded,
   ttsNotAuthenticated,
   ttsUnknownError,
+  authInvalidEmail,
+  authUserDisabled,
+  authUserNotFound,
+  authWrongPassword,
+  authEmailAlreadyInUse,
+  authWeakPassword,
+  authNetworkFailed,
+  authTooManyRequests,
+  authUnknownError,
 }
 
 /// [AppException] represents a user-facing application error.

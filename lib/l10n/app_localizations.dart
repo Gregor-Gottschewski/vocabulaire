@@ -886,6 +886,150 @@ abstract class AppLocalizations {
   /// **'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.'**
   String get errorTtsUnknownError;
 
+  /// No description provided for @loginTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmelden'**
+  String get loginTitle;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto erstellen'**
+  String get registerTitle;
+
+  /// No description provided for @loginEmailLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail'**
+  String get loginEmailLabel;
+
+  /// No description provided for @loginPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort'**
+  String get loginPasswordLabel;
+
+  /// No description provided for @loginSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmelden'**
+  String get loginSubmitButton;
+
+  /// No description provided for @registerSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto erstellen'**
+  String get registerSubmitButton;
+
+  /// No description provided for @loginSwitchToRegister.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch kein Konto? Registrieren'**
+  String get loginSwitchToRegister;
+
+  /// No description provided for @loginSwitchToLogin.
+  ///
+  /// In de, this message translates to:
+  /// **'Schon registriert? Anmelden'**
+  String get loginSwitchToLogin;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort vergessen?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort zurücksetzen'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordEmailLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail'**
+  String get resetPasswordEmailLabel;
+
+  /// No description provided for @resetPasswordSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Link senden'**
+  String get resetPasswordSubmitButton;
+
+  /// No description provided for @resetPasswordSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde ein Link zum Zurücksetzen des Passworts verschickt.'**
+  String get resetPasswordSuccessMessage;
+
+  /// No description provided for @settingsSignOut.
+  ///
+  /// In de, this message translates to:
+  /// **'Abmelden'**
+  String get settingsSignOut;
+
+  /// No description provided for @settingsSignOutConfirmTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Möchtest du dich wirklich abmelden?'**
+  String get settingsSignOutConfirmTitle;
+
+  /// No description provided for @errorAuthInvalidEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'Die E-Mail-Adresse ist ungültig.'**
+  String get errorAuthInvalidEmail;
+
+  /// No description provided for @errorAuthUserDisabled.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Konto wurde deaktiviert.'**
+  String get errorAuthUserDisabled;
+
+  /// No description provided for @errorAuthUserNotFound.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail oder Passwort ist falsch.'**
+  String get errorAuthUserNotFound;
+
+  /// No description provided for @errorAuthWrongPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail oder Passwort ist falsch.'**
+  String get errorAuthWrongPassword;
+
+  /// No description provided for @errorAuthEmailAlreadyInUse.
+  ///
+  /// In de, this message translates to:
+  /// **'Für diese E-Mail-Adresse existiert bereits ein Konto.'**
+  String get errorAuthEmailAlreadyInUse;
+
+  /// No description provided for @errorAuthWeakPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Passwort muss mindestens 6 Zeichen lang sein.'**
+  String get errorAuthWeakPassword;
+
+  /// No description provided for @errorAuthNetworkFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Internetverbindung. Bitte versuche es erneut.'**
+  String get errorAuthNetworkFailed;
+
+  /// No description provided for @errorAuthTooManyRequests.
+  ///
+  /// In de, this message translates to:
+  /// **'Zu viele Versuche. Bitte versuche es später erneut.'**
+  String get errorAuthTooManyRequests;
+
+  /// No description provided for @errorAuthUnknownError.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmeldung fehlgeschlagen. Bitte versuche es erneut.'**
+  String get errorAuthUnknownError;
+
   /// No description provided for @language.
   ///
   /// In de, this message translates to:

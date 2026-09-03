@@ -447,6 +447,84 @@ class AppLocalizationsEn extends AppLocalizations {
       'The pronunciation could not be generated. Please check your internet connection.';
 
   @override
+  String get loginTitle => 'Sign in';
+
+  @override
+  String get registerTitle => 'Create account';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginSubmitButton => 'Sign in';
+
+  @override
+  String get registerSubmitButton => 'Create account';
+
+  @override
+  String get loginSwitchToRegister => 'No account yet? Sign up';
+
+  @override
+  String get loginSwitchToLogin => 'Already have an account? Sign in';
+
+  @override
+  String get loginForgotPassword => 'Forgot password?';
+
+  @override
+  String get resetPasswordTitle => 'Reset password';
+
+  @override
+  String get resetPasswordEmailLabel => 'Email';
+
+  @override
+  String get resetPasswordSubmitButton => 'Send link';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'If an account exists for this email address, a password reset link has been sent.';
+
+  @override
+  String get settingsSignOut => 'Sign out';
+
+  @override
+  String get settingsSignOutConfirmTitle =>
+      'Are you sure you want to sign out?';
+
+  @override
+  String get errorAuthInvalidEmail => 'This email address is invalid.';
+
+  @override
+  String get errorAuthUserDisabled => 'This account has been disabled.';
+
+  @override
+  String get errorAuthUserNotFound => 'Email or password is incorrect.';
+
+  @override
+  String get errorAuthWrongPassword => 'Email or password is incorrect.';
+
+  @override
+  String get errorAuthEmailAlreadyInUse =>
+      'An account already exists for this email address.';
+
+  @override
+  String get errorAuthWeakPassword =>
+      'The password must be at least 6 characters long.';
+
+  @override
+  String get errorAuthNetworkFailed =>
+      'No internet connection. Please try again.';
+
+  @override
+  String get errorAuthTooManyRequests =>
+      'Too many attempts. Please try again later.';
+
+  @override
+  String get errorAuthUnknownError => 'Sign-in failed. Please try again.';
+
+  @override
   String get language => 'Language';
 
   @override

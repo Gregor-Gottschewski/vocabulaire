@@ -457,6 +457,85 @@ class AppLocalizationsDe extends AppLocalizations {
       'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.';
 
   @override
+  String get loginTitle => 'Anmelden';
+
+  @override
+  String get registerTitle => 'Konto erstellen';
+
+  @override
+  String get loginEmailLabel => 'E-Mail';
+
+  @override
+  String get loginPasswordLabel => 'Passwort';
+
+  @override
+  String get loginSubmitButton => 'Anmelden';
+
+  @override
+  String get registerSubmitButton => 'Konto erstellen';
+
+  @override
+  String get loginSwitchToRegister => 'Noch kein Konto? Registrieren';
+
+  @override
+  String get loginSwitchToLogin => 'Schon registriert? Anmelden';
+
+  @override
+  String get loginForgotPassword => 'Passwort vergessen?';
+
+  @override
+  String get resetPasswordTitle => 'Passwort zurücksetzen';
+
+  @override
+  String get resetPasswordEmailLabel => 'E-Mail';
+
+  @override
+  String get resetPasswordSubmitButton => 'Link senden';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde ein Link zum Zurücksetzen des Passworts verschickt.';
+
+  @override
+  String get settingsSignOut => 'Abmelden';
+
+  @override
+  String get settingsSignOutConfirmTitle =>
+      'Möchtest du dich wirklich abmelden?';
+
+  @override
+  String get errorAuthInvalidEmail => 'Die E-Mail-Adresse ist ungültig.';
+
+  @override
+  String get errorAuthUserDisabled => 'Dieses Konto wurde deaktiviert.';
+
+  @override
+  String get errorAuthUserNotFound => 'E-Mail oder Passwort ist falsch.';
+
+  @override
+  String get errorAuthWrongPassword => 'E-Mail oder Passwort ist falsch.';
+
+  @override
+  String get errorAuthEmailAlreadyInUse =>
+      'Für diese E-Mail-Adresse existiert bereits ein Konto.';
+
+  @override
+  String get errorAuthWeakPassword =>
+      'Das Passwort muss mindestens 6 Zeichen lang sein.';
+
+  @override
+  String get errorAuthNetworkFailed =>
+      'Keine Internetverbindung. Bitte versuche es erneut.';
+
+  @override
+  String get errorAuthTooManyRequests =>
+      'Zu viele Versuche. Bitte versuche es später erneut.';
+
+  @override
+  String get errorAuthUnknownError =>
+      'Anmeldung fehlgeschlagen. Bitte versuche es erneut.';
+
+  @override
   String get language => 'Sprache';
 
   @override

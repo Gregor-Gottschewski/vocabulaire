@@ -40,6 +40,15 @@ extension AppExceptionDialog on BuildContext {
       AppError.ttsRateLimitExceeded => i18n.errorTtsRateLimitExceeded,
       AppError.ttsNotAuthenticated => i18n.errorTtsNotAuthenticated,
       AppError.ttsUnknownError => i18n.errorTtsUnknownError,
+      AppError.authInvalidEmail => i18n.errorAuthInvalidEmail,
+      AppError.authUserDisabled => i18n.errorAuthUserDisabled,
+      AppError.authUserNotFound => i18n.errorAuthUserNotFound,
+      AppError.authWrongPassword => i18n.errorAuthWrongPassword,
+      AppError.authEmailAlreadyInUse => i18n.errorAuthEmailAlreadyInUse,
+      AppError.authWeakPassword => i18n.errorAuthWeakPassword,
+      AppError.authNetworkFailed => i18n.errorAuthNetworkFailed,
+      AppError.authTooManyRequests => i18n.errorAuthTooManyRequests,
+      AppError.authUnknownError => i18n.errorAuthUnknownError,
     };
 
     return showAppDialog(

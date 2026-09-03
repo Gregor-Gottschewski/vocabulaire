@@ -457,6 +457,85 @@ class AppLocalizationsFr extends AppLocalizations {
       'La prononciation n\'a pas pu être générée. Veuillez vérifier votre connexion internet.';
 
   @override
+  String get loginTitle => 'Connexion';
+
+  @override
+  String get registerTitle => 'Créer un compte';
+
+  @override
+  String get loginEmailLabel => 'E-mail';
+
+  @override
+  String get loginPasswordLabel => 'Mot de passe';
+
+  @override
+  String get loginSubmitButton => 'Se connecter';
+
+  @override
+  String get registerSubmitButton => 'Créer un compte';
+
+  @override
+  String get loginSwitchToRegister => 'Pas encore de compte ? S\'inscrire';
+
+  @override
+  String get loginSwitchToLogin => 'Déjà inscrit ? Se connecter';
+
+  @override
+  String get loginForgotPassword => 'Mot de passe oublié ?';
+
+  @override
+  String get resetPasswordTitle => 'Réinitialiser le mot de passe';
+
+  @override
+  String get resetPasswordEmailLabel => 'E-mail';
+
+  @override
+  String get resetPasswordSubmitButton => 'Envoyer le lien';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Si un compte existe pour cette adresse e-mail, un lien de réinitialisation du mot de passe a été envoyé.';
+
+  @override
+  String get settingsSignOut => 'Se déconnecter';
+
+  @override
+  String get settingsSignOutConfirmTitle =>
+      'Voulez-vous vraiment vous déconnecter ?';
+
+  @override
+  String get errorAuthInvalidEmail => 'Cette adresse e-mail est invalide.';
+
+  @override
+  String get errorAuthUserDisabled => 'Ce compte a été désactivé.';
+
+  @override
+  String get errorAuthUserNotFound => 'E-mail ou mot de passe incorrect.';
+
+  @override
+  String get errorAuthWrongPassword => 'E-mail ou mot de passe incorrect.';
+
+  @override
+  String get errorAuthEmailAlreadyInUse =>
+      'Un compte existe déjà pour cette adresse e-mail.';
+
+  @override
+  String get errorAuthWeakPassword =>
+      'Le mot de passe doit comporter au moins 6 caractères.';
+
+  @override
+  String get errorAuthNetworkFailed =>
+      'Pas de connexion internet. Veuillez réessayer.';
+
+  @override
+  String get errorAuthTooManyRequests =>
+      'Trop de tentatives. Veuillez réessayer plus tard.';
+
+  @override
+  String get errorAuthUnknownError =>
+      'Échec de la connexion. Veuillez réessayer.';
+
+  @override
   String get language => 'Langue';
 
   @override
