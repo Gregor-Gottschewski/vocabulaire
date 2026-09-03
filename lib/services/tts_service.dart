@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'app_exception.dart';
 import 'app_paths.dart';
-import 'auth_service.dart';
 
 /// TTS support for card's back pronunciation.
 class TtsService {
@@ -33,12 +31,6 @@ class TtsService {
     }
     if (trimmed.length > maxChars) {
       throw AppException(AppError.ttsTextTooLong);
-    }
-
-    try {
-      await AuthService.instance.ensureSignedIn();
-    } on FirebaseAuthException catch (e) {
-      throw AppException(AppError.ttsUnknownError, details: e);
     }
 
     final Map<Object?, Object?> data;

@@ -14,7 +14,6 @@ import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/models/app_settings.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
-import 'package:vocabulaire/services/auth_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/group_sync_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
@@ -28,9 +27,6 @@ import 'views/home_page.dart';
 
 /// When enabled, the local Firebase emulator will be used
 const bool _useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
-
-/// When enabled, the session is reset to remove real (old) session
-const bool _resetAuthSession = bool.fromEnvironment('RESET_AUTH_SESSION');
 
 Future<void> bootstrap(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -63,16 +59,6 @@ Future<void> bootstrap(Flavor flavor) async {
             'AppleAppAttestProvider/AppleDeviceCheckProvider before release.',
           ))
         : const AppleDebugProvider(),
-  );
-
-  // reset session if debug mode enabled and auth reset variable set to true
-  await AuthService.instance.ensureSignedInWithRetry(
-    forceFreshSession: kDebugMode && _resetAuthSession,
-    onSignedIn: () {
-      BoxSyncService.instance.attach();
-      GroupSyncService.instance.attach();
-      UsageService.instance.attach();
-    },
   );
 
   await Hive.initFlutter();
