@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
@@ -9,6 +11,7 @@ import 'package:flutter/foundation.dart' show kReleaseMode, kDebugMode;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vocabulaire/flavors.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
+import 'package:vocabulaire/views/login_view.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/models/app_settings.dart';
@@ -86,22 +89,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  StreamSubscription<User?>? _authSub;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // ensureSignedIn() has already completed in main() by the time this
-    // runs, so the first attach() attempt succeeds rather than waiting for
-    // the first `resumed` event (which doesn't fire on cold start).
-    BoxSyncService.instance.attach();
-    GroupSyncService.instance.attach();
-    UsageService.instance.attach();
-    AudioUploadQueueService.instance.attach();
+    _authSub = FirebaseAuth.instance.authStateChanges().listen(_onAuthChanged);
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _authSub?.cancel();
     BoxSyncService.instance.detach();
     GroupSyncService.instance.detach();
     UsageService.instance.detach();
@@ -109,14 +109,29 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     super.dispose();
   }
 
+  void _onAuthChanged(User? user) {
+    BoxSyncService.instance.detach();
+    GroupSyncService.instance.detach();
+    UsageService.instance.detach();
+    AudioUploadQueueService.instance.detach();
+    if (user != null) {
+      BoxSyncService.instance.attach();
+      GroupSyncService.instance.attach();
+      UsageService.instance.attach();
+      AudioUploadQueueService.instance.attach();
+    }
+  }
+
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        BoxSyncService.instance.attach();
-        GroupSyncService.instance.attach();
-        UsageService.instance.attach();
-        AudioUploadQueueService.instance.attach();
+        if (FirebaseAuth.instance.currentUser != null) {
+          BoxSyncService.instance.attach();
+          GroupSyncService.instance.attach();
+          UsageService.instance.attach();
+          AudioUploadQueueService.instance.attach();
+        }
       case AppLifecycleState.paused:
         BoxSyncService.instance.detach();
         GroupSyncService.instance.detach();
@@ -141,7 +156,15 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GlobalWidgetsLocalizations.delegate,
       ],
       supportedLocales: const [Locale('de'), Locale('en'), Locale('fr')],
-      home: const MyHomePage(),
+      home: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        initialData: FirebaseAuth.instance.currentUser,
+        builder: (context, snapshot) {
+          return snapshot.data == null
+              ? const LoginView()
+              : const MyHomePage();
+        },
+      ),
     );
   }
 }

@@ -46,6 +46,15 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsTitle => 'Einstellungen';
 
   @override
+  String get settingsSectionUserExperience => 'Nutzererlebnis';
+
+  @override
+  String get settingsSectionPremiumFeatures => 'Premiumfunktionen';
+
+  @override
+  String get settingsSectionYourContent => 'Deine Inhalte';
+
+  @override
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
@@ -460,7 +469,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get loginTitle => 'Anmelden';
 
   @override
-  String get registerTitle => 'Konto erstellen';
+  String get loginSubtitle =>
+      'Deine Eintrittskarte in die Welt der Vokabeln. Melde dich an oder erstelle ein neues Konto.';
+
+  @override
+  String get registerTitle => 'Neu hier?';
 
   @override
   String get loginEmailLabel => 'E-Mail';
@@ -487,41 +500,76 @@ class AppLocalizationsDe extends AppLocalizations {
   String get resetPasswordTitle => 'Passwort zurücksetzen';
 
   @override
+  String get resetPasswordSubtitle =>
+      'Du erhältst einen Link, um ein neues Passwort setzen zu können.';
+
+  @override
   String get resetPasswordEmailLabel => 'E-Mail';
 
   @override
-  String get resetPasswordSubmitButton => 'Link senden';
+  String get resetPasswordSubmitButton => 'Zurücksetzen';
 
   @override
   String get resetPasswordSuccessMessage =>
-      'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde ein Link zum Zurücksetzen des Passworts verschickt.';
+      'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.';
 
   @override
   String get settingsSignOut => 'Abmelden';
 
   @override
   String get settingsSignOutConfirmTitle =>
-      'Möchtest du dich wirklich abmelden?';
+      'Möchtest Du Dich wirklich abmelden?';
 
   @override
-  String get errorAuthInvalidEmail => 'Die E-Mail-Adresse ist ungültig.';
+  String get errorAuthInvalidEmail =>
+      'Deine E-Mail-Adresse scheint nicht korrekt zu sein.';
 
   @override
-  String get errorAuthUserDisabled => 'Dieses Konto wurde deaktiviert.';
+  String get errorAuthUserDisabled =>
+      'Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.';
 
   @override
-  String get errorAuthUserNotFound => 'E-Mail oder Passwort ist falsch.';
+  String get errorAuthUserNotFound =>
+      'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.';
 
   @override
-  String get errorAuthWrongPassword => 'E-Mail oder Passwort ist falsch.';
+  String get errorAuthWrongPassword =>
+      'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.';
 
   @override
   String get errorAuthEmailAlreadyInUse =>
-      'Für diese E-Mail-Adresse existiert bereits ein Konto.';
+      'Du hast bereits ein Konto mit dieser E-Mail-Adresse.';
 
   @override
   String get errorAuthWeakPassword =>
-      'Das Passwort muss mindestens 6 Zeichen lang sein.';
+      'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.';
+
+  @override
+  String errorAuthWeakPasswordDetailed(String requirements) {
+    return 'Dein Passwort muss noch folgende Anforderungen erfüllen: $requirements.';
+  }
+
+  @override
+  String passwordRequirementMinLength(int length) {
+    return 'mindestens $length Zeichen';
+  }
+
+  @override
+  String passwordRequirementMaxLength(int length) {
+    return 'höchstens $length Zeichen';
+  }
+
+  @override
+  String get passwordRequirementLowercase => 'einen Kleinbuchstaben';
+
+  @override
+  String get passwordRequirementUppercase => 'einen Großbuchstaben';
+
+  @override
+  String get passwordRequirementDigit => 'eine Zahl';
+
+  @override
+  String get passwordRequirementSymbol => 'ein Sonderzeichen';
 
   @override
   String get errorAuthNetworkFailed =>
@@ -529,7 +577,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get errorAuthTooManyRequests =>
-      'Zu viele Versuche. Bitte versuche es später erneut.';
+      'Du hast es zu oft versucht. Bitte versuche es später erneut.';
 
   @override
   String get errorAuthUnknownError =>

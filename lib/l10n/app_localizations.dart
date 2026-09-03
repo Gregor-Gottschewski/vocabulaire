@@ -166,6 +166,24 @@ abstract class AppLocalizations {
   /// **'Einstellungen'**
   String get settingsTitle;
 
+  /// No description provided for @settingsSectionUserExperience.
+  ///
+  /// In de, this message translates to:
+  /// **'Nutzererlebnis'**
+  String get settingsSectionUserExperience;
+
+  /// No description provided for @settingsSectionPremiumFeatures.
+  ///
+  /// In de, this message translates to:
+  /// **'Premiumfunktionen'**
+  String get settingsSectionPremiumFeatures;
+
+  /// No description provided for @settingsSectionYourContent.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Inhalte'**
+  String get settingsSectionYourContent;
+
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
@@ -892,10 +910,16 @@ abstract class AppLocalizations {
   /// **'Anmelden'**
   String get loginTitle;
 
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Eintrittskarte in die Welt der Vokabeln. Melde dich an oder erstelle ein neues Konto.'**
+  String get loginSubtitle;
+
   /// No description provided for @registerTitle.
   ///
   /// In de, this message translates to:
-  /// **'Konto erstellen'**
+  /// **'Neu hier?'**
   String get registerTitle;
 
   /// No description provided for @loginEmailLabel.
@@ -946,6 +970,12 @@ abstract class AppLocalizations {
   /// **'Passwort zurücksetzen'**
   String get resetPasswordTitle;
 
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Du erhältst einen Link, um ein neues Passwort setzen zu können.'**
+  String get resetPasswordSubtitle;
+
   /// No description provided for @resetPasswordEmailLabel.
   ///
   /// In de, this message translates to:
@@ -955,13 +985,13 @@ abstract class AppLocalizations {
   /// No description provided for @resetPasswordSubmitButton.
   ///
   /// In de, this message translates to:
-  /// **'Link senden'**
+  /// **'Zurücksetzen'**
   String get resetPasswordSubmitButton;
 
   /// No description provided for @resetPasswordSuccessMessage.
   ///
   /// In de, this message translates to:
-  /// **'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde ein Link zum Zurücksetzen des Passworts verschickt.'**
+  /// **'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.'**
   String get resetPasswordSuccessMessage;
 
   /// No description provided for @settingsSignOut.
@@ -973,44 +1003,86 @@ abstract class AppLocalizations {
   /// No description provided for @settingsSignOutConfirmTitle.
   ///
   /// In de, this message translates to:
-  /// **'Möchtest du dich wirklich abmelden?'**
+  /// **'Möchtest Du Dich wirklich abmelden?'**
   String get settingsSignOutConfirmTitle;
 
   /// No description provided for @errorAuthInvalidEmail.
   ///
   /// In de, this message translates to:
-  /// **'Die E-Mail-Adresse ist ungültig.'**
+  /// **'Deine E-Mail-Adresse scheint nicht korrekt zu sein.'**
   String get errorAuthInvalidEmail;
 
   /// No description provided for @errorAuthUserDisabled.
   ///
   /// In de, this message translates to:
-  /// **'Dieses Konto wurde deaktiviert.'**
+  /// **'Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.'**
   String get errorAuthUserDisabled;
 
   /// No description provided for @errorAuthUserNotFound.
   ///
   /// In de, this message translates to:
-  /// **'E-Mail oder Passwort ist falsch.'**
+  /// **'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.'**
   String get errorAuthUserNotFound;
 
   /// No description provided for @errorAuthWrongPassword.
   ///
   /// In de, this message translates to:
-  /// **'E-Mail oder Passwort ist falsch.'**
+  /// **'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.'**
   String get errorAuthWrongPassword;
 
   /// No description provided for @errorAuthEmailAlreadyInUse.
   ///
   /// In de, this message translates to:
-  /// **'Für diese E-Mail-Adresse existiert bereits ein Konto.'**
+  /// **'Du hast bereits ein Konto mit dieser E-Mail-Adresse.'**
   String get errorAuthEmailAlreadyInUse;
 
   /// No description provided for @errorAuthWeakPassword.
   ///
   /// In de, this message translates to:
-  /// **'Das Passwort muss mindestens 6 Zeichen lang sein.'**
+  /// **'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.'**
   String get errorAuthWeakPassword;
+
+  /// No description provided for @errorAuthWeakPasswordDetailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Passwort muss noch folgende Anforderungen erfüllen: {requirements}.'**
+  String errorAuthWeakPasswordDetailed(String requirements);
+
+  /// No description provided for @passwordRequirementMinLength.
+  ///
+  /// In de, this message translates to:
+  /// **'mindestens {length} Zeichen'**
+  String passwordRequirementMinLength(int length);
+
+  /// No description provided for @passwordRequirementMaxLength.
+  ///
+  /// In de, this message translates to:
+  /// **'höchstens {length} Zeichen'**
+  String passwordRequirementMaxLength(int length);
+
+  /// No description provided for @passwordRequirementLowercase.
+  ///
+  /// In de, this message translates to:
+  /// **'einen Kleinbuchstaben'**
+  String get passwordRequirementLowercase;
+
+  /// No description provided for @passwordRequirementUppercase.
+  ///
+  /// In de, this message translates to:
+  /// **'einen Großbuchstaben'**
+  String get passwordRequirementUppercase;
+
+  /// No description provided for @passwordRequirementDigit.
+  ///
+  /// In de, this message translates to:
+  /// **'eine Zahl'**
+  String get passwordRequirementDigit;
+
+  /// No description provided for @passwordRequirementSymbol.
+  ///
+  /// In de, this message translates to:
+  /// **'ein Sonderzeichen'**
+  String get passwordRequirementSymbol;
 
   /// No description provided for @errorAuthNetworkFailed.
   ///
@@ -1021,7 +1093,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorAuthTooManyRequests.
   ///
   /// In de, this message translates to:
-  /// **'Zu viele Versuche. Bitte versuche es später erneut.'**
+  /// **'Du hast es zu oft versucht. Bitte versuche es später erneut.'**
   String get errorAuthTooManyRequests;
 
   /// No description provided for @errorAuthUnknownError.

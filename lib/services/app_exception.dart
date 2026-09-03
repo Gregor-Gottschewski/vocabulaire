@@ -32,6 +32,7 @@ enum AppError {
   authWrongPassword,
   authEmailAlreadyInUse,
   authWeakPassword,
+  authWeakPasswordDetailed,
   authNetworkFailed,
   authTooManyRequests,
   authUnknownError,

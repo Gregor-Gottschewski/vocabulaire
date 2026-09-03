@@ -25,6 +25,9 @@
     }
   },
   "settingsTitle": "Einstellungen",
+  "settingsSectionUserExperience": "Nutzererlebnis",
+  "settingsSectionPremiumFeatures": "Premiumfunktionen",
+  "settingsSectionYourContent": "Deine Inhalte",
   "settingsCardAnimations": "Kartenanimationen",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
@@ -228,7 +231,8 @@
   "errorTtsNotAuthenticated": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
   "errorTtsUnknownError": "Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.",
   "loginTitle": "Anmelden",
-  "registerTitle": "Konto erstellen",
+  "loginSubtitle": "Deine Eintrittskarte in die Welt der Vokabeln. Melde dich an oder erstelle ein neues Konto.",
+  "registerTitle": "Neu hier?",
   "loginEmailLabel": "E-Mail",
   "loginPasswordLabel": "Passwort",
   "loginSubmitButton": "Anmelden",
@@ -237,17 +241,46 @@
   "loginSwitchToLogin": "Schon registriert? Anmelden",
   "loginForgotPassword": "Passwort vergessen?",
   "resetPasswordTitle": "Passwort zurücksetzen",
+  "resetPasswordSubtitle": "Du erhältst einen Link, um ein neues Passwort setzen zu können.",
   "resetPasswordEmailLabel": "E-Mail",
-  "resetPasswordSubmitButton": "Link senden",
+  "resetPasswordSubmitButton": "Zurücksetzen",
   "resetPasswordSuccessMessage": "Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.",
   "settingsSignOut": "Abmelden",
-  "settingsSignOutConfirmTitle": "Möchtest du dich wirklich abmelden?",
-  "errorAuthInvalidEmail": "Die E-Mail-Adresse ist ungültig.",
-  "errorAuthUserDisabled": "Dieses Konto wurde deaktiviert.",
-  "errorAuthUserNotFound": "E-Mail oder Passwort ist falsch.",
-  "errorAuthWrongPassword": "E-Mail oder Passwort ist falsch.",
-  "errorAuthEmailAlreadyInUse": "Für diese E-Mail-Adresse existiert bereits ein Konto.",
-  "errorAuthWeakPassword": "Das Passwort muss mindestens 6 Zeichen lang sein.",
+  "settingsSignOutConfirmTitle": "Möchtest Du Dich wirklich abmelden?",
+  "errorAuthInvalidEmail": "Deine E-Mail-Adresse scheint nicht korrekt zu sein.",
+  "errorAuthUserDisabled": "Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.",
+  "errorAuthUserNotFound": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",
+  "errorAuthWrongPassword": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",
+  "errorAuthEmailAlreadyInUse": "Du hast bereits ein Konto mit dieser E-Mail-Adresse.",
+  "errorAuthWeakPassword": "Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.",
+  "errorAuthWeakPasswordDetailed": "Dein Passwort muss noch folgende Anforderungen erfüllen: {requirements}.",
+  "@errorAuthWeakPasswordDetailed": {
+    "placeholders": {
+      "requirements": {
+        "type": "String"
+      }
+    }
+  },
+  "passwordRequirementMinLength": "mindestens {length} Zeichen",
+  "@passwordRequirementMinLength": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordRequirementMaxLength": "höchstens {length} Zeichen",
+  "@passwordRequirementMaxLength": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordRequirementLowercase": "einen Kleinbuchstaben",
+  "passwordRequirementUppercase": "einen Großbuchstaben",
+  "passwordRequirementDigit": "eine Zahl",
+  "passwordRequirementSymbol": "ein Sonderzeichen",
   "errorAuthNetworkFailed": "Keine Internetverbindung. Bitte versuche es erneut.",
   "errorAuthTooManyRequests": "Du hast es zu oft versucht. Bitte versuche es später erneut.",
   "errorAuthUnknownError": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",

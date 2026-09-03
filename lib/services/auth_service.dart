@@ -26,6 +26,13 @@ class AuthService {
         ),
       );
 
+  Future<PasswordValidationStatus> validatePassword({
+    required String password,
+  }) => _wrap(
+    () =>
+        FirebaseAuth.instance.validatePassword(FirebaseAuth.instance, password),
+  );
+
   Future<void> sendPasswordResetEmail(String email) =>
       _wrap(() => FirebaseAuth.instance.sendPasswordResetEmail(email: email));
 

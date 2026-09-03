@@ -46,6 +46,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTitle => 'Settings';
 
   @override
+  String get settingsSectionUserExperience => 'User experience';
+
+  @override
+  String get settingsSectionPremiumFeatures => 'Premium features';
+
+  @override
+  String get settingsSectionYourContent => 'Your content';
+
+  @override
   String get settingsCardAnimations => 'Card animations';
 
   @override
@@ -447,10 +456,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'The pronunciation could not be generated. Please check your internet connection.';
 
   @override
-  String get loginTitle => 'Sign in';
+  String get loginTitle => 'Welcome';
 
   @override
-  String get registerTitle => 'Create account';
+  String get loginSubtitle =>
+      'Your gateway to the world of vocabulary. Sign in or create a new account.';
+
+  @override
+  String get registerTitle => 'You\'re new here?';
 
   @override
   String get loginEmailLabel => 'Email';
@@ -477,10 +490,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resetPasswordTitle => 'Reset password';
 
   @override
+  String get resetPasswordSubtitle =>
+      'You\'ll receive a link to set a new password.';
+
+  @override
   String get resetPasswordEmailLabel => 'Email';
 
   @override
-  String get resetPasswordSubmitButton => 'Send link';
+  String get resetPasswordSubmitButton => 'Reset';
 
   @override
   String get resetPasswordSuccessMessage =>
@@ -494,24 +511,55 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to sign out?';
 
   @override
-  String get errorAuthInvalidEmail => 'This email address is invalid.';
+  String get errorAuthInvalidEmail =>
+      'Your email address seems to be incorrect.';
 
   @override
-  String get errorAuthUserDisabled => 'This account has been disabled.';
+  String get errorAuthUserDisabled =>
+      'Your account has been disabled. Please contact our support.';
 
   @override
-  String get errorAuthUserNotFound => 'Email or password is incorrect.';
+  String get errorAuthUserNotFound =>
+      'The entered email or password is incorrect.';
 
   @override
-  String get errorAuthWrongPassword => 'Email or password is incorrect.';
+  String get errorAuthWrongPassword =>
+      'The entered email or password is incorrect.';
 
   @override
   String get errorAuthEmailAlreadyInUse =>
-      'An account already exists for this email address.';
+      'You already have an account with this email address.';
 
   @override
   String get errorAuthWeakPassword =>
-      'The password must be at least 6 characters long.';
+      'The password must be at least 8 characters long and must contain at least one capital letter, lowercase letter, number and special character.';
+
+  @override
+  String errorAuthWeakPasswordDetailed(String requirements) {
+    return 'Your password still needs to meet these requirements: $requirements.';
+  }
+
+  @override
+  String passwordRequirementMinLength(int length) {
+    return 'at least $length characters';
+  }
+
+  @override
+  String passwordRequirementMaxLength(int length) {
+    return 'at most $length characters';
+  }
+
+  @override
+  String get passwordRequirementLowercase => 'a lowercase letter';
+
+  @override
+  String get passwordRequirementUppercase => 'an uppercase letter';
+
+  @override
+  String get passwordRequirementDigit => 'a number';
+
+  @override
+  String get passwordRequirementSymbol => 'a special character';
 
   @override
   String get errorAuthNetworkFailed =>
@@ -519,7 +567,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorAuthTooManyRequests =>
-      'Too many attempts. Please try again later.';
+      'You\'ve tried it too much. Please try again later.';
 
   @override
   String get errorAuthUnknownError => 'Sign-in failed. Please try again.';
