@@ -22,3 +22,6 @@ void didChangeDependencies() {
 
 Then you can use localizations with e.g. `_l10n.ilovepizza`.
 
+## Clean Unused Localizations
+
+In order to clean unused localizations, use `dart run remove_unused_localizations`.
