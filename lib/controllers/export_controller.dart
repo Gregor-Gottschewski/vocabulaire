@@ -105,7 +105,7 @@ class ExportController {
       final zipFile = File(
         join(
           AppPaths.applicationExportBaseDirectory.path,
-          "vocabulaire_export_.zip",
+          "vocabulaire_export.zip",
         ),
       );
 

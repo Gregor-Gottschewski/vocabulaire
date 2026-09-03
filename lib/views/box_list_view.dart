@@ -1,6 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/box_draft.dart';
+import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/box_detail_page.dart';
 import 'package:vocabulaire/views/create_box_detail_view.dart';
@@ -17,6 +18,7 @@ import '../models/vocabulary_box.dart';
 import '../models/vocabulary_group.dart';
 import '../services/app_exception.dart';
 import '../services/app_exception_ui.dart';
+import '../services/export_share_service.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -117,6 +119,7 @@ class _BoxListViewState extends State<BoxListView> {
       title: _l10n.groupDetailActionsSheetTitle,
       actions: [
         AppActionSheetAction(label: _l10n.editAction, onPressed: _editGroup),
+        AppActionSheetAction(label: _l10n.export, onPressed: _exportGroup),
         AppActionSheetAction(
           label: _l10n.groupDetailImportAction,
           onPressed: _importBox,
@@ -127,6 +130,16 @@ class _BoxListViewState extends State<BoxListView> {
           onPressed: _deleteGroup,
         ),
       ],
+    );
+  }
+
+  void _exportGroup() async {
+    final boxes = _boxController.boxesForGroup(widget.groupId);
+    if (boxes.isEmpty) return;
+
+    await context.exportAndShare(
+      export: () => ExportController.exportAllBoxes(boxes),
+      title: _l10n.settingsExportAll,
     );
   }
 
@@ -178,7 +191,9 @@ class _BoxListViewState extends State<BoxListView> {
       await context.showAppError(e);
     } catch (e) {
       if (!mounted) return;
-      await context.showAppError(AppException(AppError.importFailed, details: e));
+      await context.showAppError(
+        AppException(AppError.importFailed, details: e),
+      );
     }
   }
 

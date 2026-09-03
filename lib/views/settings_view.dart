@@ -1,18 +1,15 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import '../controllers/box_controller.dart';
 import '../controllers/export_controller.dart';
 import '../controllers/settings_controller.dart';
-import '../services/app_exception.dart';
-import '../services/app_exception_ui.dart';
 import '../services/box_sync_service.dart';
+import '../services/export_share_service.dart';
 import '../services/usage_service.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
@@ -124,28 +121,14 @@ class _SettingsViewState extends State<SettingsView> {
     final boxes = _boxController.boxes;
     if (boxes.isEmpty) return;
 
-    setState(() => _isExportingAll = true);
-
-    try {
-      final zipFile = await ExportController.exportAllBoxes(boxes);
-
-      await SharePlus.instance.share(
-        ShareParams(
-          title: _l10n.settingsExportAll,
-          files: [XFile(zipFile.path)],
-        ),
-      );
-    } on FileSystemException catch (e) {
-      if (!mounted) return;
-      await context.showAppError(
-        AppException(AppError.exportCacheFailed, details: e),
-      );
-    } on AppException catch (e) {
-      if (!mounted) return;
-      await context.showAppError(e);
-    } finally {
-      if (mounted) setState(() => _isExportingAll = false);
-    }
+    await context.exportAndShare(
+      export: () => ExportController.exportAllBoxes(boxes),
+      title: _l10n.settingsExportAll,
+      onStart: () => setState(() => _isExportingAll = true),
+      onFinish: () {
+        if (mounted) setState(() => _isExportingAll = false);
+      },
+    );
   }
 
   Future<void> _openGithub() async {

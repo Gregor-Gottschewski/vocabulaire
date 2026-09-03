@@ -1,14 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/controllers/group_controller.dart';
-import 'package:vocabulaire/services/app_exception.dart';
-import 'package:vocabulaire/services/app_exception_ui.dart';
+import 'package:vocabulaire/services/export_share_service.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_typography.dart';
@@ -78,25 +74,11 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     final box = _box;
     if (box == null) return;
 
-    try {
-      final zipFile = await ExportController.exportBox(box);
-
-      await SharePlus.instance.share(
-        ShareParams(
-          title: 'Export ${box.nameSanitized()}',
-          files: [XFile(zipFile.path)],
-          fileNameOverrides: ['${box.nameSanitized()}.vocab'],
-        ),
-      );
-    } on FileSystemException catch (e) {
-      if (!mounted) return;
-      await context.showAppError(
-        AppException(AppError.exportCacheFailed, details: e),
-      );
-    } on AppException catch (e) {
-      if (!mounted) return;
-      await context.showAppError(e);
-    }
+    await context.exportAndShare(
+      export: () => ExportController.exportBox(box),
+      title: 'Export ${box.nameSanitized()}',
+      fileNameOverrides: ['${box.nameSanitized()}.vocab'],
+    );
   }
 
   /// Deletes the current box.
