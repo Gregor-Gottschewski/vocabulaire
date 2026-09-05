@@ -46,6 +46,21 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsTitle => 'Einstellungen';
 
   @override
+  String get settingsSectionUserExperience => 'Nutzererlebnis';
+
+  @override
+  String get settingsSectionPremiumFeatures => 'Premiumfunktionen';
+
+  @override
+  String get settingsSectionYourContent => 'Deine Inhalte';
+
+  @override
+  String get settingsChangeEmail => 'E-Mail-Adresse ändern';
+
+  @override
+  String get settingsChangePassword => 'Passwort ändern';
+
+  @override
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
@@ -455,6 +470,201 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorTtsUnknownError =>
       'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.';
+
+  @override
+  String get loginTitle => 'Anmelden';
+
+  @override
+  String get loginSubtitle =>
+      'Deine Eintrittskarte in die Welt der Vokabeln. Melde dich an oder erstelle ein neues Konto.';
+
+  @override
+  String get registerTitle => 'Neu hier?';
+
+  @override
+  String get loginEmailLabel => 'E-Mail';
+
+  @override
+  String get loginPasswordLabel => 'Passwort';
+
+  @override
+  String get loginSubmitButton => 'Anmelden';
+
+  @override
+  String get registerSubmitButton => 'Konto erstellen';
+
+  @override
+  String get loginSwitchToRegister => 'Noch kein Konto? Registrieren';
+
+  @override
+  String get loginSwitchToLogin => 'Schon registriert? Anmelden';
+
+  @override
+  String get loginForgotPassword => 'Passwort vergessen?';
+
+  @override
+  String get resetPasswordTitle => 'Passwort zurücksetzen';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Du erhältst einen Link, um ein neues Passwort setzen zu können.';
+
+  @override
+  String get resetPasswordEmailLabel => 'E-Mail';
+
+  @override
+  String get resetPasswordSubmitButton => 'Zurücksetzen';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.';
+
+  @override
+  String get settingsSignOut => 'Abmelden';
+
+  @override
+  String get settingsSignOutConfirmTitle =>
+      'Möchtest Du Dich wirklich abmelden?';
+
+  @override
+  String get verifyEmailTitle => 'E-Mail bestätigen';
+
+  @override
+  String verifyEmailSubtitle(String email) {
+    return 'Wir haben eine Bestätigungsmail an $email gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.';
+  }
+
+  @override
+  String get verifyEmailResend => 'E-Mail erneut senden';
+
+  @override
+  String verifyEmailResendCountdown(int seconds) {
+    return 'E-Mail erneut senden ($seconds)';
+  }
+
+  @override
+  String get verifyEmailResendSuccessTitle => 'E-Mail gesendet';
+
+  @override
+  String get verifyEmailResendSuccessMessage =>
+      'Wir haben dir eine neue Bestätigungsmail geschickt.';
+
+  @override
+  String get changeEmailTitle => 'E-Mail-Adresse ändern';
+
+  @override
+  String changeEmailSubtitle(String email) {
+    return 'Deine aktuelle E-Mail-Adresse lautet $email. Gib deine neue E-Mail-Adresse und dein aktuelles Passwort ein, um die Änderung zu bestätigen.';
+  }
+
+  @override
+  String get changeEmailNewEmailLabel => 'Neue E-Mail-Adresse';
+
+  @override
+  String get changeEmailPasswordLabel => 'Aktuelles Passwort';
+
+  @override
+  String get changeEmailSubmitButton => 'E-Mail-Adresse ändern';
+
+  @override
+  String get changeEmailSuccessTitle => 'Bestätigungsmail gesendet';
+
+  @override
+  String get changeEmailSuccessMessage =>
+      'Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.';
+
+  @override
+  String get changePasswordTitle => 'Passwort ändern';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Gib dein aktuelles Passwort und ein neues Passwort ein, um die Änderung zu bestätigen.';
+
+  @override
+  String get changePasswordCurrentPasswordLabel => 'Aktuelles Passwort';
+
+  @override
+  String get changePasswordNewPasswordLabel => 'Neues Passwort';
+
+  @override
+  String get changePasswordConfirmPasswordLabel => 'Neues Passwort bestätigen';
+
+  @override
+  String get changePasswordSubmitButton => 'Passwort ändern';
+
+  @override
+  String get changePasswordSuccessTitle => 'Passwort geändert';
+
+  @override
+  String get changePasswordSuccessMessage =>
+      'Dein Passwort wurde erfolgreich geändert.';
+
+  @override
+  String get errorAuthInvalidEmail =>
+      'Deine E-Mail-Adresse scheint nicht korrekt zu sein.';
+
+  @override
+  String get errorAuthUserDisabled =>
+      'Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.';
+
+  @override
+  String get errorAuthUserNotFound =>
+      'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.';
+
+  @override
+  String get errorAuthWrongPassword =>
+      'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.';
+
+  @override
+  String get errorAuthEmailAlreadyInUse =>
+      'Du hast bereits ein Konto mit dieser E-Mail-Adresse. Du wirst auf die Anmeldeseite weitergeleitet.';
+
+  @override
+  String get errorAuthWeakPassword =>
+      'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.';
+
+  @override
+  String errorAuthWeakPasswordDetailed(String requirements) {
+    return 'Dein Passwort muss noch folgende Anforderungen erfüllen: $requirements.';
+  }
+
+  @override
+  String get errorAuthPasswordsDoNotMatch =>
+      'Die Passwörter stimmen nicht überein.';
+
+  @override
+  String passwordRequirementMinLength(int length) {
+    return 'mindestens $length Zeichen';
+  }
+
+  @override
+  String passwordRequirementMaxLength(int length) {
+    return 'höchstens $length Zeichen';
+  }
+
+  @override
+  String get passwordRequirementLowercase => 'einen Kleinbuchstaben';
+
+  @override
+  String get passwordRequirementUppercase => 'einen Großbuchstaben';
+
+  @override
+  String get passwordRequirementDigit => 'eine Zahl';
+
+  @override
+  String get passwordRequirementSymbol => 'ein Sonderzeichen';
+
+  @override
+  String get errorAuthNetworkFailed =>
+      'Keine Internetverbindung. Bitte versuche es erneut.';
+
+  @override
+  String get errorAuthTooManyRequests =>
+      'Du hast es zu oft versucht. Bitte versuche es später erneut.';
+
+  @override
+  String get errorAuthUnknownError =>
+      'Anmeldung fehlgeschlagen. Bitte versuche es erneut.';
 
   @override
   String get language => 'Sprache';

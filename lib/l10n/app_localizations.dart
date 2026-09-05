@@ -166,6 +166,36 @@ abstract class AppLocalizations {
   /// **'Einstellungen'**
   String get settingsTitle;
 
+  /// No description provided for @settingsSectionUserExperience.
+  ///
+  /// In de, this message translates to:
+  /// **'Nutzererlebnis'**
+  String get settingsSectionUserExperience;
+
+  /// No description provided for @settingsSectionPremiumFeatures.
+  ///
+  /// In de, this message translates to:
+  /// **'Premiumfunktionen'**
+  String get settingsSectionPremiumFeatures;
+
+  /// No description provided for @settingsSectionYourContent.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Inhalte'**
+  String get settingsSectionYourContent;
+
+  /// No description provided for @settingsChangeEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse ändern'**
+  String get settingsChangeEmail;
+
+  /// No description provided for @settingsChangePassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort ändern'**
+  String get settingsChangePassword;
+
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
@@ -885,6 +915,336 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.'**
   String get errorTtsUnknownError;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmelden'**
+  String get loginTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine Eintrittskarte in die Welt der Vokabeln. Melde dich an oder erstelle ein neues Konto.'**
+  String get loginSubtitle;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Neu hier?'**
+  String get registerTitle;
+
+  /// No description provided for @loginEmailLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail'**
+  String get loginEmailLabel;
+
+  /// No description provided for @loginPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort'**
+  String get loginPasswordLabel;
+
+  /// No description provided for @loginSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmelden'**
+  String get loginSubmitButton;
+
+  /// No description provided for @registerSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto erstellen'**
+  String get registerSubmitButton;
+
+  /// No description provided for @loginSwitchToRegister.
+  ///
+  /// In de, this message translates to:
+  /// **'Noch kein Konto? Registrieren'**
+  String get loginSwitchToRegister;
+
+  /// No description provided for @loginSwitchToLogin.
+  ///
+  /// In de, this message translates to:
+  /// **'Schon registriert? Anmelden'**
+  String get loginSwitchToLogin;
+
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort vergessen?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @resetPasswordTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort zurücksetzen'**
+  String get resetPasswordTitle;
+
+  /// No description provided for @resetPasswordSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Du erhältst einen Link, um ein neues Passwort setzen zu können.'**
+  String get resetPasswordSubtitle;
+
+  /// No description provided for @resetPasswordEmailLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail'**
+  String get resetPasswordEmailLabel;
+
+  /// No description provided for @resetPasswordSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Zurücksetzen'**
+  String get resetPasswordSubmitButton;
+
+  /// No description provided for @resetPasswordSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.'**
+  String get resetPasswordSuccessMessage;
+
+  /// No description provided for @settingsSignOut.
+  ///
+  /// In de, this message translates to:
+  /// **'Abmelden'**
+  String get settingsSignOut;
+
+  /// No description provided for @settingsSignOutConfirmTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Möchtest Du Dich wirklich abmelden?'**
+  String get settingsSignOutConfirmTitle;
+
+  /// No description provided for @verifyEmailTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail bestätigen'**
+  String get verifyEmailTitle;
+
+  /// No description provided for @verifyEmailSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.'**
+  String verifyEmailSubtitle(String email);
+
+  /// No description provided for @verifyEmailResend.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail erneut senden'**
+  String get verifyEmailResend;
+
+  /// No description provided for @verifyEmailResendCountdown.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail erneut senden ({seconds})'**
+  String verifyEmailResendCountdown(int seconds);
+
+  /// No description provided for @verifyEmailResendSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail gesendet'**
+  String get verifyEmailResendSuccessTitle;
+
+  /// No description provided for @verifyEmailResendSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Wir haben dir eine neue Bestätigungsmail geschickt.'**
+  String get verifyEmailResendSuccessMessage;
+
+  /// No description provided for @changeEmailTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse ändern'**
+  String get changeEmailTitle;
+
+  /// No description provided for @changeEmailSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine aktuelle E-Mail-Adresse lautet {email}. Gib deine neue E-Mail-Adresse und dein aktuelles Passwort ein, um die Änderung zu bestätigen.'**
+  String changeEmailSubtitle(String email);
+
+  /// No description provided for @changeEmailNewEmailLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue E-Mail-Adresse'**
+  String get changeEmailNewEmailLabel;
+
+  /// No description provided for @changeEmailPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuelles Passwort'**
+  String get changeEmailPasswordLabel;
+
+  /// No description provided for @changeEmailSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse ändern'**
+  String get changeEmailSubmitButton;
+
+  /// No description provided for @changeEmailSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Bestätigungsmail gesendet'**
+  String get changeEmailSuccessTitle;
+
+  /// No description provided for @changeEmailSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.'**
+  String get changeEmailSuccessMessage;
+
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort ändern'**
+  String get changePasswordTitle;
+
+  /// No description provided for @changePasswordSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gib dein aktuelles Passwort und ein neues Passwort ein, um die Änderung zu bestätigen.'**
+  String get changePasswordSubtitle;
+
+  /// No description provided for @changePasswordCurrentPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuelles Passwort'**
+  String get changePasswordCurrentPasswordLabel;
+
+  /// No description provided for @changePasswordNewPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Neues Passwort'**
+  String get changePasswordNewPasswordLabel;
+
+  /// No description provided for @changePasswordConfirmPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Neues Passwort bestätigen'**
+  String get changePasswordConfirmPasswordLabel;
+
+  /// No description provided for @changePasswordSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort ändern'**
+  String get changePasswordSubmitButton;
+
+  /// No description provided for @changePasswordSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort geändert'**
+  String get changePasswordSuccessTitle;
+
+  /// No description provided for @changePasswordSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Passwort wurde erfolgreich geändert.'**
+  String get changePasswordSuccessMessage;
+
+  /// No description provided for @errorAuthInvalidEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine E-Mail-Adresse scheint nicht korrekt zu sein.'**
+  String get errorAuthInvalidEmail;
+
+  /// No description provided for @errorAuthUserDisabled.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.'**
+  String get errorAuthUserDisabled;
+
+  /// No description provided for @errorAuthUserNotFound.
+  ///
+  /// In de, this message translates to:
+  /// **'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.'**
+  String get errorAuthUserNotFound;
+
+  /// No description provided for @errorAuthWrongPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.'**
+  String get errorAuthWrongPassword;
+
+  /// No description provided for @errorAuthEmailAlreadyInUse.
+  ///
+  /// In de, this message translates to:
+  /// **'Du hast bereits ein Konto mit dieser E-Mail-Adresse. Du wirst auf die Anmeldeseite weitergeleitet.'**
+  String get errorAuthEmailAlreadyInUse;
+
+  /// No description provided for @errorAuthWeakPassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.'**
+  String get errorAuthWeakPassword;
+
+  /// No description provided for @errorAuthWeakPasswordDetailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Passwort muss noch folgende Anforderungen erfüllen: {requirements}.'**
+  String errorAuthWeakPasswordDetailed(String requirements);
+
+  /// No description provided for @errorAuthPasswordsDoNotMatch.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Passwörter stimmen nicht überein.'**
+  String get errorAuthPasswordsDoNotMatch;
+
+  /// No description provided for @passwordRequirementMinLength.
+  ///
+  /// In de, this message translates to:
+  /// **'mindestens {length} Zeichen'**
+  String passwordRequirementMinLength(int length);
+
+  /// No description provided for @passwordRequirementMaxLength.
+  ///
+  /// In de, this message translates to:
+  /// **'höchstens {length} Zeichen'**
+  String passwordRequirementMaxLength(int length);
+
+  /// No description provided for @passwordRequirementLowercase.
+  ///
+  /// In de, this message translates to:
+  /// **'einen Kleinbuchstaben'**
+  String get passwordRequirementLowercase;
+
+  /// No description provided for @passwordRequirementUppercase.
+  ///
+  /// In de, this message translates to:
+  /// **'einen Großbuchstaben'**
+  String get passwordRequirementUppercase;
+
+  /// No description provided for @passwordRequirementDigit.
+  ///
+  /// In de, this message translates to:
+  /// **'eine Zahl'**
+  String get passwordRequirementDigit;
+
+  /// No description provided for @passwordRequirementSymbol.
+  ///
+  /// In de, this message translates to:
+  /// **'ein Sonderzeichen'**
+  String get passwordRequirementSymbol;
+
+  /// No description provided for @errorAuthNetworkFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Internetverbindung. Bitte versuche es erneut.'**
+  String get errorAuthNetworkFailed;
+
+  /// No description provided for @errorAuthTooManyRequests.
+  ///
+  /// In de, this message translates to:
+  /// **'Du hast es zu oft versucht. Bitte versuche es später erneut.'**
+  String get errorAuthTooManyRequests;
+
+  /// No description provided for @errorAuthUnknownError.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmeldung fehlgeschlagen. Bitte versuche es erneut.'**
+  String get errorAuthUnknownError;
 
   /// No description provided for @language.
   ///

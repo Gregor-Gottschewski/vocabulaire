@@ -1,74 +1,102 @@
-import 'dart:async';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 
-/// Ensures a stable anonymous Firebase identity per device installation,
-/// used server-side to enforce per-device rate limits.
+import 'app_exception.dart';
+
+/// Handles email/password authentication against Firebase Auth.
 class AuthService {
   AuthService._();
 
   static final AuthService instance = AuthService._();
 
-  static const List<Duration> _retryBackoff = [
-    Duration(seconds: 5),
-    Duration(seconds: 30),
-    Duration(minutes: 2),
-    Duration(minutes: 5),
-    Duration(minutes: 8),
-  ];
+  User? get currentUser => FirebaseAuth.instance.currentUser;
 
-  StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
-  Timer? _retryTimer;
-  int _retryAttempts = 0;
+  /// Emits whenever the signed-in user changes.
+  Stream<User?> get userChanges => FirebaseAuth.instance.userChanges();
 
-  Future<void> ensureSignedIn({bool forceFreshSession = false}) async {
-    if (forceFreshSession && FirebaseAuth.instance.currentUser != null) {
-      await FirebaseAuth.instance.signOut();
-    }
-    if (FirebaseAuth.instance.currentUser == null) {
-      await FirebaseAuth.instance.signInAnonymously();
-    }
-  }
+  Future<void> sendEmailVerification() =>
+      _wrap(() => FirebaseAuth.instance.currentUser!.sendEmailVerification());
 
-  Future<void> ensureSignedInWithRetry({
-    bool forceFreshSession = false,
-    VoidCallback? onSignedIn,
-  }) async {
+  /// Refreshes the current user's data from Firebase.
+  Future<void> reloadUser() =>
+      _wrap(() => FirebaseAuth.instance.currentUser!.reload());
+
+  Future<UserCredential> signIn({
+    required String email,
+    required String password,
+  }) => _wrap(
+    () => FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    ),
+  );
+
+  Future<UserCredential> register({
+    required String email,
+    required String password,
+  }) => _wrap(
+    () => FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    ),
+  );
+
+  Future<PasswordValidationStatus> validatePassword({
+    required String password,
+  }) => _wrap(
+    () =>
+        FirebaseAuth.instance.validatePassword(FirebaseAuth.instance, password),
+  );
+
+  Future<void> sendPasswordResetEmail(String email) =>
+      _wrap(() => FirebaseAuth.instance.sendPasswordResetEmail(email: email));
+
+  /// Reauthenticates the current user with their password and sends a
+  /// verification link to [newEmail].
+  Future<void> changeEmail({
+    required String newEmail,
+    required String currentPassword,
+  }) => _wrap(() async {
+    final credential = EmailAuthProvider.credential(
+      email: currentUser!.email!,
+      password: currentPassword,
+    );
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.verifyBeforeUpdateEmail(newEmail);
+  });
+
+  /// Reauthenticates the current user with their password and sets
+  /// [newPassword].
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) => _wrap(() async {
+    final credential = EmailAuthProvider.credential(
+      email: currentUser!.email!,
+      password: currentPassword,
+    );
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.updatePassword(newPassword);
+  });
+
+  Future<void> signOut() => FirebaseAuth.instance.signOut();
+
+  Future<T> _wrap<T>(Future<T> Function() action) async {
     try {
-      await ensureSignedIn(forceFreshSession: forceFreshSession);
-    } catch (_) {
-      _scheduleRetry(onSignedIn);
+      return await action();
+    } on FirebaseAuthException catch (e) {
+      throw AppException(_mapAuthError(e.code), details: e);
     }
   }
 
-  void _scheduleRetry(VoidCallback? onSignedIn) {
-    _connectivitySubscription ??= Connectivity().onConnectivityChanged.listen((
-      results,
-    ) {
-      if (results.any((result) => result != ConnectivityResult.none)) {
-        _retry(onSignedIn);
-      }
-    });
-    _retryTimer?.cancel();
-    final delay =
-        _retryBackoff[_retryAttempts.clamp(0, _retryBackoff.length - 1)];
-    _retryTimer = Timer(delay, () => _retry(onSignedIn));
-  }
-
-  Future<void> _retry(VoidCallback? onSignedIn) async {
-    try {
-      await ensureSignedIn();
-      _retryTimer?.cancel();
-      _retryTimer = null;
-      await _connectivitySubscription?.cancel();
-      _connectivitySubscription = null;
-      _retryAttempts = 0;
-      onSignedIn?.call();
-    } catch (_) {
-      _retryAttempts++;
-      _scheduleRetry(onSignedIn);
-    }
-  }
+  AppError _mapAuthError(String code) => switch (code) {
+    'invalid-email' => AppError.authInvalidEmail,
+    'user-disabled' => AppError.authUserDisabled,
+    'user-not-found' => AppError.authUserNotFound,
+    'wrong-password' || 'invalid-credential' => AppError.authWrongPassword,
+    'email-already-in-use' => AppError.authEmailAlreadyInUse,
+    'weak-password' => AppError.authWeakPassword,
+    'network-request-failed' => AppError.authNetworkFailed,
+    'too-many-requests' => AppError.authTooManyRequests,
+    _ => AppError.authUnknownError,
+  };
 }

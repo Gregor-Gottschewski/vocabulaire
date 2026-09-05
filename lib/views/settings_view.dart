@@ -8,12 +8,17 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 import '../controllers/box_controller.dart';
 import '../controllers/export_controller.dart';
 import '../controllers/settings_controller.dart';
+import '../services/auth_service.dart';
 import '../services/box_sync_service.dart';
 import '../services/export_share_service.dart';
 import '../services/usage_service.dart';
+import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
+import 'change_email_view.dart';
+import 'change_password_view.dart';
+import 'widgets/app_dialog.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/key_value_row.dart';
 import 'widgets/text_link_button.dart';
@@ -138,60 +143,114 @@ class _SettingsViewState extends State<SettingsView> {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> _confirmSignOut() async {
+    await showAppDialog(
+      context: context,
+      title: _l10n.settingsSignOutConfirmTitle,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.settingsSignOut,
+          destructive: true,
+          onPressed: () => AuthService.instance.signOut(),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     return AppScaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _l10n.settingsTitle,
-            style: AppTypography.headlineSerif.copyWith(
-              color: colors.textPrimary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sectionGap),
-          KeyValueRowGroup(
-            children: [
-              KeyValueRow.toggle(
-                label: _l10n.settingsCardAnimations,
-                value: _cardAnimations,
-                onChanged: _setCardAnimations,
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _l10n.settingsTitle,
+              style: AppTypography.headlineSerif.copyWith(
+                color: colors.textPrimary,
               ),
-              if (_usage.listenable.value.isPremium) ...[
-                KeyValueRow.value(
-                  label: _l10n.settingsSyncStatus,
-                  value: _syncStatusLabel,
-                ),
-                KeyValueRow.value(
-                  label: _l10n.settingsVocabularyUsage,
-                  value: _vocabularyUsageLabel,
-                ),
-                KeyValueRow.value(
-                  label: _l10n.settingsAudioUsage,
-                  value: _audioUsageLabel,
+            ),
+            const SizedBox(height: AppSpacing.sectionGap),
+
+            KeyValueRowGroup(
+              title: _l10n.settingsSectionUserExperience,
+              children: [
+                KeyValueRow.toggle(
+                  label: _l10n.settingsCardAnimations,
+                  value: _cardAnimations,
+                  onChanged: _setCardAnimations,
                 ),
               ],
-            ],
-          ),
-          KeyValueRow.submenu(
-            context,
-            label: _l10n.settingsExportAll,
-            onTap: (_isExportingAll || _boxController.boxes.isEmpty)
-                ? null
-                : _exportAllBoxes,
-          ),
-          const SizedBox(height: AppSpacing.sectionGap),
-          TextLinkButton(
-            label: _l10n.settingsLicenses,
-            onPressed: () => showLicensePage(
-              context: context,
-              applicationName: 'Vocabulaire',
             ),
-          ),
-          TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
-        ],
+
+            if (_usage.listenable.value.isPremium) ...[
+              const SizedBox(height: AppSpacing.sectionGap),
+              KeyValueRowGroup(
+                title: _l10n.settingsSectionPremiumFeatures,
+                children: [
+                  KeyValueRow.value(
+                    label: _l10n.settingsSyncStatus,
+                    value: _syncStatusLabel,
+                  ),
+                  KeyValueRow.value(
+                    label: _l10n.settingsVocabularyUsage,
+                    value: _vocabularyUsageLabel,
+                  ),
+                  KeyValueRow.value(
+                    label: _l10n.settingsAudioUsage,
+                    value: _audioUsageLabel,
+                  ),
+                ],
+              ),
+            ],
+
+            const SizedBox(height: AppSpacing.sectionGap),
+            KeyValueRowGroup(
+              title: _l10n.settingsSectionYourContent,
+              children: [
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsExportAll,
+                  onTap: (_isExportingAll || _boxController.boxes.isEmpty)
+                      ? null
+                      : _exportAllBoxes,
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsChangeEmail,
+                  onTap: () => Navigator.of(
+                    context,
+                  ).push(AppPageRoute(builder: (_) => const ChangeEmailView())),
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsChangePassword,
+                  onTap: () => Navigator.of(context).push(
+                    AppPageRoute(builder: (_) => const ChangePasswordView()),
+                  ),
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsSignOut,
+                  color: colors.danger,
+                  onTap: _confirmSignOut,
+                ),
+              ],
+            ),
+
+            const SizedBox(height: AppSpacing.sectionGap),
+            TextLinkButton(
+              label: _l10n.settingsLicenses,
+              onPressed: () => showLicensePage(
+                context: context,
+                applicationName: 'Vocabulaire',
+              ),
+            ),
+            TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
+          ],
+        ),
       ),
     );
   }

@@ -25,6 +25,11 @@
     }
   },
   "settingsTitle": "Paramètres",
+  "settingsSectionUserExperience": "Expérience utilisateur",
+  "settingsSectionPremiumFeatures": "Fonctionnalités premium",
+  "settingsSectionYourContent": "Ton contenu",
+  "settingsChangeEmail": "Changer l'adresse e-mail",
+  "settingsChangePassword": "Changer le mot de passe",
   "settingsCardAnimations": "Animations de cartes",
   "settingsSyncStatus": "État de synchronisation",
   "settingsSyncStatusSynced": "À jour",
@@ -227,6 +232,82 @@
   "errorTtsRateLimitExceeded": "Limite quotidienne de générations vocales atteinte.",
   "errorTtsNotAuthenticated": "Échec de la connexion. Veuillez réessayer.",
   "errorTtsUnknownError": "La prononciation n'a pas pu être générée. Veuillez vérifier votre connexion internet.",
+  "loginTitle": "Connexion",
+  "loginSubtitle": "Ton billet d'entrée dans le monde du vocabulaire. Connecte-toi ou crée un nouveau compte.",
+  "registerTitle": "Tu es nouveau ici ?",
+  "loginEmailLabel": "E-mail",
+  "loginPasswordLabel": "Mot de passe",
+  "loginSubmitButton": "Se connecter",
+  "registerSubmitButton": "Créer un compte",
+  "loginSwitchToRegister": "Pas encore de compte ? S'inscrire",
+  "loginSwitchToLogin": "Déjà inscrit ? Se connecter",
+  "loginForgotPassword": "Mot de passe oublié ?",
+  "resetPasswordTitle": "Réinitialiser le mot de passe",
+  "resetPasswordSubtitle": "Tu recevras un lien pour définir un nouveau mot de passe.",
+  "resetPasswordEmailLabel": "E-mail",
+  "resetPasswordSubmitButton": "Réinitialiser",
+  "resetPasswordSuccessMessage": "Si un compte existe pour cette adresse e-mail, un lien de réinitialisation du mot de passe a été envoyé.",
+  "settingsSignOut": "Se déconnecter",
+  "settingsSignOutConfirmTitle": "Voulez-vous vraiment vous déconnecter ?",
+  "verifyEmailTitle": "Vérifie ton e-mail",
+  "verifyEmailSubtitle": "Nous avons envoyé un e-mail de vérification à {email}. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyEmailResend": "Renvoyer l'e-mail",
+  "verifyEmailResendCountdown": "Renvoyer l'e-mail ({seconds})",
+  "@verifyEmailResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyEmailResendSuccessTitle": "E-mail envoyé",
+  "verifyEmailResendSuccessMessage": "Nous t'avons envoyé un nouvel e-mail de vérification.",
+  "changeEmailTitle": "Changer l'adresse e-mail",
+  "changeEmailSubtitle": "Ton adresse e-mail actuelle est {email}. Saisis ta nouvelle adresse e-mail et ton mot de passe actuel pour confirmer le changement.",
+  "@changeEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "changeEmailNewEmailLabel": "Nouvelle adresse e-mail",
+  "changeEmailPasswordLabel": "Mot de passe actuel",
+  "changeEmailSubmitButton": "Changer l'adresse e-mail",
+  "changeEmailSuccessTitle": "E-mail de vérification envoyé",
+  "changeEmailSuccessMessage": "Nous avons envoyé un lien de confirmation à ta nouvelle adresse e-mail. Ton adresse e-mail ne changera qu'après avoir cliqué dessus.",
+  "changePasswordTitle": "Changer le mot de passe",
+  "changePasswordSubtitle": "Saisis ton mot de passe actuel et un nouveau mot de passe pour confirmer le changement.",
+  "changePasswordCurrentPasswordLabel": "Mot de passe actuel",
+  "changePasswordNewPasswordLabel": "Nouveau mot de passe",
+  "changePasswordConfirmPasswordLabel": "Confirmer le nouveau mot de passe",
+  "changePasswordSubmitButton": "Changer le mot de passe",
+  "changePasswordSuccessTitle": "Mot de passe modifié",
+  "changePasswordSuccessMessage": "Ton mot de passe a été modifié avec succès.",
+  "errorAuthInvalidEmail": "Votre adresse e-mail semble incorrecte.",
+  "errorAuthUserDisabled": "Votre compte a été désactivé. Veuillez contacter notre support.",
+  "errorAuthUserNotFound": "L'e-mail ou le mot de passe saisi est incorrect.",
+  "errorAuthWrongPassword": "L'e-mail ou le mot de passe saisi est incorrect.",
+  "errorAuthEmailAlreadyInUse": "Vous possédez déjà un compte avec cette adresse e-mail. Vous allez être redirigé vers la page de connexion.",
+  "errorAuthWeakPassword": "Le mot de passe doit comporter au moins 8 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.",
+  "errorAuthWeakPasswordDetailed": "Ton mot de passe doit encore respecter les critères suivants : {requirements}.",
+  "errorAuthPasswordsDoNotMatch": "Les mots de passe ne correspondent pas.",
+  "passwordRequirementMinLength": "au moins {length} caractères",
+  "passwordRequirementMaxLength": "au plus {length} caractères",
+  "passwordRequirementLowercase": "une minuscule",
+  "passwordRequirementUppercase": "une majuscule",
+  "passwordRequirementDigit": "un chiffre",
+  "passwordRequirementSymbol": "un caractère spécial",
+  "errorAuthNetworkFailed": "Pas de connexion internet. Veuillez réessayer.",
+  "errorAuthTooManyRequests": "Vous avez effectué trop de tentatives. Veuillez réessayer plus tard.",
+  "errorAuthUnknownError": "Échec de la connexion. Veuillez réessayer.",
   "language": "Langue",
   "languageGerman": "Allemand",
   "languageEnglish": "Anglais",

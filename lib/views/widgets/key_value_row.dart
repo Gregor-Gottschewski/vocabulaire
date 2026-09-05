@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vocabulaire/views/widgets/section_title.dart';
 
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
@@ -10,12 +11,14 @@ class KeyValueRow extends StatelessWidget {
   final String label;
   final Widget trailing;
   final VoidCallback? onTap;
+  final Color? color;
 
   const KeyValueRow({
     super.key,
     required this.label,
     required this.trailing,
     this.onTap,
+    this.color,
   });
 
   factory KeyValueRow.toggle({
@@ -49,16 +52,18 @@ class KeyValueRow extends StatelessWidget {
   factory KeyValueRow.submenu(
     BuildContext context, {
     Key? key,
+    Color? color,
     required String label,
     required VoidCallback? onTap,
   }) {
     return KeyValueRow(
       key: key,
       label: label,
+      color: color,
       trailing: Text(
         "→",
         style: AppTypography.captionSans.copyWith(
-          color: context.colors.textSecondary,
+          color: color ?? context.colors.textSecondary,
         ),
       ),
       onTap: onTap,
@@ -75,7 +80,7 @@ class KeyValueRow extends StatelessWidget {
             child: Text(
               label,
               style: AppTypography.labelSans.copyWith(
-                color: context.colors.textLabel,
+                color: color ?? context.colors.textLabel,
               ),
             ),
           ),
@@ -115,20 +120,25 @@ class _RowValueText extends StatelessWidget {
 
 class KeyValueRowGroup extends StatelessWidget {
   final List<Widget> children;
+  final String? title;
 
-  const KeyValueRowGroup({super.key, required this.children});
+  const KeyValueRowGroup({super.key, required this.children, this.title});
 
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (title != null && title!.isNotEmpty) ...[
+          SectionTitle(text: title!),
+          const SizedBox(height: AppSpacing.gapSmall),
+        ],
+        Container(height: AppSpacing.hairline, color: colors.borderSubtle),
         for (var i = 0; i < children.length; i++) ...[
           children[i],
-          if (i != children.length - 1)
-            Container(height: AppSpacing.hairline, color: colors.borderSubtle),
+          Container(height: AppSpacing.hairline, color: colors.borderSubtle),
         ],
-        Container(height: AppSpacing.hairline, color: colors.borderStrong),
       ],
     );
   }

@@ -46,6 +46,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsTitle => 'Settings';
 
   @override
+  String get settingsSectionUserExperience => 'User experience';
+
+  @override
+  String get settingsSectionPremiumFeatures => 'Premium features';
+
+  @override
+  String get settingsSectionYourContent => 'Your content';
+
+  @override
+  String get settingsChangeEmail => 'Change email';
+
+  @override
+  String get settingsChangePassword => 'Change password';
+
+  @override
   String get settingsCardAnimations => 'Card animations';
 
   @override
@@ -445,6 +460,199 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorTtsUnknownError =>
       'The pronunciation could not be generated. Please check your internet connection.';
+
+  @override
+  String get loginTitle => 'Welcome';
+
+  @override
+  String get loginSubtitle =>
+      'Your gateway to the world of vocabulary. Sign in or create a new account.';
+
+  @override
+  String get registerTitle => 'You\'re new here?';
+
+  @override
+  String get loginEmailLabel => 'Email';
+
+  @override
+  String get loginPasswordLabel => 'Password';
+
+  @override
+  String get loginSubmitButton => 'Sign in';
+
+  @override
+  String get registerSubmitButton => 'Create account';
+
+  @override
+  String get loginSwitchToRegister => 'No account yet? Sign up';
+
+  @override
+  String get loginSwitchToLogin => 'Already have an account? Sign in';
+
+  @override
+  String get loginForgotPassword => 'Forgot password?';
+
+  @override
+  String get resetPasswordTitle => 'Reset password';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'You\'ll receive a link to set a new password.';
+
+  @override
+  String get resetPasswordEmailLabel => 'Email';
+
+  @override
+  String get resetPasswordSubmitButton => 'Reset';
+
+  @override
+  String get resetPasswordSuccessMessage =>
+      'If an account exists for this email address, a password reset link has been sent.';
+
+  @override
+  String get settingsSignOut => 'Sign out';
+
+  @override
+  String get settingsSignOutConfirmTitle =>
+      'Are you sure you want to sign out?';
+
+  @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String verifyEmailSubtitle(String email) {
+    return 'We\'ve sent a verification email to $email. Please verify your email address to use Vocabulaire.';
+  }
+
+  @override
+  String get verifyEmailResend => 'Resend email';
+
+  @override
+  String verifyEmailResendCountdown(int seconds) {
+    return 'Resend email ($seconds)';
+  }
+
+  @override
+  String get verifyEmailResendSuccessTitle => 'Email sent';
+
+  @override
+  String get verifyEmailResendSuccessMessage =>
+      'We\'ve sent you a new verification email.';
+
+  @override
+  String get changeEmailTitle => 'Change email';
+
+  @override
+  String changeEmailSubtitle(String email) {
+    return 'Your current email address is $email. Enter your new email address and current password to confirm the change.';
+  }
+
+  @override
+  String get changeEmailNewEmailLabel => 'New email';
+
+  @override
+  String get changeEmailPasswordLabel => 'Current password';
+
+  @override
+  String get changeEmailSubmitButton => 'Change email';
+
+  @override
+  String get changeEmailSuccessTitle => 'Verification email sent';
+
+  @override
+  String get changeEmailSuccessMessage =>
+      'We\'ve sent a confirmation link to your new email address. Your email won\'t change until you click it.';
+
+  @override
+  String get changePasswordTitle => 'Change password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Enter your current password and a new password to confirm the change.';
+
+  @override
+  String get changePasswordCurrentPasswordLabel => 'Current password';
+
+  @override
+  String get changePasswordNewPasswordLabel => 'New password';
+
+  @override
+  String get changePasswordConfirmPasswordLabel => 'Confirm new password';
+
+  @override
+  String get changePasswordSubmitButton => 'Change password';
+
+  @override
+  String get changePasswordSuccessTitle => 'Password changed';
+
+  @override
+  String get changePasswordSuccessMessage =>
+      'Your password has been changed successfully.';
+
+  @override
+  String get errorAuthInvalidEmail =>
+      'Your email address seems to be incorrect.';
+
+  @override
+  String get errorAuthUserDisabled =>
+      'Your account has been disabled. Please contact our support.';
+
+  @override
+  String get errorAuthUserNotFound =>
+      'The entered email or password is incorrect.';
+
+  @override
+  String get errorAuthWrongPassword =>
+      'The entered email or password is incorrect.';
+
+  @override
+  String get errorAuthEmailAlreadyInUse =>
+      'You already have an account with this email address. You will be redirected to the login page.';
+
+  @override
+  String get errorAuthWeakPassword =>
+      'The password must be at least 8 characters long and must contain at least one capital letter, lowercase letter, number and special character.';
+
+  @override
+  String errorAuthWeakPasswordDetailed(String requirements) {
+    return 'Your password still needs to meet these requirements: $requirements.';
+  }
+
+  @override
+  String get errorAuthPasswordsDoNotMatch => 'The passwords do not match.';
+
+  @override
+  String passwordRequirementMinLength(int length) {
+    return 'at least $length characters';
+  }
+
+  @override
+  String passwordRequirementMaxLength(int length) {
+    return 'at most $length characters';
+  }
+
+  @override
+  String get passwordRequirementLowercase => 'a lowercase letter';
+
+  @override
+  String get passwordRequirementUppercase => 'an uppercase letter';
+
+  @override
+  String get passwordRequirementDigit => 'a number';
+
+  @override
+  String get passwordRequirementSymbol => 'a special character';
+
+  @override
+  String get errorAuthNetworkFailed =>
+      'No internet connection. Please try again.';
+
+  @override
+  String get errorAuthTooManyRequests =>
+      'You\'ve tried it too much. Please try again later.';
+
+  @override
+  String get errorAuthUnknownError => 'Sign-in failed. Please try again.';
 
   @override
   String get language => 'Language';

@@ -16,8 +16,7 @@ extension AppExceptionDialog on BuildContext {
       AppError.exportAudioFailed => i18n.errorExportAudioFailed,
       AppError.exportArchiveFailed => i18n.errorExportArchiveFailed,
       AppError.exportCacheFailed => i18n.errorExportCacheFailed,
-      AppError.exportBulkDirectoryFailed =>
-        i18n.errorExportBulkDirectoryFailed,
+      AppError.exportBulkDirectoryFailed => i18n.errorExportBulkDirectoryFailed,
       AppError.exportBulkArchiveFailed => i18n.errorExportBulkArchiveFailed,
       AppError.importMissingStoreFile => i18n.errorImportMissingStoreFile,
       AppError.importInvalidFormat => i18n.errorImportInvalidFormat,
@@ -40,6 +39,19 @@ extension AppExceptionDialog on BuildContext {
       AppError.ttsRateLimitExceeded => i18n.errorTtsRateLimitExceeded,
       AppError.ttsNotAuthenticated => i18n.errorTtsNotAuthenticated,
       AppError.ttsUnknownError => i18n.errorTtsUnknownError,
+      AppError.authInvalidEmail => i18n.errorAuthInvalidEmail,
+      AppError.authUserDisabled => i18n.errorAuthUserDisabled,
+      AppError.authUserNotFound => i18n.errorAuthUserNotFound,
+      AppError.authWrongPassword => i18n.errorAuthWrongPassword,
+      AppError.authEmailAlreadyInUse => i18n.errorAuthEmailAlreadyInUse,
+      AppError.authWeakPassword => i18n.errorAuthWeakPassword,
+      AppError.authWeakPasswordDetailed => i18n.errorAuthWeakPasswordDetailed(
+        e.details as String,
+      ),
+      AppError.authNetworkFailed => i18n.errorAuthNetworkFailed,
+      AppError.authTooManyRequests => i18n.errorAuthTooManyRequests,
+      AppError.authUnknownError => i18n.errorAuthUnknownError,
+      AppError.authPasswordsDoNotMatch => i18n.errorAuthPasswordsDoNotMatch,
     };
 
     return showAppDialog(

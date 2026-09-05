@@ -25,6 +25,11 @@
     }
   },
   "settingsTitle": "Einstellungen",
+  "settingsSectionUserExperience": "Nutzererlebnis",
+  "settingsSectionPremiumFeatures": "Premiumfunktionen",
+  "settingsSectionYourContent": "Deine Inhalte",
+  "settingsChangeEmail": "E-Mail-Adresse ändern",
+  "settingsChangePassword": "Passwort ändern",
   "settingsCardAnimations": "Kartenanimationen",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
@@ -227,6 +232,103 @@
   "errorTtsRateLimitExceeded": "Tageslimit für Sprachausgabe-Generierungen erreicht.",
   "errorTtsNotAuthenticated": "Anmeldung fehlgeschlagen. Bitte erneut versuchen.",
   "errorTtsUnknownError": "Die Sprachausgabe konnte nicht generiert werden. Bitte überprüfe deine Internetverbindung.",
+  "loginTitle": "Anmelden",
+  "loginSubtitle": "Deine Eintrittskarte in die Welt der Vokabeln. Melde dich an oder erstelle ein neues Konto.",
+  "registerTitle": "Neu hier?",
+  "loginEmailLabel": "E-Mail",
+  "loginPasswordLabel": "Passwort",
+  "loginSubmitButton": "Anmelden",
+  "registerSubmitButton": "Konto erstellen",
+  "loginSwitchToRegister": "Noch kein Konto? Registrieren",
+  "loginSwitchToLogin": "Schon registriert? Anmelden",
+  "loginForgotPassword": "Passwort vergessen?",
+  "resetPasswordTitle": "Passwort zurücksetzen",
+  "resetPasswordSubtitle": "Du erhältst einen Link, um ein neues Passwort setzen zu können.",
+  "resetPasswordEmailLabel": "E-Mail",
+  "resetPasswordSubmitButton": "Zurücksetzen",
+  "resetPasswordSuccessMessage": "Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.",
+  "settingsSignOut": "Abmelden",
+  "settingsSignOutConfirmTitle": "Möchtest Du Dich wirklich abmelden?",
+  "verifyEmailTitle": "E-Mail bestätigen",
+  "verifyEmailSubtitle": "Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyEmailResend": "E-Mail erneut senden",
+  "verifyEmailResendCountdown": "E-Mail erneut senden ({seconds})",
+  "@verifyEmailResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyEmailResendSuccessTitle": "E-Mail gesendet",
+  "verifyEmailResendSuccessMessage": "Wir haben dir eine neue Bestätigungsmail geschickt.",
+  "changeEmailTitle": "E-Mail-Adresse ändern",
+  "changeEmailSubtitle": "Deine aktuelle E-Mail-Adresse lautet {email}. Gib deine neue E-Mail-Adresse und dein aktuelles Passwort ein, um die Änderung zu bestätigen.",
+  "@changeEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "changeEmailNewEmailLabel": "Neue E-Mail-Adresse",
+  "changeEmailPasswordLabel": "Aktuelles Passwort",
+  "changeEmailSubmitButton": "E-Mail-Adresse ändern",
+  "changeEmailSuccessTitle": "Bestätigungsmail gesendet",
+  "changeEmailSuccessMessage": "Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.",
+  "changePasswordTitle": "Passwort ändern",
+  "changePasswordSubtitle": "Gib dein aktuelles Passwort und ein neues Passwort ein, um die Änderung zu bestätigen.",
+  "changePasswordCurrentPasswordLabel": "Aktuelles Passwort",
+  "changePasswordNewPasswordLabel": "Neues Passwort",
+  "changePasswordConfirmPasswordLabel": "Neues Passwort bestätigen",
+  "changePasswordSubmitButton": "Passwort ändern",
+  "changePasswordSuccessTitle": "Passwort geändert",
+  "changePasswordSuccessMessage": "Dein Passwort wurde erfolgreich geändert.",
+  "errorAuthInvalidEmail": "Deine E-Mail-Adresse scheint nicht korrekt zu sein.",
+  "errorAuthUserDisabled": "Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.",
+  "errorAuthUserNotFound": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",
+  "errorAuthWrongPassword": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",
+  "errorAuthEmailAlreadyInUse": "Du hast bereits ein Konto mit dieser E-Mail-Adresse. Du wirst auf die Anmeldeseite weitergeleitet.",
+  "errorAuthWeakPassword": "Das Passwort muss mindestens 8 Zeichen lang sein und mindestens einen Großbuchstaben, einen Kleinbuchstaben, eine Zahl und ein Sonderzeichen enthalten.",
+  "errorAuthWeakPasswordDetailed": "Dein Passwort muss noch folgende Anforderungen erfüllen: {requirements}.",
+  "@errorAuthWeakPasswordDetailed": {
+    "placeholders": {
+      "requirements": {
+        "type": "String"
+      }
+    }
+  },
+  "errorAuthPasswordsDoNotMatch": "Die Passwörter stimmen nicht überein.",
+  "passwordRequirementMinLength": "mindestens {length} Zeichen",
+  "@passwordRequirementMinLength": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordRequirementMaxLength": "höchstens {length} Zeichen",
+  "@passwordRequirementMaxLength": {
+    "placeholders": {
+      "length": {
+        "type": "int"
+      }
+    }
+  },
+  "passwordRequirementLowercase": "einen Kleinbuchstaben",
+  "passwordRequirementUppercase": "einen Großbuchstaben",
+  "passwordRequirementDigit": "eine Zahl",
+  "passwordRequirementSymbol": "ein Sonderzeichen",
+  "errorAuthNetworkFailed": "Keine Internetverbindung. Bitte versuche es erneut.",
+  "errorAuthTooManyRequests": "Du hast es zu oft versucht. Bitte versuche es später erneut.",
+  "errorAuthUnknownError": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
   "language": "Sprache",
   "languageGerman": "Deutsch",
   "languageEnglish": "Englisch",

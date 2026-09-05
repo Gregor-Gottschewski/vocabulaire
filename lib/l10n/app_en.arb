@@ -25,6 +25,11 @@
     }
   },
   "settingsTitle": "Settings",
+  "settingsSectionUserExperience": "User experience",
+  "settingsSectionPremiumFeatures": "Premium features",
+  "settingsSectionYourContent": "Your content",
+  "settingsChangeEmail": "Change email",
+  "settingsChangePassword": "Change password",
   "settingsCardAnimations": "Card animations",
   "settingsSyncStatus": "Synchronization Status",
   "settingsSyncStatusSynced": "Up to date",
@@ -182,6 +187,82 @@
   "errorTtsRateLimitExceeded": "Daily limit for speech generations reached.",
   "errorTtsNotAuthenticated": "Sign-in failed. Please try again.",
   "errorTtsUnknownError": "The pronunciation could not be generated. Please check your internet connection.",
+  "loginTitle": "Welcome",
+  "loginSubtitle": "Your gateway to the world of vocabulary. Sign in or create a new account.",
+  "registerTitle": "You're new here?",
+  "loginEmailLabel": "Email",
+  "loginPasswordLabel": "Password",
+  "loginSubmitButton": "Sign in",
+  "registerSubmitButton": "Create account",
+  "loginSwitchToRegister": "No account yet? Sign up",
+  "loginSwitchToLogin": "Already have an account? Sign in",
+  "loginForgotPassword": "Forgot password?",
+  "resetPasswordTitle": "Reset password",
+  "resetPasswordSubtitle": "You'll receive a link to set a new password.",
+  "resetPasswordEmailLabel": "Email",
+  "resetPasswordSubmitButton": "Reset",
+  "resetPasswordSuccessMessage": "If an account exists for this email address, a password reset link has been sent.",
+  "settingsSignOut": "Sign out",
+  "settingsSignOutConfirmTitle": "Are you sure you want to sign out?",
+  "verifyEmailTitle": "Verify your email",
+  "verifyEmailSubtitle": "We've sent a verification email to {email}. Please verify your email address to use Vocabulaire.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyEmailResend": "Resend email",
+  "verifyEmailResendCountdown": "Resend email ({seconds})",
+  "@verifyEmailResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyEmailResendSuccessTitle": "Email sent",
+  "verifyEmailResendSuccessMessage": "We've sent you a new verification email.",
+  "changeEmailTitle": "Change email",
+  "changeEmailSubtitle": "Your current email address is {email}. Enter your new email address and current password to confirm the change.",
+  "@changeEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "changeEmailNewEmailLabel": "New email",
+  "changeEmailPasswordLabel": "Current password",
+  "changeEmailSubmitButton": "Change email",
+  "changeEmailSuccessTitle": "Verification email sent",
+  "changeEmailSuccessMessage": "We've sent a confirmation link to your new email address. Your email won't change until you click it.",
+  "changePasswordTitle": "Change password",
+  "changePasswordSubtitle": "Enter your current password and a new password to confirm the change.",
+  "changePasswordCurrentPasswordLabel": "Current password",
+  "changePasswordNewPasswordLabel": "New password",
+  "changePasswordConfirmPasswordLabel": "Confirm new password",
+  "changePasswordSubmitButton": "Change password",
+  "changePasswordSuccessTitle": "Password changed",
+  "changePasswordSuccessMessage": "Your password has been changed successfully.",
+  "errorAuthInvalidEmail": "Your email address seems to be incorrect.",
+  "errorAuthUserDisabled": "Your account has been disabled. Please contact our support.",
+  "errorAuthUserNotFound": "The entered email or password is incorrect.",
+  "errorAuthWrongPassword": "The entered email or password is incorrect.",
+  "errorAuthEmailAlreadyInUse": "You already have an account with this email address. You will be redirected to the login page.",
+  "errorAuthWeakPassword": "The password must be at least 8 characters long and must contain at least one capital letter, lowercase letter, number and special character.",
+  "errorAuthWeakPasswordDetailed": "Your password still needs to meet these requirements: {requirements}.",
+  "errorAuthPasswordsDoNotMatch": "The passwords do not match.",
+  "passwordRequirementMinLength": "at least {length} characters",
+  "passwordRequirementMaxLength": "at most {length} characters",
+  "passwordRequirementLowercase": "a lowercase letter",
+  "passwordRequirementUppercase": "an uppercase letter",
+  "passwordRequirementDigit": "a number",
+  "passwordRequirementSymbol": "a special character",
+  "errorAuthNetworkFailed": "No internet connection. Please try again.",
+  "errorAuthTooManyRequests": "You've tried it too much. Please try again later.",
+  "errorAuthUnknownError": "Sign-in failed. Please try again.",
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
   "errorMoveBoxOfflineFailed": "Box could not be moved offline",
   "errorMoveBoxOnlineFailed": "Box could not be moved online",
