@@ -12,9 +12,11 @@ import '../services/auth_service.dart';
 import '../services/box_sync_service.dart';
 import '../services/export_share_service.dart';
 import '../services/usage_service.dart';
+import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
+import 'change_email_view.dart';
 import 'widgets/app_dialog.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/key_value_row.dart';
@@ -69,7 +71,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   void _onConnectivityChanged(List<ConnectivityResult> results) {
     final hasConnectivity = results.any(
-          (result) => result != ConnectivityResult.none,
+      (result) => result != ConnectivityResult.none,
     );
     if (mounted) setState(() => _hasConnectivity = hasConnectivity);
   }
@@ -205,31 +207,38 @@ class _SettingsViewState extends State<SettingsView> {
 
             const SizedBox(height: AppSpacing.sectionGap),
             KeyValueRowGroup(
-                title: _l10n.settingsSectionYourContent,
-                children: [
-                  KeyValueRow.submenu(
+              title: _l10n.settingsSectionYourContent,
+              children: [
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsExportAll,
+                  onTap: (_isExportingAll || _boxController.boxes.isEmpty)
+                      ? null
+                      : _exportAllBoxes,
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsChangeEmail,
+                  onTap: () => Navigator.of(
                     context,
-                    label: _l10n.settingsExportAll,
-                    onTap: (_isExportingAll || _boxController.boxes.isEmpty)
-                        ? null
-                        : _exportAllBoxes,
-                  ),
-                  KeyValueRow.submenu(
-                    context,
-                    label: _l10n.settingsSignOut,
-                    color: colors.danger,
-                    onTap: _confirmSignOut,
-                  ),
-                ]),
+                  ).push(AppPageRoute(builder: (_) => const ChangeEmailView())),
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsSignOut,
+                  color: colors.danger,
+                  onTap: _confirmSignOut,
+                ),
+              ],
+            ),
 
             const SizedBox(height: AppSpacing.sectionGap),
             TextLinkButton(
               label: _l10n.settingsLicenses,
-              onPressed: () =>
-                  showLicensePage(
-                    context: context,
-                    applicationName: 'Vocabulaire',
-                  ),
+              onPressed: () => showLicensePage(
+                context: context,
+                applicationName: 'Vocabulaire',
+              ),
             ),
             TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
           ],

@@ -28,6 +28,7 @@
   "settingsSectionUserExperience": "Nutzererlebnis",
   "settingsSectionPremiumFeatures": "Premiumfunktionen",
   "settingsSectionYourContent": "Deine Inhalte",
+  "settingsChangeEmail": "E-Mail-Adresse ändern",
   "settingsCardAnimations": "Kartenanimationen",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
@@ -267,6 +268,20 @@
   },
   "verifyEmailResendSuccessTitle": "E-Mail gesendet",
   "verifyEmailResendSuccessMessage": "Wir haben dir eine neue Bestätigungsmail geschickt.",
+  "changeEmailTitle": "E-Mail-Adresse ändern",
+  "changeEmailSubtitle": "Deine aktuelle E-Mail-Adresse lautet {email}. Gib deine neue E-Mail-Adresse und dein aktuelles Passwort ein, um die Änderung zu bestätigen.",
+  "@changeEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "changeEmailNewEmailLabel": "Neue E-Mail-Adresse",
+  "changeEmailPasswordLabel": "Aktuelles Passwort",
+  "changeEmailSubmitButton": "E-Mail-Adresse ändern",
+  "changeEmailSuccessTitle": "Bestätigungsmail gesendet",
+  "changeEmailSuccessMessage": "Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.",
   "errorAuthInvalidEmail": "Deine E-Mail-Adresse scheint nicht korrekt zu sein.",
   "errorAuthUserDisabled": "Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.",
   "errorAuthUserNotFound": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",

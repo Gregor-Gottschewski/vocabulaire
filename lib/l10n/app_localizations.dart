@@ -184,6 +184,12 @@ abstract class AppLocalizations {
   /// **'Deine Inhalte'**
   String get settingsSectionYourContent;
 
+  /// No description provided for @settingsChangeEmail.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse ändern'**
+  String get settingsChangeEmail;
+
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
@@ -1041,6 +1047,48 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Wir haben dir eine neue Bestätigungsmail geschickt.'**
   String get verifyEmailResendSuccessMessage;
+
+  /// No description provided for @changeEmailTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse ändern'**
+  String get changeEmailTitle;
+
+  /// No description provided for @changeEmailSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Deine aktuelle E-Mail-Adresse lautet {email}. Gib deine neue E-Mail-Adresse und dein aktuelles Passwort ein, um die Änderung zu bestätigen.'**
+  String changeEmailSubtitle(String email);
+
+  /// No description provided for @changeEmailNewEmailLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Neue E-Mail-Adresse'**
+  String get changeEmailNewEmailLabel;
+
+  /// No description provided for @changeEmailPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuelles Passwort'**
+  String get changeEmailPasswordLabel;
+
+  /// No description provided for @changeEmailSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail-Adresse ändern'**
+  String get changeEmailSubmitButton;
+
+  /// No description provided for @changeEmailSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Bestätigungsmail gesendet'**
+  String get changeEmailSuccessTitle;
+
+  /// No description provided for @changeEmailSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.'**
+  String get changeEmailSuccessMessage;
 
   /// No description provided for @errorAuthInvalidEmail.
   ///

@@ -128,9 +128,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         final user = FirebaseAuth.instance.currentUser;
-        if (user != null && !user.emailVerified) {
+        if (user != null) {
           user.reload();
-        } else if (user != null) {
+        }
+        if (user != null && user.emailVerified) {
           BoxSyncService.instance.attach();
           GroupSyncService.instance.attach();
           UsageService.instance.attach();

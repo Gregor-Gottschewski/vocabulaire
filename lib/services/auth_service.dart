@@ -20,21 +20,25 @@ class AuthService {
   Future<void> reloadUser() =>
       _wrap(() => FirebaseAuth.instance.currentUser!.reload());
 
-  Future<UserCredential> signIn({required String email, required String password}) =>
-      _wrap(
-        () => FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        ),
-      );
+  Future<UserCredential> signIn({
+    required String email,
+    required String password,
+  }) => _wrap(
+    () => FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    ),
+  );
 
-  Future<UserCredential> register({required String email, required String password}) =>
-      _wrap(
-        () => FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        ),
-      );
+  Future<UserCredential> register({
+    required String email,
+    required String password,
+  }) => _wrap(
+    () => FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    ),
+  );
 
   Future<PasswordValidationStatus> validatePassword({
     required String password,
@@ -45,6 +49,20 @@ class AuthService {
 
   Future<void> sendPasswordResetEmail(String email) =>
       _wrap(() => FirebaseAuth.instance.sendPasswordResetEmail(email: email));
+
+  /// Reauthenticates the current user with their password and sends a
+  /// verification link to [newEmail].
+  Future<void> changeEmail({
+    required String newEmail,
+    required String currentPassword,
+  }) => _wrap(() async {
+    final credential = EmailAuthProvider.credential(
+      email: currentUser!.email!,
+      password: currentPassword,
+    );
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.verifyBeforeUpdateEmail(newEmail);
+  });
 
   Future<void> signOut() => FirebaseAuth.instance.signOut();
 

@@ -55,6 +55,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsSectionYourContent => 'Deine Inhalte';
 
   @override
+  String get settingsChangeEmail => 'E-Mail-Adresse ändern';
+
+  @override
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
@@ -542,6 +545,30 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get verifyEmailResendSuccessMessage =>
       'Wir haben dir eine neue Bestätigungsmail geschickt.';
+
+  @override
+  String get changeEmailTitle => 'E-Mail-Adresse ändern';
+
+  @override
+  String changeEmailSubtitle(String email) {
+    return 'Deine aktuelle E-Mail-Adresse lautet $email. Gib deine neue E-Mail-Adresse und dein aktuelles Passwort ein, um die Änderung zu bestätigen.';
+  }
+
+  @override
+  String get changeEmailNewEmailLabel => 'Neue E-Mail-Adresse';
+
+  @override
+  String get changeEmailPasswordLabel => 'Aktuelles Passwort';
+
+  @override
+  String get changeEmailSubmitButton => 'E-Mail-Adresse ändern';
+
+  @override
+  String get changeEmailSuccessTitle => 'Bestätigungsmail gesendet';
+
+  @override
+  String get changeEmailSuccessMessage =>
+      'Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.';
 
   @override
   String get errorAuthInvalidEmail =>

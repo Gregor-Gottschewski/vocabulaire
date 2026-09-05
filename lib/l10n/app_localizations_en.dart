@@ -55,6 +55,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSectionYourContent => 'Your content';
 
   @override
+  String get settingsChangeEmail => 'Change email';
+
+  @override
   String get settingsCardAnimations => 'Card animations';
 
   @override
@@ -532,6 +535,30 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get verifyEmailResendSuccessMessage =>
       'We\'ve sent you a new verification email.';
+
+  @override
+  String get changeEmailTitle => 'Change email';
+
+  @override
+  String changeEmailSubtitle(String email) {
+    return 'Your current email address is $email. Enter your new email address and current password to confirm the change.';
+  }
+
+  @override
+  String get changeEmailNewEmailLabel => 'New email';
+
+  @override
+  String get changeEmailPasswordLabel => 'Current password';
+
+  @override
+  String get changeEmailSubmitButton => 'Change email';
+
+  @override
+  String get changeEmailSuccessTitle => 'Verification email sent';
+
+  @override
+  String get changeEmailSuccessMessage =>
+      'We\'ve sent a confirmation link to your new email address. Your email won\'t change until you click it.';
 
   @override
   String get errorAuthInvalidEmail =>
