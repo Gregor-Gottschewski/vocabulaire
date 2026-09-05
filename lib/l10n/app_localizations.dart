@@ -196,6 +196,12 @@ abstract class AppLocalizations {
   /// **'Passwort ändern'**
   String get settingsChangePassword;
 
+  /// No description provided for @settingsAccountDeletion.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto löschen'**
+  String get settingsAccountDeletion;
+
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
@@ -1143,6 +1149,48 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Dein Passwort wurde erfolgreich geändert.'**
   String get changePasswordSuccessMessage;
+
+  /// No description provided for @deleteAccountTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto löschen'**
+  String get deleteAccountTitle;
+
+  /// No description provided for @deleteAccountSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gib dein aktuelles Passwort ein, um die endgültige Löschung deines Kontos zu bestätigen. Alle Vokabeln, Boxen, Gruppen und Audioaufnahmen werden unwiderruflich gelöscht.'**
+  String get deleteAccountSubtitle;
+
+  /// No description provided for @deleteAccountPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuelles Passwort'**
+  String get deleteAccountPasswordLabel;
+
+  /// No description provided for @deleteAccountSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto löschen'**
+  String get deleteAccountSubmitButton;
+
+  /// No description provided for @deleteAccountConfirmTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Konto endgültig löschen?'**
+  String get deleteAccountConfirmTitle;
+
+  /// No description provided for @deleteAccountConfirmMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Aktion kann nicht rückgängig gemacht werden. Alle deine Daten werden unwiderruflich gelöscht.'**
+  String get deleteAccountConfirmMessage;
+
+  /// No description provided for @deleteAccountConfirmButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Endgültig löschen'**
+  String get deleteAccountConfirmButton;
 
   /// No description provided for @errorAuthInvalidEmail.
   ///

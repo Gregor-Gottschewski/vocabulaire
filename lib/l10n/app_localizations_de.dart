@@ -61,6 +61,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsChangePassword => 'Passwort ändern';
 
   @override
+  String get settingsAccountDeletion => 'Konto löschen';
+
+  @override
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
@@ -598,6 +601,29 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get changePasswordSuccessMessage =>
       'Dein Passwort wurde erfolgreich geändert.';
+
+  @override
+  String get deleteAccountTitle => 'Konto löschen';
+
+  @override
+  String get deleteAccountSubtitle =>
+      'Gib dein aktuelles Passwort ein, um die endgültige Löschung deines Kontos zu bestätigen. Alle Vokabeln, Boxen, Gruppen und Audioaufnahmen werden unwiderruflich gelöscht.';
+
+  @override
+  String get deleteAccountPasswordLabel => 'Aktuelles Passwort';
+
+  @override
+  String get deleteAccountSubmitButton => 'Konto löschen';
+
+  @override
+  String get deleteAccountConfirmTitle => 'Konto endgültig löschen?';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'Diese Aktion kann nicht rückgängig gemacht werden. Alle deine Daten werden unwiderruflich gelöscht.';
+
+  @override
+  String get deleteAccountConfirmButton => 'Endgültig löschen';
 
   @override
   String get errorAuthInvalidEmail =>

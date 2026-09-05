@@ -61,6 +61,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsChangePassword => 'Changer le mot de passe';
 
   @override
+  String get settingsAccountDeletion => 'Supprimer le compte';
+
+  @override
   String get settingsCardAnimations => 'Animations de cartes';
 
   @override
@@ -599,6 +602,30 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changePasswordSuccessMessage =>
       'Ton mot de passe a été modifié avec succès.';
+
+  @override
+  String get deleteAccountTitle => 'Supprimer le compte';
+
+  @override
+  String get deleteAccountSubtitle =>
+      'Saisis ton mot de passe actuel pour confirmer la suppression définitive de ton compte. Tout le vocabulaire, les boîtes, les groupes et les enregistrements audio seront supprimés de manière irrévocable.';
+
+  @override
+  String get deleteAccountPasswordLabel => 'Mot de passe actuel';
+
+  @override
+  String get deleteAccountSubmitButton => 'Supprimer le compte';
+
+  @override
+  String get deleteAccountConfirmTitle =>
+      'Supprimer définitivement le compte ?';
+
+  @override
+  String get deleteAccountConfirmMessage =>
+      'Cette action est irréversible. Toutes tes données seront supprimées de manière irrévocable.';
+
+  @override
+  String get deleteAccountConfirmButton => 'Supprimer définitivement';
 
   @override
   String get errorAuthInvalidEmail => 'Votre adresse e-mail semble incorrecte.';

@@ -78,6 +78,18 @@ class AuthService {
     await currentUser!.updatePassword(newPassword);
   });
 
+  /// Reauthenticates the current user with their password, then permanently
+  /// deletes their Firebase Auth account.
+  Future<void> deleteAccount({required String currentPassword}) =>
+      _wrap(() async {
+        final credential = EmailAuthProvider.credential(
+          email: currentUser!.email!,
+          password: currentPassword,
+        );
+        await currentUser!.reauthenticateWithCredential(credential);
+        await currentUser!.delete();
+      });
+
   Future<void> signOut() => FirebaseAuth.instance.signOut();
 
   Future<T> _wrap<T>(Future<T> Function() action) async {
