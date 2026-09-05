@@ -537,7 +537,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errorAuthEmailAlreadyInUse =>
-      'Vous possédez déjà un compte avec cette adresse e-mail.';
+      'Vous possédez déjà un compte avec cette adresse e-mail. Vous allez être redirigé vers la page de connexion.';
 
   @override
   String get errorAuthWeakPassword =>

@@ -10,7 +10,17 @@ class AuthService {
 
   User? get currentUser => FirebaseAuth.instance.currentUser;
 
-  Future<void> signIn({required String email, required String password}) =>
+  /// Emits whenever the signed-in user changes.
+  Stream<User?> get userChanges => FirebaseAuth.instance.userChanges();
+
+  Future<void> sendEmailVerification() =>
+      _wrap(() => FirebaseAuth.instance.currentUser!.sendEmailVerification());
+
+  /// Refreshes the current user's data from Firebase.
+  Future<void> reloadUser() =>
+      _wrap(() => FirebaseAuth.instance.currentUser!.reload());
+
+  Future<UserCredential> signIn({required String email, required String password}) =>
       _wrap(
         () => FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
@@ -18,7 +28,7 @@ class AuthService {
         ),
       );
 
-  Future<void> register({required String email, required String password}) =>
+  Future<UserCredential> register({required String email, required String password}) =>
       _wrap(
         () => FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: email,

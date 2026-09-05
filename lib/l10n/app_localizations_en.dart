@@ -528,7 +528,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorAuthEmailAlreadyInUse =>
-      'You already have an account with this email address.';
+      'You already have an account with this email address. You will be redirected to the login page.';
 
   @override
   String get errorAuthWeakPassword =>

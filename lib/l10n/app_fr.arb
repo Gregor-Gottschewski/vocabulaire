@@ -251,7 +251,7 @@
   "errorAuthUserDisabled": "Votre compte a été désactivé. Veuillez contacter notre support.",
   "errorAuthUserNotFound": "L'e-mail ou le mot de passe saisi est incorrect.",
   "errorAuthWrongPassword": "L'e-mail ou le mot de passe saisi est incorrect.",
-  "errorAuthEmailAlreadyInUse": "Vous possédez déjà un compte avec cette adresse e-mail.",
+  "errorAuthEmailAlreadyInUse": "Vous possédez déjà un compte avec cette adresse e-mail. Vous allez être redirigé vers la page de connexion.",
   "errorAuthWeakPassword": "Le mot de passe doit comporter au moins 8 caractères et contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.",
   "errorAuthWeakPasswordDetailed": "Ton mot de passe doit encore respecter les critères suivants : {requirements}.",
   "passwordRequirementMinLength": "au moins {length} caractères",

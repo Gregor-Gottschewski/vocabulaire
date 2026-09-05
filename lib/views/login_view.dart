@@ -54,33 +54,52 @@ class _LoginViewState extends State<LoginView> {
       return;
     }
 
-    final passwordStatus = await AuthService.instance.validatePassword(
-      password: password,
-    );
-
-    if (!passwordStatus.isValid) {
-      final requirements = _missingPasswordRequirements(passwordStatus);
-      await context.showAppError(
-        AppException(
-          AppError.authWeakPasswordDetailed,
-          details: requirements.join(', '),
-        ),
+    if (_isRegisterMode) {
+      final passwordStatus = await AuthService.instance.validatePassword(
+        password: password,
       );
-      return;
+
+      if (!passwordStatus.isValid) {
+        final requirements = _missingPasswordRequirements(passwordStatus);
+        if (!mounted) return;
+        await context.showAppError(
+          AppException(
+            AppError.authWeakPasswordDetailed,
+            details: requirements.join(', '),
+          ),
+        );
+        return;
+      }
     }
 
     setState(() => _isLoading = true);
     try {
+      UserCredential credentials;
       if (_isRegisterMode) {
-        await AuthService.instance.register(email: email, password: password);
+        credentials = await AuthService.instance.register(
+          email: email,
+          password: password,
+        );
       } else {
-        await AuthService.instance.signIn(email: email, password: password);
+        credentials = await AuthService.instance.signIn(
+          email: email,
+          password: password,
+        );
+      }
+      if (credentials.user == null) {
+        throw AppException(AppError.authUnknownError);
+      }
+      if (!credentials.user!.emailVerified) {
+        credentials.user?.sendEmailVerification();
       }
     } on AppException catch (e) {
       if (!mounted) return;
       await context.showAppError(e);
       if (e.error == AppError.authWrongPassword) {
         _passwordController.text = "";
+      }
+      if (e.error == AppError.authEmailAlreadyInUse) {
+        setState(() => _isRegisterMode = false);
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);

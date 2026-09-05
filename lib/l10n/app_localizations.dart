@@ -1033,7 +1033,7 @@ abstract class AppLocalizations {
   /// No description provided for @errorAuthEmailAlreadyInUse.
   ///
   /// In de, this message translates to:
-  /// **'Du hast bereits ein Konto mit dieser E-Mail-Adresse.'**
+  /// **'Du hast bereits ein Konto mit dieser E-Mail-Adresse. Du wirst auf die Anmeldeseite weitergeleitet.'**
   String get errorAuthEmailAlreadyInUse;
 
   /// No description provided for @errorAuthWeakPassword.

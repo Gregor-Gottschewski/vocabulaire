@@ -206,7 +206,7 @@
   "errorAuthUserDisabled": "Your account has been disabled. Please contact our support.",
   "errorAuthUserNotFound": "The entered email or password is incorrect.",
   "errorAuthWrongPassword": "The entered email or password is incorrect.",
-  "errorAuthEmailAlreadyInUse": "You already have an account with this email address.",
+  "errorAuthEmailAlreadyInUse": "You already have an account with this email address. You will be redirected to the login page.",
   "errorAuthWeakPassword": "The password must be at least 8 characters long and must contain at least one capital letter, lowercase letter, number and special character.",
   "errorAuthWeakPasswordDetailed": "Your password still needs to meet these requirements: {requirements}.",
   "passwordRequirementMinLength": "at least {length} characters",
