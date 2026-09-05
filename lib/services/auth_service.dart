@@ -64,6 +64,20 @@ class AuthService {
     await currentUser!.verifyBeforeUpdateEmail(newEmail);
   });
 
+  /// Reauthenticates the current user with their password and sets
+  /// [newPassword].
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) => _wrap(() async {
+    final credential = EmailAuthProvider.credential(
+      email: currentUser!.email!,
+      password: currentPassword,
+    );
+    await currentUser!.reauthenticateWithCredential(credential);
+    await currentUser!.updatePassword(newPassword);
+  });
+
   Future<void> signOut() => FirebaseAuth.instance.signOut();
 
   Future<T> _wrap<T>(Future<T> Function() action) async {

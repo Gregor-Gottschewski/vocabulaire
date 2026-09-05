@@ -29,6 +29,7 @@
   "settingsSectionPremiumFeatures": "Premiumfunktionen",
   "settingsSectionYourContent": "Deine Inhalte",
   "settingsChangeEmail": "E-Mail-Adresse ändern",
+  "settingsChangePassword": "Passwort ändern",
   "settingsCardAnimations": "Kartenanimationen",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
@@ -282,6 +283,14 @@
   "changeEmailSubmitButton": "E-Mail-Adresse ändern",
   "changeEmailSuccessTitle": "Bestätigungsmail gesendet",
   "changeEmailSuccessMessage": "Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.",
+  "changePasswordTitle": "Passwort ändern",
+  "changePasswordSubtitle": "Gib dein aktuelles Passwort und ein neues Passwort ein, um die Änderung zu bestätigen.",
+  "changePasswordCurrentPasswordLabel": "Aktuelles Passwort",
+  "changePasswordNewPasswordLabel": "Neues Passwort",
+  "changePasswordConfirmPasswordLabel": "Neues Passwort bestätigen",
+  "changePasswordSubmitButton": "Passwort ändern",
+  "changePasswordSuccessTitle": "Passwort geändert",
+  "changePasswordSuccessMessage": "Dein Passwort wurde erfolgreich geändert.",
   "errorAuthInvalidEmail": "Deine E-Mail-Adresse scheint nicht korrekt zu sein.",
   "errorAuthUserDisabled": "Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.",
   "errorAuthUserNotFound": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",
@@ -296,6 +305,7 @@
       }
     }
   },
+  "errorAuthPasswordsDoNotMatch": "Die Passwörter stimmen nicht überein.",
   "passwordRequirementMinLength": "mindestens {length} Zeichen",
   "@passwordRequirementMinLength": {
     "placeholders": {

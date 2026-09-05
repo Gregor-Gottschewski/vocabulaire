@@ -58,6 +58,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsChangeEmail => 'Changer l\'adresse e-mail';
 
   @override
+  String get settingsChangePassword => 'Changer le mot de passe';
+
+  @override
   String get settingsCardAnimations => 'Animations de cartes';
 
   @override
@@ -571,6 +574,33 @@ class AppLocalizationsFr extends AppLocalizations {
       'Nous avons envoyé un lien de confirmation à ta nouvelle adresse e-mail. Ton adresse e-mail ne changera qu\'après avoir cliqué dessus.';
 
   @override
+  String get changePasswordTitle => 'Changer le mot de passe';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Saisis ton mot de passe actuel et un nouveau mot de passe pour confirmer le changement.';
+
+  @override
+  String get changePasswordCurrentPasswordLabel => 'Mot de passe actuel';
+
+  @override
+  String get changePasswordNewPasswordLabel => 'Nouveau mot de passe';
+
+  @override
+  String get changePasswordConfirmPasswordLabel =>
+      'Confirmer le nouveau mot de passe';
+
+  @override
+  String get changePasswordSubmitButton => 'Changer le mot de passe';
+
+  @override
+  String get changePasswordSuccessTitle => 'Mot de passe modifié';
+
+  @override
+  String get changePasswordSuccessMessage =>
+      'Ton mot de passe a été modifié avec succès.';
+
+  @override
   String get errorAuthInvalidEmail => 'Votre adresse e-mail semble incorrecte.';
 
   @override
@@ -597,6 +627,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String errorAuthWeakPasswordDetailed(String requirements) {
     return 'Ton mot de passe doit encore respecter les critères suivants : $requirements.';
   }
+
+  @override
+  String get errorAuthPasswordsDoNotMatch =>
+      'Les mots de passe ne correspondent pas.';
 
   @override
   String passwordRequirementMinLength(int length) {

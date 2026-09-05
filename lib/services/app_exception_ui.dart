@@ -51,6 +51,7 @@ extension AppExceptionDialog on BuildContext {
       AppError.authNetworkFailed => i18n.errorAuthNetworkFailed,
       AppError.authTooManyRequests => i18n.errorAuthTooManyRequests,
       AppError.authUnknownError => i18n.errorAuthUnknownError,
+      AppError.authPasswordsDoNotMatch => i18n.errorAuthPasswordsDoNotMatch,
     };
 
     return showAppDialog(

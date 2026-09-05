@@ -190,6 +190,12 @@ abstract class AppLocalizations {
   /// **'E-Mail-Adresse ändern'**
   String get settingsChangeEmail;
 
+  /// No description provided for @settingsChangePassword.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort ändern'**
+  String get settingsChangePassword;
+
   /// No description provided for @settingsCardAnimations.
   ///
   /// In de, this message translates to:
@@ -1090,6 +1096,54 @@ abstract class AppLocalizations {
   /// **'Wir haben einen Bestätigungslink an deine neue E-Mail-Adresse gesendet. Deine E-Mail-Adresse ändert sich erst, wenn du darauf klickst.'**
   String get changeEmailSuccessMessage;
 
+  /// No description provided for @changePasswordTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort ändern'**
+  String get changePasswordTitle;
+
+  /// No description provided for @changePasswordSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gib dein aktuelles Passwort und ein neues Passwort ein, um die Änderung zu bestätigen.'**
+  String get changePasswordSubtitle;
+
+  /// No description provided for @changePasswordCurrentPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Aktuelles Passwort'**
+  String get changePasswordCurrentPasswordLabel;
+
+  /// No description provided for @changePasswordNewPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Neues Passwort'**
+  String get changePasswordNewPasswordLabel;
+
+  /// No description provided for @changePasswordConfirmPasswordLabel.
+  ///
+  /// In de, this message translates to:
+  /// **'Neues Passwort bestätigen'**
+  String get changePasswordConfirmPasswordLabel;
+
+  /// No description provided for @changePasswordSubmitButton.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort ändern'**
+  String get changePasswordSubmitButton;
+
+  /// No description provided for @changePasswordSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwort geändert'**
+  String get changePasswordSuccessTitle;
+
+  /// No description provided for @changePasswordSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Dein Passwort wurde erfolgreich geändert.'**
+  String get changePasswordSuccessMessage;
+
   /// No description provided for @errorAuthInvalidEmail.
   ///
   /// In de, this message translates to:
@@ -1131,6 +1185,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Dein Passwort muss noch folgende Anforderungen erfüllen: {requirements}.'**
   String errorAuthWeakPasswordDetailed(String requirements);
+
+  /// No description provided for @errorAuthPasswordsDoNotMatch.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Passwörter stimmen nicht überein.'**
+  String get errorAuthPasswordsDoNotMatch;
 
   /// No description provided for @passwordRequirementMinLength.
   ///

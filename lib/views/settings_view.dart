@@ -17,6 +17,7 @@ import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
 import 'change_email_view.dart';
+import 'change_password_view.dart';
 import 'widgets/app_dialog.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/key_value_row.dart';
@@ -222,6 +223,13 @@ class _SettingsViewState extends State<SettingsView> {
                   onTap: () => Navigator.of(
                     context,
                   ).push(AppPageRoute(builder: (_) => const ChangeEmailView())),
+                ),
+                KeyValueRow.submenu(
+                  context,
+                  label: _l10n.settingsChangePassword,
+                  onTap: () => Navigator.of(context).push(
+                    AppPageRoute(builder: (_) => const ChangePasswordView()),
+                  ),
                 ),
                 KeyValueRow.submenu(
                   context,

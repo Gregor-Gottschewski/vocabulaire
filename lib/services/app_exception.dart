@@ -36,6 +36,7 @@ enum AppError {
   authNetworkFailed,
   authTooManyRequests,
   authUnknownError,
+  authPasswordsDoNotMatch,
 }
 
 /// [AppException] represents a user-facing application error.

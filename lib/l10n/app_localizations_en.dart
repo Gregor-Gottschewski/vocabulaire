@@ -58,6 +58,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsChangeEmail => 'Change email';
 
   @override
+  String get settingsChangePassword => 'Change password';
+
+  @override
   String get settingsCardAnimations => 'Card animations';
 
   @override
@@ -561,6 +564,32 @@ class AppLocalizationsEn extends AppLocalizations {
       'We\'ve sent a confirmation link to your new email address. Your email won\'t change until you click it.';
 
   @override
+  String get changePasswordTitle => 'Change password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'Enter your current password and a new password to confirm the change.';
+
+  @override
+  String get changePasswordCurrentPasswordLabel => 'Current password';
+
+  @override
+  String get changePasswordNewPasswordLabel => 'New password';
+
+  @override
+  String get changePasswordConfirmPasswordLabel => 'Confirm new password';
+
+  @override
+  String get changePasswordSubmitButton => 'Change password';
+
+  @override
+  String get changePasswordSuccessTitle => 'Password changed';
+
+  @override
+  String get changePasswordSuccessMessage =>
+      'Your password has been changed successfully.';
+
+  @override
   String get errorAuthInvalidEmail =>
       'Your email address seems to be incorrect.';
 
@@ -588,6 +617,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String errorAuthWeakPasswordDetailed(String requirements) {
     return 'Your password still needs to meet these requirements: $requirements.';
   }
+
+  @override
+  String get errorAuthPasswordsDoNotMatch => 'The passwords do not match.';
 
   @override
   String passwordRequirementMinLength(int length) {
