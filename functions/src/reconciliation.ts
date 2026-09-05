@@ -3,8 +3,20 @@ import {getStorage} from "firebase-admin/storage";
 import {onSchedule} from "firebase-functions/v2/scheduler";
 import {releaseReservation} from "./audioReservations";
 import {AUDIO_PATH_PATTERN} from "./storagePaths";
+import {userExists} from "./userGuard";
 
 const REGION = "europe-west1";
+
+// Deletes a rateLimits doc and users/{uid}/groups whose Auth user is gone.
+async function pruneIfOrphaned(uid: string): Promise<boolean> {
+    if (await userExists(uid)) return false;
+    const db = getFirestore();
+    await Promise.all([
+        db.collection("rateLimits").doc(uid).delete(),
+        db.recursiveDelete(db.collection("users").doc(uid).collection("groups")),
+    ]);
+    return true;
+}
 
 // Safety net against counter drift
 export const reconcileVocabularyCounts = onSchedule(
@@ -15,6 +27,7 @@ export const reconcileVocabularyCounts = onSchedule(
 
         await Promise.all(rateLimitDocs.docs.map(async (doc) => {
             const uid = doc.id;
+            if (await pruneIfOrphaned(uid)) return;
             const stored = (doc.data().vocabularyCountOnline as number | undefined) ?? 0;
 
             const aggregate = await db
@@ -41,6 +54,7 @@ export const reconcileGroupCounts = onSchedule(
 
         await Promise.all(rateLimitDocs.docs.map(async (doc) => {
             const uid = doc.id;
+            if (await pruneIfOrphaned(uid)) return;
             const stored = (doc.data().groupCountOnline as number | undefined) ?? 0;
 
             const aggregate = await db
@@ -66,6 +80,7 @@ export const reconcileBoxCounts = onSchedule(
 
         await Promise.all(rateLimitDocs.docs.map(async (doc) => {
             const uid = doc.id;
+            if (await pruneIfOrphaned(uid)) return;
 
             const boxesSnapshot = await db
                 .collectionGroup("boxes")
@@ -118,6 +133,7 @@ export const reconcileAudioUsageLimits = onSchedule(
 
         await Promise.all(rateLimitDocs.docs.map(async (doc) => {
             const uid = doc.id;
+            if (await pruneIfOrphaned(uid)) return;
             const stored = (doc.data().audioBytesUsed as number | undefined) ?? 0;
 
             const [files] = await getStorage().bucket().getFiles({prefix: `users/${uid}/groups/`});

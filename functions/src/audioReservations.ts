@@ -1,5 +1,6 @@
 import {FieldValue, Timestamp, getFirestore} from "firebase-admin/firestore";
 import {HttpsError, onCall} from "firebase-functions/v2/https";
+import {userExists} from "./userGuard";
 
 const REGION = "europe-west1";
 
@@ -99,6 +100,8 @@ export const reserveAudioUpload = onCall(
 
 /** Releases a reservation (if any) without requiring the upload it was made for. */
 export async function releaseReservation(uid: string, fileName: string): Promise<void> {
+    if (!(await userExists(uid))) return;
+
     const db = getFirestore();
     const rateLimitRef = db.collection("rateLimits").doc(uid);
     const reservation = reservationRef(uid, fileName);
@@ -120,6 +123,8 @@ export async function consumeReservation(
     fileName: string,
     actualSizeBytes: number
 ): Promise<void> {
+    if (!(await userExists(uid))) return;
+
     const db = getFirestore();
     const rateLimitRef = db.collection("rateLimits").doc(uid);
     const reservation = reservationRef(uid, fileName);
