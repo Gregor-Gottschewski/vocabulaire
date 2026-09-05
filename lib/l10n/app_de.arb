@@ -247,6 +247,26 @@
   "resetPasswordSuccessMessage": "Falls ein Konto mit dieser E-Mail-Adresse existiert, wurde eine Mail zum Zurücksetzen des Passworts verschickt.",
   "settingsSignOut": "Abmelden",
   "settingsSignOutConfirmTitle": "Möchtest Du Dich wirklich abmelden?",
+  "verifyEmailTitle": "E-Mail bestätigen",
+  "verifyEmailSubtitle": "Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyEmailResend": "E-Mail erneut senden",
+  "verifyEmailResendCountdown": "E-Mail erneut senden ({seconds})",
+  "@verifyEmailResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyEmailResendSuccessTitle": "E-Mail gesendet",
+  "verifyEmailResendSuccessMessage": "Wir haben dir eine neue Bestätigungsmail geschickt.",
   "errorAuthInvalidEmail": "Deine E-Mail-Adresse scheint nicht korrekt zu sein.",
   "errorAuthUserDisabled": "Dein Konto wurde deaktiviert. Bitte kontaktiere unseren Support.",
   "errorAuthUserNotFound": "Die eingegebene E-Mail-Adresse oder das Passwort ist falsch.",

@@ -27,6 +27,7 @@ import 'models/vocabulary_group.dart';
 import 'models/vocabulary.dart';
 import 'theme/app_theme.dart';
 import 'views/home_page.dart';
+import 'views/verify_email_view.dart';
 
 /// When enabled, the local Firebase emulator will be used
 const bool _useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
@@ -95,7 +96,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _authSub = FirebaseAuth.instance.authStateChanges().listen(_onAuthChanged);
+    _authSub = FirebaseAuth.instance.userChanges().listen(_onAuthChanged);
   }
 
   @override
@@ -114,7 +115,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GroupSyncService.instance.detach();
     UsageService.instance.detach();
     AudioUploadQueueService.instance.detach();
-    if (user != null) {
+    if (user != null && user.emailVerified) {
       BoxSyncService.instance.attach();
       GroupSyncService.instance.attach();
       UsageService.instance.attach();
@@ -126,7 +127,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-        if (FirebaseAuth.instance.currentUser != null) {
+        final user = FirebaseAuth.instance.currentUser;
+        if (user != null && !user.emailVerified) {
+          user.reload();
+        } else if (user != null) {
           BoxSyncService.instance.attach();
           GroupSyncService.instance.attach();
           UsageService.instance.attach();
@@ -157,12 +161,13 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       ],
       supportedLocales: const [Locale('de'), Locale('en'), Locale('fr')],
       home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: FirebaseAuth.instance.userChanges(),
         initialData: FirebaseAuth.instance.currentUser,
         builder: (context, snapshot) {
-          return snapshot.data == null
-              ? const LoginView()
-              : const MyHomePage();
+          final user = snapshot.data;
+          if (user == null) return const LoginView();
+          if (!user.emailVerified) return const VerifyEmailView();
+          return const MyHomePage();
         },
       ),
     );

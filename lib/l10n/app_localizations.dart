@@ -1006,6 +1006,42 @@ abstract class AppLocalizations {
   /// **'Möchtest Du Dich wirklich abmelden?'**
   String get settingsSignOutConfirmTitle;
 
+  /// No description provided for @verifyEmailTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail bestätigen'**
+  String get verifyEmailTitle;
+
+  /// No description provided for @verifyEmailSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.'**
+  String verifyEmailSubtitle(String email);
+
+  /// No description provided for @verifyEmailResend.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail erneut senden'**
+  String get verifyEmailResend;
+
+  /// No description provided for @verifyEmailResendCountdown.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail erneut senden ({seconds})'**
+  String verifyEmailResendCountdown(int seconds);
+
+  /// No description provided for @verifyEmailResendSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'E-Mail gesendet'**
+  String get verifyEmailResendSuccessTitle;
+
+  /// No description provided for @verifyEmailResendSuccessMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Wir haben dir eine neue Bestätigungsmail geschickt.'**
+  String get verifyEmailResendSuccessMessage;
+
   /// No description provided for @errorAuthInvalidEmail.
   ///
   /// In de, this message translates to:

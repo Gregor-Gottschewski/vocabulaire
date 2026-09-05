@@ -511,6 +511,29 @@ class AppLocalizationsEn extends AppLocalizations {
       'Are you sure you want to sign out?';
 
   @override
+  String get verifyEmailTitle => 'Verify your email';
+
+  @override
+  String verifyEmailSubtitle(String email) {
+    return 'We\'ve sent a verification email to $email. Please verify your email address to use Vocabulaire.';
+  }
+
+  @override
+  String get verifyEmailResend => 'Resend email';
+
+  @override
+  String verifyEmailResendCountdown(int seconds) {
+    return 'Resend email ($seconds)';
+  }
+
+  @override
+  String get verifyEmailResendSuccessTitle => 'Email sent';
+
+  @override
+  String get verifyEmailResendSuccessMessage =>
+      'We\'ve sent you a new verification email.';
+
+  @override
   String get errorAuthInvalidEmail =>
       'Your email address seems to be incorrect.';
 

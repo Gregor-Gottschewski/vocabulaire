@@ -247,6 +247,26 @@
   "resetPasswordSuccessMessage": "Si un compte existe pour cette adresse e-mail, un lien de réinitialisation du mot de passe a été envoyé.",
   "settingsSignOut": "Se déconnecter",
   "settingsSignOutConfirmTitle": "Voulez-vous vraiment vous déconnecter ?",
+  "verifyEmailTitle": "Vérifie ton e-mail",
+  "verifyEmailSubtitle": "Nous avons envoyé un e-mail de vérification à {email}. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyEmailResend": "Renvoyer l'e-mail",
+  "verifyEmailResendCountdown": "Renvoyer l'e-mail ({seconds})",
+  "@verifyEmailResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyEmailResendSuccessTitle": "E-mail envoyé",
+  "verifyEmailResendSuccessMessage": "Nous t'avons envoyé un nouvel e-mail de vérification.",
   "errorAuthInvalidEmail": "Votre adresse e-mail semble incorrecte.",
   "errorAuthUserDisabled": "Votre compte a été désactivé. Veuillez contacter notre support.",
   "errorAuthUserNotFound": "L'e-mail ou le mot de passe saisi est incorrect.",

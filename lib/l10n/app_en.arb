@@ -202,6 +202,26 @@
   "resetPasswordSuccessMessage": "If an account exists for this email address, a password reset link has been sent.",
   "settingsSignOut": "Sign out",
   "settingsSignOutConfirmTitle": "Are you sure you want to sign out?",
+  "verifyEmailTitle": "Verify your email",
+  "verifyEmailSubtitle": "We've sent a verification email to {email}. Please verify your email address to use Vocabulaire.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyEmailResend": "Resend email",
+  "verifyEmailResendCountdown": "Resend email ({seconds})",
+  "@verifyEmailResendCountdown": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "verifyEmailResendSuccessTitle": "Email sent",
+  "verifyEmailResendSuccessMessage": "We've sent you a new verification email.",
   "errorAuthInvalidEmail": "Your email address seems to be incorrect.",
   "errorAuthUserDisabled": "Your account has been disabled. Please contact our support.",
   "errorAuthUserNotFound": "The entered email or password is incorrect.",

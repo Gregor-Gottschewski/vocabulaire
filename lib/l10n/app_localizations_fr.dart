@@ -521,6 +521,29 @@ class AppLocalizationsFr extends AppLocalizations {
       'Voulez-vous vraiment vous déconnecter ?';
 
   @override
+  String get verifyEmailTitle => 'Vérifie ton e-mail';
+
+  @override
+  String verifyEmailSubtitle(String email) {
+    return 'Nous avons envoyé un e-mail de vérification à $email. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire.';
+  }
+
+  @override
+  String get verifyEmailResend => 'Renvoyer l\'e-mail';
+
+  @override
+  String verifyEmailResendCountdown(int seconds) {
+    return 'Renvoyer l\'e-mail ($seconds)';
+  }
+
+  @override
+  String get verifyEmailResendSuccessTitle => 'E-mail envoyé';
+
+  @override
+  String get verifyEmailResendSuccessMessage =>
+      'Nous t\'avons envoyé un nouvel e-mail de vérification.';
+
+  @override
   String get errorAuthInvalidEmail => 'Votre adresse e-mail semble incorrecte.';
 
   @override

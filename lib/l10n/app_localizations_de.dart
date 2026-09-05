@@ -521,6 +521,29 @@ class AppLocalizationsDe extends AppLocalizations {
       'Möchtest Du Dich wirklich abmelden?';
 
   @override
+  String get verifyEmailTitle => 'E-Mail bestätigen';
+
+  @override
+  String verifyEmailSubtitle(String email) {
+    return 'Wir haben eine Bestätigungsmail an $email gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.';
+  }
+
+  @override
+  String get verifyEmailResend => 'E-Mail erneut senden';
+
+  @override
+  String verifyEmailResendCountdown(int seconds) {
+    return 'E-Mail erneut senden ($seconds)';
+  }
+
+  @override
+  String get verifyEmailResendSuccessTitle => 'E-Mail gesendet';
+
+  @override
+  String get verifyEmailResendSuccessMessage =>
+      'Wir haben dir eine neue Bestätigungsmail geschickt.';
+
+  @override
   String get errorAuthInvalidEmail =>
       'Deine E-Mail-Adresse scheint nicht korrekt zu sein.';
 
