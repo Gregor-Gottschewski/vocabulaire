@@ -37,6 +37,10 @@ enum AppError {
   authTooManyRequests,
   authUnknownError,
   authPasswordsDoNotMatch,
+  subscriptionProductsUnavailable,
+  subscriptionPurchaseFailed,
+  subscriptionVerificationFailed,
+  subscriptionRestoreFailed,
 }
 
 /// [AppException] represents a user-facing application error.

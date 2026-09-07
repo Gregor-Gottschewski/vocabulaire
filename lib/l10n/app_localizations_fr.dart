@@ -827,4 +827,54 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get languageCustomPlaceholder => 'Saisir une langue';
+
+  @override
+  String get settingsUpgradeToPremium => 'Passer à Premium';
+
+  @override
+  String get settingsManageSubscription => 'Gérer l\'abonnement';
+
+  @override
+  String get subscriptionHeadline => 'Apprendre sans limites';
+
+  @override
+  String get subscriptionSubtitle =>
+      'Synchronisation de ton vocabulaire sur tous tes appareils et accès à l\'aide à la prononciation.';
+
+  @override
+  String get subscriptionPlanYearly => 'An';
+
+  @override
+  String get subscriptionPlanMonthly => 'Mois';
+
+  @override
+  String get subscriptionCta => 'Essayer gratuitement pendant 7 jours';
+
+  @override
+  String subscriptionFinePrint(String price, String period) {
+    return 'Puis $price / $period';
+  }
+
+  @override
+  String get subscriptionAutoRenewNotice =>
+      'L\'abonnement se renouvelle automatiquement, sauf annulation au moins 24 heures avant la fin de la période en cours.';
+
+  @override
+  String get subscriptionRestore => 'Restaurer les achats';
+
+  @override
+  String get errorSubscriptionProductsUnavailable =>
+      'Les produits d\'abonnement n\'ont pas pu être chargés. Vérifie ta connexion internet.';
+
+  @override
+  String get errorSubscriptionPurchaseFailed =>
+      'L\'achat n\'a pas pu être finalisé. Merci de réessayer.';
+
+  @override
+  String get errorSubscriptionVerificationFailed =>
+      'L\'achat n\'a pas pu être vérifié. Réessaie ou contacte le support.';
+
+  @override
+  String get errorSubscriptionRestoreFailed =>
+      'Les achats n\'ont pas pu être restaurés. Merci de réessayer.';
 }

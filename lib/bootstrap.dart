@@ -19,6 +19,7 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/group_sync_service.dart';
+import 'package:vocabulaire/services/subscription_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
 import 'models/conjugation.dart';
 import 'models/pending_audio_upload.dart';
@@ -107,6 +108,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GroupSyncService.instance.detach();
     UsageService.instance.detach();
     AudioUploadQueueService.instance.detach();
+    SubscriptionService.instance.detach();
     super.dispose();
   }
 
@@ -120,6 +122,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       GroupSyncService.instance.attach();
       UsageService.instance.attach();
       AudioUploadQueueService.instance.attach();
+      SubscriptionService.instance.attach();
     }
   }
 

@@ -826,4 +826,54 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get languageCustomPlaceholder => 'Sprache eingeben';
+
+  @override
+  String get settingsUpgradeToPremium => 'Zu Premium upgraden';
+
+  @override
+  String get settingsManageSubscription => 'Abo verwalten';
+
+  @override
+  String get subscriptionHeadline => 'Unbegrenzt lernen';
+
+  @override
+  String get subscriptionSubtitle =>
+      'Synchronisierung von Vokabeln über alle Geräte hinweg und Nutzung der Ausspracheunterstützung.';
+
+  @override
+  String get subscriptionPlanYearly => 'Jahr';
+
+  @override
+  String get subscriptionPlanMonthly => 'Monat';
+
+  @override
+  String get subscriptionCta => '7 Tage kostenlos testen';
+
+  @override
+  String subscriptionFinePrint(String price, String period) {
+    return 'Danach $price / $period';
+  }
+
+  @override
+  String get subscriptionAutoRenewNotice =>
+      'Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt wird.';
+
+  @override
+  String get subscriptionRestore => 'Wiederherstellen';
+
+  @override
+  String get errorSubscriptionProductsUnavailable =>
+      'Die Abo-Produkte konnten nicht geladen werden. Bitte überprüfe deine Internetverbindung.';
+
+  @override
+  String get errorSubscriptionPurchaseFailed =>
+      'Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.';
+
+  @override
+  String get errorSubscriptionVerificationFailed =>
+      'Der Kauf konnte nicht bestätigt werden. Bitte versuche es erneut oder wende dich an den Support.';
+
+  @override
+  String get errorSubscriptionRestoreFailed =>
+      'Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut.';
 }
