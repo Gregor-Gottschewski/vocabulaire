@@ -3,6 +3,7 @@ import {onDocumentCreated, onDocumentDeleted} from "firebase-functions/v2/firest
 import {onObjectDeleted, onObjectFinalized, StorageEvent} from "firebase-functions/v2/storage";
 import {consumeReservation, releaseReservation} from "./audioReservations";
 import {AUDIO_PATH_PATTERN} from "./storagePaths";
+import {userExists} from "./userGuard";
 
 export const REGION = "europe-west1";
 export const GROUP_PATH = "users/{uid}/groups/{groupId}";
@@ -14,6 +15,7 @@ const VOCABULARY_LIMIT_PREMIUM = 3000;
 
 async function adjustRateLimitField(uid: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
+    if (!(await userExists(uid))) return;
     await getFirestore()
         .collection("rateLimits")
         .doc(uid)
@@ -22,6 +24,7 @@ async function adjustRateLimitField(uid: string, field: string, delta: number): 
 
 async function adjustGroupField(uid: string, groupId: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
+    if (!(await userExists(uid))) return;
     await getFirestore()
         .collection("users")
         .doc(uid)

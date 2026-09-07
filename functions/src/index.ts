@@ -24,6 +24,7 @@ export {
   reconcileBoxCounts,
 } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
+export { onUserDeleted } from "./accountDeletion";
 export { reserveAudioUpload } from "./audioReservations";
 export {
   onGroupSoftDeleted,

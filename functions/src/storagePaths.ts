@@ -13,3 +13,7 @@ export function boxAudioPrefix(uid: string, groupId: string, boxId: string): str
 export function groupPrefix(uid: string, groupId: string): string {
     return `users/${uid}/groups/${groupId}/boxes/`;
 }
+
+export function userStoragePrefix(uid: string): string {
+    return `users/${uid}/`;
+}
