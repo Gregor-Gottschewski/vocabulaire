@@ -1,5 +1,6 @@
 import {FieldValue, Timestamp, getFirestore} from "firebase-admin/firestore";
 import {HttpsError, onCall} from "firebase-functions/v2/https";
+import {isPremiumActive} from "./premiumStatus";
 import {userExists} from "./userGuard";
 
 const REGION = "europe-west1";
@@ -65,7 +66,7 @@ export const reserveAudioUpload = onCall(
             }
 
             const rateLimitData = rateLimitSnap.exists ? rateLimitSnap.data()! : {};
-            if (rateLimitData.isPremium !== true) {
+            if (!isPremiumActive(rateLimitData)) {
                 throw new HttpsError("permission-denied", "Premium subscription required.");
             }
 

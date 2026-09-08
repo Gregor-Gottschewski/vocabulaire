@@ -7,16 +7,20 @@ import 'package:flutter/foundation.dart';
 /// Snapshot of the current user's `rateLimits/{uid}` usage document
 class UsageInfo {
   final int vocabularyCountOnline;
-  final bool isPremium;
+  final DateTime? subscriptionExpiresAt;
   final int audioBytesUsed;
   final int groupCountOnline;
 
   const UsageInfo({
     this.vocabularyCountOnline = 0,
-    this.isPremium = false,
+    this.subscriptionExpiresAt,
     this.audioBytesUsed = 0,
     this.groupCountOnline = 0,
   });
+
+  bool get isPremium =>
+      subscriptionExpiresAt != null &&
+      subscriptionExpiresAt!.isAfter(DateTime.now());
 
   int get vocabularyLimit => UsageService.vocabularyLimitPremium;
 
@@ -24,10 +28,11 @@ class UsageInfo {
 
   static UsageInfo fromSnapshot(DocumentSnapshot<Map<String, dynamic>> snap) {
     final data = snap.data();
+    final expiresAt = data?['subscriptionExpiresAt'] as Timestamp?;
     return UsageInfo(
       vocabularyCountOnline:
           (data?['vocabularyCountOnline'] as num?)?.toInt() ?? 0,
-      isPremium: data?['isPremium'] == true,
+      subscriptionExpiresAt: expiresAt?.toDate(),
       audioBytesUsed: (data?['audioBytesUsed'] as num?)?.toInt() ?? 0,
       groupCountOnline: (data?['groupCountOnline'] as num?)?.toInt() ?? 0,
     );
