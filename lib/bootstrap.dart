@@ -52,17 +52,9 @@ Future<void> bootstrap(Flavor flavor) async {
     ).useFunctionsEmulator('localhost', 5001);
   }
 
-  // TODO: switch to AppleAppAttestProvider (iOS) / AppleDeviceCheckProvider (macOS)
-  // once a paid Apple Developer Program membership is available. The debug
-  // provider requires no paid account but must not ship in App Store builds.
-  // Sign in with Apple (once the Apple Developer Program membership above is
-  // active) should be added alongside this switch — see AuthService.
   await FirebaseAppCheck.instance.activate(
-    providerApple: kReleaseMode
-        ? (throw UnsupportedError(
-            'AppleDebugProvider must not ship in release builds. Configure '
-            'AppleAppAttestProvider/AppleDeviceCheckProvider before release.',
-          ))
+    providerApple: kReleaseMode || !_useFirebaseEmulator
+        ? const AppleAppAttestWithDeviceCheckFallbackProvider()
         : const AppleDebugProvider(),
   );
 
