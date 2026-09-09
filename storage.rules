@@ -1,20 +1,25 @@
 rules_version = '2';
 
 service firebase.storage {
+  function isPremiumUser(userId) {
+    let expiresAt = firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.get('subscriptionExpiresAt', null);
+    return expiresAt != null && expiresAt > request.time;
+  }
+
   match /b/{bucket}/o {
     match /users/{userId}/groups/{groupId}/boxes/{boxId}/audios/{vocabId} {
       allow read: if request.auth != null && request.auth.uid == userId
-                   && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.isPremium == true;
+                   && isPremiumUser(userId);
 
       allow create, update: if request.auth != null && request.auth.uid == userId
-                             && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.isPremium == true
+                             && isPremiumUser(userId)
                              && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.audioBytesUsed
                               + request.resource.size <= 50 * 1024 * 1024
                              && firestore.get(/databases/(default)/documents/audioReservations/$(userId + '_' + vocabId)).data.sizeBytes == request.resource.size
                              && firestore.get(/databases/(default)/documents/audioReservations/$(userId + '_' + vocabId)).data.expiresAt > request.time;
 
       allow delete: if request.auth != null && request.auth.uid == userId
-                     && firestore.get(/databases/(default)/documents/rateLimits/$(userId)).data.isPremium == true;
+                     && isPremiumUser(userId);
    }
   }
 }

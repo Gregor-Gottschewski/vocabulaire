@@ -379,5 +379,38 @@
   "languageSearchPlaceholder": "Suchen",
   "languageCustomOption": "Eigene...",
   "languageCustomTitle": "Eigene Sprache",
-  "languageCustomPlaceholder": "Sprache eingeben"
+  "languageCustomPlaceholder": "Sprache eingeben",
+  "settingsUpgradeToPremium": "Zu Premium upgraden",
+  "settingsManageSubscription": "Abo verwalten",
+  "subscriptionHeadline": "Unbegrenzt lernen",
+  "subscriptionSubtitle": "Synchronisierung von Vokabeln über alle Geräte hinweg und Nutzung der Ausspracheunterstützung.",
+  "subscriptionPlanYearly": "Jahr",
+  "subscriptionPlanMonthly": "Monat",
+  "subscriptionCta": "7 Tage kostenlos testen",
+  "subscriptionFinePrint": "Danach {price} / {period}",
+  "@subscriptionFinePrint": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionAutoRenewNotice": "Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt wird.",
+  "subscriptionRestore": "Wiederherstellen",
+  "errorSubscriptionProductsUnavailable": "Die Abo-Produkte konnten nicht geladen werden. Bitte überprüfe deine Internetverbindung.",
+  "errorSubscriptionPurchaseFailed": "Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
+  "errorSubscriptionVerificationFailed": "Der Kauf konnte nicht bestätigt werden. Bitte versuche es erneut oder wende dich an den Support.",
+  "errorSubscriptionRestoreFailed": "Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut.",
+  "errorSubscriptionAlreadyLinked": "Dieses Abo ist bereits mit einem anderen Konto verknüpft ({email}). Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.",
+  "@errorSubscriptionAlreadyLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSubscriptionAlreadyLinkedUnknown": "Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her."
 }

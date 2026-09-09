@@ -19,5 +19,12 @@ export const onUserDeleted = functionsV1
         const reservations = await db.collection("audioReservations").where("uid", "==", uid).get();
         await Promise.all(reservations.docs.map((d) => d.ref.delete()));
 
+        const subscriptions = await db.collection("appleSubscriptions").where("uid", "==", uid).get();
+        await Promise.all(
+            subscriptions.docs.map((d) =>
+                d.ref.delete().catch((e) => console.error(`onUserDeleted: failed to release appleSubscriptions/${d.id}`, e))
+            )
+        );
+
         await db.collection("rateLimits").doc(uid).delete().catch(() => undefined);
     });

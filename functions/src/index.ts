@@ -26,6 +26,8 @@ export {
 export { onUserCreated } from "./rateLimitDoc";
 export { onUserDeleted } from "./accountDeletion";
 export { reserveAudioUpload } from "./audioReservations";
+export { verifyAppleSubscription } from "./subscriptionVerification";
+export { appleServerNotifications } from "./appleNotifications";
 export {
   onGroupSoftDeleted,
   onBoxSoftDeleted,

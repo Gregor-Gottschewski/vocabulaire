@@ -1551,6 +1551,102 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Sprache eingeben'**
   String get languageCustomPlaceholder;
+
+  /// No description provided for @settingsUpgradeToPremium.
+  ///
+  /// In de, this message translates to:
+  /// **'Zu Premium upgraden'**
+  String get settingsUpgradeToPremium;
+
+  /// No description provided for @settingsManageSubscription.
+  ///
+  /// In de, this message translates to:
+  /// **'Abo verwalten'**
+  String get settingsManageSubscription;
+
+  /// No description provided for @subscriptionHeadline.
+  ///
+  /// In de, this message translates to:
+  /// **'Unbegrenzt lernen'**
+  String get subscriptionHeadline;
+
+  /// No description provided for @subscriptionSubtitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Synchronisierung von Vokabeln über alle Geräte hinweg und Nutzung der Ausspracheunterstützung.'**
+  String get subscriptionSubtitle;
+
+  /// No description provided for @subscriptionPlanYearly.
+  ///
+  /// In de, this message translates to:
+  /// **'Jahr'**
+  String get subscriptionPlanYearly;
+
+  /// No description provided for @subscriptionPlanMonthly.
+  ///
+  /// In de, this message translates to:
+  /// **'Monat'**
+  String get subscriptionPlanMonthly;
+
+  /// No description provided for @subscriptionCta.
+  ///
+  /// In de, this message translates to:
+  /// **'7 Tage kostenlos testen'**
+  String get subscriptionCta;
+
+  /// No description provided for @subscriptionFinePrint.
+  ///
+  /// In de, this message translates to:
+  /// **'Danach {price} / {period}'**
+  String subscriptionFinePrint(String price, String period);
+
+  /// No description provided for @subscriptionAutoRenewNotice.
+  ///
+  /// In de, this message translates to:
+  /// **'Das Abo verlängert sich automatisch, sofern es nicht mindestens 24 Stunden vor Ablauf des aktuellen Zeitraums gekündigt wird.'**
+  String get subscriptionAutoRenewNotice;
+
+  /// No description provided for @subscriptionRestore.
+  ///
+  /// In de, this message translates to:
+  /// **'Wiederherstellen'**
+  String get subscriptionRestore;
+
+  /// No description provided for @errorSubscriptionProductsUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Abo-Produkte konnten nicht geladen werden. Bitte überprüfe deine Internetverbindung.'**
+  String get errorSubscriptionProductsUnavailable;
+
+  /// No description provided for @errorSubscriptionPurchaseFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.'**
+  String get errorSubscriptionPurchaseFailed;
+
+  /// No description provided for @errorSubscriptionVerificationFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Der Kauf konnte nicht bestätigt werden. Bitte versuche es erneut oder wende dich an den Support.'**
+  String get errorSubscriptionVerificationFailed;
+
+  /// No description provided for @errorSubscriptionRestoreFailed.
+  ///
+  /// In de, this message translates to:
+  /// **'Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut.'**
+  String get errorSubscriptionRestoreFailed;
+
+  /// No description provided for @errorSubscriptionAlreadyLinked.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Abo ist bereits mit einem anderen Konto verknüpft ({email}). Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.'**
+  String errorSubscriptionAlreadyLinked(String email);
+
+  /// No description provided for @errorSubscriptionAlreadyLinkedUnknown.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.'**
+  String get errorSubscriptionAlreadyLinkedUnknown;
 }
 
 class _AppLocalizationsDelegate

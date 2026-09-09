@@ -1,12 +1,15 @@
 rules_version = '2';
 
 service cloud.firestore {
-  // Rate-limit data (vocabularyCountOnline, isPremium, ...) defaults to
-  // free-tier zero values when the document/fields don't exist yet
   function rateLimitData(database, uid) {
     return exists(/databases/$(database)/documents/rateLimits/$(uid))
       ? get(/databases/$(database)/documents/rateLimits/$(uid)).data
-      : {'vocabularyCountOnline': 0, 'isPremium': false};
+      : {'vocabularyCountOnline': 0};
+  }
+
+  function isPremiumUser(database, uid) {
+    let expiresAt = rateLimitData(database, uid).get('subscriptionExpiresAt', null);
+    return expiresAt != null && expiresAt > request.time;
   }
 
   // fsrs Card
@@ -131,19 +134,23 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /appleSubscriptions/{originalTransactionId} {
+      allow read, write: if false;
+    }
+
     match /{path=**}/boxes/{boxId} {
       allow list: if request.auth != null
                     && resource.data.ownerUid == request.auth.uid
-                    && rateLimitData(database, request.auth.uid).get('isPremium', false) == true;
+                    && isPremiumUser(database, request.auth.uid);
     }
 
     // Groups own their boxes, which in turn own their vocabularies.
     match /users/{userId}/groups/{groupId} {
       allow read, delete: if request.auth != null && request.auth.uid == userId
-                    && rateLimitData(database, userId).get('isPremium', false) == true;
+                    && isPremiumUser(database, userId);
 
       allow update: if request.auth != null && request.auth.uid == userId
-                    && rateLimitData(database, userId).get('isPremium', false) == true
+                    && isPremiumUser(database, userId)
                     && resource.data.deleted == false
                     && request.resource.data.ownerUid == resource.data.ownerUid
                     && request.resource.data.id == resource.data.id
@@ -155,7 +162,7 @@ service cloud.firestore {
                     && groupFieldsValid(request.resource.data);
 
       allow create: if request.auth != null && request.auth.uid == userId
-                    && rateLimitData(database, userId).get('isPremium', false) == true
+                    && isPremiumUser(database, userId)
                     && request.resource.data.ownerUid == userId
                     && request.resource.data.deleted == false
                     && request.resource.data.keys().hasAll(['id', 'name', 'deleted', 'type'])
@@ -165,10 +172,10 @@ service cloud.firestore {
 
       match /boxes/{boxId} {
         allow get, delete: if request.auth != null && request.auth.uid == userId
-                      && rateLimitData(database, userId).get('isPremium', false) == true;
+                      && isPremiumUser(database, userId);
 
         allow update: if request.auth != null && request.auth.uid == userId
-                      && rateLimitData(database, userId).get('isPremium', false) == true
+                      && isPremiumUser(database, userId)
                       && resource.data.deleted == false
                       && request.resource.data.ownerUid == resource.data.ownerUid
                       && request.resource.data.id == resource.data.id
@@ -178,7 +185,7 @@ service cloud.firestore {
 
         // A box's type must match its group's type.
         allow create: if request.auth != null && request.auth.uid == userId
-                      && rateLimitData(database, userId).get('isPremium', false) == true
+                      && isPremiumUser(database, userId)
                       && request.resource.data.ownerUid == userId
                       && request.resource.data.deleted == false
                       && request.resource.data.keys().hasAll(['id', 'name', 'deleted', 'type'])
@@ -189,10 +196,10 @@ service cloud.firestore {
 
         match /vocabularies/{vocabId} {
           allow read, delete: if request.auth != null && request.auth.uid == userId
-                        && rateLimitData(database, userId).get('isPremium', false) == true;
+                        && isPremiumUser(database, userId);
 
           allow update: if request.auth != null && request.auth.uid == userId
-                        && rateLimitData(database, userId).get('isPremium', false) == true
+                        && isPremiumUser(database, userId)
                         && resource.data.deleted == false
                         && request.resource.data.ownerUid == resource.data.ownerUid
                         && request.resource.data.id == resource.data.id
@@ -200,7 +207,7 @@ service cloud.firestore {
                         && vocabFieldsValid(request.resource.data);
 
           allow create: if request.auth != null && request.auth.uid == userId
-                        && rateLimitData(database, userId).get('isPremium', false) == true
+                        && isPremiumUser(database, userId)
                         && request.resource.data.ownerUid == userId
                         && request.resource.data.deleted == false
                         && request.resource.data.keys().hasAll(['audioSynced', 'card', 'deleted', 'id', 'meaning', 'ownerUid', 'updatedAt', 'word'])

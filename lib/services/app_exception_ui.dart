@@ -52,6 +52,15 @@ extension AppExceptionDialog on BuildContext {
       AppError.authTooManyRequests => i18n.errorAuthTooManyRequests,
       AppError.authUnknownError => i18n.errorAuthUnknownError,
       AppError.authPasswordsDoNotMatch => i18n.errorAuthPasswordsDoNotMatch,
+      AppError.subscriptionProductsUnavailable =>
+        i18n.errorSubscriptionProductsUnavailable,
+      AppError.subscriptionPurchaseFailed => i18n.errorSubscriptionPurchaseFailed,
+      AppError.subscriptionVerificationFailed =>
+        i18n.errorSubscriptionVerificationFailed,
+      AppError.subscriptionRestoreFailed => i18n.errorSubscriptionRestoreFailed,
+      AppError.subscriptionAlreadyLinked => (e.details as String?) != null
+          ? i18n.errorSubscriptionAlreadyLinked(e.details as String)
+          : i18n.errorSubscriptionAlreadyLinkedUnknown,
     };
 
     return showAppDialog(

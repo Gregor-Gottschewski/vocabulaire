@@ -1,5 +1,6 @@
 import {FieldValue, Timestamp, getFirestore} from "firebase-admin/firestore";
 import {HttpsError} from "firebase-functions/v2/https";
+import {isPremiumActive} from "./premiumStatus";
 
 const DAILY_LIMIT_FREE = 1;
 const DAILY_LIMIT_PREMIUM = 50;
@@ -19,19 +20,18 @@ export async function consumeRateLimit(uid: string): Promise<void> {
         const now = Timestamp.now();
 
         if (!snap.exists) {
-            tx.set(ref, {ttsCallCount: 1, ttsWindowStart: now, isPremium: false});
+            tx.set(ref, {ttsCallCount: 1, ttsWindowStart: now});
             return;
         }
 
         const data = snap.data()!;
-        const isPremium = data.isPremium === true;
-        const limit = isPremium ? DAILY_LIMIT_PREMIUM + DAILY_LIMIT_FREE : DAILY_LIMIT_FREE;
+        const limit = isPremiumActive(data) ? DAILY_LIMIT_PREMIUM + DAILY_LIMIT_FREE : DAILY_LIMIT_FREE;
 
         const windowStart = data.ttsWindowStart as Timestamp;
         const windowExpired = now.toMillis() - windowStart.toMillis() > WINDOW_MS;
 
         if (windowExpired) {
-            tx.set(ref, {ttsCallCount: 1, ttsWindowStart: now, isPremium}, {merge: true});
+            tx.set(ref, {ttsCallCount: 1, ttsWindowStart: now}, {merge: true});
             return;
         }
 

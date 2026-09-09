@@ -19,6 +19,7 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/group_sync_service.dart';
+import 'package:vocabulaire/services/subscription_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
 import 'models/conjugation.dart';
 import 'models/pending_audio_upload.dart';
@@ -51,17 +52,9 @@ Future<void> bootstrap(Flavor flavor) async {
     ).useFunctionsEmulator('localhost', 5001);
   }
 
-  // TODO: switch to AppleAppAttestProvider (iOS) / AppleDeviceCheckProvider (macOS)
-  // once a paid Apple Developer Program membership is available. The debug
-  // provider requires no paid account but must not ship in App Store builds.
-  // Sign in with Apple (once the Apple Developer Program membership above is
-  // active) should be added alongside this switch — see AuthService.
   await FirebaseAppCheck.instance.activate(
-    providerApple: kReleaseMode
-        ? (throw UnsupportedError(
-            'AppleDebugProvider must not ship in release builds. Configure '
-            'AppleAppAttestProvider/AppleDeviceCheckProvider before release.',
-          ))
+    providerApple: kReleaseMode || !_useFirebaseEmulator
+        ? const AppleAppAttestWithDeviceCheckFallbackProvider()
         : const AppleDebugProvider(),
   );
 
@@ -107,6 +100,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GroupSyncService.instance.detach();
     UsageService.instance.detach();
     AudioUploadQueueService.instance.detach();
+    SubscriptionService.instance.detach();
     super.dispose();
   }
 
@@ -120,6 +114,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       GroupSyncService.instance.attach();
       UsageService.instance.attach();
       AudioUploadQueueService.instance.attach();
+      SubscriptionService.instance.attach();
     }
   }
 

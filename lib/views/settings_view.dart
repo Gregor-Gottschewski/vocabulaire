@@ -19,6 +19,7 @@ import '../theme/theme_context_ext.dart';
 import 'change_email_view.dart';
 import 'change_password_view.dart';
 import 'delete_account_view.dart';
+import 'subscription_view.dart';
 import 'widgets/app_dialog.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/key_value_row.dart';
@@ -186,11 +187,12 @@ class _SettingsViewState extends State<SettingsView> {
               ],
             ),
 
-            if (_usage.listenable.value.isPremium) ...[
-              const SizedBox(height: AppSpacing.sectionGap),
-              KeyValueRowGroup(
-                title: _l10n.settingsSectionPremiumFeatures,
-                children: [
+            const SizedBox(height: AppSpacing.sectionGap),
+
+            KeyValueRowGroup(
+              title: _l10n.settingsSectionPremiumFeatures,
+              children: [
+                if (_usage.listenable.value.isPremium) ...[
                   KeyValueRow.value(
                     label: _l10n.settingsSyncStatus,
                     value: _syncStatusLabel,
@@ -203,9 +205,17 @@ class _SettingsViewState extends State<SettingsView> {
                     label: _l10n.settingsAudioUsage,
                     value: _audioUsageLabel,
                   ),
+                ] else ...[
+                  KeyValueRow.submenu(
+                    context,
+                    label: _l10n.settingsUpgradeToPremium,
+                    onTap: () => Navigator.of(context).push(
+                      AppPageRoute(builder: (_) => const SubscriptionView()),
+                    ),
+                  ),
                 ],
-              ),
-            ],
+              ],
+            ),
 
             const SizedBox(height: AppSpacing.sectionGap),
             KeyValueRowGroup(
@@ -241,9 +251,9 @@ class _SettingsViewState extends State<SettingsView> {
                   context,
                   label: _l10n.settingsAccountDeletion,
                   color: colors.danger,
-                  onTap: () => Navigator.of(
-                    context,
-                  ).push(AppPageRoute(builder: (_) => const DeleteAccountView())),
+                  onTap: () => Navigator.of(context).push(
+                    AppPageRoute(builder: (_) => const DeleteAccountView()),
+                  ),
                 ),
               ],
             ),

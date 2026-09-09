@@ -815,4 +815,63 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageCustomPlaceholder => 'Enter language';
+
+  @override
+  String get settingsUpgradeToPremium => 'Upgrade to Premium';
+
+  @override
+  String get settingsManageSubscription => 'Manage subscription';
+
+  @override
+  String get subscriptionHeadline => 'Learn without limits';
+
+  @override
+  String get subscriptionSubtitle =>
+      'Synchronise your vocabulary across all your devices and get access to pronunciation support.';
+
+  @override
+  String get subscriptionPlanYearly => 'Year';
+
+  @override
+  String get subscriptionPlanMonthly => 'Month';
+
+  @override
+  String get subscriptionCta => 'Try free for 7 days';
+
+  @override
+  String subscriptionFinePrint(String price, String period) {
+    return 'Then $price / $period';
+  }
+
+  @override
+  String get subscriptionAutoRenewNotice =>
+      'The subscription renews automatically unless cancelled at least 24 hours before the end of the current period.';
+
+  @override
+  String get subscriptionRestore => 'Restore purchases';
+
+  @override
+  String get errorSubscriptionProductsUnavailable =>
+      'The subscription products could not be loaded. Please check your internet connection.';
+
+  @override
+  String get errorSubscriptionPurchaseFailed =>
+      'The purchase could not be completed. Please try again.';
+
+  @override
+  String get errorSubscriptionVerificationFailed =>
+      'The purchase could not be verified. Please try again or contact support.';
+
+  @override
+  String get errorSubscriptionRestoreFailed =>
+      'Purchases could not be restored. Please try again.';
+
+  @override
+  String errorSubscriptionAlreadyLinked(String email) {
+    return 'This subscription is already linked to another account ($email). Delete that account first, then restore the purchase again.';
+  }
+
+  @override
+  String get errorSubscriptionAlreadyLinkedUnknown =>
+      'This subscription is already linked to another account. Delete that account first, then restore the purchase again.';
 }

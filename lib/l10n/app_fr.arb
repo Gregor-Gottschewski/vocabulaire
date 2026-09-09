@@ -358,5 +358,38 @@
   "languageSearchPlaceholder": "Rechercher",
   "languageCustomOption": "Personnalisé...",
   "languageCustomTitle": "Langue personnalisée",
-  "languageCustomPlaceholder": "Saisir une langue"
+  "languageCustomPlaceholder": "Saisir une langue",
+  "settingsUpgradeToPremium": "Passer à Premium",
+  "settingsManageSubscription": "Gérer l'abonnement",
+  "subscriptionHeadline": "Apprendre sans limites",
+  "subscriptionSubtitle": "Synchronisation de ton vocabulaire sur tous tes appareils et accès à l'aide à la prononciation.",
+  "subscriptionPlanYearly": "An",
+  "subscriptionPlanMonthly": "Mois",
+  "subscriptionCta": "Essayer gratuitement pendant 7 jours",
+  "subscriptionFinePrint": "Puis {price} / {period}",
+  "@subscriptionFinePrint": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      },
+      "period": {
+        "type": "String"
+      }
+    }
+  },
+  "subscriptionAutoRenewNotice": "L'abonnement se renouvelle automatiquement, sauf annulation au moins 24 heures avant la fin de la période en cours.",
+  "subscriptionRestore": "Restaurer les achats",
+  "errorSubscriptionProductsUnavailable": "Les produits d'abonnement n'ont pas pu être chargés. Vérifie ta connexion internet.",
+  "errorSubscriptionPurchaseFailed": "L'achat n'a pas pu être finalisé. Merci de réessayer.",
+  "errorSubscriptionVerificationFailed": "L'achat n'a pas pu être vérifié. Réessaie ou contacte le support.",
+  "errorSubscriptionRestoreFailed": "Les achats n'ont pas pu être restaurés. Merci de réessayer.",
+  "errorSubscriptionAlreadyLinked": "Cet abonnement est déjà lié à un autre compte ({email}). Supprime d'abord ce compte, puis restaure à nouveau l'achat.",
+  "@errorSubscriptionAlreadyLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSubscriptionAlreadyLinkedUnknown": "Cet abonnement est déjà lié à un autre compte. Supprime d'abord ce compte, puis restaure à nouveau l'achat."
 }
