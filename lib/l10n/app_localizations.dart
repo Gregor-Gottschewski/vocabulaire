@@ -1635,6 +1635,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut.'**
   String get errorSubscriptionRestoreFailed;
+
+  /// No description provided for @errorSubscriptionAlreadyLinked.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Abo ist bereits mit einem anderen Konto verknüpft ({email}). Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.'**
+  String errorSubscriptionAlreadyLinked(String email);
+
+  /// No description provided for @errorSubscriptionAlreadyLinkedUnknown.
+  ///
+  /// In de, this message translates to:
+  /// **'Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.'**
+  String get errorSubscriptionAlreadyLinkedUnknown;
 }
 
 class _AppLocalizationsDelegate

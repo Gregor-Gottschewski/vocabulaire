@@ -382,5 +382,14 @@
   "errorSubscriptionProductsUnavailable": "Les produits d'abonnement n'ont pas pu être chargés. Vérifie ta connexion internet.",
   "errorSubscriptionPurchaseFailed": "L'achat n'a pas pu être finalisé. Merci de réessayer.",
   "errorSubscriptionVerificationFailed": "L'achat n'a pas pu être vérifié. Réessaie ou contacte le support.",
-  "errorSubscriptionRestoreFailed": "Les achats n'ont pas pu être restaurés. Merci de réessayer."
+  "errorSubscriptionRestoreFailed": "Les achats n'ont pas pu être restaurés. Merci de réessayer.",
+  "errorSubscriptionAlreadyLinked": "Cet abonnement est déjà lié à un autre compte ({email}). Supprime d'abord ce compte, puis restaure à nouveau l'achat.",
+  "@errorSubscriptionAlreadyLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSubscriptionAlreadyLinkedUnknown": "Cet abonnement est déjà lié à un autre compte. Supprime d'abord ce compte, puis restaure à nouveau l'achat."
 }

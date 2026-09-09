@@ -5,6 +5,7 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/subscription_service.dart';
+import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
 import 'package:vocabulaire/views/widgets/selectable_option_card.dart';
 
@@ -15,7 +16,14 @@ import 'widgets/app_scaffold.dart';
 import 'widgets/primary_action_button.dart';
 import 'widgets/text_link_button.dart';
 
-enum _SelectedSubscription { monthly, yearly }
+enum _SelectedSubscription {
+  monthly(SubscriptionService.monthlyProductId),
+  yearly(SubscriptionService.yearlyProductId);
+
+  final String productId;
+
+  const _SelectedSubscription(this.productId);
+}
 
 class SubscriptionView extends StatefulWidget {
   const SubscriptionView({super.key});
@@ -78,11 +86,6 @@ class _SubscriptionViewState extends State<SubscriptionView> {
     setState(() {});
   }
 
-  String get _selectedProductId => switch (_selectedSubscription) {
-    _SelectedSubscription.yearly => SubscriptionService.yearlyProductId,
-    _SelectedSubscription.monthly => SubscriptionService.monthlyProductId,
-  };
-
   ProductDetails? _productFor(String productId) {
     for (final product in _products) {
       if (product.id == productId) return product;
@@ -95,7 +98,7 @@ class _SubscriptionViewState extends State<SubscriptionView> {
       SubscriptionPurchaseStatus.pending;
 
   Future<void> _buy() async {
-    final product = _productFor(_selectedProductId);
+    final product = _productFor(_selectedSubscription.productId);
     if (product == null) return;
     try {
       await _subscription.buy(product);
@@ -125,6 +128,10 @@ class _SubscriptionViewState extends State<SubscriptionView> {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
+
+    if (_isLoadingProducts) {
+      return AppScaffold(body: Center(child: AppProgressIndicator()));
+    }
 
     return AppScaffold(
       backLabel: _l10n.back,
@@ -175,14 +182,14 @@ class _SubscriptionViewState extends State<SubscriptionView> {
           PrimaryActionButton(
             label: _l10n.subscriptionCta,
             isLoading: _isPurchasePending,
-            onPressed: (_isLoadingProducts || _isPurchasePending) ? null : _buy,
+            onPressed: (_isPurchasePending) ? null : _buy,
           ),
           const SizedBox(height: AppSpacing.gapLarge),
           SizedBox(
             width: double.infinity,
             child: Text(
               _l10n.subscriptionFinePrint(
-                _productFor(_selectedProductId)?.price ?? '',
+                _productFor(_selectedSubscription.productId)?.price ?? '',
                 _selectedSubscription == _SelectedSubscription.yearly
                     ? _l10n.subscriptionPlanYearly
                     : _l10n.subscriptionPlanMonthly,

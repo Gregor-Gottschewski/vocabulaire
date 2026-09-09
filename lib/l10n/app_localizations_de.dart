@@ -876,4 +876,13 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorSubscriptionRestoreFailed =>
       'Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut.';
+
+  @override
+  String errorSubscriptionAlreadyLinked(String email) {
+    return 'Dieses Abo ist bereits mit einem anderen Konto verknüpft ($email). Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.';
+  }
+
+  @override
+  String get errorSubscriptionAlreadyLinkedUnknown =>
+      'Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.';
 }

@@ -140,9 +140,17 @@ class SubscriptionService {
     } on AppException catch (e) {
       _stateNotifier.value = SubscriptionPurchaseState.error(e);
     } on FirebaseFunctionsException catch (e) {
-      _stateNotifier.value = SubscriptionPurchaseState.error(
-        AppException(AppError.subscriptionVerificationFailed, details: e),
-      );
+      if (e.code == 'already-exists') {
+        final details = e.details;
+        final email = details is Map ? details['email'] as String? : null;
+        _stateNotifier.value = SubscriptionPurchaseState.error(
+          AppException(AppError.subscriptionAlreadyLinked, details: email),
+        );
+      } else {
+        _stateNotifier.value = SubscriptionPurchaseState.error(
+          AppException(AppError.subscriptionVerificationFailed, details: e),
+        );
+      }
     } finally {
       if (purchase.pendingCompletePurchase) {
         await _iap.completePurchase(purchase);

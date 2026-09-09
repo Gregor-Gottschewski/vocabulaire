@@ -347,5 +347,7 @@
   "errorSubscriptionProductsUnavailable": "The subscription products could not be loaded. Please check your internet connection.",
   "errorSubscriptionPurchaseFailed": "The purchase could not be completed. Please try again.",
   "errorSubscriptionVerificationFailed": "The purchase could not be verified. Please try again or contact support.",
-  "errorSubscriptionRestoreFailed": "Purchases could not be restored. Please try again."
+  "errorSubscriptionRestoreFailed": "Purchases could not be restored. Please try again.",
+  "errorSubscriptionAlreadyLinked": "This subscription is already linked to another account ({email}). Delete that account first, then restore the purchase again.",
+  "errorSubscriptionAlreadyLinkedUnknown": "This subscription is already linked to another account. Delete that account first, then restore the purchase again."
 }

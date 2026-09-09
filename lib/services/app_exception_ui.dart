@@ -58,6 +58,9 @@ extension AppExceptionDialog on BuildContext {
       AppError.subscriptionVerificationFailed =>
         i18n.errorSubscriptionVerificationFailed,
       AppError.subscriptionRestoreFailed => i18n.errorSubscriptionRestoreFailed,
+      AppError.subscriptionAlreadyLinked => (e.details as String?) != null
+          ? i18n.errorSubscriptionAlreadyLinked(e.details as String)
+          : i18n.errorSubscriptionAlreadyLinkedUnknown,
     };
 
     return showAppDialog(

@@ -41,6 +41,7 @@ enum AppError {
   subscriptionPurchaseFailed,
   subscriptionVerificationFailed,
   subscriptionRestoreFailed,
+  subscriptionAlreadyLinked,
 }
 
 /// [AppException] represents a user-facing application error.

@@ -865,4 +865,13 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorSubscriptionRestoreFailed =>
       'Purchases could not be restored. Please try again.';
+
+  @override
+  String errorSubscriptionAlreadyLinked(String email) {
+    return 'This subscription is already linked to another account ($email). Delete that account first, then restore the purchase again.';
+  }
+
+  @override
+  String get errorSubscriptionAlreadyLinkedUnknown =>
+      'This subscription is already linked to another account. Delete that account first, then restore the purchase again.';
 }

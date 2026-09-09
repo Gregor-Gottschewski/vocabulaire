@@ -877,4 +877,13 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorSubscriptionRestoreFailed =>
       'Les achats n\'ont pas pu être restaurés. Merci de réessayer.';
+
+  @override
+  String errorSubscriptionAlreadyLinked(String email) {
+    return 'Cet abonnement est déjà lié à un autre compte ($email). Supprime d\'abord ce compte, puis restaure à nouveau l\'achat.';
+  }
+
+  @override
+  String get errorSubscriptionAlreadyLinkedUnknown =>
+      'Cet abonnement est déjà lié à un autre compte. Supprime d\'abord ce compte, puis restaure à nouveau l\'achat.';
 }

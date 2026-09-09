@@ -134,6 +134,10 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    match /appleSubscriptions/{originalTransactionId} {
+      allow read, write: if false;
+    }
+
     match /{path=**}/boxes/{boxId} {
       allow list: if request.auth != null
                     && resource.data.ownerUid == request.auth.uid

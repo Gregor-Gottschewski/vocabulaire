@@ -403,5 +403,14 @@
   "errorSubscriptionProductsUnavailable": "Die Abo-Produkte konnten nicht geladen werden. Bitte überprüfe deine Internetverbindung.",
   "errorSubscriptionPurchaseFailed": "Der Kauf konnte nicht abgeschlossen werden. Bitte versuche es erneut.",
   "errorSubscriptionVerificationFailed": "Der Kauf konnte nicht bestätigt werden. Bitte versuche es erneut oder wende dich an den Support.",
-  "errorSubscriptionRestoreFailed": "Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut."
+  "errorSubscriptionRestoreFailed": "Käufe konnten nicht wiederhergestellt werden. Bitte versuche es erneut.",
+  "errorSubscriptionAlreadyLinked": "Dieses Abo ist bereits mit einem anderen Konto verknüpft ({email}). Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.",
+  "@errorSubscriptionAlreadyLinked": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "errorSubscriptionAlreadyLinkedUnknown": "Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her."
 }
