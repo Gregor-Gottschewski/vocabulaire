@@ -91,13 +91,23 @@ class _VerifyEmailViewState extends State<VerifyEmailView> {
     }
   }
 
+  Future<void> _signOut() async {
+    try {
+      _pollTimer?.cancel();
+      await AuthService.instance.signOut();
+    } catch (_) {
+      if (!mounted) return;
+      Navigator.of(context).pop();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
     final email = AuthService.instance.currentUser?.email ?? '';
     return AppScaffold(
       backLabel: _l10n.settingsSignOut,
-      onBack: () => AuthService.instance.signOut(),
+      onBack: () => _signOut(),
       actions: [],
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

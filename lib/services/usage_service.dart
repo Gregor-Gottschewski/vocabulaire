@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+
+import 'auth_service.dart';
 
 /// Snapshot of the current user's `rateLimits/{uid}` usage document
 class UsageInfo {
@@ -62,7 +63,7 @@ class UsageService {
 
   /// Starts the listener for the currently signed-in user.
   void attach() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) return;
 
     _subscription?.cancel();

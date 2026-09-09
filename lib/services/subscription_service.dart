@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 
 import 'app_exception.dart';
+import 'auth_service.dart';
 
 enum SubscriptionPurchaseStatus { idle, pending, success, error }
 
@@ -126,7 +126,7 @@ class SubscriptionService {
 
   Future<void> _verifyAndComplete(PurchaseDetails purchase) async {
     try {
-      final uid = FirebaseAuth.instance.currentUser?.uid;
+      final uid = AuthService.instance.currentUser?.uid;
       if (uid == null) {
         throw AppException(AppError.subscriptionVerificationFailed);
       }

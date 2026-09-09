@@ -14,11 +14,14 @@ class AuthService {
   Stream<User?> get userChanges => FirebaseAuth.instance.userChanges();
 
   Future<void> sendEmailVerification() =>
-      _wrap(() => FirebaseAuth.instance.currentUser!.sendEmailVerification());
+      _wrap(() => currentUser!.sendEmailVerification());
 
   /// Refreshes the current user's data from Firebase.
-  Future<void> reloadUser() =>
-      _wrap(() => FirebaseAuth.instance.currentUser!.reload());
+  Future<void> reloadUser() => _wrap(() async {
+    if (currentUser != null) {
+      await currentUser!.reload();
+    }
+  });
 
   Future<UserCredential> signIn({
     required String email,

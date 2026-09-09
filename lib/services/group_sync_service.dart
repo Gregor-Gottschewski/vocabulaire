@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/vocabulary_group.dart';
 import 'app_exception.dart';
+import 'auth_service.dart';
 import 'usage_service.dart';
 
 /// Owns the active Firestore listener on the current user's online
@@ -53,7 +53,7 @@ class GroupSyncService {
 
   /// Starts the listener for the currently signed-in user.
   void attach() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) return;
 
     _subscription?.cancel();
@@ -129,7 +129,7 @@ class GroupSyncService {
   }
 
   String _userUid() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) {
       throw StateError(
         'GroupSyncService: write attempted before sign-in completed.',

@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:vocabulaire/services/auth_service.dart';
 
 import '../models/vocabulary_box.dart';
 import 'app_exception.dart';
@@ -69,7 +69,7 @@ class BoxSyncService {
   /// `collectionGroup('boxes')` query so it doesn't need to know the set of
   /// groups upfront — new/removed groups are picked up automatically.
   void attach() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) return;
 
     _subscription?.cancel();
@@ -158,7 +158,7 @@ class BoxSyncService {
   }
 
   String _userUid() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) {
       throw StateError(
         'BoxSyncService: write attempted before sign-in completed.',

@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/vocabulary.dart';
 import 'audio_sync_service.dart';
+import 'auth_service.dart';
 
 /// Owns the per-box Firestore listeners on
 /// `users/{uid}/groups/{groupId}/boxes/{boxId}/vocabularies` for online
@@ -55,7 +55,7 @@ class VocabularySyncService {
     String boxId,
     ValueNotifier<List<Vocabulary>> notifier,
   ) {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) return;
 
     _perBoxSubscriptions[boxId]?.cancel();
@@ -171,7 +171,7 @@ class VocabularySyncService {
   }
 
   String _requireUid() {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) {
       throw StateError(
         'VocabularySyncService write attempted before sign-in completed.',

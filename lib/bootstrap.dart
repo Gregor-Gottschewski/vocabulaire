@@ -117,11 +117,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       AudioUploadQueueService.instance.attach();
       SubscriptionService.instance.attach();
     }
-    if (kDebugMode && user != null) {
-      user.getIdToken().then(
-        (token) => debugPrint('Firebase ID token: $token'),
-      );
-    }
   }
 
   @override

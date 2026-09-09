@@ -12,7 +12,6 @@ import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 /// User password change view.

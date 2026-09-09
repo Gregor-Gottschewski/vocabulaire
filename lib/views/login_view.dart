@@ -180,7 +180,7 @@ class _LoginViewState extends State<LoginView> {
                     onPressed: _openResetPassword,
                   ),
                 ],
-                const SizedBox(height: AppSpacing.gapLarge),
+                const SizedBox(height: AppSpacing.sectionGap),
                 PrimaryActionButton(
                   label: _isRegisterMode
                       ? _l10n.registerSubmitButton

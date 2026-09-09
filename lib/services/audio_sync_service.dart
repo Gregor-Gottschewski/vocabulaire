@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:cloud_functions/cloud_functions.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
+import 'package:vocabulaire/services/auth_service.dart';
 
 import '../models/vocabulary.dart';
 import 'app_exception.dart';
@@ -25,7 +25,7 @@ class AudioSyncService {
   );
 
   Reference? _audioRef(String groupId, String boxId, String vocabId) {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) return null;
     return FirebaseStorage.instance.ref(
       'users/$uid/groups/$groupId/boxes/$boxId/audios/$vocabId.m4a',
