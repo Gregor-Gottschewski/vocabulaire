@@ -32,6 +32,7 @@ import 'views/verify_email_view.dart';
 
 /// When enabled, the local Firebase emulator will be used
 const bool _useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
+const bool _useDebugProvider = bool.fromEnvironment('USE_DEBUG_PROVIDER');
 
 Future<void> bootstrap(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +54,7 @@ Future<void> bootstrap(Flavor flavor) async {
   }
 
   await FirebaseAppCheck.instance.activate(
-    providerApple: kReleaseMode || !_useFirebaseEmulator
+    providerApple: kReleaseMode || !_useDebugProvider
         ? const AppleAppAttestWithDeviceCheckFallbackProvider()
         : const AppleDebugProvider(),
   );
@@ -115,6 +116,11 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       UsageService.instance.attach();
       AudioUploadQueueService.instance.attach();
       SubscriptionService.instance.attach();
+    }
+    if (kDebugMode && user != null) {
+      user.getIdToken().then(
+        (token) => debugPrint('Firebase ID token: $token'),
+      );
     }
   }
 

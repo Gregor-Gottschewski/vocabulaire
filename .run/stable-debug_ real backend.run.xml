@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="stable-debug: real backend" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--dart-define=USE_DEBUG_PROVIDER=true --flavor stable" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main_stable.dart" />
+    <method v="2" />
+  </configuration>
+</component>
