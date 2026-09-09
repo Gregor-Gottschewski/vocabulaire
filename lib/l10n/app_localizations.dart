@@ -1555,7 +1555,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsUpgradeToPremium.
   ///
   /// In de, this message translates to:
-  /// **'Zu Premium upgraden'**
+  /// **'Zu Premium wechseln'**
   String get settingsUpgradeToPremium;
 
   /// No description provided for @settingsManageSubscription.

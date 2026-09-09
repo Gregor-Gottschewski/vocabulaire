@@ -828,7 +828,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get languageCustomPlaceholder => 'Sprache eingeben';
 
   @override
-  String get settingsUpgradeToPremium => 'Zu Premium upgraden';
+  String get settingsUpgradeToPremium => 'Zu Premium wechseln';
 
   @override
   String get settingsManageSubscription => 'Abo verwalten';
