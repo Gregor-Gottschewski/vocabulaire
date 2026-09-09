@@ -808,6 +808,12 @@ abstract class AppLocalizations {
   /// **'Eine Box mit dem Namen \"{name}\" existiert bereits'**
   String errorDuplicateBoxName(String name);
 
+  /// No description provided for @errorDuplicateGroupName.
+  ///
+  /// In de, this message translates to:
+  /// **'Eine Gruppe mit dem Namen \"{name}\" existiert bereits. Bitte wähle einen anderen Namen.'**
+  String errorDuplicateGroupName(String name);
+
   /// No description provided for @errorMoveBoxOfflineFailed.
   ///
   /// In de, this message translates to:
@@ -1069,7 +1075,7 @@ abstract class AppLocalizations {
   /// No description provided for @verifyEmailSubtitle.
   ///
   /// In de, this message translates to:
-  /// **'Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.'**
+  /// **'Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können. Prüfe auch deinen Spam-Ordner.'**
   String verifyEmailSubtitle(String email);
 
   /// No description provided for @verifyEmailResend.

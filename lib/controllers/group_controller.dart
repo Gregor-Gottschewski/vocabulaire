@@ -32,6 +32,15 @@ class GroupController {
   List<MapEntry<String, VocabularyGroup>> get entries =>
       groups.map((g) => MapEntry(g.id, g)).toList();
 
+  /// Whether a group named [name] already exists, excluding [excludeGroupId].
+  bool nameExists(String name, {String? excludeGroupId}) {
+    final normalized = name.trim().toLowerCase();
+    return groups.any(
+      (g) =>
+          g.id != excludeGroupId && g.name.trim().toLowerCase() == normalized,
+    );
+  }
+
   bool _isLocal(String groupId) {
     final local = _localGroups.get(groupId);
     return local != null && local.id.isNotEmpty;

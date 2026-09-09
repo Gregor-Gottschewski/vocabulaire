@@ -402,6 +402,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String errorDuplicateGroupName(String name) {
+    return 'Un groupe nommé \"$name\" existe déjà. Veuillez choisir un autre nom.';
+  }
+
+  @override
   String get errorMoveBoxOfflineFailed =>
       'La boîte n\'a pas pu être rendue locale';
 
@@ -554,7 +559,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String verifyEmailSubtitle(String email) {
-    return 'Nous avons envoyé un e-mail de vérification à $email. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire.';
+    return 'Nous avons envoyé un e-mail de vérification à $email. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire. Vérifie aussi ton dossier spam.';
   }
 
   @override

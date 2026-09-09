@@ -403,6 +403,11 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String errorDuplicateGroupName(String name) {
+    return 'Eine Gruppe mit dem Namen \"$name\" existiert bereits. Bitte wähle einen anderen Namen.';
+  }
+
+  @override
   String get errorMoveBoxOfflineFailed => 'Box konnte nicht ausgelagert werden';
 
   @override
@@ -554,7 +559,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String verifyEmailSubtitle(String email) {
-    return 'Wir haben eine Bestätigungsmail an $email gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.';
+    return 'Wir haben eine Bestätigungsmail an $email gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können. Prüfe auch deinen Spam-Ordner.';
   }
 
   @override

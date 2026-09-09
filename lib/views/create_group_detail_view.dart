@@ -165,6 +165,16 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       return;
     }
 
+    if (_groupController.nameExists(
+      name,
+      excludeGroupId: _isEditing ? widget.draft.id : null,
+    )) {
+      await context.showAppError(
+        AppException(AppError.duplicateGroupName, details: name),
+      );
+      return;
+    }
+
     if (_isEditing) {
       await _saveEdit(name);
       if (!mounted) return;

@@ -25,6 +25,9 @@ extension AppExceptionDialog on BuildContext {
       AppError.duplicateBoxName => i18n.errorDuplicateBoxName(
         e.details as String,
       ),
+      AppError.duplicateGroupName => i18n.errorDuplicateGroupName(
+        e.details as String,
+      ),
       AppError.moveBoxOfflineFailed => i18n.errorMoveBoxOfflineFailed,
       AppError.moveBoxOnlineFailed => i18n.errorMoveBoxOnlineFailed,
       AppError.moveGroupOfflineFailed => i18n.errorMoveGroupOfflineFailed,

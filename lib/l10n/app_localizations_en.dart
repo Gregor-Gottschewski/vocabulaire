@@ -398,6 +398,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String errorDuplicateGroupName(String name) {
+    return 'A group named \"$name\" already exists. Please choose a different name.';
+  }
+
+  @override
   String get errorMoveBoxOfflineFailed => 'Box could not be moved offline';
 
   @override
@@ -544,7 +549,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String verifyEmailSubtitle(String email) {
-    return 'We\'ve sent a verification email to $email. Please verify your email address to use Vocabulaire.';
+    return 'We\'ve sent a verification email to $email. Please verify your email address to use Vocabulaire. Also check your junk folder.';
   }
 
   @override

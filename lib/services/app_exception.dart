@@ -12,6 +12,7 @@ enum AppError {
   importGroupMismatch,
   importFailed,
   duplicateBoxName,
+  duplicateGroupName,
   moveBoxOfflineFailed,
   moveBoxOnlineFailed,
   moveGroupOfflineFailed,

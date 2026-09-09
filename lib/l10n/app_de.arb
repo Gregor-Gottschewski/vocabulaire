@@ -214,6 +214,14 @@
       }
     }
   },
+  "errorDuplicateGroupName": "Eine Gruppe mit dem Namen \"{name}\" existiert bereits. Bitte wähle einen anderen Namen.",
+  "@errorDuplicateGroupName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "errorMoveBoxOfflineFailed": "Box konnte nicht ausgelagert werden",
   "errorMoveBoxOnlineFailed": "Box konnte nicht online gestellt werden",
   "errorMoveGroupOfflineFailed": "Gruppe konnte nicht ausgelagert werden",
@@ -257,7 +265,7 @@
   "settingsSignOut": "Abmelden",
   "settingsSignOutConfirmTitle": "Möchtest Du Dich wirklich abmelden?",
   "verifyEmailTitle": "E-Mail bestätigen",
-  "verifyEmailSubtitle": "Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können.",
+  "verifyEmailSubtitle": "Wir haben eine Bestätigungsmail an {email} gesendet. Bitte bestätige deine E-Mail-Adresse, um Vocabulaire nutzen zu können. Prüfe auch deinen Spam-Ordner.",
   "@verifyEmailSubtitle": {
     "placeholders": {
       "email": {

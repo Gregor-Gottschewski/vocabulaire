@@ -214,6 +214,14 @@
       }
     }
   },
+  "errorDuplicateGroupName": "Un groupe nommé \"{name}\" existe déjà. Veuillez choisir un autre nom.",
+  "@errorDuplicateGroupName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "errorMoveBoxOfflineFailed": "La boîte n'a pas pu être rendue locale",
   "errorMoveBoxOnlineFailed": "La boîte n'a pas pu être mise en ligne",
   "errorMoveGroupOfflineFailed": "Le groupe n'a pas pu être rendu local",
@@ -257,7 +265,7 @@
   "settingsSignOut": "Se déconnecter",
   "settingsSignOutConfirmTitle": "Voulez-vous vraiment vous déconnecter ?",
   "verifyEmailTitle": "Vérifie ton e-mail",
-  "verifyEmailSubtitle": "Nous avons envoyé un e-mail de vérification à {email}. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire.",
+  "verifyEmailSubtitle": "Nous avons envoyé un e-mail de vérification à {email}. Merci de vérifier ton adresse e-mail pour utiliser Vocabulaire. Vérifie aussi ton dossier spam.",
   "@verifyEmailSubtitle": {
     "placeholders": {
       "email": {
