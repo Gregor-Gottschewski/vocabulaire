@@ -31,6 +31,11 @@ end
 
 require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelper'), flutter_root)
 
+# file_picker wird nur mit FileType.custom (.vocab) genutzt – die Bild-/Medienauswahl
+# (DKImagePickerController) inkl. Photos-Framework-Referenz wird nicht benötigt und
+# deaktiviert, damit kein NSPhotoLibraryUsageDescription verlangt wird.
+Pod::PICKER_MEDIA = false
+
 flutter_ios_podfile_setup
 
 target 'Runner' do
