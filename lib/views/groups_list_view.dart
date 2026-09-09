@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
+import 'package:vocabulaire/services/app_exception.dart';
+import 'package:vocabulaire/services/app_exception_ui.dart';
+import 'package:vocabulaire/services/usage_service.dart';
 import 'package:vocabulaire/views/box_list_view.dart';
+import 'package:vocabulaire/views/subscription_view.dart';
+import 'package:vocabulaire/views/widgets/app_dialog.dart';
 import 'package:vocabulaire/views/widgets/group_tile.dart';
 
 import '../controllers/box_controller.dart';
@@ -14,6 +19,8 @@ import '../theme/theme_context_ext.dart';
 import 'create_group_flow.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/text_link_button.dart';
+
+enum _LockedGroupAction { upgrade, download }
 
 class GroupsListView extends StatefulWidget {
   const GroupsListView({super.key});
@@ -49,6 +56,88 @@ class _GroupsListViewState extends State<GroupsListView> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _l10n = AppLocalizations.of(context)!;
+  }
+
+  void _openBoxList(String groupId, VocabularyGroup group) {
+    Navigator.of(context).push(
+      AppPageRoute(
+        builder: (context) => BoxListView(group: group, groupId: groupId),
+      ),
+    );
+  }
+
+  Future<void> _openGroup(String groupId, VocabularyGroup group) async {
+    final isPremium = UsageService.instance.listenable.value.isPremium;
+    if (_groupController.isLocal(groupId) || isPremium) {
+      _openBoxList(groupId, group);
+      return;
+    }
+
+    _LockedGroupAction? action;
+    await showAppDialog(
+      context: context,
+      title: _l10n.lockedGroupTitle,
+      message: _l10n.lockedGroupMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.lockedGroupDownload,
+          destructive: true,
+          onPressed: () => action = _LockedGroupAction.download,
+        ),
+        AppDialogAction(
+          label: _l10n.lockedGroupUpgrade,
+          isDefaultAction: true,
+          onPressed: () => action = _LockedGroupAction.upgrade,
+        ),
+      ],
+    );
+    if (!mounted) return;
+
+    switch (action) {
+      case _LockedGroupAction.upgrade:
+        Navigator.of(
+          context,
+        ).push(AppPageRoute(builder: (_) => const SubscriptionView()));
+      case _LockedGroupAction.download:
+        await _confirmAndDownloadGroup(groupId);
+      case null:
+        break;
+    }
+  }
+
+  Future<void> _confirmAndDownloadGroup(String groupId) async {
+    bool confirmed = false;
+    await showAppDialog(
+      context: context,
+      title: _l10n.lockedGroupDownloadConfirmTitle,
+      message: _l10n.lockedGroupDownloadConfirmMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.lockedGroupDownload,
+          destructive: true,
+          onPressed: () => confirmed = true,
+        ),
+      ],
+    );
+    if (!confirmed || !mounted) return;
+
+    try {
+      await _groupController.moveGroupOffline(groupId);
+    } catch (_) {
+      if (mounted) {
+        await context.showAppError(
+          AppException(AppError.moveGroupOfflineFailed),
+        );
+      }
+      return;
+    }
+    if (!mounted) return;
+
+    final group = _groupController.getGroup(groupId);
+    if (group == null) return;
+    _openBoxList(groupId, group);
   }
 
   Future<void> _createGroup() async {
@@ -118,16 +207,8 @@ class _GroupsListViewState extends State<GroupsListView> {
                               key: ValueKey(entry.key),
                               group: entry.value,
                               boxCount: boxCounts[entry.key] ?? 0,
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  AppPageRoute(
-                                    builder: (context) => BoxListView(
-                                      group: entry.value,
-                                      groupId: entry.key,
-                                    ),
-                                  ),
-                                );
-                              },
+                              onTap: () =>
+                                  _openGroup(entry.key, entry.value),
                             );
                           },
                         ),

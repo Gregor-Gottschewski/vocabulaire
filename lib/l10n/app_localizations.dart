@@ -142,6 +142,42 @@ abstract class AppLocalizations {
   /// **'Neue Gruppe'**
   String get addGroup;
 
+  /// No description provided for @lockedGroupTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Diese Gruppe ist online gespeichert'**
+  String get lockedGroupTitle;
+
+  /// No description provided for @lockedGroupMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Du bist kein Premium-Nutzer und hast daher aktuell keinen Zugriff auf diese Gruppe. Wähle eine der folgenden Optionen, um trotzdem auf deine Daten zuzugreifen.'**
+  String get lockedGroupMessage;
+
+  /// No description provided for @lockedGroupUpgrade.
+  ///
+  /// In de, this message translates to:
+  /// **'Zu Premium wechseln'**
+  String get lockedGroupUpgrade;
+
+  /// No description provided for @lockedGroupDownload.
+  ///
+  /// In de, this message translates to:
+  /// **'Herunterladen'**
+  String get lockedGroupDownload;
+
+  /// No description provided for @lockedGroupDownloadConfirmTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Gruppe herunterladen'**
+  String get lockedGroupDownloadConfirmTitle;
+
+  /// No description provided for @lockedGroupDownloadConfirmMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Die Gruppe wird auf diesem Gerät gespeichert und vom Server entfernt. Alle anderen mit deinem Konto verbundenen Geräte verlieren dadurch den Zugriff auf diese Gruppe.'**
+  String get lockedGroupDownloadConfirmMessage;
+
   /// No description provided for @back.
   ///
   /// In de, this message translates to:
@@ -1557,12 +1593,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Zu Premium wechseln'**
   String get settingsUpgradeToPremium;
-
-  /// No description provided for @settingsManageSubscription.
-  ///
-  /// In de, this message translates to:
-  /// **'Abo verwalten'**
-  String get settingsManageSubscription;
 
   /// No description provided for @subscriptionHeadline.
   ///
