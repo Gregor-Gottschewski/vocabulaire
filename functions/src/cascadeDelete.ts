@@ -10,11 +10,18 @@ function isFreshSoftDelete(before: FirebaseFirestore.DocumentData | undefined, a
 }
 
 export const onGroupSoftDeleted = onDocumentUpdated(
-    {region: REGION, document: GROUP_PATH, timeoutSeconds: 300},
+    {region: REGION, document: GROUP_PATH, timeoutSeconds: 300, retry: true},
     async (event) => {
         const before = event.data?.before.data();
         const after = event.data?.after.data();
         if (!isFreshSoftDelete(before, after)) return;
+
+        const eventAgeMs = Date.now() - Date.parse(event.time);
+        const eventMaxAgeMs = 1000 * 60 * 3; // retry for 3 minutes
+        if (eventAgeMs > eventMaxAgeMs) {
+            console.log(`Dropping event ${event} with age[ms]: ${eventAgeMs}`);
+            return;
+        }
 
         const {uid, groupId} = event.params;
         await Promise.all([
@@ -25,11 +32,18 @@ export const onGroupSoftDeleted = onDocumentUpdated(
 );
 
 export const onBoxSoftDeleted = onDocumentUpdated(
-    {region: REGION, document: BOX_PATH, timeoutSeconds: 300},
+    {region: REGION, document: BOX_PATH, timeoutSeconds: 300, retry: true},
     async (event) => {
         const before = event.data?.before.data();
         const after = event.data?.after.data();
         if (!isFreshSoftDelete(before, after)) return;
+
+        const eventAgeMs = Date.now() - Date.parse(event.time);
+        const eventMaxAgeMs = 1000 * 60 * 3; // retry for 3 minutes
+        if (eventAgeMs > eventMaxAgeMs) {
+            console.log(`Dropping event ${event} with age[ms]: ${eventAgeMs}`);
+            return;
+        }
 
         const {uid, groupId, boxId} = event.params;
         await Promise.all([
@@ -40,11 +54,18 @@ export const onBoxSoftDeleted = onDocumentUpdated(
 );
 
 export const onVocabularySoftDeleted = onDocumentUpdated(
-    {region: REGION, document: VOCABULARY_PATH},
+    {region: REGION, document: VOCABULARY_PATH, retry: true},
     async (event) => {
         const before = event.data?.before.data();
         const after = event.data?.after.data();
         if (!isFreshSoftDelete(before, after)) return;
+
+        const eventAgeMs = Date.now() - Date.parse(event.time);
+        const eventMaxAgeMs = 1000 * 60 * 3; // retry for 3 minutes
+        if (eventAgeMs > eventMaxAgeMs) {
+            console.log(`Dropping event ${event} with age[ms]: ${eventAgeMs}`);
+            return;
+        }
 
         const {uid, groupId, boxId, vocabId} = event.params;
         await Promise.all([
