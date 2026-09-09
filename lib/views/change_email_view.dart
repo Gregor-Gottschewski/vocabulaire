@@ -7,10 +7,11 @@ import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
+import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
+import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 final _emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
 
@@ -83,54 +84,60 @@ class _ChangeEmailView extends State<ChangeEmailView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return AppScaffold(body: Center(child: AppProgressIndicator()));
+    }
+
     final colors = context.colors;
     final currentEmail = AuthService.instance.currentUser?.email ?? '';
     return AppScaffold(
       backLabel: _l10n.settingsTitle,
+      actions: [
+        TextLinkButton(
+          label: _l10n.changeEmailSubmitButton,
+          onPressed: _submit,
+        ),
+      ],
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _l10n.changeEmailTitle,
-              style: AppTypography.headlineSerif.copyWith(
-                color: colors.textPrimary,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _l10n.changeEmailTitle,
+                style: AppTypography.headlineSerif.copyWith(
+                  color: colors.textPrimary,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.gapSmall),
-            Text(
-              _l10n.changeEmailSubtitle(currentEmail),
-              style: AppTypography.bodySans.copyWith(
-                color: colors.textSecondary,
+              const SizedBox(height: AppSpacing.gapSmall),
+              Text(
+                _l10n.changeEmailSubtitle(currentEmail),
+                style: AppTypography.bodySans.copyWith(
+                  color: colors.textSecondary,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.sectionGap),
-            LabelTextField(
-              label: _l10n.changeEmailPasswordLabel.toUpperCase(),
-              textField: AppTextField(
-                controller: _passwordController,
-                obscureText: true,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _submit(),
+              const SizedBox(height: AppSpacing.sectionGap),
+              LabelTextField(
+                label: _l10n.changeEmailPasswordLabel.toUpperCase(),
+                textField: AppTextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  textInputAction: TextInputAction.done,
+                  onSubmitted: (_) => _submit(),
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.gapMedium),
-            LabelTextField(
-              label: _l10n.changeEmailNewEmailLabel.toUpperCase(),
-              textField: AppTextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                textInputAction: TextInputAction.next,
+              const SizedBox(height: AppSpacing.gapMedium),
+              LabelTextField(
+                label: _l10n.changeEmailNewEmailLabel.toUpperCase(),
+                textField: AppTextField(
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  textInputAction: TextInputAction.next,
+                ),
               ),
-            ),
-            const Spacer(),
-            PrimaryActionButton(
-              label: _l10n.changeEmailSubmitButton,
-              onPressed: _isLoading ? null : _submit,
-              isLoading: _isLoading,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

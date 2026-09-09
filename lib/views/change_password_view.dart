@@ -8,10 +8,12 @@ import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
+import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
 import 'package:vocabulaire/views/widgets/primary_action_button.dart';
+import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 /// User password change view.
 class ChangePasswordView extends StatefulWidget {
@@ -112,62 +114,77 @@ class _ChangePasswordView extends State<ChangePasswordView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return AppScaffold(body: Center(child: AppProgressIndicator()));
+    }
+
     final colors = context.colors;
     return AppScaffold(
       backLabel: _l10n.settingsTitle,
+      actions: [
+        TextLinkButton(
+          label: _l10n.changePasswordSubmitButton,
+          onPressed: _submit,
+        ),
+      ],
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              _l10n.changePasswordTitle,
-              style: AppTypography.headlineSerif.copyWith(
-                color: colors.textPrimary,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _l10n.changePasswordTitle,
+                style: AppTypography.headlineSerif.copyWith(
+                  color: colors.textPrimary,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.gapSmall),
-            Text(
-              _l10n.changePasswordSubtitle,
-              style: AppTypography.bodySans.copyWith(
-                color: colors.textSecondary,
+              const SizedBox(height: AppSpacing.gapSmall),
+              Text(
+                _l10n.changePasswordSubtitle,
+                style: AppTypography.bodySans.copyWith(
+                  color: colors.textSecondary,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.sectionGap),
-            LabelTextField(
-              label: _l10n.changePasswordCurrentPasswordLabel.toUpperCase(),
-              textField: AppTextField(
-                controller: _currentPasswordController,
-                obscureText: true,
-                textInputAction: TextInputAction.next,
+              const SizedBox(height: AppSpacing.sectionGap),
+              LabelTextField(
+                label: _l10n.changePasswordCurrentPasswordLabel.toUpperCase(),
+                textField: AppTextField(
+                  controller: _currentPasswordController,
+                  obscureText: true,
+                  textInputAction: TextInputAction.next,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.gapMedium),
-            LabelTextField(
-              label: _l10n.changePasswordNewPasswordLabel.toUpperCase(),
-              textField: AppTextField(
-                controller: _newPasswordController,
-                obscureText: true,
-                textInputAction: TextInputAction.next,
+              const SizedBox(height: AppSpacing.gapMedium),
+              AutofillGroup(
+                child: Column(
+                  children: [
+                    LabelTextField(
+                      label: _l10n.changePasswordNewPasswordLabel.toUpperCase(),
+                      textField: AppTextField(
+                        controller: _newPasswordController,
+                        autofillHints: const [AutofillHints.newPassword],
+                        obscureText: true,
+                        textInputAction: TextInputAction.next,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.gapMedium),
+                    LabelTextField(
+                      label: _l10n.changePasswordConfirmPasswordLabel
+                          .toUpperCase(),
+                      textField: AppTextField(
+                        controller: _confirmPasswordController,
+                        autofillHints: const [AutofillHints.newPassword],
+                        obscureText: true,
+                        textInputAction: TextInputAction.done,
+                        onSubmitted: (_) => _submit(),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.gapMedium),
-            LabelTextField(
-              label: _l10n.changePasswordConfirmPasswordLabel.toUpperCase(),
-              textField: AppTextField(
-                controller: _confirmPasswordController,
-                obscureText: true,
-                textInputAction: TextInputAction.done,
-                onSubmitted: (_) => _submit(),
-              ),
-            ),
-            const Spacer(),
-            PrimaryActionButton(
-              label: _l10n.changePasswordSubmitButton,
-              onPressed: _isLoading ? null : _submit,
-              isLoading: _isLoading,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

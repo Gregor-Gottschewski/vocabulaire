@@ -156,7 +156,6 @@ class _BoxListViewState extends State<BoxListView> {
           destructive: true,
           onPressed: () async {
             await _groupController.deleteGroup(widget.groupId);
-            if (pageContext.mounted) Navigator.of(pageContext).pop();
           },
         ),
       ],
