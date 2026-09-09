@@ -20,6 +20,7 @@ class AppTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final TextStyle? style;
   final Widget? suffix;
+  final Iterable<String> autofillHints;
 
   const AppTextField({
     super.key,
@@ -36,6 +37,7 @@ class AppTextField extends StatelessWidget {
     this.focusNode,
     this.style,
     this.suffix,
+    this.autofillHints = const [],
   });
 
   @override
@@ -61,6 +63,7 @@ class AppTextField extends StatelessWidget {
         style: baseStyle,
         cursorColor: colors.textPrimary,
         cursorWidth: 1,
+        autofillHints: autofillHints,
         decoration: InputDecoration(
           counterText: '', // hide counter
           isDense: true,

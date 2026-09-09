@@ -135,65 +135,69 @@ class _LoginViewState extends State<LoginView> {
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _isRegisterMode ? _l10n.registerTitle : _l10n.loginTitle,
-                style: AppTypography.headlineSerif.copyWith(
-                  color: colors.textPrimary,
+          child: AutofillGroup(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isRegisterMode ? _l10n.registerTitle : _l10n.loginTitle,
+                  style: AppTypography.headlineSerif.copyWith(
+                    color: colors.textPrimary,
+                  ),
                 ),
-              ),
-              const SizedBox(height: AppSpacing.gapSmall),
-              Text(
-                _l10n.loginSubtitle,
-                style: AppTypography.bodySans.copyWith(
-                  color: colors.textSecondary,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.sectionGap),
-              LabelTextField(
-                label: _l10n.loginEmailLabel.toUpperCase(),
-                textField: AppTextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  textInputAction: TextInputAction.next,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.gapMedium),
-              LabelTextField(
-                label: _l10n.loginPasswordLabel.toUpperCase(),
-                textField: AppTextField(
-                  controller: _passwordController,
-                  obscureText: true,
-                  textInputAction: TextInputAction.done,
-                  onSubmitted: (_) => _submit(),
-                ),
-              ),
-              if (!_isRegisterMode) ...[
                 const SizedBox(height: AppSpacing.gapSmall),
+                Text(
+                  _l10n.loginSubtitle,
+                  style: AppTypography.bodySans.copyWith(
+                    color: colors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sectionGap),
+                LabelTextField(
+                  label: _l10n.loginEmailLabel.toUpperCase(),
+                  textField: AppTextField(
+                    controller: _emailController,
+                    autofillHints: const [AutofillHints.email],
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.gapMedium),
+                LabelTextField(
+                  label: _l10n.loginPasswordLabel.toUpperCase(),
+                  textField: AppTextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    autofillHints: const [AutofillHints.password],
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (_) => _submit(),
+                  ),
+                ),
+                if (!_isRegisterMode) ...[
+                  const SizedBox(height: AppSpacing.gapSmall),
+                  TextLinkButton(
+                    label: _l10n.loginForgotPassword,
+                    onPressed: _openResetPassword,
+                  ),
+                ],
+                const SizedBox(height: AppSpacing.gapLarge),
+                PrimaryActionButton(
+                  label: _isRegisterMode
+                      ? _l10n.registerSubmitButton
+                      : _l10n.loginSubmitButton,
+                  onPressed: _isLoading ? null : _submit,
+                  isLoading: _isLoading,
+                ),
+                const SizedBox(height: AppSpacing.gapMedium),
                 TextLinkButton(
-                  label: _l10n.loginForgotPassword,
-                  onPressed: _openResetPassword,
+                  label: _isRegisterMode
+                      ? _l10n.loginSwitchToLogin
+                      : _l10n.loginSwitchToRegister,
+                  onPressed: () =>
+                      setState(() => _isRegisterMode = !_isRegisterMode),
                 ),
               ],
-              const SizedBox(height: AppSpacing.gapLarge,),
-              PrimaryActionButton(
-                label: _isRegisterMode
-                    ? _l10n.registerSubmitButton
-                    : _l10n.loginSubmitButton,
-                onPressed: _isLoading ? null : _submit,
-                isLoading: _isLoading,
-              ),
-              const SizedBox(height: AppSpacing.gapMedium),
-              TextLinkButton(
-                label: _isRegisterMode
-                    ? _l10n.loginSwitchToLogin
-                    : _l10n.loginSwitchToRegister,
-                onPressed: () =>
-                    setState(() => _isRegisterMode = !_isRegisterMode),
-              ),
-            ],
+            ),
           ),
         ),
       ),
