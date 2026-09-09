@@ -140,14 +140,12 @@ service cloud.firestore {
 
     match /{path=**}/boxes/{boxId} {
       allow list: if request.auth != null
-                    && resource.data.ownerUid == request.auth.uid
-                    && isPremiumUser(database, request.auth.uid);
+                    && resource.data.ownerUid == request.auth.uid;
     }
 
     // Groups own their boxes, which in turn own their vocabularies.
     match /users/{userId}/groups/{groupId} {
-      allow read, delete: if request.auth != null && request.auth.uid == userId
-                    && isPremiumUser(database, userId);
+      allow read, delete: if request.auth != null && request.auth.uid == userId;
 
       allow update: if request.auth != null && request.auth.uid == userId
                     && isPremiumUser(database, userId)
@@ -171,8 +169,7 @@ service cloud.firestore {
                     && rateLimitData(database, userId).get('groupCountOnline', 0) < 1000;
 
       match /boxes/{boxId} {
-        allow get, delete: if request.auth != null && request.auth.uid == userId
-                      && isPremiumUser(database, userId);
+        allow get, delete: if request.auth != null && request.auth.uid == userId;
 
         allow update: if request.auth != null && request.auth.uid == userId
                       && isPremiumUser(database, userId)
@@ -195,8 +192,7 @@ service cloud.firestore {
                       && request.resource.data.type == get(/databases/$(database)/documents/users/$(userId)/groups/$(groupId)).data.type;
 
         match /vocabularies/{vocabId} {
-          allow read, delete: if request.auth != null && request.auth.uid == userId
-                        && isPremiumUser(database, userId);
+          allow read, delete: if request.auth != null && request.auth.uid == userId;
 
           allow update: if request.auth != null && request.auth.uid == userId
                         && isPremiumUser(database, userId)

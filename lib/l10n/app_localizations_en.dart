@@ -30,6 +30,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get addGroup => 'Add Group';
 
   @override
+  String get lockedGroupTitle => 'This group is stored online';
+
+  @override
+  String get lockedGroupMessage =>
+      'You are not a premium user, so you cannot access this group right now. Choose one of the following options to still gain access to your data.';
+
+  @override
+  String get lockedGroupUpgrade => 'Upgrade to premium';
+
+  @override
+  String get lockedGroupDownload => 'Download';
+
+  @override
+  String get lockedGroupDownloadConfirmTitle => 'Download group';
+
+  @override
+  String get lockedGroupDownloadConfirmMessage =>
+      'The group will be saved on this device and removed from the server. All other devices connected to your account will lose access to it.';
+
+  @override
   String get back => 'Back';
 
   @override
@@ -818,9 +838,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsUpgradeToPremium => 'Upgrade to Premium';
-
-  @override
-  String get settingsManageSubscription => 'Manage subscription';
 
   @override
   String get subscriptionHeadline => 'Learn without limits';
