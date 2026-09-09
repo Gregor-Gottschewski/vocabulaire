@@ -22,6 +22,17 @@ async function adjustRateLimitField(uid: string, field: string, delta: number): 
         .set({[field]: FieldValue.increment(delta)}, {merge: true});
 }
 
+async function groupWritesAllowed(uid: string, groupId: string): Promise<boolean> {
+    if (!(await userExists(uid))) return false;
+    const group = await getFirestore()
+        .collection("users")
+        .doc(uid)
+        .collection("groups")
+        .doc(groupId)
+        .get();
+    return group.exists || group.data()!.deleted === false;
+}
+
 async function adjustGroupField(uid: string, groupId: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
     if (!(await userExists(uid))) return;
@@ -58,14 +69,22 @@ export const onBoxCreated = onDocumentCreated(
 export const onBoxDeleted = onDocumentDeleted(
     {region: REGION, document: BOX_PATH},
     async (event) => {
-        await adjustGroupField(event.params.uid, event.params.groupId, "boxCountOnline", -1);
+        if (await groupWritesAllowed(event.params.uid, event.params.groupId))
+            await adjustGroupField(event.params.uid, event.params.groupId, "boxCountOnline", -1);
     }
 );
 
 // Re-validates the quota inside a transaction and deletes the vocabulary if a race condition occurs.
 export const onVocabularyCreated = onDocumentCreated(
-    {region: REGION, document: VOCABULARY_PATH},
+    {region: REGION, document: VOCABULARY_PATH, retry: true},
     async (event) => {
+        const eventAgeMs = Date.now() - Date.parse(event.time);
+        const eventMaxAgeMs = 1000 * 60 * 3; // retry for 3 minutes
+        if (eventAgeMs > eventMaxAgeMs) {
+            console.log(`Dropping event ${event} with age[ms]: ${eventAgeMs}`);
+            return;
+        }
+
         const uid = event.params.uid;
         const vocabRef = event.data?.ref;
         if (!vocabRef) return;
@@ -94,12 +113,22 @@ export const onVocabularyCreated = onDocumentCreated(
 export const onVocabularyDeleted = onDocumentDeleted(
     {region: REGION, document: VOCABULARY_PATH},
     async (event) => {
-        await adjustRateLimitField(event.params.uid, "vocabularyCountOnline", -1);
+        const uid = event.params.uid;
+        if (await userExists(uid)) {
+            const rateLimitRef = getFirestore().collection("rateLimits").doc(uid);
+            await getFirestore().runTransaction(async (tx) => {
+                const snap = await tx.get(rateLimitRef);
+                const count = (snap.exists ? snap.data()!.vocabularyCountOnline as number | undefined : undefined) ?? 0;
+                if (count > 0) {
+                    tx.set(rateLimitRef, {vocabularyCountOnline: count - 1}, {merge: true});
+                }
+            });
+        }
         await releaseReservation(event.params.uid, `${event.params.vocabId}.m4a`);
     }
 );
 
-function parseAudioObjectName(objectName: string): {uid: string; fileName: string} | null {
+function parseAudioObjectName(objectName: string): { uid: string; fileName: string } | null {
     const match = AUDIO_PATH_PATTERN.exec(objectName);
     return match ? {uid: match[1], fileName: match[4]} : null;
 }
