@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/theme_context_ext.dart';
+import 'edge_swipe_back_area.dart';
 
 /// Top page bar with back-button, title and additional buttons.
 class AppScaffold extends StatelessWidget {
@@ -74,7 +76,7 @@ class AppScaffold extends StatelessWidget {
       ],
     );
 
-    return Material(
+    final scaffold = Material(
       color: colors.background,
       child: SafeArea(
         child: Padding(
@@ -82,6 +84,15 @@ class AppScaffold extends StatelessWidget {
           child: content,
         ),
       ),
+    );
+
+    if (backLabel == null || defaultTargetPlatform == TargetPlatform.macOS) {
+      return scaffold;
+    }
+
+    return EdgeSwipeBackArea(
+      onSwipeBack: onBack ?? () => Navigator.of(context).maybePop(),
+      child: scaffold,
     );
   }
 }
