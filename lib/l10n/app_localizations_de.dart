@@ -102,7 +102,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsLicenses => 'Lizenzen';
 
   @override
-  String get settingsGithub => 'Vocabulaire auf Github';
+  String get settingsGithub => 'Vocabulaire auf GitHub';
 
   @override
   String get settingsExportAll => 'Alle Boxen exportieren';

@@ -277,7 +277,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsGithub.
   ///
   /// In de, this message translates to:
-  /// **'Vocabulaire auf Github'**
+  /// **'Vocabulaire auf GitHub'**
   String get settingsGithub;
 
   /// No description provided for @settingsExportAll.

@@ -43,7 +43,7 @@
   "settingsSyncStatusSyncing": "Wird synchronisiert…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Lizenzen",
-  "settingsGithub": "Vocabulaire auf Github",
+  "settingsGithub": "Vocabulaire auf GitHub",
   "settingsExportAll": "Alle Boxen exportieren",
   "settingsVocabularyUsage": "Vokabeln online",
   "settingsVocabularyUsageValue": "{count}/{limit}",
