@@ -50,6 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _onItemTapped(int index) {
+    if (index == _selectedIndex) {
+      _tabNavigatorKeys[index].currentState?.popUntil(
+        (route) => route.isFirst,
+      );
+      return;
+    }
     setState(() => _selectedIndex = index);
   }
 
