@@ -221,38 +221,35 @@ class _BoxDetailWidget extends State<BoxDetailView>
           ],
         ),
         const Spacer(),
-        Column(
-          children: [
-            PrimaryActionButton(
-              label: _l10n.boxDetailStart,
-              onPressed: matchingCards.isNotEmpty
-                  ? () {
-                      Navigator.of(context).push(
-                        AppPageRoute(
-                          builder: (_) => ReviewView(
-                            boxKey: widget.boxKey,
-                            onlyTimely: _onlyTimely,
-                            learningMethod: _selectedOption,
-                          ),
-                        ),
-                      );
-                    }
-                  : null,
-            ),
-            TextLinkButton(
-              label: _l10n.boxDetailEditVocabs,
-              onPressed: () {
-                Navigator.of(context).push(
-                  AppPageRoute(
-                    builder: (_) => VocabularyListView(
-                      multipleBoxes: false,
-                      boxListenable: _boxNotifier,
+        TextLinkButton(
+          label: _l10n.boxDetailEditVocabs,
+          onPressed: () {
+            Navigator.of(context).push(
+              AppPageRoute(
+                builder: (_) => VocabularyListView(
+                  multipleBoxes: false,
+                  boxListenable: _boxNotifier,
+                ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: AppSpacing.gapMedium),
+        PrimaryActionButton(
+          label: _l10n.boxDetailStart,
+          onPressed: matchingCards.isNotEmpty
+              ? () {
+                  Navigator.of(context).push(
+                    AppPageRoute(
+                      builder: (_) => ReviewView(
+                        boxKey: widget.boxKey,
+                        onlyTimely: _onlyTimely,
+                        learningMethod: _selectedOption,
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
+                  );
+                }
+              : null,
         ),
       ],
     );

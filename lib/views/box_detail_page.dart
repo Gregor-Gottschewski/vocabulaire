@@ -5,6 +5,7 @@ import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/export_controller.dart';
 import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/services/export_share_service.dart';
+import 'package:vocabulaire/views/vocabulary_list_view.dart';
 import '../models/vocabulary_box.dart';
 import '../theme/app_page_route.dart';
 import '../theme/app_typography.dart';
@@ -133,9 +134,17 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
       title: _l10n.boxDetailActionsSheetTitle,
       actions: [
         AppActionSheetAction(
-          label: _l10n.export,
-          onPressed: _exportBox,
+          label: _l10n.boxDetailEditVocabs,
+          onPressed: () => Navigator.of(context).push(
+            AppPageRoute(
+              builder: (_) => VocabularyListView(
+                multipleBoxes: false,
+                boxListenable: _boxNotifier,
+              ),
+            ),
+          ),
         ),
+        AppActionSheetAction(label: _l10n.export, onPressed: _exportBox),
         AppActionSheetAction(label: _l10n.editAction, onPressed: _editBox),
         AppActionSheetAction(
           label: _l10n.boxDetailDelete,
