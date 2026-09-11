@@ -1,0 +1,7 @@
+// just-the-docs always imports color_schemes/light.scss first (as the base
+// defaults), then this file on top of it. Variables here must therefore be
+// assigned WITHOUT `!default`, otherwise light.scss's values win.
+// Only the brand accent is overridden here; everything else keeps JTD's
+// light-scheme defaults.
+$link-color: #3D5A80;
+$btn-primary-color: #3D5A80;

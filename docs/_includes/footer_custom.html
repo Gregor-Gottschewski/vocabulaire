@@ -1,0 +1,13 @@
+{% if page.lang == "de" %}
+<nav class="legal-links" aria-label="Rechtliches">
+  <a href="{{ '/de/kontakt/' | relative_url }}">Kontakt</a> ·
+  <a href="{{ '/de/datenschutz/' | relative_url }}">Datenschutz</a> ·
+  <a href="{{ '/impressum/' | relative_url }}">Impressum</a>
+</nav>
+{% elsif page.lang == "en" %}
+<nav class="legal-links" aria-label="Legal">
+  <a href="{{ '/contact/' | relative_url }}">Contact</a> ·
+  <a href="{{ '/privacy/' | relative_url }}">Privacy Policy</a> ·
+  <a href="{{ '/impressum/' | relative_url }}">Legal Notice / Impressum</a>
+</nav>
+{% endif %}

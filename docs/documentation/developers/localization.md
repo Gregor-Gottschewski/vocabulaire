@@ -1,8 +1,16 @@
+---
+title: Localization
+lang: en
+permalink: /documentation/developers/localization/
+parent: Developer Documentation
+nav_order: 3
+---
+
 # Localization
 
 This app uses localizations so you can add new languages easily.
 
-See [configuration](/l10n.yaml) `l10n.yaml` for template and general configuration.
+See [configuration](https://github.com/Gregor-Gottschewski/vocabulaire/blob/main/l10n.yaml) `l10n.yaml` for template and general configuration.
 
 Language files are located in `/lib/l10n/app_X.arb`. Generate `.dart`-files with `flutter gen-l10n`.
 

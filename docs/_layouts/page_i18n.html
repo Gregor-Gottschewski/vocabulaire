@@ -1,0 +1,14 @@
+---
+layout: default
+---
+{% if page.alt_url %}
+<p class="i18n-switcher">
+  {% if page.lang == "de" %}
+    🇬🇧 <a href="{{ page.alt_url | relative_url }}">English</a>
+  {% else %}
+    🇩🇪 <a href="{{ page.alt_url | relative_url }}">Deutsch</a>
+  {% endif %}
+</p>
+{% endif %}
+
+{{ content }}

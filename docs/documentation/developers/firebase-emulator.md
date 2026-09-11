@@ -1,3 +1,11 @@
+---
+title: Firebase Emulator
+lang: en
+permalink: /documentation/developers/firebase-emulator/
+parent: Developer Documentation
+nav_order: 1
+---
+
 # Firebase Emulator
 
 Start the application with `--dart-define=USE_FIREBASE_EMULATOR=true` to point the app at the local Firebase emulator suite (`firebase emulators:start`) instead of the live project.
@@ -5,7 +13,7 @@ Never enabled in release builds due to check `kDebugMode && _useFirebaseEmulator
 Changes in Firebase Emulator are not persistent.
 Use `firebase emulators:start --import=./emulator-data --export-on-exit=./emulator-data` for automatic loading and storing data.
 
-> [!WARNING]
+> **Warning**  
 > Never push your local store!
 > It could contain personal information.
 

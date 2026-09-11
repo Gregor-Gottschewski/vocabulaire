@@ -7,10 +7,55 @@
    viewBox="0 0 512 512"
    version="1.1"
    id="svg1"
+   sodipodi:docname="icon_light_mode.svg"
+   inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="1.9116291"
+     inkscape:cx="260.24923"
+     inkscape:cy="256.32587"
+     inkscape:window-width="2056"
+     inkscape:window-height="1261"
+     inkscape:window-x="0"
+     inkscape:window-y="40"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1" />
   <defs
-     id="defs1" />
+     id="defs1">
+    <linearGradient
+       id="linearGradient5"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#000000;stop-opacity:0.33225808;"
+         offset="0"
+         id="stop5" />
+      <stop
+         style="stop-color:#000000;stop-opacity:0;"
+         offset="1"
+         id="stop6" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient5"
+       id="linearGradient6"
+       x1="3.4943223e-06"
+       y1="0"
+       x2="512"
+       y2="512"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
   <g
      id="layer1">
     <rect
@@ -47,4 +92,11 @@
        style="font-size:420.362px;font-family:Newsreader;-inkscape-font-specification:'Newsreader, @opsz=72';font-variation-settings:'opsz' 72;text-align:center;letter-spacing:5.25px;text-anchor:middle;fill:#ffffff;fill-rule:evenodd;stroke-width:0.253984;stroke-linecap:round;stroke-miterlimit:3.6"
        aria-label="V" />
   </g>
+  <rect
+     style="font-variation-settings:'opsz' 72;fill:url(#linearGradient6);fill-opacity:1;fill-rule:evenodd;stroke-width:0.302362;stroke-linecap:round;stroke-miterlimit:3.6"
+     id="rect5"
+     width="512"
+     height="512"
+     x="3.4943223e-06"
+     y="0" />
 </svg>

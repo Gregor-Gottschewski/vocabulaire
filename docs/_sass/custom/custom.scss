@@ -1,0 +1,35 @@
+// The theme's site-logo div normally fills the whole .site-title area
+// (width/height: 100%). Constrain it to a square so the "Vocabulaire"
+// name added in title.html has room to sit next to it.
+.site-logo {
+  flex: 0 0 $sp-6;
+  width: $sp-6;
+}
+
+.site-title-text {
+  margin-left: $sp-2;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.i18n-switcher {
+  font-size: 0.9em;
+  margin-bottom: 1.5em;
+
+  a {
+    border: 1px solid $border-color;
+    border-radius: 999px;
+    padding: 4px 12px;
+    text-decoration: none;
+  }
+}
+
+.legal-links {
+  font-size: 0.85em;
+  color: $grey-dk-000;
+  margin-top: 2em;
+
+  a {
+    color: inherit;
+  }
+}

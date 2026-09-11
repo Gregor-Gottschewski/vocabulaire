@@ -1,0 +1,34 @@
+title: Vocabulaire
+description: >-
+  Vocabulaire is a focused iOS and macOS vocabulary trainer using the FSRS
+  algorithm for the best learning curves.
+url: "https://gregor-gottschewski.github.io"
+baseurl: "/vocabulaire"
+
+remote_theme: just-the-docs/just-the-docs@v0.12.0
+
+markdown: kramdown
+kramdown:
+  input: GFM
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+color_scheme: custom
+logo: "/assets/images/icon_light_mode.svg"
+search_enabled: true
+heading_anchors: true
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: page_i18n
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - README.md

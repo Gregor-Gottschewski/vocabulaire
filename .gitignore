@@ -27,6 +27,7 @@ node_modules/
 *.ipr
 *.iws
 .idea/
+.mcp.json
 
 # The .vscode folder contains launch configuration and tasks you configure in
 # VS Code which you may wish to be included in version control, so this line
@@ -56,3 +57,9 @@ app.*.map.json
 
 # Firebase Emulator Data Export
 emulator-data/*
+
+# Jekyll (docs/)
+docs/_site/
+docs/.jekyll-cache/
+docs/.bundle/
+docs/vendor/

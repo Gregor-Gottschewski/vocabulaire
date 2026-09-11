@@ -1,0 +1,13 @@
+{%- comment -%}
+  Override of just-the-docs v0.12.0 title.html.
+  The theme's default hides site.title entirely once site.logo is set,
+  showing only the logo icon. We want the "Vocabulaire" name to stay
+  visible in the header next to the icon.
+{%- endcomment -%}
+
+{% if site.logo %}
+  <div class="site-logo" role="img" aria-label="{{ site.title }}"></div>
+  <span class="site-title-text">{{ site.title }}</span>
+{% else %}
+  {{ site.title }}
+{% endif %}

@@ -1,3 +1,11 @@
+ ---
+title: Firebase Functions
+lang: en
+permalink: /documentation/developers/firebase-functions/
+parent: Developer Documentation
+nav_order: 2
+---
+
 # Firebase Functions
 
 This project uses Firebase functions for speech synthesizing over the Google TTS API.

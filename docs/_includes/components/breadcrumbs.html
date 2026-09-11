@@ -1,0 +1,75 @@
+{%- comment -%}
+  Override of just-the-docs v0.12.0 components/breadcrumbs.html.
+  The only change: pass lang=page.lang explicitly into the include_cached
+  call for site_nav.html, so Jekyll's include cache is keyed per language
+  (our components/site_nav.html override filters on include.lang).
+{%- endcomment -%}
+
+{%- if page.url != "/" and page.parent and page.title -%}
+
+{%- capture site_nav -%}
+{%- include_cached components/site_nav.html all=true lang=page.lang -%}
+{%- endcapture -%}
+
+{%- capture nav_list_link -%}
+<a href="{{ page.url | relative_url }}" class="nav-list-link">
+{%- endcapture -%}
+
+{%- capture nav_list_simple -%}
+<ul class="nav-list">
+{%- endcapture -%}
+
+{%- capture nav_list_link_class %} class="nav-list-link">
+{%- endcapture -%}
+
+{%- capture nav_category -%}
+<div class="nav-category">
+{%- endcapture -%}
+
+{%- assign nav_anchor_splits =
+      site_nav | split: nav_list_link |
+      first | split: nav_category |
+      last | split: "</a>" -%}
+
+{%- assign nav_breadcrumbs = "" | split: "" -%}
+
+{%- for nav_split in nav_anchor_splits -%}
+{%- unless forloop.last -%}
+
+{%- assign nav_split_next = nav_anchor_splits[forloop.index] | strip -%}
+
+{%- assign nav_split_test =
+      nav_split_next | remove_first: nav_list_simple | prepend: nav_list_simple -%}
+{%- if nav_split_test == nav_split_next -%}
+  {%- assign nav_breadcrumb_link =
+        nav_split | split: "<a " | last | prepend: "<a " |
+        replace: nav_list_link_class, ">" | append: "</a>" -%}
+  {%- assign nav_breadcrumbs = nav_breadcrumbs | push: nav_breadcrumb_link -%}
+{%- endif -%}
+
+{%- if nav_split_next contains "</ul>" -%}
+  {%- assign nav_list_end_less = nav_split_next | remove: "</ul>" -%}
+  {%- assign nav_list_end_count =
+        nav_split_next.size | minus: nav_list_end_less.size | divided_by: 5 -%}
+  {% for nav_end_index in (1..nav_list_end_count) %}
+    {%- assign nav_breadcrumbs = nav_breadcrumbs | pop -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- endunless -%}
+{%- endfor -%}
+
+<nav aria-label="Breadcrumb" class="breadcrumb-nav">
+  <ol class="breadcrumb-nav-list">
+    {%- for nav_breadcrumb in nav_breadcrumbs %}
+    <li class="breadcrumb-nav-list-item">{{ nav_breadcrumb }}</li>
+    {%- endfor %}
+    <li class="breadcrumb-nav-list-item"><span>{{ page.title }}</span></li>
+  </ol>
+</nav>
+
+{% if site.nav_error_report %}
+{{ nav_error_report }}
+{% endif %}
+
+{%- endif -%}
