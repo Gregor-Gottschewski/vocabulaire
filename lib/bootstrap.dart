@@ -5,6 +5,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kReleaseMode, kDebugMode;
@@ -38,6 +39,14 @@ Future<void> bootstrap(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
   FlavorConfig.init(flavor);
   await Firebase.initializeApp(options: FlavorConfig.instance.firebaseOptions);
+
+  FlutterError.onError = (errorDetails) {
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+  PlatformDispatcher.instance.onError = (error, stack) {
+    FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+    return true;
+  };
 
   FirebaseFirestore.instance.settings = const Settings(
     persistenceEnabled: true,
