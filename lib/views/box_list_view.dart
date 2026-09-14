@@ -137,8 +137,14 @@ class _BoxListViewState extends State<BoxListView> {
     final boxes = _boxController.boxesForGroup(widget.groupId);
     if (boxes.isEmpty) return;
 
+    final includeProgress = await context.confirmExportProgress();
+    if (!mounted) return;
+
     await context.exportAndShare(
-      export: () => ExportController.exportAllBoxes(boxes),
+      export: () => ExportController.exportAllBoxes(
+        boxes,
+        includeProgress: includeProgress,
+      ),
       title: _l10n.settingsExportAll,
     );
   }
@@ -238,6 +244,9 @@ class _BoxListViewState extends State<BoxListView> {
                     style: AppTypography.headlineSerif.copyWith(
                       color: colors.textPrimary,
                     ),
+                    softWrap: false,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: AppSpacing.sectionGap),
                   if (entries.isEmpty)

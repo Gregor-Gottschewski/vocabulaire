@@ -165,7 +165,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
-      supportedLocales: const [Locale('de'), Locale('en'), Locale('fr')],
+      supportedLocales: const [Locale('en'), Locale('de'), Locale('fr')],
       home: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.userChanges(),
         initialData: FirebaseAuth.instance.currentUser,

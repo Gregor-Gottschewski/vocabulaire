@@ -135,93 +135,97 @@ class _SubscriptionViewState extends State<SubscriptionView> {
 
     return AppScaffold(
       backLabel: _l10n.back,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            _l10n.subscriptionHeadline,
-            style: AppTypography.headlineSerif.copyWith(
-              color: colors.textPrimary,
+      actions: [
+        TextLinkButton(label: "EULA", onPressed: () => _launchEula()),
+        TextLinkButton(
+          label: _l10n.subscriptionRestore,
+          onPressed: _isPurchasePending ? null : _restore,
+        ),
+      ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              _l10n.subscriptionHeadline,
+              style: AppTypography.headlineSerif.copyWith(
+                color: colors.textPrimary,
+              ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.gapSmall),
-          Text(
-            _l10n.subscriptionSubtitle,
-            style: AppTypography.bodySans.copyWith(color: colors.textSecondary),
-          ),
-          const SizedBox(height: AppSpacing.sectionGap),
-
-          KeyValueRowGroup(
-            children: [
-              SelectableOptionCard(
-                title: _l10n.subscriptionPlanYearly,
-                subtitle:
-                    _productFor(SubscriptionService.yearlyProductId)?.price ??
-                    '',
-                selected: _selectedSubscription == _SelectedSubscription.yearly,
-                onTap: () => setState(() {
-                  _selectedSubscription = _SelectedSubscription.yearly;
-                }),
-              ),
-              SelectableOptionCard(
-                title: _l10n.subscriptionPlanMonthly,
-                subtitle:
-                    _productFor(SubscriptionService.monthlyProductId)?.price ??
-                    '',
-                selected:
-                    _selectedSubscription == _SelectedSubscription.monthly,
-                onTap: () => setState(() {
-                  _selectedSubscription = _SelectedSubscription.monthly;
-                }),
-              ),
-            ],
-          ),
-
-          const Spacer(),
-
-          PrimaryActionButton(
-            label: _l10n.subscriptionCta,
-            isLoading: _isPurchasePending,
-            onPressed: (_isPurchasePending) ? null : _buy,
-          ),
-          const SizedBox(height: AppSpacing.gapLarge),
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              _l10n.subscriptionFinePrint(
-                _productFor(_selectedSubscription.productId)?.price ?? '',
-                _selectedSubscription == _SelectedSubscription.yearly
-                    ? _l10n.subscriptionPlanYearly
-                    : _l10n.subscriptionPlanMonthly,
-              ),
-              textAlign: TextAlign.center,
-              style: AppTypography.captionSans.copyWith(
+            const SizedBox(height: AppSpacing.gapSmall),
+            Text(
+              _l10n.subscriptionSubtitle,
+              style: AppTypography.bodySans.copyWith(
                 color: colors.textSecondary,
               ),
             ),
-          ),
-          const SizedBox(height: AppSpacing.gapSmall),
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              _l10n.subscriptionAutoRenewNotice,
-              textAlign: TextAlign.center,
-              style: AppTypography.captionSans.copyWith(
-                color: colors.textSecondary,
+            const SizedBox(height: AppSpacing.sectionGap),
+
+            KeyValueRowGroup(
+              children: [
+                SelectableOptionCard(
+                  title: _l10n.subscriptionPlanYearly,
+                  subtitle:
+                      _productFor(SubscriptionService.yearlyProductId)?.price ??
+                      '',
+                  selected:
+                      _selectedSubscription == _SelectedSubscription.yearly,
+                  onTap: () => setState(() {
+                    _selectedSubscription = _SelectedSubscription.yearly;
+                  }),
+                ),
+                SelectableOptionCard(
+                  title: _l10n.subscriptionPlanMonthly,
+                  subtitle:
+                      _productFor(
+                        SubscriptionService.monthlyProductId,
+                      )?.price ??
+                      '',
+                  selected:
+                      _selectedSubscription == _SelectedSubscription.monthly,
+                  onTap: () => setState(() {
+                    _selectedSubscription = _SelectedSubscription.monthly;
+                  }),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: AppSpacing.gapMedium),
+
+            PrimaryActionButton(
+              label: _l10n.subscriptionCta,
+              isLoading: _isPurchasePending,
+              onPressed: (_isPurchasePending) ? null : _buy,
+            ),
+            const SizedBox(height: AppSpacing.gapLarge),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                _l10n.subscriptionFinePrint(
+                  _productFor(_selectedSubscription.productId)?.price ?? '',
+                  _selectedSubscription == _SelectedSubscription.yearly
+                      ? _l10n.subscriptionPlanYearly
+                      : _l10n.subscriptionPlanMonthly,
+                ),
+                textAlign: TextAlign.center,
+                style: AppTypography.captionSans.copyWith(
+                  color: colors.textSecondary,
+                ),
               ),
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextLinkButton(label: "EULA", onPressed: () => _launchEula()),
-              TextLinkButton(
-                label: _l10n.subscriptionRestore,
-                onPressed: _isPurchasePending ? null : _restore,
+            const SizedBox(height: AppSpacing.gapSmall),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                _l10n.subscriptionAutoRenewNotice,
+                textAlign: TextAlign.center,
+                style: AppTypography.captionSans.copyWith(
+                  color: colors.textSecondary,
+                ),
               ),
-            ],
-          ),
-        ],
+            ),
+          ],
+        ),
       ),
     );
   }

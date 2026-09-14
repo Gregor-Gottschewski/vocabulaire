@@ -88,6 +88,9 @@ class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
                         fontWeight: FontWeight.w600,
                         color: colors.textPrimary,
                       ),
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: AppSpacing.gapSmall),
                     Text(
@@ -104,7 +107,7 @@ class _BoxTileState extends State<BoxTile> with DueRefreshMixin<BoxTile> {
                   ],
                 ),
               ),
-              const SizedBox(width: AppSpacing.gapMedium),
+              const SizedBox(width: AppSpacing.gapLarge),
               Text(
                 l10n.overdueCardsCounter(_overdueItems().length),
                 style: AppTypography.serifValue.copyWith(

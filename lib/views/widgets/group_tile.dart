@@ -63,6 +63,9 @@ class GroupTile extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                         color: colors.textPrimary,
                       ),
+                      maxLines: 1,
+                      softWrap: false,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: AppSpacing.gapSmall),
                     Text(
@@ -77,7 +80,7 @@ class GroupTile extends StatelessWidget {
                   ],
                 ),
               ),
-              const SizedBox(width: AppSpacing.gapMedium),
+              const SizedBox(width: AppSpacing.gapLarge),
               Text(
                 l10n.groupTileBoxCount(boxCount),
                 style: AppTypography.serifValue.copyWith(
