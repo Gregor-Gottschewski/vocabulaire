@@ -89,6 +89,11 @@
   "editVocabAddAnyway": "Trotzdem hinzufügen",
   "editVocabSave": "Speichern",
   "editVocabStats": "Statistiken",
+  "editVocabActionsSheetTitle": "Weitere Bearbeitungsoptionen",
+  "editVocabForgot": "Ich habe das vergessen",
+  "editVocabForgotMessage": "Hiermit wird die Bewertung 'Nochmal' angewertet. Das verändert die Stabilität und Schwierigkeit.",
+  "editVocabResetRating": "Bewertung zurücksetzen",
+  "editVocabResetRatingMessage": "Du bist im Begriff die Statistiken zurückzusetzen. Damit werden die Werte Stabilität und Schwierigkeit auf Standardwerte gesetzt. Die nächste Abfrage findet umgehend statt.",
   "editVocabDue": "Nächste Abfrage: {dueDate}",
   "@editVocabDue": {
     "placeholders": {

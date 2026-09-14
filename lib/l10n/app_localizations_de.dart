@@ -188,6 +188,23 @@ class AppLocalizationsDe extends AppLocalizations {
   String get editVocabStats => 'Statistiken';
 
   @override
+  String get editVocabActionsSheetTitle => 'Weitere Bearbeitungsoptionen';
+
+  @override
+  String get editVocabForgot => 'Ich habe das vergessen';
+
+  @override
+  String get editVocabForgotMessage =>
+      'Hiermit wird die Bewertung \'Nochmal\' angewertet. Das verändert die Stabilität und Schwierigkeit.';
+
+  @override
+  String get editVocabResetRating => 'Bewertung zurücksetzen';
+
+  @override
+  String get editVocabResetRatingMessage =>
+      'Du bist im Begriff die Statistiken zurückzusetzen. Damit werden die Werte Stabilität und Schwierigkeit auf Standardwerte gesetzt. Die nächste Abfrage findet umgehend statt.';
+
+  @override
   String editVocabDue(String dueDate) {
     return 'Nächste Abfrage: $dueDate';
   }

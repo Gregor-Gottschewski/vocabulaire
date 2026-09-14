@@ -24,6 +24,7 @@ import '../models/vocabulary_box.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
+import 'widgets/app_bottom_sheet.dart';
 import 'widgets/app_dialog.dart';
 import 'widgets/app_progress_indicator.dart';
 import 'widgets/app_scaffold.dart';
@@ -84,6 +85,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   static const Duration _maxRecordDuration = Duration(seconds: 30);
   StreamSubscription<void>? _playerCompleteSub;
   int _vocabularyNumber = 0;
+  bool _vocabularyForgotAvailable = true;
 
   bool get _isEditing => widget.vocabulary != null;
 
@@ -422,6 +424,66 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     );
   }
 
+  /// Open bottom sheet with vocabulary edit options.
+  void _showVocabularyActionsSheet() {
+    showAppActionSheet(
+      context: context,
+      title: _l10n.editVocabActionsSheetTitle,
+      actions: [
+        if (_vocabularyForgotAvailable)
+          AppActionSheetAction(
+            label: _l10n.editVocabForgot,
+            onPressed: _confirmVocabularyForgot,
+          ),
+        AppActionSheetAction(
+          label: _l10n.editVocabResetRating,
+          onPressed: _confirmResetRating,
+        ),
+        AppActionSheetAction(
+          label: _l10n.boxDetailDelete,
+          destructive: true,
+          onPressed: _deleteVocabulary,
+        ),
+      ],
+    );
+  }
+
+  /// Show a dialog explaining the effects of [_vocabularyForgot] before
+  /// applying it.
+  void _confirmVocabularyForgot() {
+    showAppDialog(
+      context: context,
+      title: _l10n.editVocabForgot,
+      message: _l10n.editVocabForgotMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.commonOk,
+          destructive: true,
+          onPressed: _vocabularyForgot,
+        ),
+      ],
+    );
+  }
+
+  /// Show a dialog explaining the effects of [_resetRating] before applying
+  /// it.
+  void _confirmResetRating() {
+    showAppDialog(
+      context: context,
+      title: _l10n.editVocabResetRating,
+      message: _l10n.editVocabResetRatingMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.commonOk,
+          destructive: true,
+          onPressed: _resetRating,
+        ),
+      ],
+    );
+  }
+
   void _recordAudio() async {
     if (await _audioRecorder.hasPermission()) {
       if (_recording) {
@@ -747,6 +809,24 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     );
   }
 
+  void _vocabularyForgot() {
+    _isDirty = true;
+    _vocabularyForgotAvailable = false;
+    _vocab = _vocab.copyWith(
+      cardData: Scheduler().reviewCard(_vocab.card, Rating.again).card.toMap(),
+    );
+    setState(() {});
+  }
+
+  void _resetRating() {
+    _isDirty = true;
+    _vocabularyForgotAvailable = false;
+    _vocab = _vocab.copyWith(
+      cardData: Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap(),
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -763,10 +843,11 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       child: AppScaffold(
         backLabel: _l10n.vocabListTitle,
         actions: [
-          TextLinkButton(
-            label: _l10n.boxDetailDelete,
-            onPressed: _deleteVocabulary,
-          ),
+          if (_isEditing)
+            TextLinkButton(
+              label: _l10n.editAction,
+              onPressed: _showVocabularyActionsSheet,
+            ),
           TextLinkButton(
             label: _l10n.editVocabSave,
             onPressed: _isSaving ? null : _saveAndNextPressed,
@@ -931,8 +1012,6 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                             ),
                           ),
                       ],
-
-                      const SizedBox(height: 88),
                     ],
                   ),
                 ),

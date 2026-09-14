@@ -89,6 +89,11 @@
   "editVocabAddAnyway": "Ajouter quand même",
   "editVocabSave": "Enregistrer",
   "editVocabStats": "Statistiques",
+  "editVocabActionsSheetTitle": "Autres options de modification",
+  "editVocabForgot": "J'ai oublié",
+  "editVocabForgotMessage": "Ceci applique l'évaluation « Encore ». Cela modifie la stabilité et la difficulté.",
+  "editVocabResetRating": "Réinitialiser l'évaluation",
+  "editVocabResetRatingMessage": "Tu es sur le point de réinitialiser les statistiques. Cela réinitialisera les valeurs de stabilité et de difficulté à leurs valeurs par défaut. La prochaine révision aura lieu immédiatement.",
   "editVocabDue": "Prochaine révision : {dueDate}",
   "@editVocabDue": {
     "placeholders": {

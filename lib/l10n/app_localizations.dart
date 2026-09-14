@@ -430,6 +430,36 @@ abstract class AppLocalizations {
   /// **'Statistiken'**
   String get editVocabStats;
 
+  /// No description provided for @editVocabActionsSheetTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Weitere Bearbeitungsoptionen'**
+  String get editVocabActionsSheetTitle;
+
+  /// No description provided for @editVocabForgot.
+  ///
+  /// In de, this message translates to:
+  /// **'Ich habe das vergessen'**
+  String get editVocabForgot;
+
+  /// No description provided for @editVocabForgotMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Hiermit wird die Bewertung \'Nochmal\' angewertet. Das verändert die Stabilität und Schwierigkeit.'**
+  String get editVocabForgotMessage;
+
+  /// No description provided for @editVocabResetRating.
+  ///
+  /// In de, this message translates to:
+  /// **'Bewertung zurücksetzen'**
+  String get editVocabResetRating;
+
+  /// No description provided for @editVocabResetRatingMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Du bist im Begriff die Statistiken zurückzusetzen. Damit werden die Werte Stabilität und Schwierigkeit auf Standardwerte gesetzt. Die nächste Abfrage findet umgehend statt.'**
+  String get editVocabResetRatingMessage;
+
   /// No description provided for @editVocabDue.
   ///
   /// In de, this message translates to:

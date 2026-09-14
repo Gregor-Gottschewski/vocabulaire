@@ -187,6 +187,23 @@ class AppLocalizationsFr extends AppLocalizations {
   String get editVocabStats => 'Statistiques';
 
   @override
+  String get editVocabActionsSheetTitle => 'Autres options de modification';
+
+  @override
+  String get editVocabForgot => 'J\'ai oublié';
+
+  @override
+  String get editVocabForgotMessage =>
+      'Ceci applique l\'évaluation « Encore ». Cela modifie la stabilité et la difficulté.';
+
+  @override
+  String get editVocabResetRating => 'Réinitialiser l\'évaluation';
+
+  @override
+  String get editVocabResetRatingMessage =>
+      'Tu es sur le point de réinitialiser les statistiques. Cela réinitialisera les valeurs de stabilité et de difficulté à leurs valeurs par défaut. La prochaine révision aura lieu immédiatement.';
+
+  @override
   String editVocabDue(String dueDate) {
     return 'Prochaine révision : $dueDate';
   }
