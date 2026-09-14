@@ -131,20 +131,32 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     }
   }
 
+  Future<void> resumeApplication() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        user.reload();
+      }
+      if (user != null && user.emailVerified) {
+        try {
+          await Future.wait([
+            user.getIdToken(true),
+            FirebaseAppCheck.instance.getToken(true),
+          ]);
+        } catch (_) {}
+        BoxSyncService.instance.attach();
+        GroupSyncService.instance.attach();
+        UsageService.instance.attach();
+        AudioUploadQueueService.instance.attach();
+      }
+    } on PlatformException catch (_) {}
+  }
+
   @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:
-        final user = FirebaseAuth.instance.currentUser;
-        if (user != null) {
-          user.reload();
-        }
-        if (user != null && user.emailVerified) {
-          BoxSyncService.instance.attach();
-          GroupSyncService.instance.attach();
-          UsageService.instance.attach();
-          AudioUploadQueueService.instance.attach();
-        }
+        await resumeApplication();
       case AppLifecycleState.paused:
         BoxSyncService.instance.detach();
         GroupSyncService.instance.detach();
