@@ -280,6 +280,12 @@ abstract class AppLocalizations {
   /// **'Vocabulaire auf GitHub'**
   String get settingsGithub;
 
+  /// No description provided for @settingsPrivacyPolicy.
+  ///
+  /// In de, this message translates to:
+  /// **'Datenschutzerklärung'**
+  String get settingsPrivacyPolicy;
+
   /// No description provided for @settingsManageSubscription.
   ///
   /// In de, this message translates to:

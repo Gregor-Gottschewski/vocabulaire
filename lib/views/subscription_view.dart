@@ -129,6 +129,18 @@ class _SubscriptionViewState extends State<SubscriptionView> {
     }
   }
 
+  Future<void> _launchPrivacyPolicy() async {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final uri = Uri.parse(
+      languageCode == 'de'
+          ? 'https://gregor-gottschewski.github.io/vocabulaire/de/datenschutz/'
+          : 'https://gregor-gottschewski.github.io/vocabulaire/privacy/',
+    );
+    if (!await launchUrl(uri)) {
+      throw Exception('Could not launch privacy policy link');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -227,6 +239,11 @@ class _SubscriptionViewState extends State<SubscriptionView> {
                   color: colors.textSecondary,
                 ),
               ),
+            ),
+            const SizedBox(height: AppSpacing.gapMedium),
+            TextLinkButton(
+              label: _l10n.settingsPrivacyPolicy,
+              onPressed: () => _launchPrivacyPolicy(),
             ),
           ],
         ),

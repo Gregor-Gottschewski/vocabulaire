@@ -151,6 +151,16 @@ class _SettingsViewState extends State<SettingsView> {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> _openPrivacyPolicy() async {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    final uri = Uri.parse(
+      languageCode == 'de'
+          ? 'https://gregor-gottschewski.github.io/vocabulaire/de/datenschutz/'
+          : 'https://gregor-gottschewski.github.io/vocabulaire/privacy/',
+    );
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   Future<void> _openSubscriptionManagement() async {
     final uri = Uri.parse('https://apps.apple.com/account/subscriptions');
     await launchUrl(uri, mode: LaunchMode.externalApplication);
@@ -283,6 +293,10 @@ class _SettingsViewState extends State<SettingsView> {
               ),
             ),
             TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
+            TextLinkButton(
+              label: _l10n.settingsPrivacyPolicy,
+              onPressed: _openPrivacyPolicy,
+            ),
           ],
         ),
       ),

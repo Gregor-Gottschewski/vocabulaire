@@ -105,6 +105,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsGithub => 'Vocabulaire auf GitHub';
 
   @override
+  String get settingsPrivacyPolicy => 'Datenschutzerklärung';
+
+  @override
   String get settingsManageSubscription => 'Abo verwalten';
 
   @override
