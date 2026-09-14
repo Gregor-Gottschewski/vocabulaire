@@ -8,7 +8,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kReleaseMode, kDebugMode;
+import 'package:flutter/foundation.dart'
+    show kReleaseMode, kDebugMode, PlatformDispatcher;
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vocabulaire/flavors.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
@@ -34,6 +36,7 @@ import 'views/verify_email_view.dart';
 /// When enabled, the local Firebase emulator will be used
 const bool _useFirebaseEmulator = bool.fromEnvironment('USE_FIREBASE_EMULATOR');
 const bool _useDebugProvider = bool.fromEnvironment('USE_DEBUG_PROVIDER');
+const String _debugToken = String.fromEnvironment('DEBUG_TOKEN');
 
 Future<void> bootstrap(Flavor flavor) async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -65,7 +68,7 @@ Future<void> bootstrap(Flavor flavor) async {
   await FirebaseAppCheck.instance.activate(
     providerApple: kReleaseMode || !_useDebugProvider
         ? const AppleAppAttestWithDeviceCheckFallbackProvider()
-        : const AppleDebugProvider(),
+        : const AppleDebugProvider(debugToken: _debugToken),
   );
 
   await Hive.initFlutter();
