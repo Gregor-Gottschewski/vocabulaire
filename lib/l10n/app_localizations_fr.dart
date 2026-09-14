@@ -105,6 +105,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsGithub => 'Vocabulaire à GitHub';
 
   @override
+  String get settingsManageSubscription => 'Gérer l\'abonnement';
+
+  @override
   String get settingsExportAll => 'Exporter toutes les boîtes';
 
   @override
@@ -897,6 +900,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get subscriptionRestore => 'Restaurer les achats';
+
+  @override
+  String get subscriptionSuccessTitle =>
+      'Tu as maintenant Vocabulaire Premium.';
 
   @override
   String get errorSubscriptionProductsUnavailable =>

@@ -151,6 +151,11 @@ class _SettingsViewState extends State<SettingsView> {
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
+  Future<void> _openSubscriptionManagement() async {
+    final uri = Uri.parse('https://apps.apple.com/account/subscriptions');
+    await launchUrl(uri, mode: LaunchMode.externalApplication);
+  }
+
   Future<void> _confirmSignOut() async {
     await showAppDialog(
       context: context,
@@ -210,6 +215,11 @@ class _SettingsViewState extends State<SettingsView> {
                   KeyValueRow.value(
                     label: _l10n.settingsAudioUsage,
                     value: _audioUsageLabel,
+                  ),
+                  KeyValueRow.submenu(
+                    context,
+                    label: _l10n.settingsManageSubscription,
+                    onTap: _openSubscriptionManagement,
                   ),
                 ] else ...[
                   KeyValueRow.submenu(

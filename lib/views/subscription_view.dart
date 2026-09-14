@@ -9,9 +9,11 @@ import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
 import 'package:vocabulaire/views/widgets/selectable_option_card.dart';
 
+import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
+import 'subscription_success_view.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/primary_action_button.dart';
 import 'widgets/text_link_button.dart';
@@ -80,7 +82,9 @@ class _SubscriptionViewState extends State<SubscriptionView> {
     if (state.status == SubscriptionPurchaseStatus.error && error != null) {
       context.showAppError(error);
     } else if (state.status == SubscriptionPurchaseStatus.success) {
-      Navigator.of(context).maybePop();
+      Navigator.of(context).pushReplacement(
+        AppPageRoute(builder: (_) => const SubscriptionSuccessView()),
+      );
       return;
     }
     setState(() {});

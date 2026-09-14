@@ -280,6 +280,12 @@ abstract class AppLocalizations {
   /// **'Vocabulaire auf GitHub'**
   String get settingsGithub;
 
+  /// No description provided for @settingsManageSubscription.
+  ///
+  /// In de, this message translates to:
+  /// **'Abo verwalten'**
+  String get settingsManageSubscription;
+
   /// No description provided for @settingsExportAll.
   ///
   /// In de, this message translates to:
@@ -1671,6 +1677,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Wiederherstellen'**
   String get subscriptionRestore;
+
+  /// No description provided for @subscriptionSuccessTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Du hast jetzt Vocabulaire Premium.'**
+  String get subscriptionSuccessTitle;
 
   /// No description provided for @errorSubscriptionProductsUnavailable.
   ///

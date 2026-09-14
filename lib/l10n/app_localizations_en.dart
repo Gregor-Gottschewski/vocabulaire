@@ -105,6 +105,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsGithub => 'Vocabulaire on GitHub';
 
   @override
+  String get settingsManageSubscription => 'Manage subscription';
+
+  @override
   String get settingsExportAll => 'Export all boxes';
 
   @override
@@ -884,6 +887,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subscriptionRestore => 'Restore purchases';
+
+  @override
+  String get subscriptionSuccessTitle => 'You now have Vocabulaire Premium.';
 
   @override
   String get errorSubscriptionProductsUnavailable =>
