@@ -342,6 +342,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get vocabListNoResults => 'Keine Vokabel gefunden.';
 
   @override
+  String get vocabListClearSearch => 'Leeren';
+
+  @override
   String get learningMethodAll => 'Alle';
 
   @override

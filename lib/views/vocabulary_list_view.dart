@@ -145,10 +145,24 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                 ),
               ),
               const SizedBox(height: AppSpacing.sectionGap),
-              AppTextField(
-                controller: _searchController,
-                placeholder: _l10n.vocabListSearchPlaceholder,
-                onChanged: (_) => setState(() {}),
+              Row(
+                children: [
+                  Expanded(
+                    child: AppTextField(
+                      controller: _searchController,
+                      placeholder: _l10n.vocabListSearchPlaceholder,
+                      onChanged: (_) => setState(() {}),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.gapLarge),
+                  TextLinkButton(
+                    label: _l10n.vocabListClearSearch,
+                    onPressed: () {
+                      _searchController.clear();
+                      setState(() {});
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: AppSpacing.sectionGap),
               if (items.isEmpty)

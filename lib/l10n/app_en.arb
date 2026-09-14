@@ -162,6 +162,7 @@
   "vocabListEmpty": "No vocabulary yet.",
   "vocabListSearchPlaceholder": "Search",
   "vocabListNoResults": "No matching vocabulary found.",
+  "vocabListClearSearch": "Clear",
   "learningMethodAll": "All",
   "learningMethodHard": "Difficult only",
   "learningMethodNew": "New only",

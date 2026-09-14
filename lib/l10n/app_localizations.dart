@@ -706,6 +706,12 @@ abstract class AppLocalizations {
   /// **'Keine Vokabel gefunden.'**
   String get vocabListNoResults;
 
+  /// No description provided for @vocabListClearSearch.
+  ///
+  /// In de, this message translates to:
+  /// **'Leeren'**
+  String get vocabListClearSearch;
+
   /// No description provided for @learningMethodAll.
   ///
   /// In de, this message translates to:

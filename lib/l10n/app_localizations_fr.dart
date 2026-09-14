@@ -342,6 +342,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get vocabListNoResults => 'Aucun vocabulaire trouvé.';
 
   @override
+  String get vocabListClearSearch => 'Effacer';
+
+  @override
   String get learningMethodAll => 'Tous';
 
   @override

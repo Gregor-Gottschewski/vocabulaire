@@ -190,6 +190,7 @@
   "vocabListEmpty": "Aucun vocabulaire disponible.",
   "vocabListSearchPlaceholder": "Rechercher",
   "vocabListNoResults": "Aucun vocabulaire trouvé.",
+  "vocabListClearSearch": "Effacer",
   "learningMethodAll": "Tous",
   "learningMethodHard": "Difficiles uniquement",
   "learningMethodNew": "Nouveaux uniquement",
