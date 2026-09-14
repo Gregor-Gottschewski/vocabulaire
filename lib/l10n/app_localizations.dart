@@ -640,6 +640,18 @@ abstract class AppLocalizations {
   /// **'Exportieren'**
   String get export;
 
+  /// No description provided for @exportProgressDialogTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Lernfortschritt exportieren?'**
+  String get exportProgressDialogTitle;
+
+  /// No description provided for @exportProgressDialogMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Soll auch dein Lernfortschritt gespeichert werden?'**
+  String get exportProgressDialogMessage;
+
   /// No description provided for @groupDetailImportAction.
   ///
   /// In de, this message translates to:
@@ -723,6 +735,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Abbrechen'**
   String get commonCancel;
+
+  /// No description provided for @commonYes.
+  ///
+  /// In de, this message translates to:
+  /// **'Ja'**
+  String get commonYes;
+
+  /// No description provided for @commonNo.
+  ///
+  /// In de, this message translates to:
+  /// **'Nein'**
+  String get commonNo;
 
   /// No description provided for @commonError.
   ///

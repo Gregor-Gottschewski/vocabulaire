@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_archive/flutter_archive.dart';
+import 'package:fsrs/fsrs.dart';
 import 'package:path/path.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_exception.dart';
@@ -17,10 +18,30 @@ class ExportController {
     }
   }
 
+  /// Returns a copy of [box] without card progress data.
+  static VocabularyBox _stripProgress(VocabularyBox box) {
+    Map<String, dynamic> freshCardData() =>
+        Card(cardId: DateTime.now().millisecondsSinceEpoch).toMap();
+
+    return box.copyWith(
+      vocabularies: box.vocabularies
+          .map(
+            (v) => v.copyWith(
+              cardData: freshCardData(),
+              conjugations: v.conjugations
+                  .map((c) => c.copyWith(cardData: freshCardData()))
+                  .toList(),
+            ),
+          )
+          .toList(),
+    );
+  }
+
   /// Exports given vocabulary box with store and audio files.
   static Future<File> exportBox(
     final VocabularyBox box, {
     Directory? outputDir,
+    bool includeProgress = true,
   }) async {
     if (outputDir == null) {
       _deleteExportDirectory();
@@ -35,7 +56,8 @@ class ExportController {
     }
 
     try {
-      final jsonString = const JsonEncoder().convert(box.toMap());
+      final exportBox = includeProgress ? box : _stripProgress(box);
+      final jsonString = const JsonEncoder().convert(exportBox.toMap());
 
       final file = File(join(tempExportDir.path, "store.json"));
 
@@ -86,7 +108,10 @@ class ExportController {
 
   /// Exports all given vocabulary boxes as `.vocab` files grouped into a
   /// single ZIP archive.
-  static Future<File> exportAllBoxes(final List<VocabularyBox> boxes) async {
+  static Future<File> exportAllBoxes(
+    final List<VocabularyBox> boxes, {
+    bool includeProgress = true,
+  }) async {
     _deleteExportDirectory();
 
     late Directory tempBulkDir;
@@ -99,7 +124,11 @@ class ExportController {
 
     try {
       for (final box in boxes) {
-        await exportBox(box, outputDir: tempBulkDir);
+        await exportBox(
+          box,
+          outputDir: tempBulkDir,
+          includeProgress: includeProgress,
+        );
       }
 
       final zipFile = File(

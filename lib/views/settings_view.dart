@@ -128,8 +128,14 @@ class _SettingsViewState extends State<SettingsView> {
     final boxes = _boxController.boxes;
     if (boxes.isEmpty) return;
 
+    final includeProgress = await context.confirmExportProgress();
+    if (!mounted) return;
+
     await context.exportAndShare(
-      export: () => ExportController.exportAllBoxes(boxes),
+      export: () => ExportController.exportAllBoxes(
+        boxes,
+        includeProgress: includeProgress,
+      ),
       title: _l10n.settingsExportAll,
       onStart: () => setState(() => _isExportingAll = true),
       onFinish: () {

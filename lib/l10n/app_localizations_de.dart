@@ -308,6 +308,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get export => 'Exportieren';
 
   @override
+  String get exportProgressDialogTitle => 'Lernfortschritt exportieren?';
+
+  @override
+  String get exportProgressDialogMessage =>
+      'Soll auch dein Lernfortschritt gespeichert werden?';
+
+  @override
   String get groupDetailImportAction => 'Importieren';
 
   @override
@@ -348,6 +355,12 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get commonCancel => 'Abbrechen';
+
+  @override
+  String get commonYes => 'Ja';
+
+  @override
+  String get commonNo => 'Nein';
 
   @override
   String get commonError => 'Fehler';
