@@ -491,7 +491,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get editVocabOverwriteAudioMessage =>
-      'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?';
+      'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch eine neue Audio ersetzt werden?';
 
   @override
   String get editVocabOverwriteAudioConfirm => 'Überschreiben';

@@ -482,7 +482,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editVocabOverwriteAudioMessage =>
-      'This card already has an audio recording. Replace it with the newly generated pronunciation?';
+      'This card already has an audio recording. Replace it with a new audio recording?';
 
   @override
   String get editVocabOverwriteAudioConfirm => 'Overwrite';

@@ -492,7 +492,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get editVocabOverwriteAudioMessage =>
-      'Cette carte possède déjà un enregistrement audio. Le remplacer par la prononciation générée ?';
+      'Cette carte possède déjà un enregistrement audio. Le remplacer par un nouveau audio ?';
 
   @override
   String get editVocabOverwriteAudioConfirm => 'Remplacer';

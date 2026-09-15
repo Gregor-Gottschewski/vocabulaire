@@ -484,11 +484,32 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     );
   }
 
+  Future<bool> showOverrideWarning() async {
+    if (!mounted) return false;
+    var confirmed = false;
+    await showAppDialog(
+      context: context,
+      title: _l10n.editVocabOverwriteAudioTitle,
+      message: _l10n.editVocabOverwriteAudioMessage,
+      actions: [
+        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.editVocabOverwriteAudioConfirm,
+          destructive: true,
+          onPressed: () => confirmed = true,
+        ),
+      ],
+    );
+    return confirmed;
+  }
+
   void _recordAudio() async {
     if (await _audioRecorder.hasPermission()) {
       if (_recording) {
         await _stopRecording();
       } else {
+        if (_hasRecording && await showOverrideWarning()) return;
+
         await _audioRecorder.start(
           _audioConfig,
           path: AppPaths.audioTempFilePath(_vocab.id),
@@ -583,23 +604,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final generatingVocabId = _vocab.id;
     final boxKey = widget.boxKey;
 
-    if (_hasRecording) {
-      var confirmed = false;
-      await showAppDialog(
-        context: context,
-        title: _l10n.editVocabOverwriteAudioTitle,
-        message: _l10n.editVocabOverwriteAudioMessage,
-        actions: [
-          AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
-          AppDialogAction(
-            label: _l10n.editVocabOverwriteAudioConfirm,
-            destructive: true,
-            onPressed: () => confirmed = true,
-          ),
-        ],
-      );
-      if (!confirmed) return;
-    }
+    if (_hasRecording && await showOverrideWarning()) return;
 
     if (_isPlaying) {
       await _audioPlayer.stop();

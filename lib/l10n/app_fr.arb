@@ -246,7 +246,7 @@
   "errorAudioStorageLimitReached": "Limite de stockage audio atteinte. Rends une boîte locale pour libérer de l'espace de stockage.",
   "editVocabGenerateAudio": "Générer",
   "editVocabOverwriteAudioTitle": "Remplacer l'enregistrement ?",
-  "editVocabOverwriteAudioMessage": "Cette carte possède déjà un enregistrement audio. Le remplacer par la prononciation générée ?",
+  "editVocabOverwriteAudioMessage": "Cette carte possède déjà un enregistrement audio. Le remplacer par un nouveau audio ?",
   "editVocabOverwriteAudioConfirm": "Remplacer",
   "editVocabTtsTooLongHint": "La prononciation n'est disponible que jusqu'à 65 caractères. Ta saisie comporte {len} caractères.",
   "editVocabUnsavedChangesTitle": "Voulez-vous enregistrer vos modifications ?",

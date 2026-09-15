@@ -193,7 +193,7 @@
   "errorImportFailed": "The box could not be imported.",
   "editVocabGenerateAudio": "Generate",
   "editVocabOverwriteAudioTitle": "Overwrite recording?",
-  "editVocabOverwriteAudioMessage": "This card already has an audio recording. Replace it with the newly generated pronunciation?",
+  "editVocabOverwriteAudioMessage": "This card already has an audio recording. Replace it with a new audio recording?",
   "editVocabOverwriteAudioConfirm": "Overwrite",
   "editVocabTtsTooLongHint": "Pronunciation is only available up to 65 characters. Your input has {len} characters.",
   "editVocabUnsavedChangesTitle": "Do you want to save your changes?",

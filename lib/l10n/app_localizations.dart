@@ -961,7 +961,7 @@ abstract class AppLocalizations {
   /// No description provided for @editVocabOverwriteAudioMessage.
   ///
   /// In de, this message translates to:
-  /// **'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?'**
+  /// **'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch eine neue Audio ersetzt werden?'**
   String get editVocabOverwriteAudioMessage;
 
   /// No description provided for @editVocabOverwriteAudioConfirm.
