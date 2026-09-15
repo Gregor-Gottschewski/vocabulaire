@@ -95,7 +95,11 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       _source,
     );
     if (result == null) return;
-    setState(() => _source = result);
+    if (result == _target) {
+      _target = _source;
+      _source = result;
+    }
+    setState(() {});
   }
 
   Future<void> _pickTargetLanguage() async {
@@ -104,7 +108,11 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       _target,
     );
     if (result == null) return;
-    setState(() => _target = result);
+    if (result == _source) {
+      _source = _target;
+      _target = result;
+    }
+    setState(() {});
   }
 
   /// Renders a language code as its display name — falls back to the raw
