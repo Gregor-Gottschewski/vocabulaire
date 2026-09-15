@@ -121,7 +121,9 @@ class _ReviewViewState extends State<ReviewView>
   }
 
   void _rate(Rating rating) {
-    _resetFlip();
+    if (_reviewController.length != _reviewController.index + 1) {
+      _resetFlip();
+    }
     _player.stop();
     _reviewController.applyRating(rating);
   }
