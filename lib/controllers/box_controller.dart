@@ -89,6 +89,11 @@ class BoxController {
             box.id,
             box.vocabularies,
           );
+          for (final vocabulary in box.vocabularies) {
+            if (AppPaths.audioFile(vocabulary.id).existsSync()) {
+              _audioUploadQueue.enqueue(box.groupId, box.id, vocabulary.id);
+            }
+          }
         }
       } else {
         await _localBox.put(box.id, box);

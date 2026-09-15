@@ -13,6 +13,8 @@ export const VOCABULARY_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}/vocab
 // Keep in sync with the vocabulary quota check in firestore.rules.
 const VOCABULARY_LIMIT_PREMIUM = 3000;
 
+const VOCABULARY_SAFETY_MARGIN = 500;
+
 async function adjustRateLimitField(uid: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
     if (!(await userExists(uid))) return;
@@ -30,7 +32,7 @@ async function groupWritesAllowed(uid: string, groupId: string): Promise<boolean
         .collection("groups")
         .doc(groupId)
         .get();
-    return group.exists || group.data()!.deleted === false;
+    return group.exists && group.data()!.deleted === false;
 }
 
 async function adjustGroupField(uid: string, groupId: string, field: string, delta: number): Promise<void> {
@@ -89,11 +91,19 @@ export const onVocabularyCreated = onDocumentCreated(
         const vocabRef = event.data?.ref;
         if (!vocabRef) return;
 
+        const limit = VOCABULARY_LIMIT_PREMIUM;
         const rateLimitRef = getFirestore().collection("rateLimits").doc(uid);
+
+        const snap = await rateLimitRef.get();
+        const currentCount = (snap.data()?.vocabularyCountOnline as number | undefined) ?? 0;
+        if (currentCount < limit - VOCABULARY_SAFETY_MARGIN) {
+            await rateLimitRef.set({vocabularyCountOnline: FieldValue.increment(1)}, {merge: true});
+            return;
+        }
+
         await getFirestore().runTransaction(async (tx) => {
-            const snap = await tx.get(rateLimitRef);
-            const data = snap.exists ? snap.data()! : {};
-            const limit = VOCABULARY_LIMIT_PREMIUM;
+            const txSnap = await tx.get(rateLimitRef);
+            const data = txSnap.exists ? txSnap.data()! : {};
             const count = (data.vocabularyCountOnline as number | undefined) ?? 0;
 
             if (count >= limit) {
@@ -111,19 +121,16 @@ export const onVocabularyCreated = onDocumentCreated(
 );
 
 export const onVocabularyDeleted = onDocumentDeleted(
-    {region: REGION, document: VOCABULARY_PATH},
+    {region: REGION, document: VOCABULARY_PATH, retry: true},
     async (event) => {
-        const uid = event.params.uid;
-        if (await userExists(uid)) {
-            const rateLimitRef = getFirestore().collection("rateLimits").doc(uid);
-            await getFirestore().runTransaction(async (tx) => {
-                const snap = await tx.get(rateLimitRef);
-                const count = (snap.exists ? snap.data()!.vocabularyCountOnline as number | undefined : undefined) ?? 0;
-                if (count > 0) {
-                    tx.set(rateLimitRef, {vocabularyCountOnline: count - 1}, {merge: true});
-                }
-            });
+        const eventAgeMs = Date.now() - Date.parse(event.time);
+        const eventMaxAgeMs = 1000 * 60 * 3; // retry for 3 minutes
+        if (eventAgeMs > eventMaxAgeMs) {
+            console.log(`Dropping event ${event} with age[ms]: ${eventAgeMs}`);
+            return;
         }
+
+        await adjustRateLimitField(event.params.uid, "vocabularyCountOnline", -1);
         await releaseReservation(event.params.uid, `${event.params.vocabId}.m4a`);
     }
 );

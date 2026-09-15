@@ -40,6 +40,7 @@ class _SubscriptionViewState extends State<SubscriptionView> {
   late AppLocalizations _l10n;
   List<ProductDetails> _products = const [];
   bool _isLoadingProducts = true;
+  bool _isShowingErrorDialog = false;
 
   @override
   void initState() {
@@ -80,7 +81,12 @@ class _SubscriptionViewState extends State<SubscriptionView> {
     final state = _subscription.listenable.value;
     final error = state.error;
     if (state.status == SubscriptionPurchaseStatus.error && error != null) {
-      context.showAppError(error);
+      if (!_isShowingErrorDialog) {
+        _isShowingErrorDialog = true;
+        context.showAppError(error).then((_) {
+          _isShowingErrorDialog = false;
+        });
+      }
     } else if (state.status == SubscriptionPurchaseStatus.success) {
       Navigator.of(context).pushReplacement(
         AppPageRoute(builder: (_) => const SubscriptionSuccessView()),

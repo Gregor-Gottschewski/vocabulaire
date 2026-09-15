@@ -171,18 +171,16 @@ class _BoxListViewState extends State<BoxListView> {
   /// Handle box import action.
   Future<void> _importBox() async {
     try {
-      final FilePickerResult? results = await FilePicker.pickFiles(
+      final List<PlatformFile> results = await FilePicker.pickFiles(
         dialogTitle: _l10n.settingsImportBox,
         type: FileType.custom,
         allowedExtensions: ['vocab'],
-        allowMultiple: true,
-        withData: false,
       );
 
-      if (results == null || results.files.isEmpty) return;
+      if (results.isEmpty) return;
 
       final importedBoxes = <VocabularyBox>[];
-      for (final result in results.files) {
+      for (final result in results) {
         final path = result.path;
         if (path == null) return;
         final box = await ImportController.importBoxFromFile(path);

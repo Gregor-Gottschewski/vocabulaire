@@ -8,10 +8,11 @@ import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
+import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
+import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 /// Account deletion view.
 class DeleteAccountView extends StatefulWidget {
@@ -74,11 +75,21 @@ class _DeleteAccountView extends State<DeleteAccountView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Center(child: AppProgressIndicator());
+    }
+
     final colors = context.colors;
     return AppScaffold(
       backLabel: _l10n.settingsTitle,
-      body: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+      actions: [
+        TextLinkButton(
+          label: _l10n.deleteAccountSubmitButton,
+          onPressed: _confirmAndDelete,
+          color: colors.danger,
+        ),
+      ],
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -104,12 +115,6 @@ class _DeleteAccountView extends State<DeleteAccountView> {
                 textInputAction: TextInputAction.done,
                 onSubmitted: (_) => _confirmAndDelete(),
               ),
-            ),
-            const Spacer(),
-            PrimaryActionButton(
-              label: _l10n.deleteAccountSubmitButton,
-              onPressed: _isLoading ? null : _confirmAndDelete,
-              isLoading: _isLoading,
             ),
           ],
         ),

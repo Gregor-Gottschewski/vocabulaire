@@ -10,7 +10,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart'
     show kReleaseMode, kDebugMode, PlatformDispatcher;
-import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:vocabulaire/flavors.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
@@ -132,24 +131,24 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   }
 
   Future<void> resumeApplication() async {
-    try {
-      final user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        user.reload();
-      }
-      if (user != null && user.emailVerified) {
-        try {
-          await Future.wait([
-            user.getIdToken(true),
-            FirebaseAppCheck.instance.getToken(true),
-          ]);
-        } catch (_) {}
-        BoxSyncService.instance.attach();
-        GroupSyncService.instance.attach();
-        UsageService.instance.attach();
-        AudioUploadQueueService.instance.attach();
-      }
-    } on PlatformException catch (_) {}
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        await user.reload();
+      } catch (_) {}
+    }
+    if (user != null && user.emailVerified) {
+      try {
+        await Future.wait([
+          user.getIdToken(true),
+          FirebaseAppCheck.instance.getToken(true),
+        ]);
+      } catch (_) {}
+      BoxSyncService.instance.attach();
+      GroupSyncService.instance.attach();
+      UsageService.instance.attach();
+      AudioUploadQueueService.instance.attach();
+    }
   }
 
   @override

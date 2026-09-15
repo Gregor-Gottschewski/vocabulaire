@@ -2,6 +2,7 @@ import { Timestamp, getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
 import { HttpsError, onCall } from "firebase-functions/v2/https";
 import { appleAppId, appleBundleId, verifyAndDecodeTransaction } from "./appleVerification";
+import { isPremiumActive } from "./premiumStatus";
 
 const REGION = "europe-west1";
 
@@ -55,7 +56,10 @@ export const verifyAppleSubscription = onCall(
                 const existingUid = existingSnap.exists ? (existingSnap.data()?.uid as string | undefined) : undefined;
 
                 if (existingUid && existingUid !== uid) {
-                    throw new SubscriptionConflictError(existingUid);
+                    const existingRateLimitSnap = await tx.get(db.collection("rateLimits").doc(existingUid));
+                    if (isPremiumActive(existingRateLimitSnap.data())) {
+                        throw new SubscriptionConflictError(existingUid);
+                    }
                 }
 
                 tx.set(

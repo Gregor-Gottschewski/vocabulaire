@@ -48,7 +48,9 @@ class ImportController {
   /// [extractedVocabularyBox] path to the vocabulary box root.
   ///
   /// Returns the decoded vocabulary box.
-  static Future<VocabularyBox> _readStoreFile(final String extractedVocabularyBox) async {
+  static Future<VocabularyBox> _readStoreFile(
+    final String extractedVocabularyBox,
+  ) async {
     final store = File(join(extractedVocabularyBox, 'store.json'));
 
     if (!await store.exists()) {
@@ -92,13 +94,16 @@ class ImportController {
 
     final files = (await audioDir.list().toList()).whereType<File>();
     await Future.wait(
-      files.where((file) => extension(file.path) == ".m4a").map((file) {
-        String fileName = basenameWithoutExtension(file.path);
-        if (idChanges[fileName] != null) {
-          fileName = idChanges[fileName]!;
-        }
-        return file.copy(AppPaths.audioFilePath(fileName));
-      }),
+      files
+          .where((file) => extension(file.path) == ".m4a")
+          .where(
+            (file) =>
+                idChanges.containsKey(basenameWithoutExtension(file.path)),
+          )
+          .map((file) {
+            final newId = idChanges[basenameWithoutExtension(file.path)]!;
+            return file.copy(AppPaths.audioFilePath(newId));
+          }),
     );
   }
 }
