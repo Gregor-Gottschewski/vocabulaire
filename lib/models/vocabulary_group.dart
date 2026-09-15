@@ -14,15 +14,15 @@ class VocabularyGroup {
   @HiveField(1)
   final String name;
 
-  /// [BoxType.name] of this group. Immutable after creation.
+  /// [GroupType.name] of this group. Immutable after creation.
   @HiveField(2)
   final String type;
 
-  /// [AppLanguage.code] of the source language, only set for [BoxType.vocabulary] groups.
+  /// [AppLanguage.code] of the source language, only set for [GroupType.vocabulary] groups.
   @HiveField(3)
   final String? sourceLanguage;
 
-  /// [AppLanguage.code] of the target language, only set for [BoxType.vocabulary] groups.
+  /// [AppLanguage.code] of the target language, only set for [GroupType.vocabulary] groups.
   @HiveField(4)
   final String? targetLanguage;
 
@@ -32,7 +32,7 @@ class VocabularyGroup {
 
   final int boxCountOnline;
 
-  BoxType get boxType => BoxType.fromName(type);
+  GroupType get boxType => GroupType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
 

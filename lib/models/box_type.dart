@@ -1,15 +1,15 @@
 
 /// Represents the type of a [VocabularyBox].
-enum BoxType {
+enum GroupType {
   vocabulary,
   flashcard;
 
-  /// Returns [BoxType] element based on input.
-  /// Default is [BoxType.flashcard] if string name unknown.
-  static BoxType fromName(String name) {
-    return BoxType.values.firstWhere(
+  /// Returns [GroupType] element based on input.
+  /// Default is [GroupType.flashcard] if string name unknown.
+  static GroupType fromName(String name) {
+    return GroupType.values.firstWhere(
       (t) => t.name == name,
-      orElse: () => BoxType.flashcard,
+      orElse: () => GroupType.flashcard,
     );
   }
 }

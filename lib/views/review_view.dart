@@ -21,12 +21,14 @@ class ReviewView extends StatefulWidget {
   final String boxKey;
   final bool onlyTimely;
   final LearningMethod learningMethod;
+  final bool reversed;
 
   const ReviewView({
     super.key,
     required this.boxKey,
     required this.onlyTimely,
     required this.learningMethod,
+    this.reversed = false,
   });
 
   @override
@@ -206,7 +208,7 @@ class _ReviewViewState extends State<ReviewView>
           child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
-              current.frontText,
+              widget.reversed ? current.backText : current.frontText,
               textAlign: TextAlign.center,
               style: AppTypography.headlineSerif.copyWith(
                 color: colors.textPrimary,
@@ -242,7 +244,7 @@ class _ReviewViewState extends State<ReviewView>
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        current.backText,
+                        widget.reversed ? current.frontText : current.backText,
                         textAlign: TextAlign.center,
                         style: AppTypography.headlineSerif.copyWith(
                           fontSize: 22,
@@ -326,7 +328,7 @@ class _ReviewViewState extends State<ReviewView>
     final total = _reviewController.length;
     final indexDisplay = total == 0 ? 0 : (_reviewController.index + 1);
     final isVocabularyBox =
-        _reviewController.box?.boxType == BoxType.vocabulary;
+        _reviewController.box?.boxType == GroupType.vocabulary;
     final hasRecording =
         current is VocabularyItem &&
         AppPaths.audioFile(current.vocabulary.id).existsSync();
@@ -341,7 +343,7 @@ class _ReviewViewState extends State<ReviewView>
                   _reviewController.index,
                   indexDisplay,
                   total,
-                  _flipped && hasRecording,
+                  widget.reversed ? hasRecording : _flipped && hasRecording,
                 ),
                 Expanded(
                   child: Center(

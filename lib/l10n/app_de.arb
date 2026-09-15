@@ -153,6 +153,7 @@
   },
   "boxDetailDescription": "Beschreibung",
   "boxTileNoDescription": "Keine Beschreibung vorhanden",
+  "boxDetailFlipLanguages": "Sprachen tauschen",
   "boxDetailDueVocabs": "Fällige Vokabeln abfragen",
   "boxDetailMethod": "Lernmethode",
   "boxDetailDailyLimit": "Tageslimit neuer Karten",

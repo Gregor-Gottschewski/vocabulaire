@@ -125,6 +125,7 @@
   "reviewExample": "Example: {example}",
   "boxDetailDescription": "Description",
   "boxTileNoDescription": "No description available",
+  "boxDetailFlipLanguages": "Flip languages",
   "boxDetailDueVocabs": "Query due vocabulary",
   "boxDetailMethod": "Learning method",
   "boxDetailDailyLimit": "New cards daily limit",

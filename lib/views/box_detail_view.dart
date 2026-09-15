@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
+import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/views/review_view.dart';
 
 import '../models/review_session.dart';
@@ -36,6 +38,7 @@ class _BoxDetailWidget extends State<BoxDetailView>
   late final ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxNotifier;
   late AppLocalizations _l10n;
   bool _onlyTimely = true;
+  bool _reversed = false;
   LearningMethod _selectedOption = LearningMethod.all;
   bool _dailyLimitEnabled = false;
   int _dailyLimit = 20;
@@ -170,6 +173,8 @@ class _BoxDetailWidget extends State<BoxDetailView>
       remainingNewCards: box.remainingNewCardsToday,
     );
 
+    final groupType = GroupController().getGroup(widget.box.groupId)?.type;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -201,6 +206,13 @@ class _BoxDetailWidget extends State<BoxDetailView>
         const SizedBox(height: AppSpacing.sectionGap),
         KeyValueRowGroup(
           children: [
+            if (groupType == GroupType.vocabulary.name)
+              KeyValueRow.toggle(
+                label: _l10n.boxDetailFlipLanguages,
+                value: _reversed,
+                onChanged: (v) => setState(() => _reversed = v),
+              ),
+
             KeyValueRow.toggle(
               label: _l10n.boxDetailDueVocabs,
               value: _onlyTimely,
@@ -245,6 +257,7 @@ class _BoxDetailWidget extends State<BoxDetailView>
                         boxKey: widget.boxKey,
                         onlyTimely: _onlyTimely,
                         learningMethod: _selectedOption,
+                        reversed: _reversed,
                       ),
                     ),
                   );

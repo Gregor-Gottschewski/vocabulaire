@@ -5,7 +5,7 @@ import 'package:vocabulaire/models/vocabulary_group.dart';
 /// Mutable value holder passed through the group-creation flow's steps.
 class GroupDraft {
   String? id;
-  BoxType type = BoxType.vocabulary;
+  GroupType type = GroupType.vocabulary;
   String name = '';
   String? sourceLanguage = AppLanguage.german.code;
   String? targetLanguage = AppLanguage.french.code;

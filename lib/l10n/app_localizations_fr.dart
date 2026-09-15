@@ -277,6 +277,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get boxTileNoDescription => 'Aucune description disponible';
 
   @override
+  String get boxDetailFlipLanguages => 'Inverser les langues';
+
+  @override
   String get boxDetailDueVocabs => 'Interroger les vocabulaires à réviser';
 
   @override

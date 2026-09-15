@@ -17,15 +17,15 @@ class VocabularyBox {
   @HiveField(2)
   final List<Vocabulary> vocabularies;
 
-  /// [BoxType.name] of this box.
+  /// [GroupType.name] of this box.
   @HiveField(3)
   final String type;
 
-  /// [AppLanguage.code] of the source language, only set for [BoxType.vocabulary] boxes.
+  /// [AppLanguage.code] of the source language, only set for [GroupType.vocabulary] boxes.
   @HiveField(6)
   final String? sourceLanguage;
 
-  /// [AppLanguage.code] of the target language, only set for [BoxType.vocabulary] boxes.
+  /// [AppLanguage.code] of the target language, only set for [GroupType.vocabulary] boxes.
   @HiveField(7)
   final String? targetLanguage;
 
@@ -57,7 +57,7 @@ class VocabularyBox {
   @HiveField(14, defaultValue: '')
   final String groupId;
 
-  BoxType get boxType => BoxType.fromName(type);
+  GroupType get boxType => GroupType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
 

@@ -718,7 +718,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   Widget _buildAudioRow(BuildContext context) {
     final colors = context.colors;
     final showGenerate =
-        widget.box.boxType == BoxType.vocabulary &&
+        widget.box.boxType == GroupType.vocabulary &&
         widget.box.targetAppLanguage != null;
     final canGenerate = _canGenerateTts && !_recording && !_isGeneratingTts;
     final canPlay = _hasRecording && !_isGeneratingTts;
@@ -920,7 +920,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                       ),
                       const SizedBox(height: AppSpacing.sectionGap),
 
-                      if (widget.box.boxType == BoxType.vocabulary) ...[
+                      if (widget.box.boxType == GroupType.vocabulary) ...[
                         SectionTitle(text: _l10n.editVocabConjugationSection),
                         const SizedBox(height: AppSpacing.gapMedium),
                         for (final c in _conjugations) ...[

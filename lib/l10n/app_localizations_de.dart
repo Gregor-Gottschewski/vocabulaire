@@ -278,6 +278,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get boxTileNoDescription => 'Keine Beschreibung vorhanden';
 
   @override
+  String get boxDetailFlipLanguages => 'Sprachen tauschen';
+
+  @override
   String get boxDetailDueVocabs => 'Fällige Vokabeln abfragen';
 
   @override

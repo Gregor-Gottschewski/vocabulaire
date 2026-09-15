@@ -277,6 +277,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get boxTileNoDescription => 'No description available';
 
   @override
+  String get boxDetailFlipLanguages => 'Flip languages';
+
+  @override
   String get boxDetailDueVocabs => 'Query due vocabulary';
 
   @override

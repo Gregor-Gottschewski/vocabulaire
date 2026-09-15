@@ -22,7 +22,7 @@ class GroupTile extends StatelessWidget {
   });
 
   String _subtitle(AppLocalizations l10n) {
-    if (group.boxType != BoxType.vocabulary) {
+    if (group.boxType != GroupType.vocabulary) {
       return l10n.groupTypeFlashcardTitle;
     }
     final source = AppLanguage.fromCode(group.sourceLanguage)?.displayName(l10n) ?? group.sourceLanguage ?? '';

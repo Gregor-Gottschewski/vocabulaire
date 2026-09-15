@@ -153,6 +153,7 @@
   },
   "boxDetailDescription": "Description",
   "boxTileNoDescription": "Aucune description disponible",
+  "boxDetailFlipLanguages": "Inverser les langues",
   "boxDetailDueVocabs": "Interroger les vocabulaires à réviser",
   "boxDetailMethod": "Méthode d'apprentissage",
   "boxDetailDailyLimit": "Limite quotidienne de nouvelles cartes",

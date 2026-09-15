@@ -45,7 +45,7 @@ class ReviewSession {
     final items = <ReviewableItem>[];
     for (final v in box.vocabularies) {
       items.add(VocabularyItem(v));
-      if (box.boxType == BoxType.vocabulary) {
+      if (box.boxType == GroupType.vocabulary) {
         for (final c in v.conjugations) {
           items.add(ConjugationItem(v, c));
         }

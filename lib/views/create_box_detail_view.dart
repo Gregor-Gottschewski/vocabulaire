@@ -120,7 +120,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
     setState(() => {});
 
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
 
     try {
       if (_isEditing) {
@@ -168,7 +168,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
 
     return AppScaffold(
       backLabel: _l10n.back,

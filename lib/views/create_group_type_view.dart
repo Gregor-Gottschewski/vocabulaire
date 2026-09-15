@@ -25,7 +25,7 @@ class CreateGroupTypeView extends StatefulWidget {
 }
 
 class _CreateGroupTypeViewState extends State<CreateGroupTypeView> {
-  late BoxType _selected;
+  late GroupType _selected;
   late AppLocalizations _l10n;
 
   @override
@@ -78,14 +78,14 @@ class _CreateGroupTypeViewState extends State<CreateGroupTypeView> {
               SelectableOptionCard(
                 title: _l10n.groupTypeVocabularyTitle,
                 subtitle: _l10n.groupTypeVocabularySubtitle,
-                selected: _selected == BoxType.vocabulary,
-                onTap: () => setState(() => _selected = BoxType.vocabulary),
+                selected: _selected == GroupType.vocabulary,
+                onTap: () => setState(() => _selected = GroupType.vocabulary),
               ),
               SelectableOptionCard(
                 title: _l10n.groupTypeFlashcardTitle,
                 subtitle: _l10n.groupTypeFlashcardSubtitle,
-                selected: _selected == BoxType.flashcard,
-                onTap: () => setState(() => _selected = BoxType.flashcard),
+                selected: _selected == GroupType.flashcard,
+                onTap: () => setState(() => _selected = GroupType.flashcard),
               ),
             ],
           ),

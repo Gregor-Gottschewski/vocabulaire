@@ -190,7 +190,7 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       return;
     }
 
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
     final isPremium = UsageService.instance.listenable.value.isPremium;
     final group = VocabularyGroup(
       id: const Uuid().v4(),
@@ -220,7 +220,7 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
     final isPremium = UsageService.instance.listenable.value.isPremium;
 
     return AppScaffold(

@@ -586,6 +586,12 @@ abstract class AppLocalizations {
   /// **'Keine Beschreibung vorhanden'**
   String get boxTileNoDescription;
 
+  /// No description provided for @boxDetailFlipLanguages.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprachen tauschen'**
+  String get boxDetailFlipLanguages;
+
   /// No description provided for @boxDetailDueVocabs.
   ///
   /// In de, this message translates to:
