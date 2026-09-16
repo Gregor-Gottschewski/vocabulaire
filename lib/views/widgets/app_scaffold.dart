@@ -48,8 +48,8 @@ class AppScaffold extends StatelessWidget {
                           behavior: HitTestBehavior.opaque,
                           child: Text(
                             '← $backLabel',
-                            style: AppTypography.captionSans.copyWith(
-                              color: colors.textSecondary,
+                            style: AppTypography.linkSans.copyWith(
+                              color: colors.textLink,
                             ),
                           ),
                         ),
