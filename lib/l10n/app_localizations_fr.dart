@@ -248,9 +248,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get reviewShowBack => 'Afficher le verso';
 
   @override
-  String get reviewRatingQuestion => 'Comment évalues-tu ce mot ?';
-
-  @override
   String get reviewAgain => 'Encore';
 
   @override

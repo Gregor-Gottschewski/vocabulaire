@@ -248,9 +248,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewShowBack => 'Show back';
 
   @override
-  String get reviewRatingQuestion => 'How well did you know this?';
-
-  @override
   String get reviewAgain => 'Again';
 
   @override

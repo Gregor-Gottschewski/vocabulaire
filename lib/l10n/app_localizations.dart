@@ -532,12 +532,6 @@ abstract class AppLocalizations {
   /// **'Rückseite anzeigen'**
   String get reviewShowBack;
 
-  /// No description provided for @reviewRatingQuestion.
-  ///
-  /// In de, this message translates to:
-  /// **'Wie ist diese Vokabel?'**
-  String get reviewRatingQuestion;
-
   /// No description provided for @reviewAgain.
   ///
   /// In de, this message translates to:

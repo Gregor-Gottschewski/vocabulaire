@@ -249,9 +249,6 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reviewShowBack => 'Rückseite anzeigen';
 
   @override
-  String get reviewRatingQuestion => 'Wie ist diese Vokabel?';
-
-  @override
   String get reviewAgain => 'Nochmal';
 
   @override

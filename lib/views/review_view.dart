@@ -277,8 +277,6 @@ class _ReviewViewState extends State<ReviewView>
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionTitle(text: _l10n.reviewRatingQuestion),
-        const SizedBox(height: AppSpacing.gapLarge),
         Row(
           children: [
             Expanded(
