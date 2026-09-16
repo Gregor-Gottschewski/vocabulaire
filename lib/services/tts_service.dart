@@ -1,9 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_functions/cloud_functions.dart';
 
 import 'app_exception.dart';
-import 'app_paths.dart';
 
 /// TTS support for card's back pronunciation.
 class TtsService {
@@ -24,6 +24,7 @@ class TtsService {
     required String text,
     required String languageId,
     required String cardId,
+    required File destination,
   }) async {
     final trimmed = text.trim();
     if (trimmed.isEmpty) {
@@ -57,6 +58,7 @@ class TtsService {
 
     final audioContent = data['audioContent'] as String;
     final bytes = base64Decode(audioContent);
-    await AppPaths.audioTempFile(cardId).writeAsBytes(bytes, flush: true);
+
+    await destination.writeAsBytes(bytes, flush: true);
   }
 }

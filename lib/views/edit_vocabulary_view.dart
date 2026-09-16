@@ -617,6 +617,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         text: text,
         cardId: generatingVocabId,
         languageId: widget.box.targetAppLanguage!.code,
+        destination: AppPaths.audioTempFile(generatingVocabId),
       );
 
       final stillCurrent = mounted && _vocab.id == generatingVocabId;

@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
@@ -7,14 +8,15 @@ import 'package:vocabulaire/controllers/review_controller.dart';
 import 'package:vocabulaire/models/box_type.dart';
 import 'package:vocabulaire/models/review_session.dart';
 import 'package:vocabulaire/models/reviewable_item.dart';
+import 'package:vocabulaire/services/app_exception.dart';
+import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 
+import '../services/tts_service.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
-import 'widgets/app_progress_indicator.dart';
 import 'widgets/app_scaffold.dart';
-import 'widgets/section_title.dart';
 import 'widgets/text_link_button.dart';
 
 class ReviewView extends StatefulWidget {
@@ -44,6 +46,17 @@ class _ReviewViewState extends State<ReviewView>
   late AppLocalizations _l10n;
   bool _flipped = false;
   bool _wasFinished = false;
+  bool _generatingAudio = false;
+
+  ReviewableItem get _current => _reviewController.current!;
+
+  bool get _isVocabulary => _current is VocabularyItem;
+
+  bool get _hasRecording =>
+      _isVocabulary && AppPaths.audioFile(_current.id).existsSync();
+
+  bool get _ttsGenerationAllowed =>
+      _current.backText.length <= TtsService.maxChars;
 
   @override
   void initState() {
@@ -109,33 +122,98 @@ class _ReviewViewState extends State<ReviewView>
     }
   }
 
-  void _resetFlip() {
-    _flipped = false;
-    _flipController.value = 0;
+  void _resetView() {
+    if (_reviewController.length != _reviewController.index + 1) {
+      _flipped = false;
+      _flipController.value = 0;
+      _generatingAudio = false;
+    }
   }
 
   void _playAudio() async {
-    final current = _reviewController.current;
-    if (current is! VocabularyItem) return;
-    await _player.play(
-      DeviceFileSource(AppPaths.audioFilePath(current.vocabulary.id)),
-    );
+    if (_current case VocabularyItem(:final vocabulary)) {
+      await _player.play(
+        DeviceFileSource(AppPaths.audioFilePath(vocabulary.id)),
+      );
+    }
   }
 
   void _rate(Rating rating) {
-    if (_reviewController.length != _reviewController.index + 1) {
-      _resetFlip();
-    }
+    _resetView();
     _player.stop();
     _reviewController.applyRating(rating);
   }
 
   void _skip() {
-    _resetFlip();
+    _resetView();
     _reviewController.skip();
   }
 
-  Widget _buildHeader(int index, int indexDisplay, int total, bool showListen) {
+  Future<void> _generateAudio() async {
+    if (_generatingAudio) return;
+
+    final text = _current.backText.trim();
+    if (text.length > TtsService.maxChars) return;
+
+    final box = BoxController().getBox(widget.boxKey);
+    if (box == null) return;
+
+    final language = box.targetAppLanguage;
+    if (language == null) return;
+
+    setState(() => _generatingAudio = true);
+
+    try {
+      await TtsService.instance.synthesizeAndSave(
+        text: text,
+        cardId: _current.id,
+        languageId: language.code,
+        destination: AppPaths.audioFile(_current.id),
+      );
+    } on AppException catch (e) {
+      if (!mounted) return;
+      await context.showAppError(e);
+    } finally {
+      setState(() => _generatingAudio = false);
+    }
+  }
+
+  Widget _translateOffsetLeft(Widget child) {
+    return Transform.translate(
+      offset: const Offset(-AppSpacing.gapMedium, 0),
+      child: child,
+    );
+  }
+
+  Widget _translateOffsetRight(Widget child) {
+    return Transform.translate(
+      offset: const Offset(AppSpacing.gapMedium, 0),
+      child: child,
+    );
+  }
+
+  Widget _buildListenerButton() {
+    if (widget.reversed ? _hasRecording : _flipped && _hasRecording) {
+      return _translateOffsetLeft(
+        TextLinkButton(label: _l10n.reviewPlay, onPressed: _playAudio),
+      );
+    }
+
+    if (_isVocabulary &&
+        (widget.reversed || _flipped) &&
+        _ttsGenerationAllowed) {
+      return _translateOffsetLeft(
+        TextLinkButton(
+          label: _l10n.editVocabGenerateAudio,
+          onPressed: _generatingAudio ? null : _generateAudio,
+        ),
+      );
+    }
+
+    return const SizedBox.shrink();
+  }
+
+  Widget _buildHeader(int index, int indexDisplay, int total) {
     final colors = context.colors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -159,33 +237,9 @@ class _ReviewViewState extends State<ReviewView>
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (showListen)
-              GestureDetector(
-                onTap: _playAudio,
-                behavior: HitTestBehavior.opaque,
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.play_arrow, size: 18, color: colors.highlight),
-                    const SizedBox(width: AppSpacing.gapSmall),
-                    Text(
-                      _l10n.reviewPlay,
-                      style: AppTypography.captionSans.copyWith(
-                        color: colors.highlight,
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            else
-              const SizedBox.shrink(),
-            // TextLinkButton carries its own EdgeInsets.all(gapMedium) hit
-            // padding (intentional, larger tap target). Shift it right by
-            // that amount so its visible edge lines up with the progress
-            // bar/label above instead of shrinking the tap target
-            Transform.translate(
-              offset: const Offset(AppSpacing.gapMedium, 0),
-              child: TextLinkButton(label: _l10n.reviewSkip, onPressed: _skip),
+            _buildListenerButton(),
+            _translateOffsetRight(
+              TextLinkButton(label: _l10n.reviewSkip, onPressed: _skip),
             ),
           ],
         ),
@@ -322,38 +376,27 @@ class _ReviewViewState extends State<ReviewView>
 
   @override
   Widget build(BuildContext context) {
-    final current = _reviewController.current;
     final total = _reviewController.length;
     final indexDisplay = total == 0 ? 0 : (_reviewController.index + 1);
     final isVocabularyBox =
         _reviewController.box?.boxType == GroupType.vocabulary;
-    final hasRecording =
-        current is VocabularyItem &&
-        AppPaths.audioFile(current.vocabulary.id).existsSync();
 
     return AppScaffold(
       backLabel: _l10n.back,
-      body: current == null
-          ? const Center(child: AppProgressIndicator())
-          : Column(
-              children: [
-                _buildHeader(
-                  _reviewController.index,
-                  indexDisplay,
-                  total,
-                  widget.reversed ? hasRecording : _flipped && hasRecording,
-                ),
-                Expanded(
-                  child: Center(
-                    child: SingleChildScrollView(
-                      child: _buildCard(current, isVocabularyBox),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.sectionGap),
-                _buildRatingSection(),
-              ],
+      body: Column(
+        children: [
+          _buildHeader(_reviewController.index, indexDisplay, total),
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                child: _buildCard(_current, isVocabularyBox),
+              ),
             ),
+          ),
+          const SizedBox(height: AppSpacing.sectionGap),
+          _buildRatingSection(),
+        ],
+      ),
     );
   }
 }

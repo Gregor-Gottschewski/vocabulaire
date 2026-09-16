@@ -5,6 +5,7 @@
 ### Added
 
 - Switching the languages in the review
+- Pronunciation generation button in review view
 
 ### Fixed
 
