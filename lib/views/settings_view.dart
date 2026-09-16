@@ -96,12 +96,10 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   String get _audioUsageLabel {
-    final usedMb = _usage.listenable.value.audioBytesUsed / (1024 * 1024);
-    const limitMb = UsageService.audioStorageLimitBytes / (1024 * 1024);
-    return _l10n.settingsAudioUsageValue(
-      usedMb.toStringAsFixed(1),
-      limitMb.round(),
-    );
+    final usedBytes = _usage.listenable.value.audioBytesUsed;
+    final percent = (usedBytes / UsageService.audioStorageLimitBytes * 100)
+        .round();
+    return _l10n.settingsAudioUsageValue(percent);
   }
 
   @override

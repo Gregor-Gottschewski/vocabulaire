@@ -7,6 +7,10 @@
 - Switching the languages in the review
 - Pronunciation generation button in review view
 
+### Changed
+
+- Show relative online audio usage instead of absolute
+
 ### Fixed
 
 - Selecting same language for source and target in group creation

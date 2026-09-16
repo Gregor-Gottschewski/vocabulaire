@@ -60,13 +60,10 @@
     }
   },
   "settingsAudioUsage": "Stockage audio en ligne",
-  "settingsAudioUsageValue": "{usedMb} Mo / {limitMb} Mo",
+  "settingsAudioUsageValue": "{percent} %",
   "@settingsAudioUsageValue": {
     "placeholders": {
-      "usedMb": {
-        "type": "String"
-      },
-      "limitMb": {
+      "percent": {
         "type": "int"
       }
     }

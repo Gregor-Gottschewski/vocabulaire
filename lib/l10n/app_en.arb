@@ -60,13 +60,10 @@
     }
   },
   "settingsAudioUsage": "Online audio storage",
-  "settingsAudioUsageValue": "{usedMb} MB / {limitMb} MB",
+  "settingsAudioUsageValue": "{percent}%",
   "@settingsAudioUsageValue": {
     "placeholders": {
-      "usedMb": {
-        "type": "String"
-      },
-      "limitMb": {
+      "percent": {
         "type": "int"
       }
     }

@@ -319,8 +319,8 @@ abstract class AppLocalizations {
   /// No description provided for @settingsAudioUsageValue.
   ///
   /// In de, this message translates to:
-  /// **'{usedMb} MB / {limitMb} MB'**
-  String settingsAudioUsageValue(String usedMb, int limitMb);
+  /// **'{percent} %'**
+  String settingsAudioUsageValue(int percent);
 
   /// No description provided for @editVocabNew.
   ///

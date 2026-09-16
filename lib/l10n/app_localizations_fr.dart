@@ -125,8 +125,8 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsAudioUsage => 'Stockage audio en ligne';
 
   @override
-  String settingsAudioUsageValue(String usedMb, int limitMb) {
-    return '$usedMb Mo / $limitMb Mo';
+  String settingsAudioUsageValue(int percent) {
+    return '$percent %';
   }
 
   @override
