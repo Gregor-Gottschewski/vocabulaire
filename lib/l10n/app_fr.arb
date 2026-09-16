@@ -46,7 +46,7 @@
   "settingsGithub": "Vocabulaire à GitHub",
   "settingsPrivacyPolicy": "Politique de confidentialité",
   "settingsManageSubscription": "Gérer l'abonnement",
-  "settingsExportAll": "Exporter toutes les boîtes",
+  "settingsExportAll": "Créer une sauvegarde",
   "settingsVocabularyUsage": "Vocabulaire en ligne",
   "settingsVocabularyUsageValue": "{count}/{limit}",
   "@settingsVocabularyUsageValue": {

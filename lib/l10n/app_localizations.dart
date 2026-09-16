@@ -295,7 +295,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsExportAll.
   ///
   /// In de, this message translates to:
-  /// **'Alle Boxen exportieren'**
+  /// **'Backup erstellen'**
   String get settingsExportAll;
 
   /// No description provided for @settingsVocabularyUsage.

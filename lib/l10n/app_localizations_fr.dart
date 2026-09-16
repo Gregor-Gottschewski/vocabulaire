@@ -111,7 +111,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsManageSubscription => 'Gérer l\'abonnement';
 
   @override
-  String get settingsExportAll => 'Exporter toutes les boîtes';
+  String get settingsExportAll => 'Créer une sauvegarde';
 
   @override
   String get settingsVocabularyUsage => 'Vocabulaire en ligne';

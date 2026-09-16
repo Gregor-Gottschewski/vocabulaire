@@ -4,6 +4,8 @@ import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/theme_context_ext.dart';
 
+enum AppDialogActionResult { yes, no, cancel, ok }
+
 /// [AppDialogAction] represents a choice in a application dialog window.
 /// - [label] text/title of the action.
 /// - [onPressed] action on pressed.
@@ -25,15 +27,24 @@ class AppDialogAction {
 }
 
 /// Show an application dialog with actions.
+/// - [onLeave] is called when the dialog is dismissed by tapping beside it.
+///   If not set, the dialog cannot be dismissed that way.
 Future<T?> showAppDialog<T>({
   required BuildContext context,
   required String title,
   String? message,
   required List<AppDialogAction> actions,
+  VoidCallback? onLeave,
 }) {
   return showDialog<T>(
     context: context,
-    builder: (_) => AppDialog(title: title, message: message, actions: actions),
+    barrierDismissible: true,
+    builder: (_) => AppDialog(
+      title: title,
+      message: message,
+      actions: actions,
+      onLeave: onLeave,
+    ),
   );
 }
 
@@ -42,12 +53,14 @@ class AppDialog extends StatelessWidget {
   final String title;
   final String? message;
   final List<AppDialogAction> actions;
+  final VoidCallback? onLeave;
 
   const AppDialog({
     super.key,
     required this.title,
     this.message,
     required this.actions,
+    this.onLeave,
   });
 
   @override
@@ -57,53 +70,61 @@ class AppDialog extends StatelessWidget {
         (MediaQuery.sizeOf(context).width * AppSpacing.dialogWidthFactor)
             .clamp(0, AppSpacing.dialogMaxWidth)
             .toDouble();
-    return Dialog(
-      backgroundColor: colors.background,
-      surfaceTintColor: const Color(0x00000000),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero,
-        side: BorderSide(
-          color: colors.borderStrong,
-          width: AppSpacing.hairline,
+    return PopScope(
+      canPop: onLeave != null,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) {
+          onLeave?.call();
+        }
+      },
+      child: Dialog(
+        backgroundColor: colors.background,
+        surfaceTintColor: const Color(0x00000000),
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.zero,
+          side: BorderSide(
+            color: colors.borderStrong,
+            width: AppSpacing.hairline,
+          ),
         ),
-      ),
-      insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-      child: SizedBox(
-        width: dialogWidth,
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.sectionGap),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: AppTypography.headlineSerif.copyWith(
-                  fontSize: 20,
-                  color: colors.textPrimary,
-                ),
-              ),
-              if (message != null) ...[
-                const SizedBox(height: AppSpacing.gapMedium),
+        insetPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        child: SizedBox(
+          width: dialogWidth,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.sectionGap),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                  message!,
-                  style: AppTypography.bodySans.copyWith(
-                    fontSize: 14,
-                    color: colors.textSecondary,
+                  title,
+                  style: AppTypography.headlineSerif.copyWith(
+                    fontSize: 20,
+                    color: colors.textPrimary,
                   ),
                 ),
-              ],
-              const SizedBox(height: AppSpacing.sectionGap),
-              for (var i = 0; i < actions.length; i++) ...[
-                if (i != 0)
-                  Container(
-                    height: AppSpacing.hairline,
-                    color: colors.borderSubtle,
+                if (message != null) ...[
+                  const SizedBox(height: AppSpacing.gapMedium),
+                  Text(
+                    message!,
+                    style: AppTypography.bodySans.copyWith(
+                      fontSize: 14,
+                      color: colors.textSecondary,
+                    ),
                   ),
-                _DialogActionRow(action: actions[i]),
+                ],
+                const SizedBox(height: AppSpacing.sectionGap),
+                for (var i = 0; i < actions.length; i++) ...[
+                  if (i != 0)
+                    Container(
+                      height: AppSpacing.hairline,
+                      color: colors.borderSubtle,
+                    ),
+                  _DialogActionRow(action: actions[i]),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
