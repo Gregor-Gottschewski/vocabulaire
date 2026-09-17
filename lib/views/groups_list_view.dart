@@ -20,8 +20,6 @@ import 'create_group_flow.dart';
 import 'widgets/app_scaffold.dart';
 import 'widgets/text_link_button.dart';
 
-enum _LockedGroupAction { upgrade, download }
-
 class GroupsListView extends StatefulWidget {
   const GroupsListView({super.key});
 
@@ -73,35 +71,39 @@ class _GroupsListViewState extends State<GroupsListView> {
       return;
     }
 
-    _LockedGroupAction? action;
+    AppDialogActionResult result = AppDialogActionResult.cancel;
     await showAppDialog(
       context: context,
       title: _l10n.lockedGroupTitle,
       message: _l10n.lockedGroupMessage,
+      onLeave: () => result = AppDialogActionResult.cancel,
       actions: [
-        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.commonCancel,
+          onPressed: () => result = AppDialogActionResult.cancel,
+        ),
         AppDialogAction(
           label: _l10n.lockedGroupDownload,
           destructive: true,
-          onPressed: () => action = _LockedGroupAction.download,
+          onPressed: () => result = AppDialogActionResult.download,
         ),
         AppDialogAction(
           label: _l10n.lockedGroupUpgrade,
           isDefaultAction: true,
-          onPressed: () => action = _LockedGroupAction.upgrade,
+          onPressed: () => result = AppDialogActionResult.upgrade,
         ),
       ],
     );
     if (!mounted) return;
 
-    switch (action) {
-      case _LockedGroupAction.upgrade:
+    switch (result) {
+      case AppDialogActionResult.upgrade:
         Navigator.of(
           context,
         ).push(AppPageRoute(builder: (_) => const SubscriptionView()));
-      case _LockedGroupAction.download:
+      case AppDialogActionResult.download:
         await _confirmAndDownloadGroup(groupId);
-      case null:
+      default:
         break;
     }
   }
@@ -207,8 +209,7 @@ class _GroupsListViewState extends State<GroupsListView> {
                               key: ValueKey(entry.key),
                               group: entry.value,
                               boxCount: boxCounts[entry.key] ?? 0,
-                              onTap: () =>
-                                  _openGroup(entry.key, entry.value),
+                              onTap: () => _openGroup(entry.key, entry.value),
                             );
                           },
                         ),

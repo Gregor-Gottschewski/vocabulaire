@@ -4,7 +4,7 @@ import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/theme_context_ext.dart';
 
-enum AppDialogActionResult { yes, no, cancel, ok }
+enum AppDialogActionResult { yes, no, cancel, ok, download, upgrade }
 
 /// [AppDialogAction] represents a choice in a application dialog window.
 /// - [label] text/title of the action.

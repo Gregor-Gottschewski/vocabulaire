@@ -174,7 +174,7 @@ class GroupController {
     }
 
     await _localGroups.put(groupId, group.copyWith(deleted: false));
-    await _groupSync.softDeleteGroup(groupId);
+    await _groupSync.hardDeleteGroup(groupId);
   }
 }
 

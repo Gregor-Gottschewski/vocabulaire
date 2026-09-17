@@ -33,6 +33,7 @@ export {
   onBoxSoftDeleted,
   onVocabularySoftDeleted,
 } from "./cascadeDelete";
+export { hardDeleteGroup } from "./groupDeletion";
 
 export const synthesizeSpeech = onCall(
   {

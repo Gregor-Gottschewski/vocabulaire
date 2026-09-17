@@ -16,6 +16,7 @@
 - Selecting same language for source and target in group creation
 - Last vocabulary in review session flips which leads to flickering
 - Overwrite existing audio without warning
+- Group download without active subscription
 
 ## 1.0.0 - 2026-09-15
 
