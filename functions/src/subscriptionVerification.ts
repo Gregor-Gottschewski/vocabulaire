@@ -41,7 +41,7 @@ export const verifyAppleSubscription = onCall(
             throw new HttpsError("invalid-argument", "Transaction bundle id mismatch.");
         }
 
-        const { originalTransactionId, productId, expiresDate, environment } = transaction;
+        const { originalTransactionId, productId, expiresDate, environment, signedDate } = transaction;
         if (!originalTransactionId || !productId || !expiresDate) {
             throw new HttpsError("invalid-argument", "Incomplete transaction data.");
         }
@@ -73,7 +73,7 @@ export const verifyAppleSubscription = onCall(
                     },
                     { merge: true }
                 );
-                tx.set(subscriptionRef, { uid, productId }, { merge: true });
+                tx.set(subscriptionRef, { uid, productId, lastEventSignedDate: signedDate ?? null }, { merge: true });
             });
         } catch (e) {
             if (e instanceof SubscriptionConflictError) {
