@@ -28,8 +28,6 @@ extension AppExceptionDialog on BuildContext {
       AppError.duplicateGroupName => i18n.errorDuplicateGroupName(
         e.details as String,
       ),
-      AppError.moveBoxOfflineFailed => i18n.errorMoveBoxOfflineFailed,
-      AppError.moveBoxOnlineFailed => i18n.errorMoveBoxOnlineFailed,
       AppError.moveGroupOfflineFailed => i18n.errorMoveGroupOfflineFailed,
       AppError.moveGroupOnlineFailed => i18n.errorMoveGroupOnlineFailed,
       AppError.addVocabularyFailed => i18n.errorAddVocabularyFailed,

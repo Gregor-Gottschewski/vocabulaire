@@ -447,14 +447,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get errorMoveBoxOfflineFailed =>
-      'La boîte n\'a pas pu être rendue locale';
-
-  @override
-  String get errorMoveBoxOnlineFailed =>
-      'La boîte n\'a pas pu être mise en ligne';
-
-  @override
   String get errorMoveGroupOfflineFailed =>
       'Le groupe n\'a pas pu être rendu local';
 

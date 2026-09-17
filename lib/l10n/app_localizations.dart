@@ -886,18 +886,6 @@ abstract class AppLocalizations {
   /// **'Eine Gruppe mit dem Namen \"{name}\" existiert bereits. Bitte wähle einen anderen Namen.'**
   String errorDuplicateGroupName(String name);
 
-  /// No description provided for @errorMoveBoxOfflineFailed.
-  ///
-  /// In de, this message translates to:
-  /// **'Box konnte nicht ausgelagert werden'**
-  String get errorMoveBoxOfflineFailed;
-
-  /// No description provided for @errorMoveBoxOnlineFailed.
-  ///
-  /// In de, this message translates to:
-  /// **'Box konnte nicht online gestellt werden'**
-  String get errorMoveBoxOnlineFailed;
-
   /// No description provided for @errorMoveGroupOfflineFailed.
   ///
   /// In de, this message translates to:

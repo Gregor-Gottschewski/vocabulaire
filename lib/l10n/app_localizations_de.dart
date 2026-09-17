@@ -447,13 +447,6 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get errorMoveBoxOfflineFailed => 'Box konnte nicht ausgelagert werden';
-
-  @override
-  String get errorMoveBoxOnlineFailed =>
-      'Box konnte nicht online gestellt werden';
-
-  @override
   String get errorMoveGroupOfflineFailed =>
       'Gruppe konnte nicht ausgelagert werden';
 

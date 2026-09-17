@@ -231,8 +231,6 @@
       }
     }
   },
-  "errorMoveBoxOfflineFailed": "Box konnte nicht ausgelagert werden",
-  "errorMoveBoxOnlineFailed": "Box konnte nicht online gestellt werden",
   "errorMoveGroupOfflineFailed": "Gruppe konnte nicht ausgelagert werden",
   "errorMoveGroupOnlineFailed": "Gruppe konnte nicht online gestellt werden",
   "errorAddVocabularyFailed": "Vokabel konnte nicht gespeichert werden",

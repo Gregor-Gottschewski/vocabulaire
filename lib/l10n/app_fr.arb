@@ -231,8 +231,6 @@
       }
     }
   },
-  "errorMoveBoxOfflineFailed": "La boîte n'a pas pu être rendue locale",
-  "errorMoveBoxOnlineFailed": "La boîte n'a pas pu être mise en ligne",
   "errorMoveGroupOfflineFailed": "Le groupe n'a pas pu être rendu local",
   "errorMoveGroupOnlineFailed": "Le groupe n'a pas pu être mis en ligne",
   "errorAddVocabularyFailed": "Le vocabulaire n'a pas pu être enregistré",

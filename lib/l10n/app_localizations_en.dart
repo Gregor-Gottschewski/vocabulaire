@@ -442,12 +442,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get errorMoveBoxOfflineFailed => 'Box could not be moved offline';
-
-  @override
-  String get errorMoveBoxOnlineFailed => 'Box could not be moved online';
-
-  @override
   String get errorMoveGroupOfflineFailed => 'Group could not be moved offline';
 
   @override
