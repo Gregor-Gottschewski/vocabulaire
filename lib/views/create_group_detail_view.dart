@@ -14,6 +14,7 @@ import 'package:vocabulaire/theme/app_page_route.dart';
 import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
+import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
@@ -220,6 +221,10 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    if (_isSyncing) {
+      return Center(child: AppProgressIndicator());
+    }
+
     final isVocabulary = widget.draft.type == GroupType.vocabulary;
     final isPremium = UsageService.instance.listenable.value.isPremium;
 
