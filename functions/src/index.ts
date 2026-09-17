@@ -22,6 +22,7 @@ export {
   reconcileVocabularyCounts,
   reconcileGroupCounts,
   reconcileBoxCounts,
+  cleanZombieGroups,
 } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
 export { onUserDeleted } from "./accountDeletion";
