@@ -133,12 +133,6 @@ class GroupSyncService {
     });
   }
 
-  Future<void> hardDeleteGroup(String groupId) async {
-    await _functions.httpsCallable('hardDeleteGroup').call({
-      'groupId': groupId,
-    });
-  }
-
   String _userUid() {
     final uid = AuthService.instance.currentUser?.uid;
     if (uid == null) {

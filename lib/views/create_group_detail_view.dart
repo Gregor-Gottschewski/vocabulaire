@@ -137,7 +137,7 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
 
     try {
       if (value) {
-        await _groupController.moveGroupOnline(groupId);
+        widget.draft.id = await _groupController.moveGroupOnline(groupId);
       } else {
         await _groupController.moveGroupOffline(groupId);
       }
