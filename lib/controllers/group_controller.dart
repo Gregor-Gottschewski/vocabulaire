@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/models/vocabulary_group.dart';
+import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
@@ -155,6 +156,9 @@ class GroupController {
   /// Moves an online group back to local storage, together with all of its
   /// boxes and their vocabularies.
   Future<void> moveGroupOffline(String groupId) async {
+    if (_audioUploadQueue.queLength != 0) {
+      throw AppException(AppError.moveGroupOfflineFailed);
+    }
     if (_isLocal(groupId)) return;
     final group = getGroup(groupId);
     if (group == null) throw StateError('Group with id $groupId not found');
@@ -167,9 +171,6 @@ class GroupController {
         .toList();
 
     for (final box in onlineBoxes) {
-      for (final vocabulary in box.vocabularies) {
-        _audioUploadQueue.cancel(vocabulary.id);
-      }
       await _localBoxes.put(box.id, box.copyWith(deleted: false));
     }
 

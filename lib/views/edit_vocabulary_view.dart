@@ -484,7 +484,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     );
   }
 
-  Future<bool> showOverrideWarning() async {
+  Future<bool> overrideRecordingDialog() async {
     if (!mounted) return false;
     var confirmed = false;
     await showAppDialog(
@@ -492,7 +492,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       title: _l10n.editVocabOverwriteAudioTitle,
       message: _l10n.editVocabOverwriteAudioMessage,
       actions: [
-        AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
+        AppDialogAction(
+          label: _l10n.commonCancel,
+          onPressed: () => confirmed = false,
+        ),
         AppDialogAction(
           label: _l10n.editVocabOverwriteAudioConfirm,
           destructive: true,
@@ -508,7 +511,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       if (_recording) {
         await _stopRecording();
       } else {
-        if (_hasRecording && await showOverrideWarning()) return;
+        if (_hasRecording && await overrideRecordingDialog()) return;
 
         await _audioRecorder.start(
           _audioConfig,
@@ -604,7 +607,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     final generatingVocabId = _vocab.id;
     final boxKey = widget.boxKey;
 
-    if (_hasRecording && await showOverrideWarning()) return;
+    if (_hasRecording && !await overrideRecordingDialog()) return;
 
     if (_isPlaying) {
       await _audioPlayer.stop();
