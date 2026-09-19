@@ -102,6 +102,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLicenses => 'Licenses';
 
   @override
+  String get settingsVersion => 'Version';
+
+  @override
   String get settingsGithub => 'Vocabulaire on GitHub';
 
   @override

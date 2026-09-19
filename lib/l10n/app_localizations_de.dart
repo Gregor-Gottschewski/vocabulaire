@@ -102,6 +102,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsLicenses => 'Lizenzen';
 
   @override
+  String get settingsVersion => 'Version';
+
+  @override
   String get settingsGithub => 'Vocabulaire auf GitHub';
 
   @override

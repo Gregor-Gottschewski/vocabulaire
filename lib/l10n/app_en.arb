@@ -43,6 +43,7 @@
   "settingsSyncStatusSyncing": "Syncing…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Licenses",
+  "settingsVersion": "Version",
   "settingsGithub": "Vocabulaire on GitHub",
   "settingsPrivacyPolicy": "Privacy Policy",
   "settingsManageSubscription": "Manage subscription",

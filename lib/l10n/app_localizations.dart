@@ -274,6 +274,12 @@ abstract class AppLocalizations {
   /// **'Lizenzen'**
   String get settingsLicenses;
 
+  /// No description provided for @settingsVersion.
+  ///
+  /// In de, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
   /// No description provided for @settingsGithub.
   ///
   /// In de, this message translates to:

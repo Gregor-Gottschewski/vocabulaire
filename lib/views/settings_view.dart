@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
@@ -41,6 +42,7 @@ class _SettingsViewState extends State<SettingsView> {
   bool _cardAnimations = true;
   bool _hasConnectivity = true;
   bool _isExportingAll = false;
+  String? _versionLabel;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
 
   @override
@@ -48,6 +50,7 @@ class _SettingsViewState extends State<SettingsView> {
     super.initState();
     _initSettings();
     _initConnectivity();
+    _initVersion();
     _boxSync.listenable.addListener(_onSyncChanged);
     _usage.listenable.addListener(_onSyncChanged);
   }
@@ -62,6 +65,13 @@ class _SettingsViewState extends State<SettingsView> {
 
   void _onSyncChanged() {
     if (mounted) setState(() {});
+  }
+
+  Future<void> _initVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() => _versionLabel = '${info.version} (${info.buildNumber})');
+    }
   }
 
   Future<void> _initConnectivity() async {
@@ -283,18 +293,38 @@ class _SettingsViewState extends State<SettingsView> {
             ),
 
             const SizedBox(height: AppSpacing.sectionGap),
-            TextLinkButton(
-              label: _l10n.settingsLicenses,
-              onPressed: () => showLicensePage(
-                context: context,
-                applicationName: 'Vocabulaire',
-              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextLinkButton(
+                  label: _l10n.settingsLicenses,
+                  onPressed: () => showLicensePage(
+                    context: context,
+                    applicationName: 'Vocabulaire',
+                    applicationVersion: _versionLabel,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.gapMedium),
+                TextLinkButton(
+                  label: _l10n.settingsPrivacyPolicy,
+                  onPressed: _openPrivacyPolicy,
+                ),
+              ],
             ),
+
             TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
-            TextLinkButton(
-              label: _l10n.settingsPrivacyPolicy,
-              onPressed: _openPrivacyPolicy,
-            ),
+
+            const SizedBox(height: AppSpacing.gapMedium),
+
+            if (_versionLabel != null) ...[
+              Center(
+                child: Text(
+                  "${_l10n.settingsVersion} ${_versionLabel!}",
+                  style: AppTypography.labelSans,
+                ),
+              ),
+            ],
           ],
         ),
       ),
