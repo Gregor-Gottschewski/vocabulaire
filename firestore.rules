@@ -129,6 +129,19 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // Silently synced app settings; deleted by the onUserDeleted Cloud Function.
+    match /settings/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+
+      allow create, update: if request.auth != null && request.auth.uid == userId
+                            && isPremiumUser(database, userId)
+                            && request.resource.data.keys().hasOnly(['ownerUid', 'updatedAt', 'cardAnimations'])
+                            && request.resource.data.keys().hasAll(['ownerUid', 'updatedAt', 'cardAnimations'])
+                            && request.resource.data.ownerUid == userId
+                            && request.resource.data.updatedAt == request.time
+                            && request.resource.data.cardAnimations is bool;
+    }
+
     match /audioReservations/{id} {
       allow read: if request.auth != null && resource.data.uid == request.auth.uid;
       allow write: if false;

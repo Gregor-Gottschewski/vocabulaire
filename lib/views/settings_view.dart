@@ -9,6 +9,7 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 import '../controllers/box_controller.dart';
 import '../controllers/export_controller.dart';
 import '../controllers/settings_controller.dart';
+import '../models/app_settings.dart';
 import '../services/auth_service.dart';
 import '../services/box_sync_service.dart';
 import '../services/export_share_service.dart';
@@ -44,11 +45,15 @@ class _SettingsViewState extends State<SettingsView> {
   bool _isExportingAll = false;
   String? _versionLabel;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  StreamSubscription<AppSettings?>? _settingsSubscription;
 
   @override
   void initState() {
     super.initState();
     _initSettings();
+    _settingsSubscription = _controller.watch().listen(
+      (_) => _initSettings(),
+    );
     _initConnectivity();
     _initVersion();
     _boxSync.listenable.addListener(_onSyncChanged);
@@ -60,6 +65,7 @@ class _SettingsViewState extends State<SettingsView> {
     _boxSync.listenable.removeListener(_onSyncChanged);
     _usage.listenable.removeListener(_onSyncChanged);
     _connectivitySubscription?.cancel();
+    _settingsSubscription?.cancel();
     super.dispose();
   }
 
@@ -120,6 +126,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   /// Initialize settings to set UI to correct state.
   Future<void> _initSettings() async {
+    if (!mounted) return;
     setState(() {
       _cardAnimations = _controller.getCardAnimations();
     });

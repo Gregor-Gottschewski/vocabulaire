@@ -11,6 +11,7 @@
 - Switching the languages in the review
 - Pronunciation generation button in review view
 - Vocabulary upload reservation
+- Settings synchronization across devices
 
 ### Fixed
 

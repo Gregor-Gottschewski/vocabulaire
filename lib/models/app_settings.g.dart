@@ -18,15 +18,18 @@ class AppSettingsAdapter extends TypeAdapter<AppSettings> {
     };
     return AppSettings(
       cardAnimations: fields[0] == null ? true : fields[0] as bool,
+      updatedAt: fields[1] as DateTime?,
     );
   }
 
   @override
   void write(BinaryWriter writer, AppSettings obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.cardAnimations);
+      ..write(obj.cardAnimations)
+      ..writeByte(1)
+      ..write(obj.updatedAt);
   }
 
   @override
