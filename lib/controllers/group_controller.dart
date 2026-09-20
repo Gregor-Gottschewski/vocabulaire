@@ -24,6 +24,10 @@ class GroupController {
 
   static final Set<String> _syncingGroupIds = <String>{};
 
+  static final Map<String, String> _replacedGroupIds = <String, String>{};
+
+  String? replacementIdFor(String groupId) => _replacedGroupIds[groupId];
+
   bool _beginSync(String groupId) => _syncingGroupIds.add(groupId);
 
   void _endSync(String groupId) => _syncingGroupIds.remove(groupId);
@@ -136,7 +140,9 @@ class GroupController {
         0,
         (sum, box) => sum + box.vocabularies.length,
       );
-      _boxSync.ensureVocabularyQuota(totalVocabularies);
+      if (totalVocabularies > 0) {
+        await _boxSync.reserveVocabularyQuota(totalVocabularies);
+      }
 
       final newGroupId = const Uuid().v4();
       final onlineGroup = localGroup.copyWith(id: newGroupId);
@@ -163,6 +169,7 @@ class GroupController {
         rethrow;
       }
 
+      _replacedGroupIds[groupId] = newGroupId;
       for (final box in boxes) {
         await _localBoxes.delete(box.id);
         for (final vocabulary in box.vocabularies) {

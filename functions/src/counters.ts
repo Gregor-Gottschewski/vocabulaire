@@ -4,24 +4,34 @@ import {onObjectDeleted, onObjectFinalized, StorageEvent} from "firebase-functio
 import {consumeReservation, releaseReservation} from "./audioReservations";
 import {AUDIO_PATH_PATTERN} from "./storagePaths";
 import {userExists} from "./userGuard";
+import {firestore} from "firebase-admin";
+import DocumentReference = firestore.DocumentReference;
 
 export const REGION = "europe-west1";
 export const GROUP_PATH = "users/{uid}/groups/{groupId}";
 export const BOX_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}";
 export const VOCABULARY_PATH = "users/{uid}/groups/{groupId}/boxes/{boxId}/vocabularies/{vocabId}";
 
-// Keep in sync with the vocabulary quota check in firestore.rules.
-const VOCABULARY_LIMIT_PREMIUM = 3000;
+// Keep in sync with the vocabulary quota check in firestore.rules and vocabularyReservations.ts.
+export const VOCABULARY_LIMIT_PREMIUM = 3000;
 
-const VOCABULARY_SAFETY_MARGIN = 500;
+async function incrementField(delta: number, ref: DocumentReference, field: string) {
+    if (delta > 0) {
+        await ref.set({[field]: FieldValue.increment(delta)}, {merge: true});
+        return;
+    }
+    await getFirestore().runTransaction(async (tx) => {
+        const snap = await tx.get(ref);
+        const current = (snap.data()?.[field] as number | undefined) ?? 0;
+        tx.set(ref, {[field]: Math.max(0, current + delta)}, {merge: true});
+    });
+}
 
 async function adjustRateLimitField(uid: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
     if (!(await userExists(uid))) return;
-    await getFirestore()
-        .collection("rateLimits")
-        .doc(uid)
-        .set({[field]: FieldValue.increment(delta)}, {merge: true});
+    const ref = getFirestore().collection("rateLimits").doc(uid);
+    await incrementField(delta, ref, field);
 }
 
 async function groupWritesAllowed(uid: string, groupId: string): Promise<boolean> {
@@ -38,12 +48,8 @@ async function groupWritesAllowed(uid: string, groupId: string): Promise<boolean
 async function adjustGroupField(uid: string, groupId: string, field: string, delta: number): Promise<void> {
     if (delta === 0) return;
     if (!(await userExists(uid))) return;
-    await getFirestore()
-        .collection("users")
-        .doc(uid)
-        .collection("groups")
-        .doc(groupId)
-        .set({[field]: FieldValue.increment(delta)}, {merge: true});
+    const ref = getFirestore().collection("users").doc(uid).collection("groups").doc(groupId);
+    await incrementField(delta, ref, field);
 }
 
 // Keeps rateLimits/{uid}.groupCountOnline in sync with the user's groups.
@@ -76,7 +82,7 @@ export const onBoxDeleted = onDocumentDeleted(
     }
 );
 
-// Re-validates the quota inside a transaction and deletes the vocabulary if a race condition occurs.
+// Keeps rateLimits/{uid}.vocabularyCountOnline in sync.
 export const onVocabularyCreated = onDocumentCreated(
     {region: REGION, document: VOCABULARY_PATH, retry: true},
     async (event) => {
@@ -87,36 +93,7 @@ export const onVocabularyCreated = onDocumentCreated(
             return;
         }
 
-        const uid = event.params.uid;
-        const vocabRef = event.data?.ref;
-        if (!vocabRef) return;
-
-        const limit = VOCABULARY_LIMIT_PREMIUM;
-        const rateLimitRef = getFirestore().collection("rateLimits").doc(uid);
-
-        const snap = await rateLimitRef.get();
-        const currentCount = (snap.data()?.vocabularyCountOnline as number | undefined) ?? 0;
-        if (currentCount < limit - VOCABULARY_SAFETY_MARGIN) {
-            await rateLimitRef.set({vocabularyCountOnline: FieldValue.increment(1)}, {merge: true});
-            return;
-        }
-
-        await getFirestore().runTransaction(async (tx) => {
-            const txSnap = await tx.get(rateLimitRef);
-            const data = txSnap.exists ? txSnap.data()! : {};
-            const count = (data.vocabularyCountOnline as number | undefined) ?? 0;
-
-            if (count >= limit) {
-                tx.delete(vocabRef);
-                tx.set(rateLimitRef, {
-                    vocabulariesRejectedCount: FieldValue.increment(1),
-                    lastRejectedAt: FieldValue.serverTimestamp(),
-                }, {merge: true});
-                return;
-            }
-
-            tx.set(rateLimitRef, {vocabularyCountOnline: FieldValue.increment(1)}, {merge: true});
-        });
+        await adjustRateLimitField(event.params.uid, "vocabularyCountOnline", 1);
     }
 );
 

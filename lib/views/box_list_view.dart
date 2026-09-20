@@ -41,23 +41,36 @@ class _BoxListViewState extends State<BoxListView> {
   final BoxController _boxController = BoxController();
   final GroupController _groupController = GroupController();
   late String _groupId;
-  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>>
-  _boxesNotifier;
+  late ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxesNotifier;
   late final ValueNotifier<List<MapEntry<String, VocabularyGroup>>>
   _groupsNotifier;
   late AppLocalizations _l10n;
   bool _isPopping = false;
   bool _hasSeenGroup = false;
+  bool _followedReplacement = false;
 
   /// Resolves the group to show.
   VocabularyGroup? get _group {
+    _followReplacedGroup();
     final current = _groupController.getGroup(_groupId);
     if (current != null) {
       _hasSeenGroup = true;
       return current;
     }
-    if (!_hasSeenGroup) return widget.group;
+    if (!_hasSeenGroup || _followedReplacement) {
+      return widget.group.copyWith(id: _groupId);
+    }
     return null;
+  }
+
+  void _followReplacedGroup() {
+    final newId = _groupController.replacementIdFor(_groupId);
+    if (newId == null) return;
+    final oldNotifier = _boxesNotifier;
+    _groupId = newId;
+    _followedReplacement = true;
+    _boxesNotifier = _boxController.listenableForGroup(newId);
+    WidgetsBinding.instance.addPostFrameCallback((_) => oldNotifier.dispose());
   }
 
   @override
@@ -87,8 +100,9 @@ class _BoxListViewState extends State<BoxListView> {
     final result = await Navigator.of(context, rootNavigator: true)
         .push<({VocabularyBox box, String key})>(
           AppPageRoute(
-            builder: (context) =>
-                CreateBoxDetailView(draft: BoxDraft.fromGroup(widget.group)),
+            builder: (context) => CreateBoxDetailView(
+              draft: BoxDraft.fromGroup(group.copyWith(id: _groupId)),
+            ),
           ),
         );
     if (result == null || !mounted) return;
@@ -134,7 +148,7 @@ class _BoxListViewState extends State<BoxListView> {
   }
 
   void _exportGroup() async {
-    final boxes = _boxController.boxesForGroup(widget.groupId);
+    final boxes = _boxController.boxesForGroup(_groupId);
     if (boxes.isEmpty) return;
 
     final includeProgress = await context.confirmExportProgress();
@@ -161,7 +175,7 @@ class _BoxListViewState extends State<BoxListView> {
           label: _l10n.boxDetailDelete,
           destructive: true,
           onPressed: () async {
-            await _groupController.deleteGroup(widget.groupId);
+            await _groupController.deleteGroup(_groupId);
           },
         ),
       ],
@@ -184,10 +198,10 @@ class _BoxListViewState extends State<BoxListView> {
         final path = result.path;
         if (path == null) return;
         final box = await ImportController.importBoxFromFile(path);
-        importedBoxes.add(box.copyWith(groupId: widget.groupId));
+        importedBoxes.add(box.copyWith(groupId: _groupId));
       }
 
-      final online = !_groupController.isLocal(widget.groupId);
+      final online = !_groupController.isLocal(_groupId);
       await _boxController.addBoxes(importedBoxes, online: online);
     } on AppException catch (e) {
       if (!mounted) return;
