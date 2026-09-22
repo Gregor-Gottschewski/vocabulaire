@@ -38,6 +38,10 @@
   "settingsChangePassword": "Passwort ändern",
   "settingsAccountDeletion": "Konto löschen",
   "settingsCardAnimations": "Kartenanimationen",
+  "settingsListeningInReview": "Hören im Lernmodus",
+  "settingsListeningAlways": "Immer",
+  "settingsListeningSometimes": "Manchmal",
+  "settingsListeningNever": "Nie",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
   "settingsSyncStatusSyncing": "Wird synchronisiert…",
@@ -133,6 +137,7 @@
     }
   },
   "reviewPlay": "Anhören",
+  "reviewPlayToListen": "Zum Anhören abspielen",
   "reviewShowTranslation": "Übersetzung anzeigen",
   "reviewShowBack": "Rückseite anzeigen",
   "reviewAgain": "Nochmal",

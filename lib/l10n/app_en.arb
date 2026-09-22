@@ -38,6 +38,10 @@
   "settingsChangePassword": "Change password",
   "settingsAccountDeletion": "Delete account",
   "settingsCardAnimations": "Card animations",
+  "settingsListeningInReview": "Listening in review",
+  "settingsListeningAlways": "Always",
+  "settingsListeningSometimes": "Sometimes",
+  "settingsListeningNever": "Never",
   "settingsSyncStatus": "Synchronization Status",
   "settingsSyncStatusSynced": "Up to date",
   "settingsSyncStatusSyncing": "Syncing…",
@@ -112,6 +116,7 @@
     }
   },
   "reviewPlay": "Listen",
+  "reviewPlayToListen": "Play to listen",
   "reviewShowTranslation": "Show translation",
   "reviewShowBack": "Show back",
   "reviewAgain": "Again",

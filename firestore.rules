@@ -135,11 +135,12 @@ service cloud.firestore {
 
       allow create, update: if request.auth != null && request.auth.uid == userId
                             && isPremiumUser(database, userId)
-                            && request.resource.data.keys().hasOnly(['ownerUid', 'updatedAt', 'cardAnimations'])
-                            && request.resource.data.keys().hasAll(['ownerUid', 'updatedAt', 'cardAnimations'])
+                            && request.resource.data.keys().hasOnly(['ownerUid', 'updatedAt', 'cardAnimations', 'listeningInReview'])
+                            && request.resource.data.keys().hasAll(['ownerUid', 'updatedAt', 'cardAnimations', 'listeningInReview'])
                             && request.resource.data.ownerUid == userId
                             && request.resource.data.updatedAt == request.time
-                            && request.resource.data.cardAnimations is bool;
+                            && request.resource.data.cardAnimations is bool
+                            && request.resource.data.listeningInReview in ['always', 'sometimes', 'never'];
     }
 
     match /audioReservations/{id} {

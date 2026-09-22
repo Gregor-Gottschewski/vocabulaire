@@ -244,6 +244,30 @@ abstract class AppLocalizations {
   /// **'Kartenanimationen'**
   String get settingsCardAnimations;
 
+  /// No description provided for @settingsListeningInReview.
+  ///
+  /// In de, this message translates to:
+  /// **'Hören im Lernmodus'**
+  String get settingsListeningInReview;
+
+  /// No description provided for @settingsListeningAlways.
+  ///
+  /// In de, this message translates to:
+  /// **'Immer'**
+  String get settingsListeningAlways;
+
+  /// No description provided for @settingsListeningSometimes.
+  ///
+  /// In de, this message translates to:
+  /// **'Manchmal'**
+  String get settingsListeningSometimes;
+
+  /// No description provided for @settingsListeningNever.
+  ///
+  /// In de, this message translates to:
+  /// **'Nie'**
+  String get settingsListeningNever;
+
   /// No description provided for @settingsSyncStatus.
   ///
   /// In de, this message translates to:
@@ -525,6 +549,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Anhören'**
   String get reviewPlay;
+
+  /// No description provided for @reviewPlayToListen.
+  ///
+  /// In de, this message translates to:
+  /// **'Zum Anhören abspielen'**
+  String get reviewPlayToListen;
 
   /// No description provided for @reviewShowTranslation.
   ///

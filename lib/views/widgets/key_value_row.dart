@@ -4,6 +4,7 @@ import 'package:vocabulaire/views/widgets/section_title.dart';
 import '../../theme/app_spacing.dart';
 import '../../theme/app_typography.dart';
 import '../../theme/theme_context_ext.dart';
+import 'drop_down.dart';
 import 'pill_toggle.dart';
 
 /// A label/value row for the hairline-bordered key-value blocks.
@@ -32,6 +33,26 @@ class KeyValueRow extends StatelessWidget {
       label: label,
       trailing: PillToggle(value: value, onChanged: onChanged),
       onTap: () => onChanged(!value),
+    );
+  }
+
+  static KeyValueRow dropDown<T>({
+    Key? key,
+    required String label,
+    required T value,
+    required List<T> values,
+    required String Function(T) labelOf,
+    required ValueChanged<T> onChanged,
+  }) {
+    return KeyValueRow(
+      key: key,
+      label: label,
+      trailing: DropDown<T>(
+        value: value,
+        values: values,
+        labelOf: labelOf,
+        onChanged: onChanged,
+      ),
     );
   }
 

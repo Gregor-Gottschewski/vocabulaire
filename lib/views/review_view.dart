@@ -11,6 +11,7 @@ import 'package:vocabulaire/models/reviewable_item.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 
 import '../services/tts_service.dart';
 import '../theme/app_spacing.dart';
@@ -65,6 +66,7 @@ class _ReviewViewState extends State<ReviewView>
       boxKey: widget.boxKey,
       onlyTimely: widget.onlyTimely,
       learningMethod: widget.learningMethod,
+      reversed: widget.reversed,
     );
     _reviewController.addListener(_onControllerUpdate);
     _reviewController.load();
@@ -146,6 +148,7 @@ class _ReviewViewState extends State<ReviewView>
 
   void _skip() {
     _resetView();
+    _player.stop();
     _reviewController.skip();
   }
 
@@ -192,7 +195,12 @@ class _ReviewViewState extends State<ReviewView>
     );
   }
 
+  /// Card shows only a play button instead of the question text.
+  bool get _showListeningOnly => _reviewController.listeningActive && !_flipped;
+
   Widget _buildListenerButton() {
+    if (_showListeningOnly) return const SizedBox.shrink();
+
     if (widget.reversed ? _hasRecording : _flipped && _hasRecording) {
       return _translateOffsetLeft(
         TextLinkButton(label: _l10n.reviewPlay, onPressed: _playAudio),
@@ -259,16 +267,24 @@ class _ReviewViewState extends State<ReviewView>
       children: [
         SizedBox(
           width: double.infinity,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              widget.reversed ? current.backText : current.frontText,
-              textAlign: TextAlign.center,
-              style: AppTypography.headlineSerif.copyWith(
-                color: colors.textPrimary,
-              ),
-            ),
-          ),
+          child: _showListeningOnly
+              ? Center(
+                  child: PrimaryActionButton(
+                    label: _l10n.reviewPlayToListen,
+                    onPressed: _playAudio,
+                    fillWidth: false,
+                  ),
+                )
+              : FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    widget.reversed ? current.backText : current.frontText,
+                    textAlign: TextAlign.center,
+                    style: AppTypography.headlineSerif.copyWith(
+                      color: colors.textPrimary,
+                    ),
+                  ),
+                ),
         ),
         if (!_flipped) ...[
           const SizedBox(height: AppSpacing.sectionGap),

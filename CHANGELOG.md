@@ -12,6 +12,7 @@
 - Pronunciation generation button in review view
 - Vocabulary upload reservation
 - Settings synchronization across devices
+- Listening only in flipped mode
 
 ### Fixed
 
@@ -19,6 +20,10 @@
 - Last vocabulary in review session flips which leads to flickering
 - Overwrite existing audio without warning
 - Group download without active subscription
+
+### Removed
+
+_Nothing._
 
 ### Deprecated
 

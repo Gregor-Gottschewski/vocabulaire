@@ -87,6 +87,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get settingsCardAnimations => 'Animations de cartes';
 
   @override
+  String get settingsListeningInReview => 'Écoute pendant la révision';
+
+  @override
+  String get settingsListeningAlways => 'Toujours';
+
+  @override
+  String get settingsListeningSometimes => 'Parfois';
+
+  @override
+  String get settingsListeningNever => 'Ne jamais';
+
+  @override
   String get settingsSyncStatus => 'État de synchronisation';
 
   @override
@@ -243,6 +255,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get reviewPlay => 'Écouter';
+
+  @override
+  String get reviewPlayToListen => 'Lire pour écouter';
 
   @override
   String get reviewShowTranslation => 'Afficher la traduction';

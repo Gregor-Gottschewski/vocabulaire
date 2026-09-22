@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/vocabulary_group.dart';
@@ -17,10 +16,6 @@ class GroupSyncService {
   }
 
   static final GroupSyncService instance = GroupSyncService._();
-
-  final FirebaseFunctions _functions = FirebaseFunctions.instanceFor(
-    region: 'europe-west1',
-  );
 
   final ValueNotifier<List<VocabularyGroup>> _groupsNotifier = ValueNotifier(
     const [],

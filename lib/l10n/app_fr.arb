@@ -38,6 +38,10 @@
   "settingsChangePassword": "Changer le mot de passe",
   "settingsAccountDeletion": "Supprimer le compte",
   "settingsCardAnimations": "Animations de cartes",
+  "settingsListeningInReview": "Écoute pendant la révision",
+  "settingsListeningAlways": "Toujours",
+  "settingsListeningSometimes": "Parfois",
+  "settingsListeningNever": "Ne jamais",
   "settingsSyncStatus": "État de synchronisation",
   "settingsSyncStatusSynced": "À jour",
   "settingsSyncStatusSyncing": "Synchronisation…",
@@ -133,6 +137,7 @@
     }
   },
   "reviewPlay": "Écouter",
+  "reviewPlayToListen": "Lire pour écouter",
   "reviewShowTranslation": "Afficher la traduction",
   "reviewShowBack": "Afficher le verso",
   "reviewAgain": "Encore",

@@ -10,12 +10,14 @@ class PrimaryActionButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
   final bool isLoading;
+  final bool fillWidth;
 
   const PrimaryActionButton({
     super.key,
     required this.label,
     required this.onPressed,
     this.isLoading = false,
+    this.fillWidth = true,
   });
 
   @override
@@ -25,18 +27,19 @@ class PrimaryActionButton extends StatelessWidget {
     return Material(
       type: MaterialType.transparency,
       child: SizedBox(
-        width: double.infinity,
+        width: fillWidth ? double.infinity : null,
         child: GestureDetector(
           onTap: disabled ? null : onPressed,
           behavior: HitTestBehavior.opaque,
           child: Container(
             padding: const EdgeInsets.symmetric(
               vertical: AppSpacing.buttonVertical,
+              horizontal: AppSpacing.gapLarge,
             ),
             color: disabled
                 ? colors.textPrimary.withValues(alpha: 0.35)
                 : colors.textPrimary,
-            alignment: Alignment.center,
+            alignment: fillWidth ? Alignment.center : null,
             child: isLoading
                 ? AppProgressIndicator(color: colors.background)
                 : Text(
