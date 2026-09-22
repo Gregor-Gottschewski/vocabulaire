@@ -41,6 +41,7 @@ class _SettingsViewState extends State<SettingsView> {
   final UsageService _usage = UsageService.instance;
   late AppLocalizations _l10n;
   bool _cardAnimations = true;
+  ListeningMode _listeningInReview = ListeningMode.sometimes;
   bool _hasConnectivity = true;
   bool _isExportingAll = false;
   String? _versionLabel;
@@ -51,9 +52,7 @@ class _SettingsViewState extends State<SettingsView> {
   void initState() {
     super.initState();
     _initSettings();
-    _settingsSubscription = _controller.watch().listen(
-      (_) => _initSettings(),
-    );
+    _settingsSubscription = _controller.watch().listen((_) => _initSettings());
     _initConnectivity();
     _initVersion();
     _boxSync.listenable.addListener(_onSyncChanged);
@@ -129,6 +128,7 @@ class _SettingsViewState extends State<SettingsView> {
     if (!mounted) return;
     setState(() {
       _cardAnimations = _controller.getCardAnimations();
+      _listeningInReview = _controller.getListeningInReview();
     });
   }
 
@@ -137,6 +137,18 @@ class _SettingsViewState extends State<SettingsView> {
     setState(() => _cardAnimations = value);
     await _controller.setCardAnimations(value);
   }
+
+  /// Update listening-in-review setting.
+  Future<void> _setListeningInReview(ListeningMode value) async {
+    setState(() => _listeningInReview = value);
+    await _controller.setListeningInReview(value);
+  }
+
+  String _listeningLabel(ListeningMode mode) => switch (mode) {
+    ListeningMode.always => _l10n.settingsListeningAlways,
+    ListeningMode.sometimes => _l10n.settingsListeningSometimes,
+    ListeningMode.never => _l10n.settingsListeningNever,
+  };
 
   /// Exports all boxes as `.vocab` files grouped into a single ZIP archive
   Future<void> _exportAllBoxes() async {
@@ -219,6 +231,13 @@ class _SettingsViewState extends State<SettingsView> {
                   label: _l10n.settingsCardAnimations,
                   value: _cardAnimations,
                   onChanged: _setCardAnimations,
+                ),
+                KeyValueRow.dropDown<ListeningMode>(
+                  label: _l10n.settingsListeningInReview,
+                  value: _listeningInReview,
+                  values: ListeningMode.values,
+                  labelOf: _listeningLabel,
+                  onChanged: _setListeningInReview,
                 ),
               ],
             ),

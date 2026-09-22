@@ -511,7 +511,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
       if (_recording) {
         await _stopRecording();
       } else {
-        if (_hasRecording && await overrideRecordingDialog()) return;
+        if (_hasRecording && !await overrideRecordingDialog()) return;
 
         await _audioRecorder.start(
           _audioConfig,

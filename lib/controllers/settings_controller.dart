@@ -8,9 +8,22 @@ class SettingsController {
   final Box<AppSettings> _settingsBox = Hive.box<AppSettings>(settingsBoxName);
 
   Future<void> setCardAnimations(bool enabled) async {
+    await _update((s) => s.copyWith(cardAnimations: enabled));
+  }
+
+  Future<void> setListeningInReview(ListeningMode mode) async {
+    await _update((s) => s.copyWith(listeningInReview: mode));
+  }
+
+  ListeningMode getListeningInReview() =>
+      _settingsBox.get(_hiveKey)?.listeningInReview ?? ListeningMode.sometimes;
+
+  Future<void> _update(AppSettings Function(AppSettings) change) async {
+    final current =
+        _settingsBox.get(_hiveKey) ?? AppSettings(cardAnimations: true);
     await _settingsBox.put(
       _hiveKey,
-      AppSettings(cardAnimations: enabled, updatedAt: DateTime.now()),
+      change(current).copyWith(updatedAt: DateTime.now()),
     );
   }
 
@@ -23,8 +36,9 @@ class SettingsController {
   AppSettings? get settings => _settingsBox.get(_hiveKey);
 
   /// Emits whenever the stored settings change.
-  Stream<AppSettings?> watch() =>
-      _settingsBox.watch(key: _hiveKey).map((event) => event.value as AppSettings?);
+  Stream<AppSettings?> watch() => _settingsBox
+      .watch(key: _hiveKey)
+      .map((event) => event.value as AppSettings?);
 
   /// Stores settings received from another device, keeping their `updatedAt`.
   Future<void> applyRemote(AppSettings remote) async {
