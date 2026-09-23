@@ -1,4 +1,3 @@
-
 /// Represents the type of a [VocabularyBox].
 enum GroupType {
   vocabulary,

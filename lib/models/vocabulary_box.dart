@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 import 'package:vocabulaire/models/app_language.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/vocabulary.dart';
 
 part 'vocabulary_box.g.dart';

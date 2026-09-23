@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/group_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/theme/app_page_route.dart';
 import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';

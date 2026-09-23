@@ -7,7 +7,7 @@ import 'package:fsrs/fsrs.dart' hide State;
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';

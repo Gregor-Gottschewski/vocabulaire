@@ -5,7 +5,7 @@ import 'package:vocabulaire/controllers/settings_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:vocabulaire/controllers/review_controller.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/review_session.dart';
 import 'package:vocabulaire/models/reviewable_item.dart';
 import 'package:vocabulaire/services/app_exception.dart';

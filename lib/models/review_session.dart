@@ -1,6 +1,6 @@
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
-import 'box_type.dart';
+import 'group_type.dart';
 import 'reviewable_item.dart';
 import 'vocabulary_box.dart';
 

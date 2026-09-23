@@ -11,8 +11,8 @@ import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/reset_password_view.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
+import 'package:vocabulaire/views/widgets/header_text_button.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 final _emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
@@ -132,6 +132,14 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return AppScaffold(
+      actions: [
+        HeaderTextButton(
+          label: _isRegisterMode
+              ? "${_l10n.registerSubmitButton} →"
+              : "${_l10n.loginSubmitButton} →",
+          onPressed: _isLoading ? null : _submit,
+        ),
+      ],
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
@@ -181,14 +189,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ],
                 const SizedBox(height: AppSpacing.sectionGap),
-                PrimaryActionButton(
-                  label: _isRegisterMode
-                      ? _l10n.registerSubmitButton
-                      : _l10n.loginSubmitButton,
-                  onPressed: _isLoading ? null : _submit,
-                  isLoading: _isLoading,
-                ),
-                const SizedBox(height: AppSpacing.gapMedium),
                 TextLinkButton(
                   label: _isRegisterMode
                       ? _l10n.loginSwitchToLogin

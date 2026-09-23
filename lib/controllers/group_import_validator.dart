@@ -1,4 +1,4 @@
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/models/vocabulary_group.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/views/review_view.dart';
 
 import '../models/review_session.dart';
