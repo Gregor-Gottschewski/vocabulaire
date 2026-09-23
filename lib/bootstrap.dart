@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -81,10 +82,18 @@ Future<void> bootstrap(Flavor flavor) async {
   Hive.registerAdapter(ConjugationAdapter());
   Hive.registerAdapter(VocabularyGroupAdapter());
 
-  await Hive.openBox<VocabularyBox>('boxes');
-  await Hive.openBox<VocabularyGroup>('groups');
-  await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
-  await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
+  try {
+    await Hive.openBox<VocabularyBox>('boxes');
+    await Hive.openBox<VocabularyGroup>('groups');
+    await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
+    await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
+  } on FileSystemException catch (_) {
+    debugPrint(
+      "Hive box file locked. Another instance of Vocabulaire is running.",
+    );
+    exit(1);
+  }
+
   runApp(const MyApp());
 }
 
