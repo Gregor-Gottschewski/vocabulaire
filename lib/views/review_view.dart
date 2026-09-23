@@ -1,4 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/controllers/box_controller.dart';
 import 'package:vocabulaire/controllers/settings_controller.dart';
@@ -275,14 +276,11 @@ class _ReviewViewState extends State<ReviewView>
                     fillWidth: false,
                   ),
                 )
-              : FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: Text(
-                    widget.reversed ? current.backText : current.frontText,
-                    textAlign: TextAlign.center,
-                    style: AppTypography.headlineSerif.copyWith(
-                      color: colors.textPrimary,
-                    ),
+              : AutoSizeText(
+                  widget.reversed ? current.backText : current.frontText,
+                  textAlign: TextAlign.center,
+                  style: AppTypography.headlineSerif.copyWith(
+                    color: colors.textPrimary,
                   ),
                 ),
         ),
@@ -311,15 +309,12 @@ class _ReviewViewState extends State<ReviewView>
                   const SizedBox(height: AppSpacing.sectionGap),
                   SizedBox(
                     width: double.infinity,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        widget.reversed ? current.frontText : current.backText,
-                        textAlign: TextAlign.center,
-                        style: AppTypography.headlineSerif.copyWith(
-                          fontSize: 22,
-                          color: colors.textPrimary,
-                        ),
+                    child: AutoSizeText(
+                      widget.reversed ? current.frontText : current.backText,
+                      textAlign: TextAlign.center,
+                      style: AppTypography.headlineSerif.copyWith(
+                        fontSize: 22,
+                        color: colors.textPrimary,
                       ),
                     ),
                   ),
