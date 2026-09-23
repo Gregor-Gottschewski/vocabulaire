@@ -89,6 +89,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   bool get _isEditing => widget.vocabulary != null;
 
+  bool get _eligibleForTTS =>
+      widget.box.boxType == GroupType.vocabulary &&
+      widget.box.targetAppLanguage != null;
+
   bool get _hasRecording =>
       _hasPendingNewAudio || (_hasCommittedAudio && !_pendingDelete);
 
@@ -200,7 +204,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Returns `true` if the back text is eligible for TTS generation, `false` otherwise.
   /// Text must have x chars with 0 < x < [TtsService.maxChars].
-  bool get _canGenerateTts {
+  bool get _canGenerateTTS {
     final length = _backController.text.trim().length;
     return length > 0 && length <= TtsService.maxChars;
   }
@@ -601,7 +605,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Generates an AI pronunciation of the back text.
   Future<void> _generateTtsAudio() async {
-    if (!_canGenerateTts) return;
+    if (!_canGenerateTTS) return;
     if (widget.box.targetAppLanguage == null) return;
     final text = _backController.text.trim();
     final generatingVocabId = _vocab.id;
@@ -726,10 +730,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   Widget _buildAudioRow(BuildContext context) {
     final colors = context.colors;
-    final showGenerate =
-        widget.box.boxType == GroupType.vocabulary &&
-        widget.box.targetAppLanguage != null;
-    final canGenerate = _canGenerateTts && !_recording && !_isGeneratingTts;
+    final canGenerate = _canGenerateTTS && !_recording && !_isGeneratingTts;
     final canPlay = _hasRecording && !_isGeneratingTts;
     final canDelete = _hasRecording && !_isGeneratingTts;
 
@@ -784,7 +785,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
             ),
           ),
           const Spacer(),
-          if (showGenerate)
+          if (_eligibleForTTS)
             if (_isGeneratingTts)
               const Padding(
                 padding: EdgeInsets.all(AppSpacing.gapMedium),
@@ -903,7 +904,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           textInputAction: TextInputAction.newline,
                         ),
                       ),
-                      if (!_canGenerateTts &&
+                      if (_eligibleForTTS &&
+                          !_canGenerateTTS &&
                           _backController.text.trim().isNotEmpty) ...[
                         const SizedBox(height: AppSpacing.gapSmall),
                         Text(
