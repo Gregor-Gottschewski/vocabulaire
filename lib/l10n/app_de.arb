@@ -237,6 +237,7 @@
       }
     }
   },
+  "errorNetworkUnavailable": "Keine Internetverbindung. Bitte prüfe deine Verbindung und versuche es erneut.",
   "errorMoveGroupOfflineFailed": "Gruppe konnte nicht ausgelagert werden",
   "errorMoveGroupOnlineFailed": "Gruppe konnte nicht online gestellt werden",
   "errorAddVocabularyFailed": "Vokabel konnte nicht gespeichert werden",

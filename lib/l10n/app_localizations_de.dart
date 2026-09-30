@@ -465,6 +465,10 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String get errorNetworkUnavailable =>
+      'Keine Internetverbindung. Bitte prüfe deine Verbindung und versuche es erneut.';
+
+  @override
   String get errorMoveGroupOfflineFailed =>
       'Gruppe konnte nicht ausgelagert werden';
 

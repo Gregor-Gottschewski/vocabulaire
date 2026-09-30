@@ -460,6 +460,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get errorNetworkUnavailable =>
+      'No internet connection. Please check your connection and try again.';
+
+  @override
   String get errorMoveGroupOfflineFailed => 'Group could not be moved offline';
 
   @override

@@ -922,6 +922,12 @@ abstract class AppLocalizations {
   /// **'Eine Gruppe mit dem Namen \"{name}\" existiert bereits. Bitte wähle einen anderen Namen.'**
   String errorDuplicateGroupName(String name);
 
+  /// No description provided for @errorNetworkUnavailable.
+  ///
+  /// In de, this message translates to:
+  /// **'Keine Internetverbindung. Bitte prüfe deine Verbindung und versuche es erneut.'**
+  String get errorNetworkUnavailable;
+
   /// No description provided for @errorMoveGroupOfflineFailed.
   ///
   /// In de, this message translates to:

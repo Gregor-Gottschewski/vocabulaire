@@ -237,6 +237,7 @@
       }
     }
   },
+  "errorNetworkUnavailable": "Pas de connexion internet. Vérifiez votre connexion et réessayez.",
   "errorMoveGroupOfflineFailed": "Le groupe n'a pas pu être rendu local",
   "errorMoveGroupOnlineFailed": "Le groupe n'a pas pu être mis en ligne",
   "errorAddVocabularyFailed": "Le vocabulaire n'a pas pu être enregistré",

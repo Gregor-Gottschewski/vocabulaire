@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -29,6 +30,9 @@ class GroupController {
   String? replacementIdFor(String groupId) => _replacedGroupIds[groupId];
 
   bool _beginSync(String groupId) => _syncingGroupIds.add(groupId);
+
+  Future<bool> _isConnected() async =>
+      (await Connectivity().checkConnectivity()).hasConnectivity;
 
   void _endSync(String groupId) => _syncingGroupIds.remove(groupId);
 
@@ -123,6 +127,9 @@ class GroupController {
   /// rolled back and the group/boxes remain fully local.
   Future<String> moveGroupOnline(String groupId) async {
     if (!_isLocal(groupId)) return groupId;
+    if (!(await _isConnected())) {
+      throw AppException(AppError.networkUnavailable);
+    }
     if (!_beginSync(groupId)) {
       throw AppException(AppError.moveGroupOnlineFailed);
     }
@@ -192,6 +199,9 @@ class GroupController {
       throw AppException(AppError.moveGroupOfflineFailed);
     }
     if (_isLocal(groupId)) return;
+    if (!(await _isConnected())) {
+      throw AppException(AppError.networkUnavailable);
+    }
     if (!_beginSync(groupId)) {
       throw AppException(AppError.moveGroupOfflineFailed);
     }

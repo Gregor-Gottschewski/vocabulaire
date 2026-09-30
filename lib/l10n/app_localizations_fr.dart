@@ -465,6 +465,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get errorNetworkUnavailable =>
+      'Pas de connexion internet. Vérifiez votre connexion et réessayez.';
+
+  @override
   String get errorMoveGroupOfflineFailed =>
       'Le groupe n\'a pas pu être rendu local';
 

@@ -28,6 +28,7 @@ extension AppExceptionDialog on BuildContext {
       AppError.duplicateGroupName => i18n.errorDuplicateGroupName(
         e.details as String,
       ),
+      AppError.networkUnavailable => i18n.errorNetworkUnavailable,
       AppError.moveGroupOfflineFailed => i18n.errorMoveGroupOfflineFailed,
       AppError.moveGroupOnlineFailed => i18n.errorMoveGroupOnlineFailed,
       AppError.addVocabularyFailed => i18n.errorAddVocabularyFailed,

@@ -13,6 +13,7 @@ enum AppError {
   importFailed,
   duplicateBoxName,
   duplicateGroupName,
+  networkUnavailable,
   moveGroupOfflineFailed,
   moveGroupOnlineFailed,
   addVocabularyFailed,
