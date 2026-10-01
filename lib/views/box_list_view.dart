@@ -29,9 +29,8 @@ import 'widgets/text_link_button.dart';
 /// Lists all boxes belonging to [group].
 class BoxListView extends StatefulWidget {
   final VocabularyGroup group;
-  final String groupId;
 
-  const BoxListView({super.key, required this.group, required this.groupId});
+  const BoxListView({super.key, required this.group});
 
   @override
   State<BoxListView> createState() => _BoxListViewState();
@@ -76,7 +75,7 @@ class _BoxListViewState extends State<BoxListView> {
   @override
   void initState() {
     super.initState();
-    _groupId = widget.groupId;
+    _groupId = widget.group.id;
     _boxesNotifier = _boxController.listenableForGroup(_groupId);
     _groupsNotifier = _groupController.listenableForAll();
   }

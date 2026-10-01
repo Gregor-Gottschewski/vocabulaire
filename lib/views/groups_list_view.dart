@@ -59,7 +59,7 @@ class _GroupsListViewState extends State<GroupsListView> {
   void _openBoxList(String groupId, VocabularyGroup group) {
     Navigator.of(context).push(
       AppPageRoute(
-        builder: (context) => BoxListView(group: group, groupId: groupId),
+        builder: (context) => BoxListView(group: group),
       ),
     );
   }
@@ -127,6 +127,9 @@ class _GroupsListViewState extends State<GroupsListView> {
 
     try {
       await _groupController.moveGroupOffline(groupId);
+    } on AppException catch (e) {
+      if (mounted) await context.showAppError(e);
+      return;
     } catch (_) {
       if (mounted) {
         await context.showAppError(
@@ -150,7 +153,7 @@ class _GroupsListViewState extends State<GroupsListView> {
     if (group == null || !mounted) return;
     Navigator.of(context).push(
       AppPageRoute(
-        builder: (context) => BoxListView(group: group, groupId: group.id),
+        builder: (context) => BoxListView(group: group),
       ),
     );
   }
