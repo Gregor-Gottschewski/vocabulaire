@@ -13,6 +13,7 @@
 - Vocabulary upload reservation
 - Settings synchronization across devices
 - Listening only in flipped mode
+- Move vocabulary between different boxes inside a box
 
 ### Fixed
 

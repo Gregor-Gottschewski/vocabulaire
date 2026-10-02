@@ -1791,6 +1791,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.'**
   String get errorSubscriptionAlreadyLinkedUnknown;
+
+  /// No description provided for @chooseBoxMoveTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel „{word}“ verschieben'**
+  String chooseBoxMoveTitle(String word);
+
+  /// No description provided for @editVocabMove.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel verschieben'**
+  String get editVocabMove;
 }
 
 class _AppLocalizationsDelegate

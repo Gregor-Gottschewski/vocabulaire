@@ -167,6 +167,7 @@ class _GroupsListViewState extends State<GroupsListView> {
       body: ValueListenableBuilder(
         valueListenable: _groupsNotifier,
         builder: (context, groupEntries, _) {
+          groupEntries.sort((a, b) => a.value.name.compareTo(b.value.name));
           return ValueListenableBuilder(
             valueListenable: _boxesNotifier,
             builder: (context, boxEntries, _) {

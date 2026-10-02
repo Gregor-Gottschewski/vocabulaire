@@ -370,5 +370,7 @@
   "errorSubscriptionVerificationFailed": "The purchase could not be verified. Please try again or contact support.",
   "errorSubscriptionRestoreFailed": "Purchases could not be restored. Please try again.",
   "errorSubscriptionAlreadyLinked": "This subscription is already linked to another account ({email}). Delete that account first, then restore the purchase again.",
-  "errorSubscriptionAlreadyLinkedUnknown": "This subscription is already linked to another account. Delete that account first, then restore the purchase again."
+  "errorSubscriptionAlreadyLinkedUnknown": "This subscription is already linked to another account. Delete that account first, then restore the purchase again.",
+  "chooseBoxMoveTitle": "Move vocabulary “{word}”",
+  "editVocabMove": "Move vocabulary"
 }

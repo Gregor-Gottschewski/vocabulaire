@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart' hide Card;
+import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:intl/intl.dart';
@@ -15,6 +16,8 @@ import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
+import 'package:vocabulaire/theme/app_page_route.dart';
+import 'package:vocabulaire/views/choose_box_view.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/conjugation.dart';
@@ -404,6 +407,32 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (mounted) setState(() => _isDirty = false);
   }
 
+  void _moveVocabulary() async {
+    final vocabularyGroup = GroupController().getGroup(widget.box.groupId);
+    if (vocabularyGroup == null) return;
+
+    final VocabularyBox? newBox = await Navigator.push(
+      context,
+      AppPageRoute(
+        builder: (context) => ChooseBoxView(
+          group: vocabularyGroup,
+          vocabulary: _vocab,
+          excluded: [widget.box],
+        ),
+      ),
+    );
+
+    // if user cancelled action
+    if (newBox == null) return;
+    if (newBox.id == widget.boxKey) return;
+
+    _boxController.addVocabularyToBox(newBox.id, _vocab);
+    _boxController.removeVocabularyFromBox(widget.boxKey, _vocab.id);
+
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
+
   /// Delete vocabulary from box and close edit view.
   void _deleteVocabulary() {
     showAppDialog(
@@ -442,6 +471,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         AppActionSheetAction(
           label: _l10n.editVocabResetRating,
           onPressed: _confirmResetRating,
+        ),
+        AppActionSheetAction(
+          label: _l10n.editVocabMove,
+          onPressed: _moveVocabulary,
         ),
         AppActionSheetAction(
           label: _l10n.boxDetailDelete,

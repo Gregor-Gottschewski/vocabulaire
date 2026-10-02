@@ -440,5 +440,14 @@
       }
     }
   },
-  "errorSubscriptionAlreadyLinkedUnknown": "Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her."
+  "errorSubscriptionAlreadyLinkedUnknown": "Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.",
+  "chooseBoxMoveTitle": "Vokabel „{word}“ verschieben",
+  "@chooseBoxMoveTitle": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "editVocabMove": "Vokabel verschieben"
 }

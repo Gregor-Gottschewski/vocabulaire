@@ -966,4 +966,12 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorSubscriptionAlreadyLinkedUnknown =>
       'Cet abonnement est déjà lié à un autre compte. Supprime d\'abord ce compte, puis restaure à nouveau l\'achat.';
+
+  @override
+  String chooseBoxMoveTitle(String word) {
+    return 'Déplacer le vocabulaire « $word »';
+  }
+
+  @override
+  String get editVocabMove => 'Déplacer le vocabulaire';
 }

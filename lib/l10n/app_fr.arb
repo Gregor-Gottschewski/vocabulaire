@@ -419,5 +419,7 @@
       }
     }
   },
-  "errorSubscriptionAlreadyLinkedUnknown": "Cet abonnement est déjà lié à un autre compte. Supprime d'abord ce compte, puis restaure à nouveau l'achat."
+  "errorSubscriptionAlreadyLinkedUnknown": "Cet abonnement est déjà lié à un autre compte. Supprime d'abord ce compte, puis restaure à nouveau l'achat.",
+  "chooseBoxMoveTitle": "Déplacer le vocabulaire « {word} »",
+  "editVocabMove": "Déplacer le vocabulaire"
 }
