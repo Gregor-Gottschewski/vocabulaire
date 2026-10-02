@@ -12,7 +12,7 @@
 - Pronunciation generation button in review view
 - Vocabulary upload reservation
 - Settings synchronization across devices
-- Listening only in flipped mode
+- Listening-only mode in language flipped review mode
 - Move vocabulary between different boxes inside a box
 - Repeat password field in registration process
 
