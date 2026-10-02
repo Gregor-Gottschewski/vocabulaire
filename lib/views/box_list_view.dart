@@ -6,6 +6,7 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/box_detail_page.dart';
 import 'package:vocabulaire/views/create_box_detail_view.dart';
 import 'package:vocabulaire/views/create_group_detail_view.dart';
+import 'package:vocabulaire/views/review_view.dart';
 import 'package:vocabulaire/views/widgets/app_bottom_sheet.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
 import 'package:vocabulaire/views/widgets/box_tile.dart';
@@ -14,6 +15,8 @@ import '../controllers/box_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/group_draft.dart';
 import '../controllers/import_controller.dart';
+import '../models/review_session.dart';
+import '../models/reviewable_item.dart';
 import '../models/vocabulary_box.dart';
 import '../models/vocabulary_group.dart';
 import '../services/app_exception.dart';
@@ -213,6 +216,32 @@ class _BoxListViewState extends State<BoxListView> {
     }
   }
 
+  List<ReviewableItem> _overdueItems(VocabularyBox box) {
+    return ReviewSession.filterItems(
+      ReviewSession.reviewableItemsForBox(box),
+      onlyTimely: true,
+      method: LearningMethod.all,
+      dailyLimitEnabled: box.dailyLimitEnabled,
+      remainingNewCards: box.remainingNewCardsToday,
+    );
+  }
+
+  VoidCallback? _startSession(BuildContext context, VocabularyBox box) {
+    if (_overdueItems(box).isEmpty) return null;
+
+    return () {
+      Navigator.of(context).push(
+        AppPageRoute(
+          builder: (_) => ReviewView(
+            boxKey: box.id,
+            onlyTimely: true,
+            learningMethod: LearningMethod.all,
+          ),
+        ),
+      );
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -285,6 +314,23 @@ class _BoxListViewState extends State<BoxListView> {
                             return BoxTile(
                               key: ValueKey(entry.key),
                               box: entry.value,
+                              trailingElements: [
+                                Text(
+                                  _l10n.overdueCardsCounter(
+                                    _overdueItems(entry.value).length,
+                                  ),
+                                  style: AppTypography.serifValue.copyWith(
+                                    color: colors.textSecondary,
+                                  ),
+                                ),
+                                TextLinkButton(
+                                  label: _l10n.boxDetailStart,
+                                  onPressed: _startSession(
+                                    context,
+                                    entry.value,
+                                  ),
+                                ),
+                              ],
                               onTap: () {
                                 Navigator.of(context).push(
                                   AppPageRoute(
