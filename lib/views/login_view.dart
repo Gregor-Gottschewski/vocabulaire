@@ -28,6 +28,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
   late AppLocalizations _l10n;
   bool _isRegisterMode = false;
   bool _isLoading = false;
@@ -36,6 +38,7 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _repeatPasswordController.dispose();
     super.dispose();
   }
 
@@ -55,6 +58,14 @@ class _LoginViewState extends State<LoginView> {
     }
 
     if (_isRegisterMode) {
+      if (password != _repeatPasswordController.text) {
+        await context.showAppError(
+          AppException(AppError.authPasswordsDoNotMatch),
+        );
+        _repeatPasswordController.clear();
+        return;
+      }
+
       final passwordStatus = await AuthService.instance.validatePassword(
         password: password,
       );
@@ -178,9 +189,22 @@ class _LoginViewState extends State<LoginView> {
                     obscureText: true,
                     autofillHints: const [AutofillHints.password],
                     textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => _submit(),
+                    onSubmitted: _isRegisterMode ? null : (_) => _submit(),
                   ),
                 ),
+                if (_isRegisterMode) ...[
+                  const SizedBox(height: AppSpacing.gapMedium),
+                  LabelTextField(
+                    label: "Repeat Password",
+                    textField: AppTextField(
+                      controller: _repeatPasswordController,
+                      obscureText: true,
+                      autofillHints: const [AutofillHints.newPassword],
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => _submit(),
+                    ),
+                  ),
+                ],
                 if (!_isRegisterMode) ...[
                   const SizedBox(height: AppSpacing.gapSmall),
                   TextLinkButton(
