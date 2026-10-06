@@ -6,6 +6,7 @@ import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/views/box_detail_page.dart';
 import 'package:vocabulaire/views/create_box_detail_view.dart';
 import 'package:vocabulaire/views/create_group_detail_view.dart';
+import 'package:vocabulaire/views/review_view.dart';
 import 'package:vocabulaire/views/widgets/app_bottom_sheet.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
 import 'package:vocabulaire/views/widgets/box_tile.dart';
@@ -14,6 +15,8 @@ import '../controllers/box_controller.dart';
 import '../controllers/group_controller.dart';
 import '../controllers/group_draft.dart';
 import '../controllers/import_controller.dart';
+import '../models/review_session.dart';
+import '../models/reviewable_item.dart';
 import '../models/vocabulary_box.dart';
 import '../models/vocabulary_group.dart';
 import '../services/app_exception.dart';
@@ -29,9 +32,8 @@ import 'widgets/text_link_button.dart';
 /// Lists all boxes belonging to [group].
 class BoxListView extends StatefulWidget {
   final VocabularyGroup group;
-  final String groupId;
 
-  const BoxListView({super.key, required this.group, required this.groupId});
+  const BoxListView({super.key, required this.group});
 
   @override
   State<BoxListView> createState() => _BoxListViewState();
@@ -41,29 +43,42 @@ class _BoxListViewState extends State<BoxListView> {
   final BoxController _boxController = BoxController();
   final GroupController _groupController = GroupController();
   late String _groupId;
-  late final ValueNotifier<List<MapEntry<String, VocabularyBox>>>
-  _boxesNotifier;
+  late ValueNotifier<List<MapEntry<String, VocabularyBox>>> _boxesNotifier;
   late final ValueNotifier<List<MapEntry<String, VocabularyGroup>>>
   _groupsNotifier;
   late AppLocalizations _l10n;
   bool _isPopping = false;
   bool _hasSeenGroup = false;
+  bool _followedReplacement = false;
 
   /// Resolves the group to show.
   VocabularyGroup? get _group {
+    _followReplacedGroup();
     final current = _groupController.getGroup(_groupId);
     if (current != null) {
       _hasSeenGroup = true;
       return current;
     }
-    if (!_hasSeenGroup) return widget.group;
+    if (!_hasSeenGroup || _followedReplacement) {
+      return widget.group.copyWith(id: _groupId);
+    }
     return null;
+  }
+
+  void _followReplacedGroup() {
+    final newId = _groupController.replacementIdFor(_groupId);
+    if (newId == null) return;
+    final oldNotifier = _boxesNotifier;
+    _groupId = newId;
+    _followedReplacement = true;
+    _boxesNotifier = _boxController.listenableForGroup(newId);
+    WidgetsBinding.instance.addPostFrameCallback((_) => oldNotifier.dispose());
   }
 
   @override
   void initState() {
     super.initState();
-    _groupId = widget.groupId;
+    _groupId = widget.group.id;
     _boxesNotifier = _boxController.listenableForGroup(_groupId);
     _groupsNotifier = _groupController.listenableForAll();
   }
@@ -87,8 +102,9 @@ class _BoxListViewState extends State<BoxListView> {
     final result = await Navigator.of(context, rootNavigator: true)
         .push<({VocabularyBox box, String key})>(
           AppPageRoute(
-            builder: (context) =>
-                CreateBoxDetailView(draft: BoxDraft.fromGroup(widget.group)),
+            builder: (context) => CreateBoxDetailView(
+              draft: BoxDraft.fromGroup(group.copyWith(id: _groupId)),
+            ),
           ),
         );
     if (result == null || !mounted) return;
@@ -134,16 +150,16 @@ class _BoxListViewState extends State<BoxListView> {
   }
 
   void _exportGroup() async {
-    final boxes = _boxController.boxesForGroup(widget.groupId);
+    final boxes = _boxController.boxesForGroup(_groupId);
     if (boxes.isEmpty) return;
 
     final includeProgress = await context.confirmExportProgress();
-    if (!mounted) return;
+    if (!mounted || includeProgress == AppDialogActionResult.cancel) return;
 
     await context.exportAndShare(
       export: () => ExportController.exportAllBoxes(
         boxes,
-        includeProgress: includeProgress,
+        includeProgress: includeProgress == AppDialogActionResult.yes,
       ),
       title: _l10n.settingsExportAll,
     );
@@ -161,7 +177,7 @@ class _BoxListViewState extends State<BoxListView> {
           label: _l10n.boxDetailDelete,
           destructive: true,
           onPressed: () async {
-            await _groupController.deleteGroup(widget.groupId);
+            await _groupController.deleteGroup(_groupId);
           },
         ),
       ],
@@ -184,10 +200,10 @@ class _BoxListViewState extends State<BoxListView> {
         final path = result.path;
         if (path == null) return;
         final box = await ImportController.importBoxFromFile(path);
-        importedBoxes.add(box.copyWith(groupId: widget.groupId));
+        importedBoxes.add(box.copyWith(groupId: _groupId));
       }
 
-      final online = !_groupController.isLocal(widget.groupId);
+      final online = !_groupController.isLocal(_groupId);
       await _boxController.addBoxes(importedBoxes, online: online);
     } on AppException catch (e) {
       if (!mounted) return;
@@ -198,6 +214,32 @@ class _BoxListViewState extends State<BoxListView> {
         AppException(AppError.importFailed, details: e),
       );
     }
+  }
+
+  List<ReviewableItem> _overdueItems(VocabularyBox box) {
+    return ReviewSession.filterItems(
+      ReviewSession.reviewableItemsForBox(box),
+      onlyTimely: true,
+      method: LearningMethod.all,
+      dailyLimitEnabled: box.dailyLimitEnabled,
+      remainingNewCards: box.remainingNewCardsToday,
+    );
+  }
+
+  VoidCallback? _startSession(BuildContext context, VocabularyBox box) {
+    if (_overdueItems(box).isEmpty) return null;
+
+    return () {
+      Navigator.of(context).push(
+        AppPageRoute(
+          builder: (_) => ReviewView(
+            boxKey: box.id,
+            onlyTimely: true,
+            learningMethod: LearningMethod.all,
+          ),
+        ),
+      );
+    };
   }
 
   @override
@@ -272,6 +314,23 @@ class _BoxListViewState extends State<BoxListView> {
                             return BoxTile(
                               key: ValueKey(entry.key),
                               box: entry.value,
+                              trailingElements: [
+                                Text(
+                                  _l10n.overdueCardsCounter(
+                                    _overdueItems(entry.value).length,
+                                  ),
+                                  style: AppTypography.serifValue.copyWith(
+                                    color: colors.textSecondary,
+                                  ),
+                                ),
+                                TextLinkButton(
+                                  label: _l10n.boxDetailStart,
+                                  onPressed: _startSession(
+                                    context,
+                                    entry.value,
+                                  ),
+                                ),
+                              ],
                               onTap: () {
                                 Navigator.of(context).push(
                                   AppPageRoute(

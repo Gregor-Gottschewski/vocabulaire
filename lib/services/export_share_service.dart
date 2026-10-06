@@ -12,27 +12,32 @@ import 'app_exception_ui.dart';
 extension ExportShareContext on BuildContext {
   /// Asks the user whether their learning progress should be included in
   /// an upcoming export.
-  Future<bool> confirmExportProgress() async {
+  Future<AppDialogActionResult> confirmExportProgress() async {
     final l10n = AppLocalizations.of(this)!;
-    bool includeProgress = false;
+    AppDialogActionResult result = AppDialogActionResult.cancel;
 
     await showAppDialog(
       context: this,
+      onLeave: () => result = AppDialogActionResult.cancel,
       title: l10n.exportProgressDialogTitle,
       message: l10n.exportProgressDialogMessage,
       actions: [
         AppDialogAction(
           label: l10n.commonNo,
-          onPressed: () => includeProgress = false,
+          onPressed: () => result = AppDialogActionResult.no,
         ),
         AppDialogAction(
           label: l10n.commonYes,
-          onPressed: () => includeProgress = true,
+          onPressed: () => result = AppDialogActionResult.yes,
+        ),
+        AppDialogAction(
+          label: l10n.commonCancel,
+          onPressed: () => result = AppDialogActionResult.cancel,
         ),
       ],
     );
 
-    return includeProgress;
+    return result;
   }
 
   /// Runs [export], shares the resulting file via [SharePlus] with [title],

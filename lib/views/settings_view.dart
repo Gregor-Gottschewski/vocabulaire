@@ -2,12 +2,14 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 
 import '../controllers/box_controller.dart';
 import '../controllers/export_controller.dart';
 import '../controllers/settings_controller.dart';
+import '../models/app_settings.dart';
 import '../services/auth_service.dart';
 import '../services/box_sync_service.dart';
 import '../services/export_share_service.dart';
@@ -39,15 +41,20 @@ class _SettingsViewState extends State<SettingsView> {
   final UsageService _usage = UsageService.instance;
   late AppLocalizations _l10n;
   bool _cardAnimations = true;
+  ListeningMode _listeningInReview = ListeningMode.sometimes;
   bool _hasConnectivity = true;
   bool _isExportingAll = false;
+  String? _versionLabel;
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
+  StreamSubscription<AppSettings?>? _settingsSubscription;
 
   @override
   void initState() {
     super.initState();
     _initSettings();
+    _settingsSubscription = _controller.watch().listen((_) => _initSettings());
     _initConnectivity();
+    _initVersion();
     _boxSync.listenable.addListener(_onSyncChanged);
     _usage.listenable.addListener(_onSyncChanged);
   }
@@ -57,11 +64,19 @@ class _SettingsViewState extends State<SettingsView> {
     _boxSync.listenable.removeListener(_onSyncChanged);
     _usage.listenable.removeListener(_onSyncChanged);
     _connectivitySubscription?.cancel();
+    _settingsSubscription?.cancel();
     super.dispose();
   }
 
   void _onSyncChanged() {
     if (mounted) setState(() {});
+  }
+
+  Future<void> _initVersion() async {
+    final info = await PackageInfo.fromPlatform();
+    if (mounted) {
+      setState(() => _versionLabel = '${info.version} (${info.buildNumber})');
+    }
   }
 
   Future<void> _initConnectivity() async {
@@ -96,12 +111,10 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   String get _audioUsageLabel {
-    final usedMb = _usage.listenable.value.audioBytesUsed / (1024 * 1024);
-    const limitMb = UsageService.audioStorageLimitBytes / (1024 * 1024);
-    return _l10n.settingsAudioUsageValue(
-      usedMb.toStringAsFixed(1),
-      limitMb.round(),
-    );
+    final usedBytes = _usage.listenable.value.audioBytesUsed;
+    final percent = (usedBytes / UsageService.audioStorageLimitBytes * 100)
+        .round();
+    return _l10n.settingsAudioUsageValue(percent);
   }
 
   @override
@@ -112,8 +125,10 @@ class _SettingsViewState extends State<SettingsView> {
 
   /// Initialize settings to set UI to correct state.
   Future<void> _initSettings() async {
+    if (!mounted) return;
     setState(() {
       _cardAnimations = _controller.getCardAnimations();
+      _listeningInReview = _controller.getListeningInReview();
     });
   }
 
@@ -123,18 +138,30 @@ class _SettingsViewState extends State<SettingsView> {
     await _controller.setCardAnimations(value);
   }
 
+  /// Update listening-in-review setting.
+  Future<void> _setListeningInReview(ListeningMode value) async {
+    setState(() => _listeningInReview = value);
+    await _controller.setListeningInReview(value);
+  }
+
+  String _listeningLabel(ListeningMode mode) => switch (mode) {
+    ListeningMode.always => _l10n.settingsListeningAlways,
+    ListeningMode.sometimes => _l10n.settingsListeningSometimes,
+    ListeningMode.never => _l10n.settingsListeningNever,
+  };
+
   /// Exports all boxes as `.vocab` files grouped into a single ZIP archive
   Future<void> _exportAllBoxes() async {
     final boxes = _boxController.boxes;
     if (boxes.isEmpty) return;
 
     final includeProgress = await context.confirmExportProgress();
-    if (!mounted) return;
+    if (!mounted || includeProgress == AppDialogActionResult.cancel) return;
 
     await context.exportAndShare(
       export: () => ExportController.exportAllBoxes(
         boxes,
-        includeProgress: includeProgress,
+        includeProgress: includeProgress == AppDialogActionResult.yes,
       ),
       title: _l10n.settingsExportAll,
       onStart: () => setState(() => _isExportingAll = true),
@@ -204,6 +231,13 @@ class _SettingsViewState extends State<SettingsView> {
                   label: _l10n.settingsCardAnimations,
                   value: _cardAnimations,
                   onChanged: _setCardAnimations,
+                ),
+                KeyValueRow.dropDown<ListeningMode>(
+                  label: _l10n.settingsListeningInReview,
+                  value: _listeningInReview,
+                  values: ListeningMode.values,
+                  labelOf: _listeningLabel,
+                  onChanged: _setListeningInReview,
                 ),
               ],
             ),
@@ -285,18 +319,38 @@ class _SettingsViewState extends State<SettingsView> {
             ),
 
             const SizedBox(height: AppSpacing.sectionGap),
-            TextLinkButton(
-              label: _l10n.settingsLicenses,
-              onPressed: () => showLicensePage(
-                context: context,
-                applicationName: 'Vocabulaire',
-              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextLinkButton(
+                  label: _l10n.settingsLicenses,
+                  onPressed: () => showLicensePage(
+                    context: context,
+                    applicationName: 'Vocabulaire',
+                    applicationVersion: _versionLabel,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.gapMedium),
+                TextLinkButton(
+                  label: _l10n.settingsPrivacyPolicy,
+                  onPressed: _openPrivacyPolicy,
+                ),
+              ],
             ),
+
             TextLinkButton(label: _l10n.settingsGithub, onPressed: _openGithub),
-            TextLinkButton(
-              label: _l10n.settingsPrivacyPolicy,
-              onPressed: _openPrivacyPolicy,
-            ),
+
+            const SizedBox(height: AppSpacing.gapMedium),
+
+            if (_versionLabel != null) ...[
+              Center(
+                child: Text(
+                  "${_l10n.settingsVersion} ${_versionLabel!}",
+                  style: AppTypography.labelSans,
+                ),
+              ),
+            ],
           ],
         ),
       ),

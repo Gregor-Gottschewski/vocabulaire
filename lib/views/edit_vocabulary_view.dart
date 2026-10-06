@@ -2,12 +2,13 @@ import 'dart:async';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart' hide Card;
+import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import 'package:intl/intl.dart';
 import 'package:record/record.dart';
 import 'package:uuid/uuid.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
@@ -15,6 +16,8 @@ import 'package:vocabulaire/services/audio_sync_service.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/tts_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
+import 'package:vocabulaire/theme/app_page_route.dart';
+import 'package:vocabulaire/views/choose_box_view.dart';
 
 import '../controllers/box_controller.dart';
 import '../models/conjugation.dart';
@@ -88,6 +91,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   bool _vocabularyForgotAvailable = true;
 
   bool get _isEditing => widget.vocabulary != null;
+
+  bool get _eligibleForTTS =>
+      widget.box.boxType == GroupType.vocabulary &&
+      widget.box.targetAppLanguage != null;
 
   bool get _hasRecording =>
       _hasPendingNewAudio || (_hasCommittedAudio && !_pendingDelete);
@@ -200,7 +207,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Returns `true` if the back text is eligible for TTS generation, `false` otherwise.
   /// Text must have x chars with 0 < x < [TtsService.maxChars].
-  bool get _canGenerateTts {
+  bool get _canGenerateTTS {
     final length = _backController.text.trim().length;
     return length > 0 && length <= TtsService.maxChars;
   }
@@ -400,6 +407,32 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     if (mounted) setState(() => _isDirty = false);
   }
 
+  void _moveVocabulary() async {
+    final vocabularyGroup = GroupController().getGroup(widget.box.groupId);
+    if (vocabularyGroup == null) return;
+
+    final VocabularyBox? newBox = await Navigator.push(
+      context,
+      AppPageRoute(
+        builder: (context) => ChooseBoxView(
+          group: vocabularyGroup,
+          vocabulary: _vocab,
+          excluded: [widget.box],
+        ),
+      ),
+    );
+
+    // if user cancelled action
+    if (newBox == null) return;
+    if (newBox.id == widget.boxKey) return;
+
+    _boxController.addVocabularyToBox(newBox.id, _vocab);
+    _boxController.removeVocabularyFromBox(widget.boxKey, _vocab.id);
+
+    if (!mounted) return;
+    Navigator.pop(context);
+  }
+
   /// Delete vocabulary from box and close edit view.
   void _deleteVocabulary() {
     showAppDialog(
@@ -438,6 +471,10 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         AppActionSheetAction(
           label: _l10n.editVocabResetRating,
           onPressed: _confirmResetRating,
+        ),
+        AppActionSheetAction(
+          label: _l10n.editVocabMove,
+          onPressed: _moveVocabulary,
         ),
         AppActionSheetAction(
           label: _l10n.boxDetailDelete,
@@ -484,11 +521,35 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
     );
   }
 
+  Future<bool> overrideRecordingDialog() async {
+    if (!mounted) return false;
+    var confirmed = false;
+    await showAppDialog(
+      context: context,
+      title: _l10n.editVocabOverwriteAudioTitle,
+      message: _l10n.editVocabOverwriteAudioMessage,
+      actions: [
+        AppDialogAction(
+          label: _l10n.commonCancel,
+          onPressed: () => confirmed = false,
+        ),
+        AppDialogAction(
+          label: _l10n.editVocabOverwriteAudioConfirm,
+          destructive: true,
+          onPressed: () => confirmed = true,
+        ),
+      ],
+    );
+    return confirmed;
+  }
+
   void _recordAudio() async {
     if (await _audioRecorder.hasPermission()) {
       if (_recording) {
         await _stopRecording();
       } else {
+        if (_hasRecording && !await overrideRecordingDialog()) return;
+
         await _audioRecorder.start(
           _audioConfig,
           path: AppPaths.audioTempFilePath(_vocab.id),
@@ -577,29 +638,13 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   /// Generates an AI pronunciation of the back text.
   Future<void> _generateTtsAudio() async {
-    if (!_canGenerateTts) return;
+    if (!_canGenerateTTS) return;
     if (widget.box.targetAppLanguage == null) return;
     final text = _backController.text.trim();
     final generatingVocabId = _vocab.id;
     final boxKey = widget.boxKey;
 
-    if (_hasRecording) {
-      var confirmed = false;
-      await showAppDialog(
-        context: context,
-        title: _l10n.editVocabOverwriteAudioTitle,
-        message: _l10n.editVocabOverwriteAudioMessage,
-        actions: [
-          AppDialogAction(label: _l10n.commonCancel, onPressed: () {}),
-          AppDialogAction(
-            label: _l10n.editVocabOverwriteAudioConfirm,
-            destructive: true,
-            onPressed: () => confirmed = true,
-          ),
-        ],
-      );
-      if (!confirmed) return;
-    }
+    if (_hasRecording && !await overrideRecordingDialog()) return;
 
     if (_isPlaying) {
       await _audioPlayer.stop();
@@ -612,6 +657,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
         text: text,
         cardId: generatingVocabId,
         languageId: widget.box.targetAppLanguage!.code,
+        destination: AppPaths.audioTempFile(generatingVocabId),
       );
 
       final stillCurrent = mounted && _vocab.id == generatingVocabId;
@@ -717,10 +763,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
 
   Widget _buildAudioRow(BuildContext context) {
     final colors = context.colors;
-    final showGenerate =
-        widget.box.boxType == BoxType.vocabulary &&
-        widget.box.targetAppLanguage != null;
-    final canGenerate = _canGenerateTts && !_recording && !_isGeneratingTts;
+    final canGenerate = _canGenerateTTS && !_recording && !_isGeneratingTts;
     final canPlay = _hasRecording && !_isGeneratingTts;
     final canDelete = _hasRecording && !_isGeneratingTts;
 
@@ -775,7 +818,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
             ),
           ),
           const Spacer(),
-          if (showGenerate)
+          if (_eligibleForTTS)
             if (_isGeneratingTts)
               const Padding(
                 padding: EdgeInsets.all(AppSpacing.gapMedium),
@@ -894,7 +937,8 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                           textInputAction: TextInputAction.newline,
                         ),
                       ),
-                      if (!_canGenerateTts &&
+                      if (_eligibleForTTS &&
+                          !_canGenerateTTS &&
                           _backController.text.trim().isNotEmpty) ...[
                         const SizedBox(height: AppSpacing.gapSmall),
                         Text(
@@ -920,7 +964,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                       ),
                       const SizedBox(height: AppSpacing.sectionGap),
 
-                      if (widget.box.boxType == BoxType.vocabulary) ...[
+                      if (widget.box.boxType == GroupType.vocabulary) ...[
                         SectionTitle(text: _l10n.editVocabConjugationSection),
                         const SizedBox(height: AppSpacing.gapMedium),
                         for (final c in _conjugations) ...[

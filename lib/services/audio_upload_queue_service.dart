@@ -10,6 +10,8 @@ import 'audio_sync_service.dart';
 
 /// Persists audio uploads for online-box vocabularies.
 class AudioUploadQueueService {
+  int get queLength => _queueBox.length;
+
   AudioUploadQueueService._();
 
   static final AudioUploadQueueService instance = AudioUploadQueueService._();

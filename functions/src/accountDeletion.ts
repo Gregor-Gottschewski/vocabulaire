@@ -26,5 +26,7 @@ export const onUserDeleted = functionsV1
             )
         );
 
+        await db.collection("settings").doc(uid).delete().catch(() => undefined);
+
         await db.collection("rateLimits").doc(uid).delete().catch(() => undefined);
     });

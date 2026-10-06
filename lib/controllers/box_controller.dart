@@ -80,7 +80,7 @@ class BoxController {
       names.add(boxName);
       if (online) {
         if (box.vocabularies.isNotEmpty) {
-          _boxSync.ensureVocabularyQuota(box.vocabularies.length);
+          await _boxSync.reserveVocabularyQuota(box.vocabularies.length);
         }
         await _boxSync.addBox(box, box.groupId);
         if (box.vocabularies.isNotEmpty) {
@@ -209,7 +209,7 @@ class BoxController {
         ..add(vocabulary);
       _localBox.put(boxId, box.copyWith(vocabularies: vocabularies));
     } else {
-      _boxSync.ensureVocabularyQuota(1);
+      await _boxSync.reserveVocabularyQuota(1);
       await _vocabSync.addVocabulary(box.groupId, boxId, vocabulary);
     }
   }

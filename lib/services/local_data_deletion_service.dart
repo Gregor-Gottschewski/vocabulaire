@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:vocabulaire/controllers/settings_controller.dart';
+import 'package:vocabulaire/models/app_settings.dart';
 import 'package:vocabulaire/models/pending_audio_upload.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/models/vocabulary_group.dart';
@@ -11,6 +13,7 @@ import 'package:vocabulaire/services/app_paths.dart';
 /// * groups
 /// * vocabularies
 /// * pending audio uploads
+/// * settings
 /// * audios
 /// * temporary data
 class LocalDataDeletionService {
@@ -22,6 +25,7 @@ class LocalDataDeletionService {
     await Hive.box<VocabularyBox>('boxes').clear();
     await Hive.box<VocabularyGroup>('groups').clear();
     await Hive.box<PendingAudioUpload>('pendingAudioUploads').clear();
+    await Hive.box<AppSettings>(SettingsController.settingsBoxName).clear();
     await _deleteDirContents(Directory(AppPaths.audioDirPath));
     await _deleteDirContents(Directory(AppPaths.audioTempDirPath));
   }

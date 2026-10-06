@@ -76,11 +76,13 @@ class _BoxDetailPageState extends State<BoxDetailPage> {
     if (box == null) return;
 
     final includeProgress = await context.confirmExportProgress();
-    if (!mounted) return;
+    if (!mounted || includeProgress == AppDialogActionResult.cancel) return;
 
     await context.exportAndShare(
-      export: () =>
-          ExportController.exportBox(box, includeProgress: includeProgress),
+      export: () => ExportController.exportBox(
+        box,
+        includeProgress: includeProgress == AppDialogActionResult.yes,
+      ),
       title: 'Export ${box.nameSanitized()}',
       fileNameOverrides: ['${box.nameSanitized()}.vocab'],
     );

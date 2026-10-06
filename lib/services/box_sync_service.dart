@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vocabulaire/services/auth_service.dart';
 
@@ -18,6 +19,10 @@ class BoxSyncService {
   }
 
   static final BoxSyncService instance = BoxSyncService._();
+
+  final FirebaseFunctions _functions = FirebaseFunctions.instanceFor(
+    region: 'europe-west1',
+  );
 
   final ValueNotifier<List<VocabularyBox>> _boxesNotifier = ValueNotifier(
     const [],
@@ -102,13 +107,22 @@ class BoxSyncService {
     _subscription = null;
   }
 
-  /// Throws [AppException] with [AppError.vocabularyLimitReached] if adding
-  /// [additionalCount] vocabularies would exceed the user's online-vocabulary
-  /// quota
-  void ensureVocabularyQuota(int additionalCount) {
+  /// Reserves [count] vocabulary uploads against the server-side daily and
+  /// total quota, before the vocabulary/vocabularies are written.
+  Future<void> reserveVocabularyQuota(int count) async {
     final usage = UsageService.instance.listenable.value;
-    if (usage.vocabularyCountOnline + additionalCount > usage.vocabularyLimit) {
+    if (usage.vocabularyCountOnline + count > usage.vocabularyLimit) {
       throw AppException(AppError.vocabularyLimitReached);
+    }
+    try {
+      await _functions.httpsCallable('reserveVocabularyUpload').call({
+        'count': count,
+      });
+    } on FirebaseFunctionsException catch (e) {
+      if (e.code == 'resource-exhausted') {
+        throw AppException(AppError.vocabularyLimitReached);
+      }
+      rethrow;
     }
   }
 

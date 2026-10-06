@@ -4,7 +4,7 @@ import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/controllers/group_draft.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/app_language.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/field_limits.dart';
 import 'package:vocabulaire/models/vocabulary_group.dart';
 import 'package:vocabulaire/services/app_exception.dart';
@@ -14,6 +14,7 @@ import 'package:vocabulaire/theme/app_page_route.dart';
 import 'package:vocabulaire/theme/app_spacing.dart';
 import 'package:vocabulaire/theme/app_typography.dart';
 import 'package:vocabulaire/views/widgets/app_dialog.dart';
+import 'package:vocabulaire/views/widgets/app_progress_indicator.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
 import 'package:vocabulaire/views/widgets/key_value_row.dart';
@@ -95,7 +96,11 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       _source,
     );
     if (result == null) return;
-    setState(() => _source = result);
+    if (result == _target) {
+      _target = _source;
+      _source = result;
+    }
+    setState(() {});
   }
 
   Future<void> _pickTargetLanguage() async {
@@ -104,7 +109,11 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       _target,
     );
     if (result == null) return;
-    setState(() => _target = result);
+    if (result == _source) {
+      _source = _target;
+      _target = result;
+    }
+    setState(() {});
   }
 
   /// Renders a language code as its display name — falls back to the raw
@@ -128,7 +137,7 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
 
     try {
       if (value) {
-        await _groupController.moveGroupOnline(groupId);
+        widget.draft.id = await _groupController.moveGroupOnline(groupId);
       } else {
         await _groupController.moveGroupOffline(groupId);
       }
@@ -182,7 +191,7 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
       return;
     }
 
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
     final isPremium = UsageService.instance.listenable.value.isPremium;
     final group = VocabularyGroup(
       id: const Uuid().v4(),
@@ -212,7 +221,11 @@ class _CreateGroupDetailViewState extends State<CreateGroupDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    if (_isSyncing) {
+      return Center(child: AppProgressIndicator());
+    }
+
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
     final isPremium = UsageService.instance.listenable.value.isPremium;
 
     return AppScaffold(

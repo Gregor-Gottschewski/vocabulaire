@@ -5,7 +5,7 @@ import 'package:vocabulaire/controllers/box_draft.dart';
 import 'package:vocabulaire/controllers/group_controller.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/app_language.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/field_limits.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_exception.dart';
@@ -120,7 +120,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
     setState(() => {});
 
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
 
     try {
       if (_isEditing) {
@@ -168,7 +168,7 @@ class _CreateBoxDetailViewState extends State<CreateBoxDetailView> {
 
   @override
   Widget build(BuildContext context) {
-    final isVocabulary = widget.draft.type == BoxType.vocabulary;
+    final isVocabulary = widget.draft.type == GroupType.vocabulary;
 
     return AppScaffold(
       backLabel: _l10n.back,

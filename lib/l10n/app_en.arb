@@ -38,15 +38,20 @@
   "settingsChangePassword": "Change password",
   "settingsAccountDeletion": "Delete account",
   "settingsCardAnimations": "Card animations",
+  "settingsListeningInReview": "Listening in review",
+  "settingsListeningAlways": "Always",
+  "settingsListeningSometimes": "Sometimes",
+  "settingsListeningNever": "Never",
   "settingsSyncStatus": "Synchronization Status",
   "settingsSyncStatusSynced": "Up to date",
   "settingsSyncStatusSyncing": "Syncing…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Licenses",
+  "settingsVersion": "Version",
   "settingsGithub": "Vocabulaire on GitHub",
   "settingsPrivacyPolicy": "Privacy Policy",
   "settingsManageSubscription": "Manage subscription",
-  "settingsExportAll": "Export all boxes",
+  "settingsExportAll": "Create backup",
   "settingsVocabularyUsage": "Online vocabulary",
   "settingsVocabularyUsageValue": "{count}/{limit}",
   "@settingsVocabularyUsageValue": {
@@ -60,13 +65,10 @@
     }
   },
   "settingsAudioUsage": "Online audio storage",
-  "settingsAudioUsageValue": "{usedMb} MB / {limitMb} MB",
+  "settingsAudioUsageValue": "{percent}%",
   "@settingsAudioUsageValue": {
     "placeholders": {
-      "usedMb": {
-        "type": "String"
-      },
-      "limitMb": {
+      "percent": {
         "type": "int"
       }
     }
@@ -114,9 +116,9 @@
     }
   },
   "reviewPlay": "Listen",
+  "reviewPlayToListen": "Play to listen",
   "reviewShowTranslation": "Show translation",
   "reviewShowBack": "Show back",
-  "reviewRatingQuestion": "How well did you know this?",
   "reviewAgain": "Again",
   "reviewHard": "Hard",
   "reviewGood": "Good",
@@ -125,6 +127,7 @@
   "reviewExample": "Example: {example}",
   "boxDetailDescription": "Description",
   "boxTileNoDescription": "No description available",
+  "boxDetailFlipLanguages": "Flip languages",
   "boxDetailDueVocabs": "Query due vocabulary",
   "boxDetailMethod": "Learning method",
   "boxDetailDailyLimit": "New cards daily limit",
@@ -192,7 +195,7 @@
   "errorImportFailed": "The box could not be imported.",
   "editVocabGenerateAudio": "Generate",
   "editVocabOverwriteAudioTitle": "Overwrite recording?",
-  "editVocabOverwriteAudioMessage": "This card already has an audio recording. Replace it with the newly generated pronunciation?",
+  "editVocabOverwriteAudioMessage": "This card already has an audio recording. Replace it with a new audio recording?",
   "editVocabOverwriteAudioConfirm": "Overwrite",
   "editVocabTtsTooLongHint": "Pronunciation is only available up to 65 characters. Your input has {len} characters.",
   "editVocabUnsavedChangesTitle": "Do you want to save your changes?",
@@ -291,8 +294,7 @@
   "errorAuthUnknownError": "Sign-in failed. Please try again.",
   "errorDuplicateBoxName": "A box named \"{name}\" already exists",
   "errorDuplicateGroupName": "A group named \"{name}\" already exists. Please choose a different name.",
-  "errorMoveBoxOfflineFailed": "Box could not be moved offline",
-  "errorMoveBoxOnlineFailed": "Box could not be moved online",
+  "errorNetworkUnavailable": "No internet connection. Please check your connection and try again.",
   "errorMoveGroupOfflineFailed": "Group could not be moved offline",
   "errorMoveGroupOnlineFailed": "Group could not be moved online",
   "errorAddVocabularyFailed": "Vocabulary could not be saved",
@@ -368,5 +370,7 @@
   "errorSubscriptionVerificationFailed": "The purchase could not be verified. Please try again or contact support.",
   "errorSubscriptionRestoreFailed": "Purchases could not be restored. Please try again.",
   "errorSubscriptionAlreadyLinked": "This subscription is already linked to another account ({email}). Delete that account first, then restore the purchase again.",
-  "errorSubscriptionAlreadyLinkedUnknown": "This subscription is already linked to another account. Delete that account first, then restore the purchase again."
+  "errorSubscriptionAlreadyLinkedUnknown": "This subscription is already linked to another account. Delete that account first, then restore the purchase again.",
+  "chooseBoxMoveTitle": "Move vocabulary “{word}”",
+  "editVocabMove": "Move vocabulary"
 }

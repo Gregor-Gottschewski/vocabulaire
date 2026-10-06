@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:fsrs/fsrs.dart' hide State;
 import '../controllers/box_controller.dart';
+import '../controllers/settings_controller.dart';
+import '../services/app_paths.dart';
 import '../models/reviewable_item.dart';
 import '../models/vocabulary.dart';
 import '../models/vocabulary_box.dart';
@@ -10,14 +12,18 @@ import '../models/review_session.dart';
 class ReviewController extends ChangeNotifier {
   final BoxController _boxController = BoxController();
   final Scheduler _scheduler = Scheduler();
+  final SettingsController _settingsController = SettingsController();
 
   final String boxKey;
   final bool onlyTimely;
   final LearningMethod learningMethod;
+  final bool reversed;
 
   VocabularyBox? _box;
   List<ReviewableItem> _cards = [];
   int _index = 0;
+  String? _listeningCardId;
+  bool _listeningActive = false;
 
   late final ValueListenable _boxListenable;
 
@@ -25,10 +31,12 @@ class ReviewController extends ChangeNotifier {
   /// - [boxKey]: The key of the vocabulary box to review.
   /// - [onlyTimely]: If true, only include cards that are due for review (due date <= now).
   /// - [learningMethod]: The learning method to filter cards, see [LearningMethod] enum.
+  /// - [reversed]: If true, the back side is asked; enables listening mode, see [listeningActive].
   ReviewController({
     required this.boxKey,
     this.onlyTimely = true,
     this.learningMethod = LearningMethod.all,
+    this.reversed = false,
   });
 
   int get index => _index;
@@ -40,6 +48,23 @@ class ReviewController extends ChangeNotifier {
   List<ReviewableItem> get cards => List.unmodifiable(_cards);
 
   VocabularyBox? get box => _box;
+
+  /// Whether the current card is presented as audio only.
+  bool get listeningActive {
+    final item = current;
+    if (item == null || !reversed) return false;
+    if (_listeningCardId != item.id) {
+      _listeningCardId = item.id;
+      _listeningActive = _settingsController
+          .getListeningInReview()
+          .shouldListen(
+            hasAudio:
+                item is VocabularyItem &&
+                AppPaths.audioFile(item.id).existsSync(),
+          );
+    }
+    return _listeningActive;
+  }
 
   bool get isFinished => _index >= _cards.length;
 

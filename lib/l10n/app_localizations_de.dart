@@ -87,6 +87,18 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsCardAnimations => 'Kartenanimationen';
 
   @override
+  String get settingsListeningInReview => 'Hören im Lernmodus';
+
+  @override
+  String get settingsListeningAlways => 'Immer';
+
+  @override
+  String get settingsListeningSometimes => 'Manchmal';
+
+  @override
+  String get settingsListeningNever => 'Nie';
+
+  @override
   String get settingsSyncStatus => 'Synchronisierungsstatus';
 
   @override
@@ -102,6 +114,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsLicenses => 'Lizenzen';
 
   @override
+  String get settingsVersion => 'Version';
+
+  @override
   String get settingsGithub => 'Vocabulaire auf GitHub';
 
   @override
@@ -111,7 +126,7 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsManageSubscription => 'Abo verwalten';
 
   @override
-  String get settingsExportAll => 'Alle Boxen exportieren';
+  String get settingsExportAll => 'Backup erstellen';
 
   @override
   String get settingsVocabularyUsage => 'Vokabeln online';
@@ -125,8 +140,8 @@ class AppLocalizationsDe extends AppLocalizations {
   String get settingsAudioUsage => 'Audiospeicher online';
 
   @override
-  String settingsAudioUsageValue(String usedMb, int limitMb) {
-    return '$usedMb MB / $limitMb MB';
+  String settingsAudioUsageValue(int percent) {
+    return '$percent %';
   }
 
   @override
@@ -243,13 +258,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get reviewPlay => 'Anhören';
 
   @override
+  String get reviewPlayToListen => 'Zum Anhören abspielen';
+
+  @override
   String get reviewShowTranslation => 'Übersetzung anzeigen';
 
   @override
   String get reviewShowBack => 'Rückseite anzeigen';
-
-  @override
-  String get reviewRatingQuestion => 'Wie ist diese Vokabel?';
 
   @override
   String get reviewAgain => 'Nochmal';
@@ -276,6 +291,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get boxTileNoDescription => 'Keine Beschreibung vorhanden';
+
+  @override
+  String get boxDetailFlipLanguages => 'Sprachen tauschen';
 
   @override
   String get boxDetailDueVocabs => 'Fällige Vokabeln abfragen';
@@ -447,11 +465,8 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
-  String get errorMoveBoxOfflineFailed => 'Box konnte nicht ausgelagert werden';
-
-  @override
-  String get errorMoveBoxOnlineFailed =>
-      'Box konnte nicht online gestellt werden';
+  String get errorNetworkUnavailable =>
+      'Keine Internetverbindung. Bitte prüfe deine Verbindung und versuche es erneut.';
 
   @override
   String get errorMoveGroupOfflineFailed =>
@@ -488,7 +503,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get editVocabOverwriteAudioMessage =>
-      'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?';
+      'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch eine neue Audio ersetzt werden?';
 
   @override
   String get editVocabOverwriteAudioConfirm => 'Überschreiben';
@@ -949,4 +964,12 @@ class AppLocalizationsDe extends AppLocalizations {
   @override
   String get errorSubscriptionAlreadyLinkedUnknown =>
       'Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.';
+
+  @override
+  String chooseBoxMoveTitle(String word) {
+    return 'Vokabel „$word“ verschieben';
+  }
+
+  @override
+  String get editVocabMove => 'Vokabel verschieben';
 }

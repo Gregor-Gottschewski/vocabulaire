@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hive/hive.dart';
 import 'package:vocabulaire/models/app_language.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/hive_types.dart';
 
 part 'vocabulary_group.g.dart';
@@ -14,15 +14,15 @@ class VocabularyGroup {
   @HiveField(1)
   final String name;
 
-  /// [BoxType.name] of this group. Immutable after creation.
+  /// [GroupType.name] of this group. Immutable after creation.
   @HiveField(2)
   final String type;
 
-  /// [AppLanguage.code] of the source language, only set for [BoxType.vocabulary] groups.
+  /// [AppLanguage.code] of the source language, only set for [GroupType.vocabulary] groups.
   @HiveField(3)
   final String? sourceLanguage;
 
-  /// [AppLanguage.code] of the target language, only set for [BoxType.vocabulary] groups.
+  /// [AppLanguage.code] of the target language, only set for [GroupType.vocabulary] groups.
   @HiveField(4)
   final String? targetLanguage;
 
@@ -32,7 +32,7 @@ class VocabularyGroup {
 
   final int boxCountOnline;
 
-  BoxType get boxType => BoxType.fromName(type);
+  GroupType get boxType => GroupType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
 

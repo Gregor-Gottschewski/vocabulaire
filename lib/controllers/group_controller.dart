@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:uuid/uuid.dart';
 import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/models/vocabulary_group.dart';
+import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
@@ -19,6 +22,19 @@ class GroupController {
   final VocabularySyncService _vocabSync = VocabularySyncService.instance;
   final AudioUploadQueueService _audioUploadQueue =
       AudioUploadQueueService.instance;
+
+  static final Set<String> _syncingGroupIds = <String>{};
+
+  static final Map<String, String> _replacedGroupIds = <String, String>{};
+
+  String? replacementIdFor(String groupId) => _replacedGroupIds[groupId];
+
+  bool _beginSync(String groupId) => _syncingGroupIds.add(groupId);
+
+  Future<bool> _isConnected() async =>
+      (await Connectivity().checkConnectivity()).hasConnectivity;
+
+  void _endSync(String groupId) => _syncingGroupIds.remove(groupId);
 
   List<VocabularyGroup> get _localGroupList =>
       _localGroups.values.where((g) => g.id.isNotEmpty).toList();
@@ -109,72 +125,107 @@ class GroupController {
   /// their vocabularies. All-or-nothing: if any step fails (quota, network,
   /// permission), everything already written online for this group is
   /// rolled back and the group/boxes remain fully local.
-  Future<void> moveGroupOnline(String groupId) async {
-    if (!_isLocal(groupId)) return;
-    final group = _localGroups.get(groupId);
-    if (group == null) throw StateError('Group with id $groupId not found');
-
-    final boxes = _boxesForGroup(groupId);
-
-    _groupSync.ensureGroupQuota();
-    _groupSync.ensureBoxQuota(groupId, boxes.length);
-    final totalVocabularies = boxes.fold<int>(
-      0,
-      (sum, box) => sum + box.vocabularies.length,
-    );
-    _boxSync.ensureVocabularyQuota(totalVocabularies);
-
-    final syncedBoxIds = <String>[];
-    try {
-      await _groupSync.addGroup(group);
-
-      for (final box in boxes) {
-        await _boxSync.addBox(box, groupId);
-        await _vocabSync.addVocabularies(groupId, box.id, box.vocabularies);
-        syncedBoxIds.add(box.id);
-      }
-    } catch (error) {
-      for (final boxId in syncedBoxIds) {
-        await _boxSync.softDeleteBox(groupId, boxId);
-      }
-      await _groupSync.softDeleteGroup(groupId);
-      rethrow;
+  Future<String> moveGroupOnline(String groupId) async {
+    if (!_isLocal(groupId)) return groupId;
+    if (!(await _isConnected())) {
+      throw AppException(AppError.networkUnavailable);
     }
+    if (!_beginSync(groupId)) {
+      throw AppException(AppError.moveGroupOnlineFailed);
+    }
+    try {
+      final localGroup = _localGroups.get(groupId);
+      if (localGroup == null) {
+        throw StateError('Group with id $groupId not found');
+      }
 
-    for (final box in boxes) {
-      await _localBoxes.delete(box.id);
-      for (final vocabulary in box.vocabularies) {
-        if (AppPaths.audioFile(vocabulary.id).existsSync()) {
-          _audioUploadQueue.enqueue(groupId, box.id, vocabulary.id);
+      final boxes = _boxesForGroup(groupId);
+
+      _groupSync.ensureGroupQuota();
+      _groupSync.ensureBoxQuota(groupId, boxes.length);
+      final totalVocabularies = boxes.fold<int>(
+        0,
+        (sum, box) => sum + box.vocabularies.length,
+      );
+      if (totalVocabularies > 0) {
+        await _boxSync.reserveVocabularyQuota(totalVocabularies);
+      }
+
+      final newGroupId = const Uuid().v4();
+      final onlineGroup = localGroup.copyWith(id: newGroupId);
+
+      final syncedBoxIds = <String>[];
+      try {
+        await _groupSync.addGroup(onlineGroup);
+
+        for (final box in boxes) {
+          final onlineBox = box.copyWith(groupId: newGroupId);
+          await _boxSync.addBox(onlineBox, newGroupId);
+          await _vocabSync.addVocabularies(
+            newGroupId,
+            box.id,
+            box.vocabularies,
+          );
+          syncedBoxIds.add(box.id);
+        }
+      } catch (error) {
+        for (final boxId in syncedBoxIds) {
+          await _boxSync.softDeleteBox(newGroupId, boxId);
+        }
+        await _groupSync.softDeleteGroup(newGroupId);
+        rethrow;
+      }
+
+      _replacedGroupIds[groupId] = newGroupId;
+      for (final box in boxes) {
+        await _localBoxes.delete(box.id);
+        for (final vocabulary in box.vocabularies) {
+          if (AppPaths.audioFile(vocabulary.id).existsSync()) {
+            _audioUploadQueue.enqueue(newGroupId, box.id, vocabulary.id);
+          }
         }
       }
+      await _localGroups.delete(groupId);
+      return newGroupId;
+    } finally {
+      _endSync(groupId);
     }
-    await _localGroups.delete(groupId);
   }
 
   /// Moves an online group back to local storage, together with all of its
   /// boxes and their vocabularies.
   Future<void> moveGroupOffline(String groupId) async {
-    if (_isLocal(groupId)) return;
-    final group = getGroup(groupId);
-    if (group == null) throw StateError('Group with id $groupId not found');
-
-    final onlineBoxes = _boxSync.boxes
-        .where((b) => b.groupId == groupId)
-        .map(
-          (b) => b.copyWith(vocabularies: _vocabSync.cachedVocabularies(b.id)),
-        )
-        .toList();
-
-    for (final box in onlineBoxes) {
-      for (final vocabulary in box.vocabularies) {
-        _audioUploadQueue.cancel(vocabulary.id);
-      }
-      await _localBoxes.put(box.id, box.copyWith(deleted: false));
+    if (_audioUploadQueue.queLength != 0) {
+      throw AppException(AppError.moveGroupOfflineFailed);
     }
+    if (_isLocal(groupId)) return;
+    if (!(await _isConnected())) {
+      throw AppException(AppError.networkUnavailable);
+    }
+    if (!_beginSync(groupId)) {
+      throw AppException(AppError.moveGroupOfflineFailed);
+    }
+    try {
+      final group = getGroup(groupId);
+      if (group == null) throw StateError('Group with id $groupId not found');
 
-    await _localGroups.put(groupId, group.copyWith(deleted: false));
-    await _groupSync.softDeleteGroup(groupId);
+      final onlineBoxes = _boxSync.boxes
+          .where((b) => b.groupId == groupId)
+          .map(
+            (b) =>
+                b.copyWith(vocabularies: _vocabSync.cachedVocabularies(b.id)),
+          )
+          .toList();
+
+      for (final box in onlineBoxes) {
+        await _localBoxes.put(box.id, box.copyWith(deleted: false));
+      }
+
+      await _localGroups.put(groupId, group.copyWith(deleted: false));
+      await _groupSync.softDeleteGroup(groupId);
+    } finally {
+      _endSync(groupId);
+    }
   }
 }
 

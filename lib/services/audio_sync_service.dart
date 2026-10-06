@@ -65,7 +65,7 @@ class AudioSyncService {
         throw AppException(AppError.audioStorageLimitReached);
       }
       debugPrint('AudioSyncService: reservation failed for $vocabId: $e');
-      throw AppException(AppError.moveBoxOnlineFailed);
+      return;
     }
 
     try {
@@ -78,7 +78,7 @@ class AudioSyncService {
       );
     } on FirebaseException catch (e) {
       debugPrint('AudioSyncService: upload failed for $vocabId: $e');
-      throw AppException(AppError.moveBoxOnlineFailed);
+      return;
     }
   }
 

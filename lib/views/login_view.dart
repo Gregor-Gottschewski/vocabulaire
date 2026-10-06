@@ -11,8 +11,8 @@ import 'package:vocabulaire/theme/theme_context_ext.dart';
 import 'package:vocabulaire/views/reset_password_view.dart';
 import 'package:vocabulaire/views/widgets/app_scaffold.dart';
 import 'package:vocabulaire/views/widgets/app_text_field.dart';
+import 'package:vocabulaire/views/widgets/header_text_button.dart';
 import 'package:vocabulaire/views/widgets/label_text_field.dart';
-import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 import 'package:vocabulaire/views/widgets/text_link_button.dart';
 
 final _emailRegExp = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
@@ -28,6 +28,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _repeatPasswordController =
+      TextEditingController();
   late AppLocalizations _l10n;
   bool _isRegisterMode = false;
   bool _isLoading = false;
@@ -36,6 +38,7 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _repeatPasswordController.dispose();
     super.dispose();
   }
 
@@ -55,6 +58,14 @@ class _LoginViewState extends State<LoginView> {
     }
 
     if (_isRegisterMode) {
+      if (password != _repeatPasswordController.text) {
+        await context.showAppError(
+          AppException(AppError.authPasswordsDoNotMatch),
+        );
+        _repeatPasswordController.clear();
+        return;
+      }
+
       final passwordStatus = await AuthService.instance.validatePassword(
         password: password,
       );
@@ -132,6 +143,14 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     return AppScaffold(
+      actions: [
+        HeaderTextButton(
+          label: _isRegisterMode
+              ? "${_l10n.registerSubmitButton} →"
+              : "${_l10n.loginSubmitButton} →",
+          onPressed: _isLoading ? null : _submit,
+        ),
+      ],
       body: GestureDetector(
         onTap: () => FocusScope.of(context).unfocus(),
         child: SingleChildScrollView(
@@ -170,9 +189,22 @@ class _LoginViewState extends State<LoginView> {
                     obscureText: true,
                     autofillHints: const [AutofillHints.password],
                     textInputAction: TextInputAction.done,
-                    onSubmitted: (_) => _submit(),
+                    onSubmitted: _isRegisterMode ? null : (_) => _submit(),
                   ),
                 ),
+                if (_isRegisterMode) ...[
+                  const SizedBox(height: AppSpacing.gapMedium),
+                  LabelTextField(
+                    label: "Repeat Password",
+                    textField: AppTextField(
+                      controller: _repeatPasswordController,
+                      obscureText: true,
+                      autofillHints: const [AutofillHints.newPassword],
+                      textInputAction: TextInputAction.done,
+                      onSubmitted: (_) => _submit(),
+                    ),
+                  ),
+                ],
                 if (!_isRegisterMode) ...[
                   const SizedBox(height: AppSpacing.gapSmall),
                   TextLinkButton(
@@ -181,14 +213,6 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ],
                 const SizedBox(height: AppSpacing.sectionGap),
-                PrimaryActionButton(
-                  label: _isRegisterMode
-                      ? _l10n.registerSubmitButton
-                      : _l10n.loginSubmitButton,
-                  onPressed: _isLoading ? null : _submit,
-                  isLoading: _isLoading,
-                ),
-                const SizedBox(height: AppSpacing.gapMedium),
                 TextLinkButton(
                   label: _isRegisterMode
                       ? _l10n.loginSwitchToLogin

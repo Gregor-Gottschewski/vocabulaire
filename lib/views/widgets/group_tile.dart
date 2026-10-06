@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/models/app_language.dart';
-import 'package:vocabulaire/models/box_type.dart';
+import 'package:vocabulaire/models/group_type.dart';
 import 'package:vocabulaire/models/vocabulary_group.dart';
 
 import '../../theme/app_spacing.dart';
@@ -22,7 +22,7 @@ class GroupTile extends StatelessWidget {
   });
 
   String _subtitle(AppLocalizations l10n) {
-    if (group.boxType != BoxType.vocabulary) {
+    if (group.boxType != GroupType.vocabulary) {
       return l10n.groupTypeFlashcardTitle;
     }
     final source = AppLanguage.fromCode(group.sourceLanguage)?.displayName(l10n) ?? group.sourceLanguage ?? '';

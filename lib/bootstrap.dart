@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -21,6 +22,7 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/group_sync_service.dart';
+import 'package:vocabulaire/services/settings_sync_service.dart';
 import 'package:vocabulaire/services/subscription_service.dart';
 import 'package:vocabulaire/services/usage_service.dart';
 import 'models/conjugation.dart';
@@ -80,10 +82,18 @@ Future<void> bootstrap(Flavor flavor) async {
   Hive.registerAdapter(ConjugationAdapter());
   Hive.registerAdapter(VocabularyGroupAdapter());
 
-  await Hive.openBox<VocabularyBox>('boxes');
-  await Hive.openBox<VocabularyGroup>('groups');
-  await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
-  await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
+  try {
+    await Hive.openBox<VocabularyBox>('boxes');
+    await Hive.openBox<VocabularyGroup>('groups');
+    await Hive.openBox<AppSettings>(SettingsController.settingsBoxName);
+    await Hive.openBox<PendingAudioUpload>('pendingAudioUploads');
+  } on FileSystemException catch (_) {
+    debugPrint(
+      "Hive box file locked. Another instance of Vocabulaire is running.",
+    );
+    exit(1);
+  }
+
   runApp(const MyApp());
 }
 
@@ -113,6 +123,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     UsageService.instance.detach();
     AudioUploadQueueService.instance.detach();
     SubscriptionService.instance.detach();
+    SettingsSyncService.instance.detach();
     super.dispose();
   }
 
@@ -121,12 +132,14 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     GroupSyncService.instance.detach();
     UsageService.instance.detach();
     AudioUploadQueueService.instance.detach();
+    SettingsSyncService.instance.detach();
     if (user != null && user.emailVerified) {
       BoxSyncService.instance.attach();
       GroupSyncService.instance.attach();
       UsageService.instance.attach();
       AudioUploadQueueService.instance.attach();
       SubscriptionService.instance.attach();
+      SettingsSyncService.instance.attach();
     }
   }
 
@@ -148,6 +161,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
       GroupSyncService.instance.attach();
       UsageService.instance.attach();
       AudioUploadQueueService.instance.attach();
+      SettingsSyncService.instance.attach();
     }
   }
 
@@ -161,6 +175,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
         GroupSyncService.instance.detach();
         UsageService.instance.detach();
         AudioUploadQueueService.instance.detach();
+        SettingsSyncService.instance.detach();
       default:
         break;
     }

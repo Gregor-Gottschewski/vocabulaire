@@ -244,6 +244,30 @@ abstract class AppLocalizations {
   /// **'Kartenanimationen'**
   String get settingsCardAnimations;
 
+  /// No description provided for @settingsListeningInReview.
+  ///
+  /// In de, this message translates to:
+  /// **'Hören im Lernmodus'**
+  String get settingsListeningInReview;
+
+  /// No description provided for @settingsListeningAlways.
+  ///
+  /// In de, this message translates to:
+  /// **'Immer'**
+  String get settingsListeningAlways;
+
+  /// No description provided for @settingsListeningSometimes.
+  ///
+  /// In de, this message translates to:
+  /// **'Manchmal'**
+  String get settingsListeningSometimes;
+
+  /// No description provided for @settingsListeningNever.
+  ///
+  /// In de, this message translates to:
+  /// **'Nie'**
+  String get settingsListeningNever;
+
   /// No description provided for @settingsSyncStatus.
   ///
   /// In de, this message translates to:
@@ -274,6 +298,12 @@ abstract class AppLocalizations {
   /// **'Lizenzen'**
   String get settingsLicenses;
 
+  /// No description provided for @settingsVersion.
+  ///
+  /// In de, this message translates to:
+  /// **'Version'**
+  String get settingsVersion;
+
   /// No description provided for @settingsGithub.
   ///
   /// In de, this message translates to:
@@ -295,7 +325,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsExportAll.
   ///
   /// In de, this message translates to:
-  /// **'Alle Boxen exportieren'**
+  /// **'Backup erstellen'**
   String get settingsExportAll;
 
   /// No description provided for @settingsVocabularyUsage.
@@ -319,8 +349,8 @@ abstract class AppLocalizations {
   /// No description provided for @settingsAudioUsageValue.
   ///
   /// In de, this message translates to:
-  /// **'{usedMb} MB / {limitMb} MB'**
-  String settingsAudioUsageValue(String usedMb, int limitMb);
+  /// **'{percent} %'**
+  String settingsAudioUsageValue(int percent);
 
   /// No description provided for @editVocabNew.
   ///
@@ -520,6 +550,12 @@ abstract class AppLocalizations {
   /// **'Anhören'**
   String get reviewPlay;
 
+  /// No description provided for @reviewPlayToListen.
+  ///
+  /// In de, this message translates to:
+  /// **'Zum Anhören abspielen'**
+  String get reviewPlayToListen;
+
   /// No description provided for @reviewShowTranslation.
   ///
   /// In de, this message translates to:
@@ -531,12 +567,6 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Rückseite anzeigen'**
   String get reviewShowBack;
-
-  /// No description provided for @reviewRatingQuestion.
-  ///
-  /// In de, this message translates to:
-  /// **'Wie ist diese Vokabel?'**
-  String get reviewRatingQuestion;
 
   /// No description provided for @reviewAgain.
   ///
@@ -585,6 +615,12 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Keine Beschreibung vorhanden'**
   String get boxTileNoDescription;
+
+  /// No description provided for @boxDetailFlipLanguages.
+  ///
+  /// In de, this message translates to:
+  /// **'Sprachen tauschen'**
+  String get boxDetailFlipLanguages;
 
   /// No description provided for @boxDetailDueVocabs.
   ///
@@ -886,17 +922,11 @@ abstract class AppLocalizations {
   /// **'Eine Gruppe mit dem Namen \"{name}\" existiert bereits. Bitte wähle einen anderen Namen.'**
   String errorDuplicateGroupName(String name);
 
-  /// No description provided for @errorMoveBoxOfflineFailed.
+  /// No description provided for @errorNetworkUnavailable.
   ///
   /// In de, this message translates to:
-  /// **'Box konnte nicht ausgelagert werden'**
-  String get errorMoveBoxOfflineFailed;
-
-  /// No description provided for @errorMoveBoxOnlineFailed.
-  ///
-  /// In de, this message translates to:
-  /// **'Box konnte nicht online gestellt werden'**
-  String get errorMoveBoxOnlineFailed;
+  /// **'Keine Internetverbindung. Bitte prüfe deine Verbindung und versuche es erneut.'**
+  String get errorNetworkUnavailable;
 
   /// No description provided for @errorMoveGroupOfflineFailed.
   ///
@@ -955,7 +985,7 @@ abstract class AppLocalizations {
   /// No description provided for @editVocabOverwriteAudioMessage.
   ///
   /// In de, this message translates to:
-  /// **'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?'**
+  /// **'Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch eine neue Audio ersetzt werden?'**
   String get editVocabOverwriteAudioMessage;
 
   /// No description provided for @editVocabOverwriteAudioConfirm.
@@ -1761,6 +1791,18 @@ abstract class AppLocalizations {
   /// In de, this message translates to:
   /// **'Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.'**
   String get errorSubscriptionAlreadyLinkedUnknown;
+
+  /// No description provided for @chooseBoxMoveTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel „{word}“ verschieben'**
+  String chooseBoxMoveTitle(String word);
+
+  /// No description provided for @editVocabMove.
+  ///
+  /// In de, this message translates to:
+  /// **'Vokabel verschieben'**
+  String get editVocabMove;
 }
 
 class _AppLocalizationsDelegate

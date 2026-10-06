@@ -1,4 +1,4 @@
-import { Timestamp, getFirestore } from "firebase-admin/firestore";
+import { FieldValue, Timestamp, getFirestore } from "firebase-admin/firestore";
 import { onRequest } from "firebase-functions/v2/https";
 import { NotificationTypeV2 } from "@apple/app-store-server-library";
 import { appleAppId, verifyAndDecodeNotification, verifyAndDecodeTransaction } from "./appleVerification";
@@ -62,10 +62,9 @@ export const appleServerNotifications = onRequest(
         }
 
         const db = getFirestore();
-        const subscriptionSnap = await db
-            .collection("appleSubscriptions")
-            .doc(originalTransactionId)
-            .get();
+        const subscriptionRef = db.collection("appleSubscriptions").doc(originalTransactionId);
+
+        const subscriptionSnap = await subscriptionRef.get();
         if (!subscriptionSnap.exists) {
             console.warn(
                 `appleServerNotifications: unknown originalTransactionId ${originalTransactionId}`
@@ -73,8 +72,7 @@ export const appleServerNotifications = onRequest(
             res.status(200).send("OK");
             return;
         }
-        const uid = subscriptionSnap.data()?.uid as string | undefined;
-        if (!uid) {
+        if (!subscriptionSnap.data()?.uid) {
             res.status(200).send("OK");
             return;
         }
@@ -83,11 +81,27 @@ export const appleServerNotifications = onRequest(
         const isRevoking = notificationType != null && PREMIUM_REVOKING_TYPES.has(notificationType);
         const expiresDate = transaction.expiresDate;
         const subscriptionExpiresAt = isRevoking || !expiresDate ? null : Timestamp.fromMillis(expiresDate);
+        const incomingSignedDate = transaction.signedDate;
 
-        await db
-            .collection("rateLimits")
-            .doc(uid)
-            .set(
+        await db.runTransaction(async (tx) => {
+            const freshSnap = await tx.get(subscriptionRef);
+            const freshData = freshSnap.data();
+            const uid = freshData?.uid as string | undefined;
+            if (!uid) {
+                return;
+            }
+
+            const lastEventSignedDate = freshData?.lastEventSignedDate as number | undefined;
+            if (
+                lastEventSignedDate != null &&
+                incomingSignedDate != null &&
+                incomingSignedDate < lastEventSignedDate
+            ) {
+                return;
+            }
+
+            tx.set(
+                db.collection("rateLimits").doc(uid),
                 {
                     subscriptionProductId: transaction.productId ?? null,
                     subscriptionExpiresAt,
@@ -96,6 +110,16 @@ export const appleServerNotifications = onRequest(
                 },
                 { merge: true }
             );
+
+            tx.set(
+                subscriptionRef,
+                {
+                    lastEventSignedDate: incomingSignedDate ?? lastEventSignedDate ?? null,
+                    ...(isRevoking ? { uid: FieldValue.delete() } : {}),
+                },
+                { merge: true }
+            );
+        });
 
         res.status(200).send("OK");
     }

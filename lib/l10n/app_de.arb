@@ -38,15 +38,20 @@
   "settingsChangePassword": "Passwort ändern",
   "settingsAccountDeletion": "Konto löschen",
   "settingsCardAnimations": "Kartenanimationen",
+  "settingsListeningInReview": "Hören im Lernmodus",
+  "settingsListeningAlways": "Immer",
+  "settingsListeningSometimes": "Manchmal",
+  "settingsListeningNever": "Nie",
   "settingsSyncStatus": "Synchronisierungsstatus",
   "settingsSyncStatusSynced": "Aktuell",
   "settingsSyncStatusSyncing": "Wird synchronisiert…",
   "settingsSyncStatusOffline": "Offline",
   "settingsLicenses": "Lizenzen",
+  "settingsVersion": "Version",
   "settingsGithub": "Vocabulaire auf GitHub",
   "settingsPrivacyPolicy": "Datenschutzerklärung",
   "settingsManageSubscription": "Abo verwalten",
-  "settingsExportAll": "Alle Boxen exportieren",
+  "settingsExportAll": "Backup erstellen",
   "settingsVocabularyUsage": "Vokabeln online",
   "settingsVocabularyUsageValue": "{count}/{limit}",
   "@settingsVocabularyUsageValue": {
@@ -60,13 +65,10 @@
     }
   },
   "settingsAudioUsage": "Audiospeicher online",
-  "settingsAudioUsageValue": "{usedMb} MB / {limitMb} MB",
+  "settingsAudioUsageValue": "{percent} %",
   "@settingsAudioUsageValue": {
     "placeholders": {
-      "usedMb": {
-        "type": "String"
-      },
-      "limitMb": {
+      "percent": {
         "type": "int"
       }
     }
@@ -135,9 +137,9 @@
     }
   },
   "reviewPlay": "Anhören",
+  "reviewPlayToListen": "Zum Anhören abspielen",
   "reviewShowTranslation": "Übersetzung anzeigen",
   "reviewShowBack": "Rückseite anzeigen",
-  "reviewRatingQuestion": "Wie ist diese Vokabel?",
   "reviewAgain": "Nochmal",
   "reviewHard": "Schwer",
   "reviewGood": "Gut",
@@ -153,6 +155,7 @@
   },
   "boxDetailDescription": "Beschreibung",
   "boxTileNoDescription": "Keine Beschreibung vorhanden",
+  "boxDetailFlipLanguages": "Sprachen tauschen",
   "boxDetailDueVocabs": "Fällige Vokabeln abfragen",
   "boxDetailMethod": "Lernmethode",
   "boxDetailDailyLimit": "Tageslimit neuer Karten",
@@ -234,8 +237,7 @@
       }
     }
   },
-  "errorMoveBoxOfflineFailed": "Box konnte nicht ausgelagert werden",
-  "errorMoveBoxOnlineFailed": "Box konnte nicht online gestellt werden",
+  "errorNetworkUnavailable": "Keine Internetverbindung. Bitte prüfe deine Verbindung und versuche es erneut.",
   "errorMoveGroupOfflineFailed": "Gruppe konnte nicht ausgelagert werden",
   "errorMoveGroupOnlineFailed": "Gruppe konnte nicht online gestellt werden",
   "errorAddVocabularyFailed": "Vokabel konnte nicht gespeichert werden",
@@ -245,7 +247,7 @@
   "errorAudioStorageLimitReached": "Audio-Speicherlimit erreicht. Lagere eine Box aus, um Speicherplatz freizugeben.",
   "editVocabGenerateAudio": "Generieren",
   "editVocabOverwriteAudioTitle": "Aufnahme überschreiben?",
-  "editVocabOverwriteAudioMessage": "Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch die neu generierte Sprachausgabe ersetzt werden?",
+  "editVocabOverwriteAudioMessage": "Für diese Karte existiert bereits eine Audioaufnahme. Soll sie durch eine neue Audio ersetzt werden?",
   "editVocabOverwriteAudioConfirm": "Überschreiben",
   "editVocabTtsTooLongHint": "Sprachausgabe ist nur bis 65 Zeichen verfügbar. Deine Eingabe hat {len} Zeichen.",
   "editVocabUnsavedChangesTitle": "Sollen deine Änderungen gespeichert werden?",
@@ -438,5 +440,14 @@
       }
     }
   },
-  "errorSubscriptionAlreadyLinkedUnknown": "Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her."
+  "errorSubscriptionAlreadyLinkedUnknown": "Dieses Abo ist bereits mit einem anderen Konto verknüpft. Lösche zunächst dieses Konto und stelle den Kauf danach erneut wieder her.",
+  "chooseBoxMoveTitle": "Vokabel „{word}“ verschieben",
+  "@chooseBoxMoveTitle": {
+    "placeholders": {
+      "word": {
+        "type": "String"
+      }
+    }
+  },
+  "editVocabMove": "Vokabel verschieben"
 }

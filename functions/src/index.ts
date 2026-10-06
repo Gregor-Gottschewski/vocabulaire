@@ -22,10 +22,12 @@ export {
   reconcileVocabularyCounts,
   reconcileGroupCounts,
   reconcileBoxCounts,
+  cleanZombieGroups,
 } from "./reconciliation";
 export { onUserCreated } from "./rateLimitDoc";
 export { onUserDeleted } from "./accountDeletion";
 export { reserveAudioUpload } from "./audioReservations";
+export { reserveVocabularyUpload } from "./vocabularyReservations";
 export { verifyAppleSubscription } from "./subscriptionVerification";
 export { appleServerNotifications } from "./appleNotifications";
 export {

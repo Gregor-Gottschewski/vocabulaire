@@ -147,3 +147,23 @@ export const reconcileAudioUsageLimits = onSchedule(
         }));
     }
 );
+
+export const cleanZombieGroups = onSchedule(
+    {region: REGION, schedule: "every sun 02:00", timeZone: "Europe/Berlin"},
+    async () => {
+        const db = getFirestore();
+        const rateLimitDocs = await db.collection("rateLimits").get();
+
+        await Promise.all(rateLimitDocs.docs.map(async (doc) => {
+            const uid = doc.id;
+            if (await pruneIfOrphaned(uid)) return;
+
+            const groupsSnapshot = await db.collection("users").doc(uid).collection("groups").get();
+            await Promise.all(groupsSnapshot.docs.map(async (groupDoc) => {
+                if (groupDoc.data().deleted !== undefined) return;
+                console.log(`cleanZombieGroups: deleting zombie group users/${uid}/groups/${groupDoc.id}`);
+                await db.recursiveDelete(groupDoc.ref);
+            }));
+        }));
+    }
+);

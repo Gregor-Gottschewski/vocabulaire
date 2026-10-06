@@ -87,6 +87,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsCardAnimations => 'Card animations';
 
   @override
+  String get settingsListeningInReview => 'Listening in review';
+
+  @override
+  String get settingsListeningAlways => 'Always';
+
+  @override
+  String get settingsListeningSometimes => 'Sometimes';
+
+  @override
+  String get settingsListeningNever => 'Never';
+
+  @override
   String get settingsSyncStatus => 'Synchronization Status';
 
   @override
@@ -102,6 +114,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsLicenses => 'Licenses';
 
   @override
+  String get settingsVersion => 'Version';
+
+  @override
   String get settingsGithub => 'Vocabulaire on GitHub';
 
   @override
@@ -111,7 +126,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsManageSubscription => 'Manage subscription';
 
   @override
-  String get settingsExportAll => 'Export all boxes';
+  String get settingsExportAll => 'Create backup';
 
   @override
   String get settingsVocabularyUsage => 'Online vocabulary';
@@ -125,8 +140,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAudioUsage => 'Online audio storage';
 
   @override
-  String settingsAudioUsageValue(String usedMb, int limitMb) {
-    return '$usedMb MB / $limitMb MB';
+  String settingsAudioUsageValue(int percent) {
+    return '$percent%';
   }
 
   @override
@@ -242,13 +257,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewPlay => 'Listen';
 
   @override
+  String get reviewPlayToListen => 'Play to listen';
+
+  @override
   String get reviewShowTranslation => 'Show translation';
 
   @override
   String get reviewShowBack => 'Show back';
-
-  @override
-  String get reviewRatingQuestion => 'How well did you know this?';
 
   @override
   String get reviewAgain => 'Again';
@@ -275,6 +290,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get boxTileNoDescription => 'No description available';
+
+  @override
+  String get boxDetailFlipLanguages => 'Flip languages';
 
   @override
   String get boxDetailDueVocabs => 'Query due vocabulary';
@@ -442,10 +460,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get errorMoveBoxOfflineFailed => 'Box could not be moved offline';
-
-  @override
-  String get errorMoveBoxOnlineFailed => 'Box could not be moved online';
+  String get errorNetworkUnavailable =>
+      'No internet connection. Please check your connection and try again.';
 
   @override
   String get errorMoveGroupOfflineFailed => 'Group could not be moved offline';
@@ -479,7 +495,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get editVocabOverwriteAudioMessage =>
-      'This card already has an audio recording. Replace it with the newly generated pronunciation?';
+      'This card already has an audio recording. Replace it with a new audio recording?';
 
   @override
   String get editVocabOverwriteAudioConfirm => 'Overwrite';
@@ -938,4 +954,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorSubscriptionAlreadyLinkedUnknown =>
       'This subscription is already linked to another account. Delete that account first, then restore the purchase again.';
+
+  @override
+  String chooseBoxMoveTitle(String word) {
+    return 'Move vocabulary “$word”';
+  }
+
+  @override
+  String get editVocabMove => 'Move vocabulary';
 }
