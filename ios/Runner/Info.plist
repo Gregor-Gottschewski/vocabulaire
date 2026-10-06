@@ -65,7 +65,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSMicrophoneUsageDescription</key>
-    <string>Die App benötigt Zugriff auf das Mikrofon, um Vokabeln aufzunehmen und deine Aussprache zu üben.</string>
+    <string>The app needs access to the microphone to record vocabulary and practice your pronunciation.</string>
     <key>UTImportedTypeDeclarations</key>
     <array>
         <dict>
