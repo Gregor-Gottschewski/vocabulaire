@@ -7,7 +7,7 @@ import 'package:vocabulaire/models/vocabulary_group.dart';
 /// (in either direction).
 bool boxMatchesGroup(VocabularyBox box, VocabularyGroup group) {
   if (box.type != group.type) return false;
-  if (group.boxType != GroupType.vocabulary) return true;
+  if (group.groupType != GroupType.vocabulary) return true;
   return (box.sourceLanguage == group.sourceLanguage &&
           box.targetLanguage == group.targetLanguage) ||
       (box.sourceLanguage == group.targetLanguage &&

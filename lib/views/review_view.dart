@@ -390,7 +390,7 @@ class _ReviewViewState extends State<ReviewView>
     final total = _reviewController.length;
     final indexDisplay = total == 0 ? 0 : (_reviewController.index + 1);
     final isVocabularyBox =
-        _reviewController.box?.boxType == GroupType.vocabulary;
+        _reviewController.box?.groupType == GroupType.vocabulary;
 
     return AppScaffold(
       backLabel: _l10n.back,

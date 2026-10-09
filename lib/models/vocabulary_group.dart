@@ -32,7 +32,7 @@ class VocabularyGroup {
 
   final int boxCountOnline;
 
-  GroupType get boxType => GroupType.fromName(type);
+  GroupType get groupType => GroupType.fromName(type);
 
   AppLanguage? get sourceAppLanguage => AppLanguage.fromCode(sourceLanguage);
 

@@ -14,7 +14,7 @@ class GroupDraft {
 
   GroupDraft.fromGroup(VocabularyGroup group)
     : id = group.id,
-      type = group.boxType,
+      type = group.groupType,
       name = group.name,
       sourceLanguage = group.sourceLanguage,
       targetLanguage = group.targetLanguage;

@@ -93,7 +93,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
   bool get _isEditing => widget.vocabulary != null;
 
   bool get _eligibleForTTS =>
-      widget.box.boxType == GroupType.vocabulary &&
+      widget.box.groupType == GroupType.vocabulary &&
       widget.box.targetAppLanguage != null;
 
   bool get _hasRecording =>
@@ -964,7 +964,7 @@ class _EditVocabularyViewState extends State<EditVocabularyView> {
                       ),
                       const SizedBox(height: AppSpacing.sectionGap),
 
-                      if (widget.box.boxType == GroupType.vocabulary) ...[
+                      if (widget.box.groupType == GroupType.vocabulary) ...[
                         SectionTitle(text: _l10n.editVocabConjugationSection),
                         const SizedBox(height: AppSpacing.gapMedium),
                         for (final c in _conjugations) ...[

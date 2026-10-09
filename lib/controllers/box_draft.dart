@@ -17,7 +17,7 @@ class BoxDraft {
 
   BoxDraft.fromBox(VocabularyBox box)
     : id = box.id,
-      type = box.boxType,
+      type = box.groupType,
       name = box.name,
       description = box.description,
       sourceLanguage = box.sourceLanguage,
@@ -26,7 +26,7 @@ class BoxDraft {
 
   BoxDraft.fromGroup(VocabularyGroup group)
     : groupId = group.id,
-      type = group.boxType,
+      type = group.groupType,
       sourceLanguage = group.sourceLanguage,
       targetLanguage = group.targetLanguage;
 }
