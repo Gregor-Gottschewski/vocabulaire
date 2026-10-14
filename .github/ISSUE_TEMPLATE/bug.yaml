@@ -57,22 +57,6 @@ body:
     validations:
       required: false
 
-  - type: input
-    id: os
-    attributes:
-      label: Operating System
-      placeholder: e.g. macOS 11.3, iOS 26.1
-    validations:
-      required: true
-
-  - type: input
-    id: device
-    attributes:
-      label: Device
-      placeholder: e.g. iPhone, iPad, Mac, Simulator
-    validations:
-      required: false
-
   - type: dropdown
     id: severity
     attributes:
