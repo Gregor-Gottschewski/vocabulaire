@@ -159,6 +159,7 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                     label: _l10n.vocabListClearSearch,
                     onPressed: () {
                       _searchController.clear();
+                      FocusScope.of(context).unfocus();
                       setState(() {});
                     },
                   ),
