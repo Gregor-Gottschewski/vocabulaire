@@ -153,6 +153,18 @@
       }
     }
   },
+  "reviewSummaryTitle": "{count, plural, =1{1 Vokabel bewertet} other{{count} Vokabeln bewertet}}",
+  "@reviewSummaryTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewSummaryNext": "Nächste Sitzung?",
+  "reviewCancel": "Abbrechen",
+  "reviewContinue": "Weiter",
+  "reviewNothingLeft": "Im Moment gibt es nichts mehr zu lernen.",
   "boxDetailDescription": "Beschreibung",
   "boxTileNoDescription": "Keine Beschreibung vorhanden",
   "boxDetailFlipLanguages": "Sprachen tauschen",

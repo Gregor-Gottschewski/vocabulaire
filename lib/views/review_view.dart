@@ -12,9 +12,11 @@ import 'package:vocabulaire/models/reviewable_item.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/app_paths.dart';
+import 'package:vocabulaire/views/review_summary_view.dart';
 import 'package:vocabulaire/views/widgets/primary_action_button.dart';
 
 import '../services/tts_service.dart';
+import '../theme/app_page_route.dart';
 import '../theme/app_spacing.dart';
 import '../theme/app_typography.dart';
 import '../theme/theme_context_ext.dart';
@@ -93,8 +95,8 @@ class _ReviewViewState extends State<ReviewView>
   }
 
   /// Reloads the state on change of list.
-  /// Navigates the user back if session finished.
-  /// Because this function can be called multiple times after session finish, only the first call results in back navigation.
+  /// Shows the session summary if the session finished.
+  /// Because this function can be called multiple times after session finish, only the first call opens the summary.
   void _onControllerUpdate() {
     final isFinished =
         _reviewController.box == null || _reviewController.isFinished;
@@ -103,15 +105,43 @@ class _ReviewViewState extends State<ReviewView>
       if (_wasFinished) return;
       _wasFinished = true;
       if (!mounted) return;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        Navigator.of(context).pop();
-      });
+      WidgetsBinding.instance.addPostFrameCallback((_) => _showSummary());
       return;
     }
 
     if (!mounted) return;
     setState(() {});
+  }
+
+  /// Opens the summary. Continuing loads the next queue, otherwise the
+  /// review view is closed. Sessions without rated cards are closed directly.
+  Future<void> _showSummary() async {
+    if (!mounted) return;
+    if (_reviewController.box == null || _reviewController.length == 0) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    final proceed = await Navigator.of(context).push<bool>(
+      AppPageRoute(
+        builder: (_) => ReviewSummaryView(
+          ratedCount: _reviewController.length,
+          hasNext: _reviewController.hasNext,
+        ),
+      ),
+    );
+    if (!mounted) return;
+
+    if (proceed != true) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    _wasFinished = false;
+    _flipped = false;
+    _flipController.value = 0;
+    _generatingAudio = false;
+    _reviewController.loadNext();
   }
 
   bool get _cardAnimationsEnabled => _settingsController.getCardAnimations();

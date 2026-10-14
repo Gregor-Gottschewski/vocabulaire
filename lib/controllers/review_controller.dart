@@ -83,6 +83,28 @@ class ReviewController extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Builds the queue of the next session, see [ReviewSession.nextQueue].
+  List<ReviewableItem> _buildNextQueue() {
+    final b = _boxController.getBox(boxKey);
+    if (b == null) return [];
+    _box = b;
+    return ReviewSession.nextQueue(
+      ReviewSession.reviewableItemsForBox(b),
+      dailyLimitEnabled: b.dailyLimitEnabled,
+      remainingNewCards: b.remainingNewCardsToday,
+    );
+  }
+
+  /// Whether there is anything to learn in a next session.
+  bool get hasNext => _buildNextQueue().isNotEmpty;
+
+  /// Replaces the finished session with the next endless-mode queue.
+  void loadNext() {
+    _cards = _buildNextQueue();
+    _index = 0;
+    notifyListeners();
+  }
+
   /// Remove items from current review session that were deleted from this
   /// box (as a vocabulary or a conjugation) while the review session is in
   /// progress.

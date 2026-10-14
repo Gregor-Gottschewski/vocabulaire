@@ -604,6 +604,36 @@ abstract class AppLocalizations {
   /// **'Beispiel: {example}'**
   String reviewExample(String example);
 
+  /// No description provided for @reviewSummaryTitle.
+  ///
+  /// In de, this message translates to:
+  /// **'{count, plural, =1{1 Vokabel bewertet} other{{count} Vokabeln bewertet}}'**
+  String reviewSummaryTitle(int count);
+
+  /// No description provided for @reviewSummaryNext.
+  ///
+  /// In de, this message translates to:
+  /// **'Nächste Sitzung?'**
+  String get reviewSummaryNext;
+
+  /// No description provided for @reviewCancel.
+  ///
+  /// In de, this message translates to:
+  /// **'Abbrechen'**
+  String get reviewCancel;
+
+  /// No description provided for @reviewContinue.
+  ///
+  /// In de, this message translates to:
+  /// **'Weiter'**
+  String get reviewContinue;
+
+  /// No description provided for @reviewNothingLeft.
+  ///
+  /// In de, this message translates to:
+  /// **'Im Moment gibt es nichts mehr zu lernen.'**
+  String get reviewNothingLeft;
+
   /// No description provided for @boxDetailDescription.
   ///
   /// In de, this message translates to:

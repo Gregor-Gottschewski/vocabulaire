@@ -287,6 +287,29 @@ class AppLocalizationsDe extends AppLocalizations {
   }
 
   @override
+  String reviewSummaryTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count Vokabeln bewertet',
+      one: '1 Vokabel bewertet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reviewSummaryNext => 'Nächste Sitzung?';
+
+  @override
+  String get reviewCancel => 'Abbrechen';
+
+  @override
+  String get reviewContinue => 'Weiter';
+
+  @override
+  String get reviewNothingLeft => 'Im Moment gibt es nichts mehr zu lernen.';
+
+  @override
   String get boxDetailDescription => 'Beschreibung';
 
   @override

@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+_Nothing._
+
+### Added
+
+- User can decide to continue reviewing cards after session ends (extended review mode)
+
+### Fixed
+
+_Nothing._
+
 ## 1.1.0 - 2026-10-06
 
 ### Changed

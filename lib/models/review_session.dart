@@ -93,6 +93,31 @@ class ReviewSession {
         break;
     }
 
+    return _applyDailyLimit(list, dailyLimitEnabled, remainingNewCards);
+  }
+
+  /// Builds the queue for the next session of the endless review mode: all
+  /// items that are overdue or become due within [window].
+  static List<ReviewableItem> nextQueue(
+    List<ReviewableItem> items, {
+    bool dailyLimitEnabled = false,
+    int? remainingNewCards,
+    Duration window = const Duration(minutes: 15),
+  }) {
+    final horizon = DateTime.now().add(window);
+    return _applyDailyLimit(
+      items.where((i) => i.card.due.isBefore(horizon)).toList(),
+      dailyLimitEnabled,
+      remainingNewCards,
+    )..shuffle();
+  }
+
+  static List<ReviewableItem> _applyDailyLimit(
+    List<ReviewableItem> items,
+    bool dailyLimitEnabled,
+    int? remainingNewCards,
+  ) {
+    var list = items;
     if (dailyLimitEnabled && remainingNewCards != null) {
       if (remainingNewCards <= 0) {
         list = list.where((i) => i.card.lastReview != null).toList();

@@ -153,6 +153,18 @@
       }
     }
   },
+  "reviewSummaryTitle": "{count, plural, =1{1 mot évalué} other{{count} mots évalués}}",
+  "@reviewSummaryTitle": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "reviewSummaryNext": "Session suivante ?",
+  "reviewCancel": "Annuler",
+  "reviewContinue": "Continuer",
+  "reviewNothingLeft": "Il n'y a plus rien à apprendre pour le moment.",
   "boxDetailDescription": "Description",
   "boxTileNoDescription": "Aucune description disponible",
   "boxDetailFlipLanguages": "Inverser les langues",
