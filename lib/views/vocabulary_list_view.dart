@@ -157,11 +157,13 @@ class _VocabularyListViewState extends State<VocabularyListView> {
                   const SizedBox(width: AppSpacing.gapLarge),
                   TextLinkButton(
                     label: _l10n.vocabListClearSearch,
-                    onPressed: () {
-                      _searchController.clear();
-                      FocusScope.of(context).unfocus();
-                      setState(() {});
-                    },
+                    onPressed: _searchController.text.isEmpty
+                        ? null
+                        : () {
+                            _searchController.clear();
+                            FocusScope.of(context).unfocus();
+                            setState(() {});
+                          },
                   ),
                 ],
               ),
