@@ -12,7 +12,7 @@ _Nothing._
 
 ### Fixed
 
-_Nothing._
+- Application name is shown correctly (Vocabulaire) in macOS menu bar
 
 ## 1.1.0 - 2026-10-06
 
