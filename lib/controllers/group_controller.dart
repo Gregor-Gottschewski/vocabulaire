@@ -11,12 +11,14 @@ import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
 import 'package:vocabulaire/services/group_sync_service.dart';
+import 'package:vocabulaire/services/local_ownership_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 
 /// Controller for group operations.
 class GroupController {
   final Box<VocabularyGroup> _localGroups = Hive.box<VocabularyGroup>('groups');
   final Box<VocabularyBox> _localBoxes = Hive.box<VocabularyBox>('boxes');
+  final LocalOwnershipService _ownership = LocalOwnershipService.instance;
   final GroupSyncService _groupSync = GroupSyncService.instance;
   final BoxSyncService _boxSync = BoxSyncService.instance;
   final VocabularySyncService _vocabSync = VocabularySyncService.instance;
@@ -37,7 +39,7 @@ class GroupController {
   void _endSync(String groupId) => _syncingGroupIds.remove(groupId);
 
   List<VocabularyGroup> get _localGroupList =>
-      _localGroups.values.where((g) => g.id.isNotEmpty).toList();
+      _localGroups.values.where(_ownership.isOwnLocalGroup).toList();
 
   /// All groups across both backends.
   List<VocabularyGroup> get groups => [
@@ -57,17 +59,15 @@ class GroupController {
     );
   }
 
-  bool _isLocal(String groupId) {
-    final local = _localGroups.get(groupId);
-    return local != null && local.id.isNotEmpty;
-  }
+  bool _isLocal(String groupId) =>
+      _ownership.isOwnLocalGroup(_localGroups.get(groupId));
 
   /// Whether group [groupId] currently lives in local storage.
   bool isLocal(String groupId) => _isLocal(groupId);
 
   VocabularyGroup? getGroup(String groupId) {
     final local = _localGroups.get(groupId);
-    if (local != null && local.id.isNotEmpty) return local;
+    if (_ownership.isOwnLocalGroup(local)) return local;
     return _groupSync.getGroup(groupId);
   }
 
@@ -80,7 +80,10 @@ class GroupController {
       if (online) {
         await _groupSync.addGroup(group);
       } else {
-        await _localGroups.put(group.id, group);
+        await _localGroups.put(
+          group.id,
+          group.copyWith(ownerUid: _ownership.currentUid),
+        );
       }
     }
   }
@@ -221,7 +224,10 @@ class GroupController {
         await _localBoxes.put(box.id, box.copyWith(deleted: false));
       }
 
-      await _localGroups.put(groupId, group.copyWith(deleted: false));
+      await _localGroups.put(
+        groupId,
+        group.copyWith(deleted: false, ownerUid: _ownership.currentUid),
+      );
       await _groupSync.softDeleteGroup(groupId);
     } finally {
       _endSync(groupId);

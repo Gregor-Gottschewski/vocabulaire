@@ -30,6 +30,11 @@ class VocabularyGroup {
   @HiveField(5, defaultValue: false)
   final bool deleted;
 
+  /// Firebase uid of the account owning this group, only relevant for local
+  /// groups.
+  @HiveField(6, defaultValue: '')
+  final String ownerUid;
+
   final int boxCountOnline;
 
   GroupType get groupType => GroupType.fromName(type);
@@ -45,6 +50,7 @@ class VocabularyGroup {
     this.sourceLanguage,
     this.targetLanguage,
     this.deleted = false,
+    this.ownerUid = '',
     this.boxCountOnline = 0,
   });
 
@@ -55,6 +61,7 @@ class VocabularyGroup {
     String? sourceLanguage,
     String? targetLanguage,
     bool? deleted,
+    String? ownerUid,
     int? boxCountOnline,
   }) {
     return VocabularyGroup(
@@ -64,6 +71,7 @@ class VocabularyGroup {
       sourceLanguage: sourceLanguage ?? this.sourceLanguage,
       targetLanguage: targetLanguage ?? this.targetLanguage,
       deleted: deleted ?? this.deleted,
+      ownerUid: ownerUid ?? this.ownerUid,
       boxCountOnline: boxCountOnline ?? this.boxCountOnline,
     );
   }

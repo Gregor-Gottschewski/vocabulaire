@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vocabulaire/l10n/app_localizations.dart';
 import 'package:vocabulaire/services/local_data_deletion_service.dart';
+import 'package:vocabulaire/services/local_ownership_service.dart';
 import 'package:vocabulaire/services/app_exception.dart';
 import 'package:vocabulaire/services/app_exception_ui.dart';
 import 'package:vocabulaire/services/auth_service.dart';
@@ -60,8 +61,9 @@ class _DeleteAccountView extends State<DeleteAccountView> {
   Future<void> _deleteAccount(String password) async {
     setState(() => _isLoading = true);
     try {
+      final uid = LocalOwnershipService.instance.currentUid;
       await AuthService.instance.deleteAccount(currentPassword: password);
-      await LocalDataDeletionService.instance.clearLocalData();
+      await LocalDataDeletionService.instance.clearLocalData(uid);
     } on AppException catch (e) {
       if (!mounted) return;
       await context.showAppError(e);

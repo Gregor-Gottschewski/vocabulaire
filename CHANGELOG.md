@@ -13,6 +13,15 @@
 ### Fixed
 
 - Application name is shown correctly (Vocabulaire) in macOS menu bar
+- Local groups are bound to the user account and no longer visible to other accounts
+
+### Removed
+
+_Nothing._
+
+### Deprecated
+
+- Migration of local groups without owner (assigned to the first account signing in). **Will be removed in v2.0.**
 
 ## 1.1.0 - 2026-10-06
 
@@ -43,7 +52,7 @@ _Nothing._
 
 ### Deprecated
 
-- Upload vocabulary without reservations. Will be removed in v2.0.
+- Upload vocabulary without reservations. **Will be removed in v2.0.**
 
 ## 1.0.0 - 2026-09-15
 

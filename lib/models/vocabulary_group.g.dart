@@ -23,13 +23,14 @@ class VocabularyGroupAdapter extends TypeAdapter<VocabularyGroup> {
       sourceLanguage: fields[3] as String?,
       targetLanguage: fields[4] as String?,
       deleted: fields[5] == null ? false : fields[5] as bool,
+      ownerUid: fields[6] == null ? '' : fields[6] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, VocabularyGroup obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,7 +42,9 @@ class VocabularyGroupAdapter extends TypeAdapter<VocabularyGroup> {
       ..writeByte(4)
       ..write(obj.targetLanguage)
       ..writeByte(5)
-      ..write(obj.deleted);
+      ..write(obj.deleted)
+      ..writeByte(6)
+      ..write(obj.ownerUid);
   }
 
   @override

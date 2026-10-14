@@ -8,6 +8,7 @@ import 'package:vocabulaire/models/vocabulary_box.dart';
 import 'package:vocabulaire/services/app_paths.dart';
 import 'package:vocabulaire/services/audio_upload_queue_service.dart';
 import 'package:vocabulaire/services/box_sync_service.dart';
+import 'package:vocabulaire/services/local_ownership_service.dart';
 import 'package:vocabulaire/services/vocabulary_sync_service.dart';
 import '../models/vocabulary.dart';
 
@@ -17,6 +18,7 @@ import '../models/vocabulary.dart';
 ///  - online boxes: Firestore, via [BoxSyncService]/[VocabularySyncService]
 class BoxController {
   final Box<VocabularyBox> _localBox = Hive.box<VocabularyBox>('boxes');
+  final LocalOwnershipService _ownership = LocalOwnershipService.instance;
   final BoxSyncService _boxSync = BoxSyncService.instance;
   final VocabularySyncService _vocabSync = VocabularySyncService.instance;
   final AudioUploadQueueService _audioUploadQueue =
@@ -25,8 +27,18 @@ class BoxController {
   /// All boxes across both backends.
   List<VocabularyBox> get boxes => [..._localBoxes, ..._onlineBoxes];
 
-  List<VocabularyBox> get _localBoxes =>
-      _localBox.values.where((b) => b.id.isNotEmpty).toList();
+  /// Local boxes of groups owned by the signed-in account.
+  List<VocabularyBox> get _localBoxes {
+    final groupIds = _ownership.ownLocalGroupIds();
+    return _localBox.values
+        .where((b) => b.id.isNotEmpty && groupIds.contains(b.groupId))
+        .toList();
+  }
+
+  bool _isOwnLocal(VocabularyBox? box) =>
+      box != null &&
+      box.id.isNotEmpty &&
+      _ownership.ownLocalGroupIds().contains(box.groupId);
 
   List<VocabularyBox> get _onlineBoxes => _boxSync.boxes
       .map((b) => b.copyWith(vocabularies: _vocabSync.cachedVocabularies(b.id)))
@@ -37,17 +49,14 @@ class BoxController {
   List<MapEntry<String, VocabularyBox>> get entries =>
       boxes.map((b) => MapEntry(b.id, b)).toList();
 
-  bool _isLocal(String boxId) {
-    final local = _localBox.get(boxId);
-    return local != null && local.id.isNotEmpty;
-  }
+  bool _isLocal(String boxId) => _isOwnLocal(_localBox.get(boxId));
 
   /// Whether box [boxId] currently lives in local storage
   bool isLocal(String boxId) => _isLocal(boxId);
 
   VocabularyBox? getBox(String boxId) {
     final local = _localBox.get(boxId);
-    if (local != null && local.id.isNotEmpty) return local;
+    if (_isOwnLocal(local)) return local;
 
     final online = _boxSync.getBox(boxId);
     if (online == null) return null;
