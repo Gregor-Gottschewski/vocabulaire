@@ -4,7 +4,7 @@
 
 ### Changed
 
-_Nothing._
+- Listen button disabled on playback in review mode
 
 ### Added
 

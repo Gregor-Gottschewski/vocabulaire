@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +47,7 @@ class _ReviewViewState extends State<ReviewView>
     with SingleTickerProviderStateMixin {
   late final ReviewController _reviewController;
   late final AnimationController _flipController;
+  late final StreamSubscription<void> _audioPlayerCompletedSubscription;
   final _settingsController = SettingsController();
   final _player = AudioPlayer();
   late AppLocalizations _l10n;
@@ -77,6 +80,9 @@ class _ReviewViewState extends State<ReviewView>
       vsync: this,
       duration: const Duration(milliseconds: 280),
     );
+    _audioPlayerCompletedSubscription = _player.onPlayerComplete.listen((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -85,6 +91,7 @@ class _ReviewViewState extends State<ReviewView>
     _reviewController.dispose();
     _flipController.dispose();
     _player.dispose();
+    _audioPlayerCompletedSubscription.cancel();
     super.dispose();
   }
 
@@ -168,6 +175,7 @@ class _ReviewViewState extends State<ReviewView>
       await _player.play(
         DeviceFileSource(AppPaths.audioFilePath(vocabulary.id)),
       );
+      setState(() {});
     }
   }
 
@@ -234,7 +242,10 @@ class _ReviewViewState extends State<ReviewView>
 
     if (widget.reversed ? _hasRecording : _flipped && _hasRecording) {
       return _translateOffsetLeft(
-        TextLinkButton(label: _l10n.reviewPlay, onPressed: _playAudio),
+        TextLinkButton(
+          label: _l10n.reviewPlay,
+          onPressed: _player.state != PlayerState.playing ? _playAudio : null,
+        ),
       );
     }
 
@@ -302,7 +313,9 @@ class _ReviewViewState extends State<ReviewView>
               ? Center(
                   child: PrimaryActionButton(
                     label: _l10n.reviewPlayToListen,
-                    onPressed: _playAudio,
+                    onPressed: _player.state != PlayerState.playing
+                        ? _playAudio
+                        : null,
                     fillWidth: false,
                   ),
                 )
